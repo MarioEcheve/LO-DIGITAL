@@ -40,17 +40,27 @@ export const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    path: "/components",
+    path: "/contrato",
+    title: "Contrato",
+    type: "sub",
+    icontype: "apps",
+    collapse: "contrato",
+    children: [{ path: "contrato", title: "Lista Entidades", ab: "B" }],
+  },
+  /*
+  {
+    path: "/contrato",
     title: "Mis Contratos",
     type: "sub",
     icontype: "apps",
-    collapse: "components",
+    collapse: "contrato",
     children: [
       { path: "contrato", title: "Lista Contratos Abiertos", ab: "B" },
       { path: "buttons", title: "Lista Contratos Pendientes", ab: "B" },
       { path: "buttons", title: "Lista Contratos Cerados", ab: "B" },
     ],
   },
+  */
   {
     path: "/components",
     title: "Mis Libros",
