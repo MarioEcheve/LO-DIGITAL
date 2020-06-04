@@ -1,15 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 
+declare const require: any;
+declare const $: any;
+
+
 @Component({
   selector: 'app-contrato',
   templateUrl: './contrato.component.html',
   styleUrls: ['./contrato.component.css']
 })
 export class ContratoComponent implements OnInit {
+  simpleSlider = 40;
+    doubleSlider = [20, 60];
 
-  constructor() { }
+    regularItems = ['Pizza', 'Pasta', 'Parmesan'];
+    touch: boolean;
 
-  ngOnInit(): void {
-  }
+    selectedValue: string;
+    currentCity: string[];
+
+    selectTheme = 'primary';
+    cities = [
+      {value: 'paris-0', viewValue: 'Paris'},
+      {value: 'miami-1', viewValue: 'Miami'},
+      {value: 'bucharest-2', viewValue: 'Bucharest'},
+      {value: 'new-york-3', viewValue: 'New York'},
+      {value: 'london-4', viewValue: 'London'},
+      {value: 'barcelona-5', viewValue: 'Barcelona'},
+      {value: 'moscow-6', viewValue: 'Moscow'},
+    ];
+
+    ngOnInit() {}
+        myFunc(val: any) {
+          // code here
+        }
 
 }

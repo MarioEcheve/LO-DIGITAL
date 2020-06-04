@@ -46,7 +46,7 @@ export const ROUTES: RouteInfo[] = [
     icontype: "apps",
     collapse: "components",
     children: [
-      { path: "buttons", title: "Lista Contratos Abiertos", ab: "B" },
+      { path: "contrato", title: "Lista Contratos Abiertos", ab: "B" },
       { path: "buttons", title: "Lista Contratos Pendientes", ab: "B" },
       { path: "buttons", title: "Lista Contratos Cerados", ab: "B" },
     ],
