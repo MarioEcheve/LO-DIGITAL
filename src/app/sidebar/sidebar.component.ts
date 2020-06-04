@@ -1,32 +1,70 @@
-import { Component, OnInit } from '@angular/core';
-import PerfectScrollbar from 'perfect-scrollbar';
+import { Component, OnInit } from "@angular/core";
+import PerfectScrollbar from "perfect-scrollbar";
 
 declare const $: any;
 
 //Metadata
 export interface RouteInfo {
-    path: string;
-    title: string;
-    type: string;
-    icontype: string;
-    collapse?: string;
-    children?: ChildrenItems[];
+  path: string;
+  title: string;
+  type: string;
+  icontype: string;
+  collapse?: string;
+  children?: ChildrenItems[];
 }
 
 export interface ChildrenItems {
-    path: string;
-    title: string;
-    ab: string;
-    type?: string;
+  path: string;
+  title: string;
+  ab: string;
+  type?: string;
 }
 
 //Menu Items
-export const ROUTES: RouteInfo[] = [{
-        path: '/dashboard',
-        title: 'Dashboard',
-        type: 'link',
-        icontype: 'dashboard'
-    },{
+export const ROUTES: RouteInfo[] = [
+  {
+    path: "/dashboard",
+    title: "Dashboard",
+    type: "link",
+    icontype: "dashboard",
+  },
+  {
+    path: "/components",
+    title: "Entidad",
+    type: "sub",
+    icontype: "apps",
+    collapse: "components",
+    children: [
+      { path: "buttons", title: "Lista Entidades", ab: "B" },
+      { path: "buttons", title: "Lista Usuarios", ab: "B" },
+    ],
+  },
+  {
+    path: "/components",
+    title: "Mis Contratos",
+    type: "sub",
+    icontype: "apps",
+    collapse: "components",
+    children: [
+      { path: "buttons", title: "Lista Contratos Abiertos", ab: "B" },
+      { path: "buttons", title: "Lista Contratos Pendientes", ab: "B" },
+      { path: "buttons", title: "Lista Contratos Cerados", ab: "B" },
+    ],
+  },
+  {
+    path: "/components",
+    title: "Mis Libros",
+    type: "sub",
+    icontype: "apps",
+    collapse: "components",
+    children: [
+      { path: "buttons", title: "Lista Libros Abiertos", ab: "B" },
+      { path: "buttons", title: "Lista Libros Pendientes", ab: "B" },
+      { path: "buttons", title: "Lista Libros Cerados", ab: "B" },
+    ],
+  },
+  /*
+    {
         path: '/components',
         title: 'Components',
         type: 'sub',
@@ -106,40 +144,44 @@ export const ROUTES: RouteInfo[] = [{
             {path: 'lock', title: 'Lock Screen Page', ab:'LSP'},
             {path: 'user', title: 'User Page', ab:'UP'}
         ]
-    }
+    }*/
 ];
 @Component({
-    selector: 'app-sidebar-cmp',
-    templateUrl: 'sidebar.component.html',
+  selector: "app-sidebar-cmp",
+  templateUrl: "sidebar.component.html",
 })
-
 export class SidebarComponent implements OnInit {
-    public menuItems: any[];
-    ps: any;
-    isMobileMenu() {
-        if ($(window).width() > 991) {
-            return false;
-        }
-        return true;
-    };
+  public menuItems: any[];
+  ps: any;
+  isMobileMenu() {
+    if ($(window).width() > 991) {
+      return false;
+    }
+    return true;
+  }
 
-    ngOnInit() {
-        this.menuItems = ROUTES.filter(menuItem => menuItem);
-        if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
-            const elemSidebar = <HTMLElement>document.querySelector('.sidebar .sidebar-wrapper');
-            this.ps = new PerfectScrollbar(elemSidebar);
-        }
+  ngOnInit() {
+    this.menuItems = ROUTES.filter((menuItem) => menuItem);
+    if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
+      const elemSidebar = <HTMLElement>(
+        document.querySelector(".sidebar .sidebar-wrapper")
+      );
+      this.ps = new PerfectScrollbar(elemSidebar);
     }
-    updatePS(): void  {
-        if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
-            this.ps.update();
-        }
+  }
+  updatePS(): void {
+    if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
+      this.ps.update();
     }
-    isMac(): boolean {
-        let bool = false;
-        if (navigator.platform.toUpperCase().indexOf('MAC') >= 0 || navigator.platform.toUpperCase().indexOf('IPAD') >= 0) {
-            bool = true;
-        }
-        return bool;
+  }
+  isMac(): boolean {
+    let bool = false;
+    if (
+      navigator.platform.toUpperCase().indexOf("MAC") >= 0 ||
+      navigator.platform.toUpperCase().indexOf("IPAD") >= 0
+    ) {
+      bool = true;
     }
+    return bool;
+  }
 }
