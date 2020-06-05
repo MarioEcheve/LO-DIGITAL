@@ -438,4 +438,51 @@
     </div>
   </div>
   <!-- Término card de Creación Libro-->
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="text-center">{{ tableData1.headerRow[0] }}</th>
+          <th>{{ tableData1.headerRow[1] }}</th>
+          <th>{{ tableData1.headerRow[2] }}</th>
+          <th>{{ tableData1.headerRow[3] }}</th>
+          <th class="text-right">{{ tableData1.headerRow[4] }}</th>
+          <th class="text-right">{{ tableData1.headerRow[5] }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of tableData1.dataRows">
+          <td class="text-center">{{ row[0] }}</td>
+          <td>{{ row[1] }}</td>
+          <td>{{ row[2] }}</td>
+          <td>{{ row[3] }}</td>
+          <td class="text-right">&euro; {{ row[4] }}</td>
+          <td class="td-actions text-right">
+            <button
+              mat-raised-button
+              type="button"
+              class="btn btn-info {{ row[5] }}"
+            >
+              <i class="material-icons">person</i>
+            </button>
+            <button
+              mat-raised-button
+              type="button"
+              class="btn btn-success {{ row[5] }}"
+            >
+              <i class="material-icons">edit</i>
+            </button>
+            <button
+              mat-raised-button
+              type="button"
+              class="btn btn-danger {{ row[5] }}"
+            >
+              <i class="material-icons">close</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
