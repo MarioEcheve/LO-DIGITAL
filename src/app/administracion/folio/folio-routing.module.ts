@@ -3,6 +3,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { FolioComponent } from "./folio/folio.component";
 import { FolioBorradorComponent } from "./folio-borrador/folio-borrador.component";
 import { FolioFirmadoComponent } from "./folio-firmado/folio-firmado.component";
+import { ArchivoComponent } from "./archivo/archivo.component";
 
 const routes: Routes = [
   {
@@ -19,6 +20,10 @@ const routes: Routes = [
       {
         path: "folio-firmado",
         component: FolioFirmadoComponent,
+      },
+      {
+        path: "folio-archivo",
+        component: ArchivoComponent,
       },
     ],
   },

@@ -7,11 +7,13 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NouisliderModule } from "ng2-nouislider";
 import { TagInputModule } from "ngx-chips";
 import { MaterialModule } from "src/app/app.module";
-import { FolioBorradorComponent } from './folio-borrador/folio-borrador.component';
-import { FolioFirmadoComponent } from './folio-firmado/folio-firmado.component';
+import { FolioBorradorComponent } from "./folio-borrador/folio-borrador.component";
+import { FolioFirmadoComponent } from "./folio-firmado/folio-firmado.component";
+import { NgxFileDropModule } from "ngx-file-drop";
+import { ArchivoComponent } from './archivo/archivo.component';
 
 @NgModule({
-  declarations: [FolioComponent, FolioBorradorComponent, FolioFirmadoComponent],
+  declarations: [FolioComponent, FolioBorradorComponent, FolioFirmadoComponent, ArchivoComponent],
   imports: [
     CommonModule,
     FolioRoutingModule,
@@ -21,6 +23,7 @@ import { FolioFirmadoComponent } from './folio-firmado/folio-firmado.component';
     TagInputModule,
     MaterialModule,
     AngularEditorModule,
+    NgxFileDropModule,
   ],
 })
 export class FolioModule {}
