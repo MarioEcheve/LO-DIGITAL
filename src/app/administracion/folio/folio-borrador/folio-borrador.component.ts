@@ -11,6 +11,15 @@ declare interface TableData {
 })
 export class FolioBorradorComponent implements OnInit {
   public tableData1: TableData;
+  cities = [
+    { value: "paris-0", viewValue: "Paris" },
+    { value: "miami-1", viewValue: "Miami" },
+    { value: "bucharest-2", viewValue: "Bucharest" },
+    { value: "new-york-3", viewValue: "New York" },
+    { value: "london-4", viewValue: "London" },
+    { value: "barcelona-5", viewValue: "Barcelona" },
+    { value: "moscow-6", viewValue: "Moscow" },
+  ];
   constructor() {}
 
   ngOnInit() {

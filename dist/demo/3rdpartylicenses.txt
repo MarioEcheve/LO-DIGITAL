@@ -91,6 +91,9 @@ MIT
 @angular/router
 MIT
 
+@kolkov/angular-editor
+MIT
+
 angular-calendar
 MIT
 The MIT License (MIT)
@@ -204,6 +207,9 @@ SOFTWARE.
 
 
 ngx-chips
+MIT
+
+ngx-file-drop
 MIT
 
 nouislider
