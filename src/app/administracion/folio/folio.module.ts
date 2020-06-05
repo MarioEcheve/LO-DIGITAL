@@ -7,9 +7,11 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NouisliderModule } from "ng2-nouislider";
 import { TagInputModule } from "ngx-chips";
 import { MaterialModule } from "src/app/app.module";
+import { FolioBorradorComponent } from './folio-borrador/folio-borrador.component';
+import { FolioFirmadoComponent } from './folio-firmado/folio-firmado.component';
 
 @NgModule({
-  declarations: [FolioComponent],
+  declarations: [FolioComponent, FolioBorradorComponent, FolioFirmadoComponent],
   imports: [
     CommonModule,
     FolioRoutingModule,
