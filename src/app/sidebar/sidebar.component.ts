@@ -47,6 +47,14 @@ export const ROUTES: RouteInfo[] = [
     collapse: "contrato",
     children: [{ path: "contrato", title: "Lista Entidades", ab: "B" }],
   },
+  {
+    path: "/folio",
+    title: "Folio",
+    type: "sub",
+    icontype: "apps",
+    collapse: "contrato",
+    children: [{ path: "folio", title: "Lista folios", ab: "B" }],
+  },
   /*
   {
     path: "/contrato",

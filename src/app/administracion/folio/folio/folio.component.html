@@ -1,0 +1,24 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header card-header-rose card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons">mail_outline</i>
+        </div>
+        <h4 class="card-title">Folio</h4>
+      </div>
+      <div class="card-body">
+        <angular-editor
+          [placeholder]="'Enter text here...'"
+          [(ngModel)]="htmlContent"
+        ></angular-editor>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8 mr-auto ml-auto">
+        <!--      Wizard container        -->
+        <div class="wizard-container"></div>
+      </div>
+    </div>
+  </div>
+</div>

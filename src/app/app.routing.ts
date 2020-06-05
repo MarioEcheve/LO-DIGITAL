@@ -51,7 +51,12 @@ export const AppRoutes: Routes = [
       },
       {
         path: "contrato",
-        loadChildren: "./administracion/contrato/contrato.module#ContratoModule",
+        loadChildren:
+          "./administracion/contrato/contrato.module#ContratoModule",
+      },
+      {
+        path: "folio",
+        loadChildren: "./administracion/folio/folio.module#FolioModule",
       },
       {
         path: "",
