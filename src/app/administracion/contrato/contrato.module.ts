@@ -7,9 +7,11 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NouisliderModule } from "ng2-nouislider";
 import { TagInputModule } from "ngx-chips";
 import { MaterialModule } from "src/app/app.module";
+import { ListaContratoComponent } from './lista-contrato/lista-contrato.component';
+import { DetalleContratoComponent } from './detalle-contrato/detalle-contrato.component';
 
 @NgModule({
-  declarations: [ContratoComponent],
+  declarations: [ContratoComponent, ListaContratoComponent, DetalleContratoComponent],
   imports: [
     CommonModule,
     ContratoRoutingModule,
