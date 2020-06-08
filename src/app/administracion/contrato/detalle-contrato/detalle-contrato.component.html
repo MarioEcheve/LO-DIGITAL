@@ -12,7 +12,7 @@
                   Nuevo Contrato
                 </h3>
                 <h5 class="card-description">
-                  Ingreso de nuevo contrato
+                  www.lodigital.cl
                 </h5>
               </div>
               <div class="wizard-navigation">
@@ -20,7 +20,7 @@
                   <li class="nav-item">
                     <a
                       class="nav-link active"
-                      href="#about"
+                      href="#contrato"
                       data-toggle="tab"
                       role="tab"
                     >
@@ -30,7 +30,7 @@
                   <li class="nav-item">
                     <a
                       class="nav-link"
-                      href="#account"
+                      href="#mandante"
                       data-toggle="tab"
                       role="tab"
                     >
@@ -40,7 +40,7 @@
                   <li class="nav-item">
                     <a
                       class="nav-link"
-                      href="#address"
+                      href="#contratista"
                       data-toggle="tab"
                       role="tab"
                     >
@@ -50,7 +50,17 @@
                   <li class="nav-item">
                     <a
                       class="nav-link"
-                      href="#address"
+                      href="#configuracion"
+                      data-toggle="tab"
+                      role="tab"
+                    >
+                      Configuración y Permisos
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="#contacto"
                       data-toggle="tab"
                       role="tab"
                     >
@@ -61,12 +71,12 @@
               </div>
               <div class="card-body">
                 <div class="tab-content">
-                  <div class="tab-pane active" id="about">
+                  <div class="tab-pane active" id="contrato">
                     <h5 class="info-text">
-                      Let's start with the basic information (with validation)
-                    </h5>
+                      Ingrese la información general del Contrato
+                    </h5>                                        
                     <div class="row justify-content-center">
-                      <div class="col-sm-4">
+                      <!-- <div class="col-sm-4">
                         <div class="picture-container">
                           <div class="picture">
                             <img
@@ -79,9 +89,73 @@
                           </div>
                           <h6 class="description">Choose Picture</h6>
                         </div>
-                      </div>
-                      <div class="col-sm-6">
-                        <div class="input-group form-control-lg">
+                      </div> -->
+                      <div class="col-sm-10">
+                        <div class="row">
+                          <mat-form-field class="example-full-width col-md-3">
+                            <input matInput placeholder="Cod. Contrato" type="text" />
+                          </mat-form-field>
+                          <mat-form-field class="example-full-width col-md-9">
+                            <input matInput placeholder="Nombre Contrato" type="text" />
+                          </mat-form-field>
+                        </div>
+                        <div class="row">
+                          <mat-form-field class="example-full-width col-md-12">
+                            <textarea matInput placeholder="Descripción" rows="2"></textarea>
+                          </mat-form-field>
+                          <mat-form-field class="example-full-width col-md-12">
+                            <input matInput placeholder="Dirección" type="text" />
+                          </mat-form-field>
+                        </div>
+                        <div class="row">
+                          <mat-form-field class="col-md-6">
+                            <mat-select placeholder="Región" name="city">
+                              <mat-option *ngFor="let city of cities" [value]="city.value">
+                                {{ city.viewValue }}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-form-field class="col-md-6">
+                            <mat-select placeholder="Comuna" name="city">
+                              <mat-option *ngFor="let city of cities" [value]="city.value">
+                                {{ city.viewValue }}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div class="row">
+                          <mat-form-field class="col-md-6">
+                            <mat-select placeholder="Tipo Contrato" name="city">
+                              <mat-option *ngFor="let city of cities" [value]="city.value">
+                                {{ city.viewValue }}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-form-field class="col-md-6">
+                            <mat-select placeholder="Modalidad Contrato" name="city">
+                              <mat-option *ngFor="let city of cities" [value]="city.value">
+                                {{ city.viewValue }}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div class="row">
+                          <mat-form-field class="example-full-width col-md-6">
+                            <input
+                              matInput
+                              placeholder="Otro tipo de Contrato *"
+                              type="text"
+                            />
+                          </mat-form-field>
+                          <mat-form-field class="example-full-width col-md-6">
+                            <input
+                              matInput
+                              placeholder="Otra modalidad de Contrato *"
+                              type="text"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <!-- <div class="input-group form-control-lg">
                           <div class="input-group-prepend">
                             <span class="input-group-text">
                               <i class="material-icons">face</i>
@@ -120,9 +194,9 @@
                               formControlName="lastName"
                             />
                           </mat-form-field>
-                        </div>
+                        </div> -->
                       </div>
-                      <div class="col-lg-10 mt-3">
+                      <!-- <div class="col-lg-10 mt-3">
                         <div class="input-group form-control-lg">
                           <div class="input-group-prepend">
                             <span class="input-group-text">
@@ -140,120 +214,169 @@
                             />
                           </mat-form-field>
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
-                  <div class="tab-pane" id="account">
-                    <h5 class="info-text">What are you doing? (checkboxes)</h5>
+                  <div class="tab-pane" id="mandante">
+                    <h5 class="info-text">Ingrese la información del Mandante</h5>
                     <div class="row justify-content-center">
                       <div class="col-lg-10">
+                        <span>Paso 1: Ingrese RUT para asignar el Mandante</span>
+                        <div class="row">                          
+                          <mat-form-field class="example-full-width col-md-3">
+                            <input matInput placeholder="RUT" type="text" />
+                          </mat-form-field>
+                          <mat-form-field class="example-full-width col-md-9">
+                            <input matInput placeholder="Nombre Razon Social" type="text" value="s/asignar" disabled/>
+                          </mat-form-field>
+                        </div>
+                        <hr>
+                        <span>Paso 2: Seleccione la Dependencia</span>
                         <div class="row">
-                          <div class="col-sm-4">
-                            <div class="choice" data-toggle="wizard-checkbox">
-                              <input
-                                type="checkbox"
-                                name="jobb"
-                                value="Design"
-                              />
-                              <div class="icon">
-                                <i class="fa fa-pencil"></i>
-                              </div>
-                              <h6>Design</h6>
-                            </div>
-                          </div>
-                          <div class="col-sm-4">
-                            <div class="choice" data-toggle="wizard-checkbox">
-                              <input type="checkbox" name="jobb" value="Code" />
-                              <div class="icon">
-                                <i class="fa fa-terminal"></i>
-                              </div>
-                              <h6>Code</h6>
-                            </div>
-                          </div>
-                          <div class="col-sm-4">
-                            <div class="choice" data-toggle="wizard-checkbox">
-                              <input
-                                type="checkbox"
-                                name="jobb"
-                                value="Develop"
-                              />
-                              <div class="icon">
-                                <i class="fa fa-laptop"></i>
-                              </div>
-                              <h6>Develop</h6>
-                            </div>
-                          </div>
+                          <mat-form-field class="col-md-12">
+                            <mat-select placeholder="Dependencia" name="city">
+                              <mat-option *ngFor="let city of cities" [value]="city.value">
+                                {{ city.viewValue }}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div class="row">              
+                          <mat-form-field class="example-full-width col-md-6">
+                            <input matInput placeholder="Comuna" type="text" value="s/asignar" disabled/>
+                          </mat-form-field>
+                          <mat-form-field class="example-full-width col-md-6">
+                            <input matInput placeholder="Región" type="text" value="s/asignar" disabled/>
+                          </mat-form-field>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="tab-pane" id="address">
+                  <div class="tab-pane" id="contratista">
+                    <h5 class="info-text">Ingrese la información del Contratista</h5>
                     <div class="row justify-content-center">
-                      <div class="col-sm-12">
+                      <div class="col-lg-10">
+                        <span>Paso 1: Ingrese RUT para asignar el Contratista</span>
+                        <div class="row">                          
+                          <mat-form-field class="example-full-width col-md-3">
+                            <input matInput placeholder="RUT" type="text" />
+                          </mat-form-field>
+                          <mat-form-field class="example-full-width col-md-9">
+                            <input matInput placeholder="Nombre Razon Social" type="text" value="s/asignar" disabled/>
+                          </mat-form-field>
+                        </div>
+                        <hr>
+                        <span>Paso 2: Seleccione la Dependencia</span>
+                        <div class="row">
+                          <mat-form-field class="col-md-12">
+                            <mat-select placeholder="Dependencia" name="city">
+                              <mat-option *ngFor="let city of cities" [value]="city.value">
+                                {{ city.viewValue }}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div class="row">              
+                          <mat-form-field class="example-full-width col-md-6">
+                            <input matInput placeholder="Comuna" type="text" value="s/asignar" disabled/>
+                          </mat-form-field>
+                          <mat-form-field class="example-full-width col-md-6">
+                            <input matInput placeholder="Región" type="text" value="s/asignar" disabled/>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="configuracion">
+                    <div class="row justify-content-center">
+                      <div class="col-sm-10">
                         <h5 class="info-text">
-                          Are you living in a nice area?
+                          Ingrese la configuración y permisos
                         </h5>
+                        <div class="togglebutton">
+                          <label>
+                            <input type="checkbox" checked="" />
+                            <span class="toggle"></span>
+                            Permitir al Administrador del Mandante crear Libros
+                          </label>
+                        </div>
+                        <div class="togglebutton togglebutton-success">
+                          <label>
+                            <input type="checkbox" checked="" />
+                            <span class="toggle"></span>
+                            Permitir al Administrador del Contratista crear Libros
+                          </label>
+                        </div>
+                        <div class="togglebutton">
+                          <label>
+                            <input type="checkbox" checked="" />
+                            <span class="toggle"></span>
+                            Permitir al Administrador del Mandante actualizar información del
+                            Contrato
+                          </label>
+                        </div>
+                        <div class="togglebutton togglebutton-success">              
+                          <label>
+                            <input type="checkbox" checked="" />
+                            <span class="toggle"></span>
+                            Permitir al Administrador del Contratista actualizar información
+                            del Contrato
+                          </label>
+                        </div>
                       </div>
-                      <div class="col-sm-7">
-                        <mat-form-field class="example-full-width">
-                          <input
-                            matInput
-                            type="text"
-                            placeholder="Street Name"
-                          />
-                        </mat-form-field>
-                      </div>
-                      <div class="col-sm-3">
-                        <mat-form-field class="example-full-width">
-                          <input
-                            matInput
-                            type="text"
-                            placeholder="Street No."
-                          />
-                        </mat-form-field>
-                      </div>
-                      <div class="col-sm-5">
-                        <mat-form-field class="example-full-width">
-                          <input matInput type="text" placeholder="City" />
-                        </mat-form-field>
-                      </div>
-                      <div class="col-sm-5">
-                        <mat-form-field>
-                          <mat-select placeholder="Single City" name="city">
-                            <mat-option
-                              *ngFor="let city of cities"
-                              [value]="city.value"
-                            >
-                              {{ city.viewValue }}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
+                    </div>
+                  </div>   
+                  <div class="tab-pane" id="contacto">
+                    <div class="row justify-content-center">
+                      <div class="col-sm-10">
+                        <h5 class="info-text">
+                          Ingrese la información de contacto comercial
+                        </h5>                      
+                        <div class="row">
+                            <mat-form-field class="example-full-width col-md-6">
+                              <input matInput placeholder="Nombre Contacto" type="text" />
+                            </mat-form-field>
+                            <mat-form-field class="example-full-width col-md-6">
+                              <input matInput placeholder="Cargo" type="text" />
+                            </mat-form-field>
+                        </div>
+                        <div class="row">
+                            <mat-form-field class="example-full-width col-md-3">
+                              <input matInput placeholder="Teléfono Princial" type="text" />
+                            </mat-form-field>
+                            <mat-form-field class="example-full-width col-md-3">
+                              <input matInput placeholder="Teléfono Secundario" type="text" />
+                            </mat-form-field>
+                            <mat-form-field class="example-full-width col-md-6">
+                              <input matInput placeholder="Email" type="email" />
+                            </mat-form-field>
+                        </div>
+                      </div>  
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="card-footer">
-                <div class="mr-auto">
+              <div class="card-footer">                
+                <div class="mr-auto">                  
                   <input
                     type="button"
                     class="btn btn-previous btn-fill btn-default btn-wd disabled"
                     name="previous"
-                    value="Previous"
+                    value="Atrás"
                   />
                 </div>
                 <div class="ml-auto">
                   <input
                     type="button"
-                    class="btn btn-next btn-fill btn-rose btn-wd"
+                    class="btn btn-next btn-fill btn-primary btn-wd"
                     name="next"
-                    value="Next"
+                    value="Siguiente"
                   />
                   <input
                     type="button"
-                    class="btn btn-finish btn-fill btn-rose btn-wd"
+                    class="btn btn-finish btn-fill btn-success btn-wd"
                     name="finish"
-                    value="Finish"
+                    value="Finalizar"
                     style="display: none;"
                   />
                 </div>

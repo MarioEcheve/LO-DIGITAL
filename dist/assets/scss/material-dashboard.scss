@@ -5,21 +5,21 @@
  =========================================================
 
  * Product Page: https://www.creative-tim.com/product/material-dashboard-pro-angular2
- * Copyright 2019 Creative Tim (https://www.creative-tim.com)
+ * Copyright 2018 Creative Tim (https://www.creative-tim.com)
 
- * Coded by Creative Tim
+ * Designed by www.invisionapp.com Coded by www.creative-tim.com
 
  =========================================================
 
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
  */
- @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 
- @import "core/variables";
- @import "core/mixins";
- @import "~bootstrap/scss/bootstrap";
- @import "core/reboot";
+@import "core/variables";
+@import "core/mixins";
+@import "~bootstrap/scss/bootstrap";
+@import "core/reboot";
 
 // Core Components
 @import "core/layout";
@@ -57,31 +57,28 @@
 @import "dashboard/rtl";
 @import "dashboard/sidebar-and-main-panel";
 @import "dashboard/timeline";
-@import "dashboard/angular-modal";
 @import "dashboard/fixed-plugin";
 @import "dashboard/tables";
 @import "dashboard/misc";
 @import "dashboard/pages";
 
- // Components for PRO
- @import "dashboard/social-buttons";
- @import "dashboard/fileupload";
+// Components for PRO
+@import "dashboard/social-buttons";
+@import "dashboard/fileupload";
 
- //plugin css
- @import "plugins/plugin-nouislider";
- @import "plugins/animate";
- @import "plugins/sweetalert2";
- // @import "plugins/datatables.net";
- @import "plugins/jquery.jvectormap";
- @import "plugins/plugin-datetime-picker";
- @import "plugins/fullcalendar";
- @import "plugins/wizard-card";
- @import "plugins/chartist";
- @import "~chartist/dist/scss/chartist";
- @import "plugins/select-bootstrap";
- @import "plugins/perfect-scrollbar";
- @import "plugins/plugin-tagsinput";
-
-
+//plugin css
+@import "plugins/plugin-nouislider";
+@import "plugins/animate";
+@import "plugins/sweetalert2";
+// @import "plugins/datatables.net";
+@import "plugins/jquery.jvectormap";
+@import "plugins/plugin-datetime-picker";
+@import "plugins/fullcalendar";
+@import "plugins/wizard-card";
+@import "plugins/chartist";
+@import "~chartist/dist/scss/chartist";
+@import "plugins/select-bootstrap";
+@import "plugins/perfect-scrollbar";
+@import "plugins/plugin-tagsinput";
 
 @import "dashboard/responsive";

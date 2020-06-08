@@ -1,21 +1,115 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="card">
-      <div class="card-header card-header-rose card-header-icon">
+      <div class="card-header card-header-icon">
         <div class="card-icon">
-          <i class="material-icons">mail_outline</i>
+          <i class="material-icons">library_books</i>
         </div>
-        <h4 class="card-title">Folio</h4>
+        <h4 class="card-title"> Folio Borrador</h4>        
       </div>
       <div class="card-body">
-        <angular-editor [placeholder]="'Enter text here...'"></angular-editor>
+        <!-- <legend>Edificio Santiago Centro - Cód.:1254</legend> -->
+        <h5><strong>Edificio Santiago Centro - Cód.:1254</strong></h5> 
+        <span>Libro Maestro - Cód.: LMO01</span><br>
+        <span>Clase libro: Maestro</span><br>
+        <span>Tipo firma: Digital Avanzada</span>
+        <hr>
+        <div class="row">
+          <mat-form-field class="example-full-width col-md-6">
+            <input matInput placeholder="Borrador creado por" type="text" value="Fernando Vilches Soleman" disabled/>
+          </mat-form-field>
+          <mat-form-field class="example-full-width col-md-3">
+            <input matInput placeholder="Perfil usuario" type="text" value="Asistente" disabled/>
+          </mat-form-field>
+          <mat-form-field class="example-full-width col-md-3">
+            <input matInput placeholder="Fecha creación" type="text" value="12/02/2020 12:32" disabled/>
+          </mat-form-field>
+        </div>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Respuesta de:" type="text" value="Libro Maestro - Folio Nº001" disabled/>
+        </mat-form-field>
+        <!-- <div class="">          
+          Folios de referencia: <tag-input [(ngModel)]='regularItems' theme='filled-theme'></tag-input>
+        </div> -->
+        <mat-form-field class="example-full-width disabled">
+          <input matInput placeholder="Referecia de:" type="text" value="Libro Maestro - Folio Nº006" disabled/>
+        </mat-form-field>
+        <div class="row">
+          <mat-form-field class="col-md-7">
+            <mat-select placeholder="Tipo Folio" name="city">
+              <mat-option *ngFor="let city of cities" [value]="city.value">
+                {{ city.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="col-md-1">
+          </div>
+          <div class="col-md-4">
+            <div class="row">
+              <div class="togglebutton togglebutton-success col-md-7">
+                <label>
+                  <input type="checkbox" checked=""/>
+                  <span class="toggle"></span>
+                  Solicitar respuesta
+                </label>
+              </div>
+              <mat-form-field class="col-5">
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  placeholder="Fecha Requerida"
+                  (click)="picker.open()"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Asunto" type="text" value=""/>
+        </mat-form-field>
+        <angular-editor
+          [placeholder]="'Ingrese anotación...'"
+               
+        ></angular-editor>
+        <hr>
+        <button mat-raised-button type="submit" class="btn btn-default pull-left">
+          <span class="btn-label">
+            <i class="material-icons">close</i>
+          </span>
+          ELIMINAR
+        </button>
+        <div class="pull-right">          
+          <button mat-raised-button type="submit" class="btn btn-default mr-1">
+            <span class="btn-label">
+              <i class="material-icons">priority_high</i>
+            </span>
+            INFORMAR
+          </button>
+          <button mat-raised-button type="submit" class="btn btn-default mr-1">
+            <span class="btn-label">
+              <i class="material-icons">get_app</i>
+            </span>
+            GUARDAR
+          </button>
+          <button mat-raised-button type="submit" class="btn btn-default mr-1">
+            <span class="btn-label">
+              <i class="material-icons">grading</i>
+            </span>
+            VISTA PREVIA
+          </button>          
+          <button mat-raised-button type="submit" class="btn btn-behance">
+            <span class="btn-label">
+              <i class="material-icons">check</i>
+            </span>
+            FIRMAR
+          </button>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-8 mr-auto ml-auto">
-        <!--      Wizard container        -->
-        <div class="wizard-container"></div>
-      </div>
-    </div>
+    </div>  
   </div>
 </div>

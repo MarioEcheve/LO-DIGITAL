@@ -1,488 +1,592 @@
 <div class="main-content">
   <div class="container-fluid">
-    <!-- Inicio card de Creación Contrato -->
-    <div class="card">
+    <div class="card ">
       <div class="card-header card-header-rose card-header-icon">
         <div class="card-icon">
-          <i class="material-icons">mail_outline</i>
+          <i class="material-icons">engineering</i>
         </div>
         <h4 class="card-title">Nuevo Contrato</h4>
-      </div>
-      <div class="card-body">
-        <form method="#" action="#">
-          <div class="row">
-            <mat-form-field class="example-full-width col-md-3">
-              <input matInput placeholder="Cod. Contrato *" type="text" />
-            </mat-form-field>
-            <mat-form-field class="example-full-width col-md-9">
-              <input matInput placeholder="Nombre Contrato *" type="text" />
-            </mat-form-field>
-          </div>
-          <mat-form-field class="example-full-width">
-            <textarea matInput placeholder="Descripción" rows="2"></textarea>
-          </mat-form-field>
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="Dirección *" type="text" />
-          </mat-form-field>
-          <div class="row">
-            <mat-form-field class="col-md-6">
-              <mat-select placeholder="Región *" name="city">
-                <mat-option *ngFor="let city of cities" [value]="city.value">
-                  {{ city.viewValue }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field class="col-md-6">
-              <mat-select placeholder="Comuna *" name="city">
-                <mat-option *ngFor="let city of cities" [value]="city.value">
-                  {{ city.viewValue }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-form-field class="col-md-6">
-              <mat-select placeholder="Tipo Contrato *" name="city">
-                <mat-option *ngFor="let city of cities" [value]="city.value">
-                  {{ city.viewValue }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field class="col-md-6">
-              <mat-select placeholder="Modalidad Contrato *" name="city">
-                <mat-option *ngFor="let city of cities" [value]="city.value">
-                  {{ city.viewValue }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-form-field class="example-full-width col-md-6">
-              <input
-                matInput
-                placeholder="Otro tipo de Contrato *"
-                type="text"
-              />
-            </mat-form-field>
-            <mat-form-field class="example-full-width col-md-6">
-              <input
-                matInput
-                placeholder="Otra modalidad de Contrato *"
-                type="text"
-              />
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <div class="row col-md-4">
-              <mat-form-field class="col-md-3">
-                <mat-select placeholder="Tipo Moneda" name="city">
-                  <mat-option *ngFor="let city of cities" [value]="city.value">
-                    {{ city.viewValue }}
-                  </mat-option>
-                </mat-select>
+      </div>     
+      <div class="card-body ">
+        <ul class="nav nav-pills nav-pills-default mt-3" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#link1" role="tablist">
+              Contrato
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#link2" role="tablist">
+              Libros
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#link3" role="tablist">
+              Configuración y Permisos
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#link4" role="tablist">
+              Información Servicio
+            </a>
+          </li>          
+        </ul>
+        <div class="tab-content tab-space">
+          <!-- Tab Contrato --> 
+          <div class="tab-pane active" id="link1">
+            <div class="container-fluid mt-2">              
+              <h2 class="mat-h2">Información General</h2>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-3">
+                  <input matInput placeholder="Cod. Contrato" type="text" value="C001E254" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-9">
+                  <input matInput placeholder="Nombre Contrato" type="text" value="Construcción Edificio Municipal de La Serena" disabled/>
+                </mat-form-field>
+              </div>
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Descripción" rows="2" value="Construcción en hormigón armado de 22.568 m2 de superficie" disabled></textarea>
               </mat-form-field>
-
-              <mat-form-field class="example-full-width col-md-6">
-                <input
-                  matInput
-                  placeholder="Otro tipo de Contrato"
-                  type="text"
-                />
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Dirección" type="text" value="Avenida Balmaceda Nº2543, sector 4 Esquinas" disabled/>
               </mat-form-field>
-              <div class="col-md-3">
-                <mat-form-field>
-                  <mat-select placeholder="Tipo Monto" name="city">
-                    <mat-option
-                      *ngFor="let city of cities"
-                      [value]="city.value"
-                    >
-                      {{ city.viewValue }}
-                    </mat-option>
-                  </mat-select>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-6">
+                  <input matInput placeholder="Región" type="text" value="4º Región de Coquimbo" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-6">
+                  <input matInput placeholder="Comuna" type="text" value="La Serena" disabled/>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-6">
+                  <input matInput placeholder="Tipo Contrato" type="text" value="Construcción" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-6">
+                  <input matInput placeholder="Modalidad Contrato" type="text" value="Suma Alzada" disabled/>
+                </mat-form-field>
+              </div>
+              <hr>
+              <h2 class="mat-h2">Mandante</h2>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-2">
+                  <input matInput placeholder="RUT" type="text" value="78.456.245-6" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-10">
+                  <input matInput placeholder="Razón Social" type="text" value="Ilustre Municialidad de La Serena" disabled/>
+                </mat-form-field>              
+              </div>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Dependencia" type="text" value="Dirección de Obras Muncipales" disabled/>
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Dirección" type="text" value="Av. Balmaceda Nº4555, Edificio Público, Piso Nº3, Of. 205" disabled/>
+              </mat-form-field>
+              <div class="row">              
+                <mat-form-field class="example-full-width col-md-6">
+                  <input matInput placeholder="Comuna" type="text" value="La Serena" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-6">
+                  <input matInput placeholder="Región" type="text" value="4º Región de Coquimbo" disabled/>
+                </mat-form-field>
+              </div>
+              <hr class="text-primary">
+              <h2 class="mat-h2">Contratista</h2>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-2">
+                  <input matInput placeholder="RUT" type="text" value="77.355.288-1" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-10">
+                  <input matInput placeholder="Razón Social" type="text" value="Constructora Montegrande Ltda." disabled/>
+                </mat-form-field>              
+              </div>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Dependencia" type="text" value="Oficina de Obras" disabled/>
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Dirección" type="text" value="Av. Cisternas Nº445, Edificio Atrium, Piso Nº2, Of. 209" disabled/>
+              </mat-form-field>
+              <div class="row">              
+                <mat-form-field class="example-full-width col-md-6">
+                  <input matInput placeholder="Comuna" type="text" value="La Serena" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-6">
+                  <input matInput placeholder="Región" type="text" value="4º Región de Coquimbo" disabled/>
                 </mat-form-field>
               </div>
             </div>
+          </div>          
+          <!-- Tab Libros -->  
+          <div class="tab-pane" id="link2">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <!-- <th class="text-center">{{ tableData1.headerRow[0] }}</th> -->
+                    <th class="text-left">{{ tableData1.headerRow[0] }}</th>
+                    <th>{{ tableData1.headerRow[1] }}</th>
+                    <th>{{ tableData1.headerRow[2] }}</th>
+                    <th>{{ tableData1.headerRow[3] }}</th>
+                    <th class="text-right">{{ tableData1.headerRow[4] }}</th>
+                    <th class="text-right">{{ tableData1.headerRow[5] }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of tableData1.dataRows">
+                    <!-- <td class="text-center">{{ row[0] }}</td> -->
+                    <td class="text-left">{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[3] }}</td>                    
+                    <td class="text-right"><span class="badge badge-primary">{{ row[4] }}</span></td>                    
+                    <td class="td-actions text-right">                     
+                      <button
+                        mat-raised-button
+                        type="button"
+                        class="btn btn-default {{ row[5] }}"
+                      >
+                        <i class="material-icons">edit</i>
+                      </button>
+                      <button
+                        mat-raised-button
+                        type="button"
+                        class="btn btn-default {{ row[5] }}"
+                      >
+                        <i class="material-icons">keyboard_arrow_right</i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <hr>
+            <div class="pull-right">          
+              <button mat-raised-button type="submit" class="btn btn-primary mr-1">
+                <span class="btn-label">
+                  <i class="material-icons">library_books</i>
+                </span>
+                Crear Libro Maestro
+              </button>          
+              <button mat-raised-button type="submit" class="btn btn-primary">
+                <span class="btn-label">
+                  <i class="material-icons">library_books</i>
+                </span>
+                Crear Libro Auxiliar
+              </button>
+            </div>                       
+          </div>
+          <!-- Tab Permisos -->
+          <div class="tab-pane" id="link3">
+            <div class="container-fluid mt-2">
+              <form method="#" action="#">
+                <div class="togglebutton">
+                  <label>
+                    <input type="checkbox" checked="" />
+                    <span class="toggle"></span>
+                    Permitir al Administrador del Mandante crear Libros
+                  </label>
+                </div>
+                <div class="togglebutton togglebutton-success">
+                  <label>
+                    <input type="checkbox" checked="" />
+                    <span class="toggle"></span>
+                    Permitir al Administrador del Contratista crear Libros
+                  </label>
+                </div>
+                <div class="togglebutton">
+                  <label>
+                    <input type="checkbox" checked="" />
+                    <span class="toggle"></span>
+                    Permitir al Administrador del Mandante actualizar información del
+                    Contrato
+                  </label>
+                </div>
+                <div class="togglebutton togglebutton-success">              
+                  <label>
+                    <input type="checkbox" checked="" />
+                    <span class="toggle"></span>
+                    Permitir al Administrador del Contratista actualizar información
+                    del Contrato
+                  </label>
+                </div>
+              </form>
+              <hr>
+              <div class="pull-right">
+                <button mat-raised-button type="submit" class="btn btn-default mr-1">
+                  Cancelar
+                </button>
+                <button mat-raised-button type="submit" class="btn btn-behance">
+                  Guardar Cambios
+                </button>
+              </div>
+            </div>            
+          </div>          
+          <div class="tab-pane" id="link4">
+            <div class="container-fluid mt-2">              
+              <h2 class="mat-h2">Información del Plan</h2>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-3">
+                  <input matInput placeholder="Estado del Servicio" type="text" value="Activo" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-9">
+                  <input matInput placeholder="Plan Contratado" type="text" value="Plan básico 2" disabled/>
+                </mat-form-field>
+              </div>
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Características del plan" rows="2" value="Plan básico con paracidad total de 200 mb de capacidad para adjuntar arhivos" disabled></textarea>
+              </mat-form-field>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-3">
+                  <input matInput placeholder="Fecha contratación" type="text" value="12/02/2020" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-3">
+                  <input matInput placeholder="Fecha inicio" type="text" value="12/02/2020" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-3">
+                  <input matInput placeholder="Fecha término servicio" type="text" value="12/09/2020" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-3">
+                  <input matInput placeholder="Fecha término respaldo" type="text" value="12/09/2025" disabled/>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-4">
+                  <input matInput placeholder="MB contratados" type="text" value="200 Mb" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-4">
+                  <input matInput placeholder="MB utilizados" type="text" value="150 Mb" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-4">
+                  <input matInput placeholder="MB utilizados" type="text" value="50 Mb" disabled/>
+                </mat-form-field>                
+              </div>
+              <hr>
+              <h2 class="mat-h2">Contacto Comercial</h2>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-6">
+                  <input matInput placeholder="Nombre Contacto" type="text" value="Fernando Vilches Soleman" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-6">
+                  <input matInput placeholder="Cargo" type="text" value="Administrador de Finanzas" disabled/>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-3">
+                  <input matInput placeholder="Teléfono Principal" type="text" value="952341114" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-3">
+                  <input matInput placeholder="Teléfono Secundario" type="text" value="952341114" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-6">
+                  <input matInput placeholder="E-mail" type="text" value="fvilchessoleman@gmail.com" disabled/>
+                </mat-form-field>
+              </div>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
 
-            <mat-form-field class="col-md-4">
-              <input
-                matInput
-                [matDatepicker]="picker"
-                placeholder="Fecha Inicio"
-                (click)="picker.open()"
-              />
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="picker"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="col-md-4">
-              <input
-                matInput
-                [matDatepicker]="picker"
-                placeholder="Fecha Término"
-                (click)="picker.open()"
-              />
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="picker"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-          </div>
-          <hr />
-          <h4>Mandante</h4>
-          <div class="row">
-            <mat-form-field class="col-md-2">
-              <mat-select placeholder="RUT *" name="city">
-                <mat-option *ngFor="let city of cities" [value]="city.value">
-                  {{ city.viewValue }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field class="example-full-width col-md-5">
-              <input
-                matInput
-                placeholder="Razón Social"
-                type="text"
-                value="Ilustre Minicipalidad de La Serena"
-                disabled
-              />
-            </mat-form-field>
-            <mat-form-field class="col-md-5">
-              <mat-select placeholder="Dependencia *" name="city">
-                <mat-option *ngFor="let city of cities" [value]="city.value">
-                  {{ city.viewValue }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-form-field class="example-full-width col-md-4">
-              <input
-                matInput
-                type="text"
-                placeholder="Dirección"
-                value="Av. Balmaceda 254"
-                disabled
-              />
-            </mat-form-field>
-            <mat-form-field class="example-full-width col-md-4">
-              <input
-                matInput
-                type="text"
-                placeholder="Comuna"
-                value="La Serena"
-                disabled
-              />
-            </mat-form-field>
-            <mat-form-field class="example-full-width col-md-4">
-              <input
-                matInput
-                type="text"
-                placeholder="Región"
-                value="4º Región de Coquimbo"
-                disabled
-              />
-            </mat-form-field>
-          </div>
-          <hr />
-          <h4>Contratista</h4>
-          <div class="row">
-            <mat-form-field class="col-md-2">
-              <mat-select placeholder="RUT *" name="city">
-                <mat-option *ngFor="let city of cities" [value]="city.value">
-                  {{ city.viewValue }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field class="example-full-width col-md-5">
-              <input
-                matInput
-                placeholder="Razón Social"
-                type="text"
-                value="Constructora La Serena Ltda."
-                disabled
-              />
-            </mat-form-field>
-            <mat-form-field class="col-md-5">
-              <mat-select placeholder="Dependencia *" name="city">
-                <mat-option *ngFor="let city of cities" [value]="city.value">
-                  {{ city.viewValue }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-form-field class="example-full-width col-md-4">
-              <input
-                matInput
-                type="text"
-                placeholder="Dirección"
-                value="Av. Cisternas 4758"
-                disabled
-              />
-            </mat-form-field>
-            <mat-form-field class="example-full-width col-md-4">
-              <input
-                matInput
-                type="text"
-                placeholder="Comuna"
-                value="La Serena"
-                disabled
-              />
-            </mat-form-field>
-            <mat-form-field class="example-full-width col-md-4">
-              <input
-                matInput
-                type="text"
-                placeholder="Región"
-                value="4º Región de Coquimbo"
-                disabled
-              />
-            </mat-form-field>
-          </div>
-          <hr />
-          <h4>Configuración de Permisos</h4>
-          <div class="togglebutton">
-            <label>
-              <input type="checkbox" checked="" />
-              <span class="toggle"></span>
-              Permitir al Administrador del Mandante crear Libros
-            </label>
-          </div>
-          <div class="togglebutton togglebutton-success">
-            <label>
-              <input type="checkbox" checked="" />
-              <span class="toggle"></span>
-              Permitir al Administrador del Contratista crear Libros
-            </label>
-          </div>
-          <div class="togglebutton">
-            <label>
-              <input type="checkbox" checked="" />
-              <span class="toggle"></span>
-              Permitir al Administrador del Mandante actualizar información del
-              Contrato
-            </label>
-          </div>
-          <div class="togglebutton togglebutton-success">
-            <label>
-              <input type="checkbox" checked="" />
-              <span class="toggle"></span>
-              Permitir al Administrador del Contratista actualizar información
-              del Contrato
-            </label>
-          </div>
-          <hr />
-          <h4>Contacto Comercial</h4>
-          <div class="row">
-            <mat-form-field class="example-full-width col-md-6">
-              <input matInput placeholder="Nombre Contacto *" type="text" />
-            </mat-form-field>
-            <mat-form-field class="example-full-width col-md-6">
-              <input matInput placeholder="Cargo" type="text" />
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-form-field class="example-full-width col-md-4">
-              <input matInput placeholder="Teléfono Celular *" type="text" />
-            </mat-form-field>
-            <mat-form-field class="example-full-width col-md-4">
-              <input matInput placeholder="Teléfono Fijo" type="text" />
-            </mat-form-field>
-            <mat-form-field class="example-full-width col-md-4">
-              <input matInput placeholder="Email *" type="email" />
-            </mat-form-field>
-          </div>
-          <!-- <mat-checkbox>Subscribe to newsletter</mat-checkbox> -->
-        </form>
-      </div>
-      <div class="card-footer">
-        <button mat-raised-button type="submit" class="btn btn-fill btn-rose">
-          Submit
-        </button>
-      </div>
-    </div>
-  </div>
-  <!-- Término card de Creación Contrato -->
-  <!-- card generica -->
-  <div class="card">
-    <div class="card-header card-header-rose card-header-icon">
-      <div class="card-icon">
-        <i class="material-icons">business</i>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="container col-md-4">
-            <h3>dsdasdasd</h3>
-          </div>
-          <div class="container col-md-4">
-            <h3>dsdasdasd</h3>
-          </div>
-          <div class="container col-md-4">
-            <h3>dsdasdasd</h3>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- card generica -->
 
-  <!-- Inicio card de Creación Libro -->
-  <div class="card">
-    <div class="card-header card-header-rose card-header-icon">
-      <div class="card-icon">
-        <i class="material-icons">book</i>
-      </div>
-      <!-- <h4 class="card-title">Nuevo Libro</h4> -->
-    </div>
-    <div class="card-body">
-      <form method="#" action="#">
-        <div class="row">
-          <mat-form-field class="example-full-width col-md-3">
-            <input matInput placeholder="Cod. Libro" type="text" />
-          </mat-form-field>
-          <mat-form-field class="example-full-width col-md-9">
-            <input matInput placeholder="Nombre Libro" type="text" />
-          </mat-form-field>
-        </div>
-        <mat-form-field class="example-full-width">
-          <textarea matInput placeholder="Descripción" rows="2"></textarea>
-        </mat-form-field>
-        <div class="row">
-          <mat-form-field class="col-md-6">
-            <mat-select placeholder="Tipo Libro" name="city">
-              <mat-option *ngFor="let city of cities" [value]="city.value">
-                {{ city.viewValue }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="col-md-6">
-            <mat-select placeholder="Tipo Firma" name="city">
-              <mat-option *ngFor="let city of cities" [value]="city.value">
-                {{ city.viewValue }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <hr />
-        <h4>Configuración de Permisos</h4>
-        <div class="togglebutton">
-          <label>
-            <input type="checkbox" checked="" />
-            <span class="toggle"></span>
-            Permitir al Administrador del Mandante generar folios
-          </label>
-        </div>
-        <div class="togglebutton togglebutton-success">
-          <label>
-            <input type="checkbox" checked="" />
-            <span class="toggle"></span>
-            Permitir al Administrador del Contratista generar folios
-          </label>
-        </div>
-        <div class="togglebutton">
-          <label>
-            <input type="checkbox" checked="" />
-            <span class="toggle"></span>
-            Permitir al Administrador del Mandante abrir el Libro
-          </label>
-        </div>
-        <div class="togglebutton togglebutton-success">
-          <label>
-            <input type="checkbox" checked="" />
-            <span class="toggle"></span>
-            Permitir al Administrador del Contratista abrir el Libro
-          </label>
-        </div>
-        <div class="togglebutton">
-          <label>
-            <input type="checkbox" checked="" />
-            <span class="toggle"></span>
-            Permitir al Administrador del Mandante cerrar el Libro
-          </label>
-        </div>
-        <div class="togglebutton togglebutton-success">
-          <label>
-            <input type="checkbox" checked="" />
-            <span class="toggle"></span>
-            Permitir al Administrador del Contratista cerrar el Libro
-          </label>
-        </div>
-        <div class="togglebutton">
-          <label>
-            <input type="checkbox" checked="" />
-            <span class="toggle"></span>
-            Solicitar confirmación de lectura de Folios al Mandante
-          </label>
-        </div>
-        <div class="togglebutton togglebutton-success">
-          <label>
-            <input type="checkbox" checked="" />
-            <span class="toggle"></span>
-            Solicitar confirmación de lectura de Folios al Contratista
-          </label>
-        </div>
-      </form>
-    </div>
-    <div class="card-footer">
-      <button mat-raised-button type="" class="btn btn-fill btn-rose">
-        Cancelar
-      </button>
-      <button mat-raised-button type="submit" class="btn btn-fill btn-rose">
-        Crear Libro
-      </button>
-    </div>
-  </div>
-  <!-- Término card de Creación Libro-->
 
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr>
-          <th class="text-center">{{ tableData1.headerRow[0] }}</th>
-          <th>{{ tableData1.headerRow[1] }}</th>
-          <th>{{ tableData1.headerRow[2] }}</th>
-          <th>{{ tableData1.headerRow[3] }}</th>
-          <th class="text-right">{{ tableData1.headerRow[4] }}</th>
-          <th class="text-right">{{ tableData1.headerRow[5] }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of tableData1.dataRows">
-          <td class="text-center">{{ row[0] }}</td>
-          <td>{{ row[1] }}</td>
-          <td>{{ row[2] }}</td>
-          <td>{{ row[3] }}</td>
-          <td class="text-right">&euro; {{ row[4] }}</td>
-          <td class="td-actions text-right">
-            <button
-              mat-raised-button
-              type="button"
-              class="btn btn-info {{ row[5] }}"
-            >
-              <i class="material-icons">person</i>
-            </button>
-            <button
-              mat-raised-button
-              type="button"
-              class="btn btn-success {{ row[5] }}"
-            >
-              <i class="material-icons">edit</i>
-            </button>
-            <button
-              mat-raised-button
-              type="button"
-              class="btn btn-danger {{ row[5] }}"
-            >
-              <i class="material-icons">close</i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+
+
+    <div class="card ">
+      <div class="card-header card-header-rose card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons">collections_bookmark</i>
+        </div>
+        <h4 class="card-title"></h4>
+      </div>     
+      <div class="card-body ">
+        <ul class="nav nav-pills nav-pills-default mt-3" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#link_1" role="tablist">
+              Libro
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#link_2" role="tablist">
+              Usuarios Mandante
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#link_3" role="tablist">
+              Usuarios Contratista
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#link_4" role="tablist">
+              Configuración y Permisos
+            </a>
+          </li>  
+        </ul>
+        <div class="tab-content tab-space">
+          <!-- Tab Libro --> 
+          <div class="tab-pane active" id="link_1">
+            <div class="container-fluid mt-2">              
+              <h2 class="mat-h2">Información General</h2>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-3">
+                  <input matInput placeholder="Cod. Libro" type="text" value="LM001" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-9">
+                  <input matInput placeholder="Nombre Libro" type="text" value="Libro principal de obras" disabled/>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-3">
+                  <input matInput placeholder="Estado" type="text" value="Abierto" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-3">
+                  <input matInput placeholder="Fecha creación" type="text" value="01/02/2020" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-3">
+                  <input matInput placeholder="Fecha apertura" type="text" value="01/02/2020" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-3">
+                  <input matInput placeholder="Fecha cierre" type="text" value="sin información" disabled/>
+                </mat-form-field>                
+              </div>
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Descripción" rows="2" value="Libro en el cual se realizan las anotaciones generales referente al proyecto." disabled></textarea>
+              </mat-form-field>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-6">
+                  <input matInput placeholder="Clase Libro" type="text" value="Maestro" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-6">
+                  <input matInput placeholder="Tipo Firma" type="text" value="Digital Avanzada" disabled/>
+                </mat-form-field>                               
+              </div>
+              <hr>
+              <h2 class="mat-h2">Administrador Mandante</h2>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-2">
+                  <input matInput placeholder="RUT" type="text" value="13.224.233-k" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-5">
+                  <input matInput placeholder="Nombre" type="text" value="Fernando Vilches Soleman" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-3">
+                  <input matInput placeholder="Perfil Usuario" type="text" value="Administrador (s)" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-2">
+                  <input matInput placeholder="Fecha Asignación" type="text" value="12/05/2020" disabled/>
+                </mat-form-field>                
+              </div>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-5">
+                  <input matInput placeholder="Cargo/Función" type="text" value="Inspector Fiscal" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-3">
+                  <input matInput placeholder="Teféfono" type="text" value="966453188" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-4">
+                  <input matInput placeholder="E-mail" type="text" value="fvilchessoleman@gmail.com" disabled/>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-5">
+                  <input matInput placeholder="Entidad" type="text" value="Ilustre Municipalidad de La Serena" disabled/>                  
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-2">
+                  <input matInput placeholder="RUT" type="text" value="78.456.415-9" disabled/>                  
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-5">
+                  <input matInput placeholder="Dependencia" type="text" value="Dirección de Obras Muncipales" disabled/>
+                </mat-form-field>                
+              </div>
+              <hr>
+              <h2 class="mat-h2">Administrador Contratista</h2>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-2">
+                  <input matInput placeholder="RUT" type="text" value="14.455.225-1" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-5">
+                  <input matInput placeholder="Nombre" type="text" value="Héctor Segovia Cabrera" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-3">
+                  <input matInput placeholder="Perfil Usuario" type="text" value="Administrador" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-2">
+                  <input matInput placeholder="Fecha Asignación" type="text" value="12/05/2020" disabled/>
+                </mat-form-field>                
+              </div>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-5">
+                  <input matInput placeholder="Cargo/Función" type="text" value="Administrador de Contrato" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-3">
+                  <input matInput placeholder="Teféfono" type="text" value="945555763" disabled/>
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-4">
+                  <input matInput placeholder="E-mail" type="text" value="hsegoviac@gmail.com" disabled/>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-5">
+                  <input matInput placeholder="Entidad" type="text" value="Constructora La Serena Ltda." disabled/>                  
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-2">
+                  <input matInput placeholder="RUT" type="text" value="77.124.245-5" disabled/>                  
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-5">
+                  <input matInput placeholder="Dependencia" type="text" value="Oficina de Obras" disabled/>
+                </mat-form-field>                
+              </div>
+            </div>
+          </div>          
+          <!-- Fin Tab Libros -->
+          <!-- Inicio Tab Usuario Libro Mandante -->  
+          <div class="tab-pane" id="link_2">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <!-- <th class="text-center">{{ tableData1.headerRow[0] }}</th> -->
+                    <th class="text-left">{{ tableData1.headerRow[0] }}</th>
+                    <th>{{ tableData1.headerRow[1] }}</th>
+                    <th>{{ tableData1.headerRow[2] }}</th>
+                    <th>{{ tableData1.headerRow[3] }}</th>
+                    <th class="text-right">{{ tableData1.headerRow[4] }}</th>
+                    <th class="text-right">{{ tableData1.headerRow[5] }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of tableData1.dataRows">
+                    <!-- <td class="text-center">{{ row[0] }}</td> -->
+                    <td class="text-left">{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[3] }}</td>                    
+                    <td class="text-right"><span class="badge badge-primary">{{ row[4] }}</span></td>                    
+                    <td class="td-actions text-right">                     
+                      <button
+                        mat-raised-button
+                        type="button"
+                        class="btn btn-default {{ row[5] }}"
+                      >
+                        <i class="material-icons">edit</i>
+                      </button>
+                      <button
+                        mat-raised-button
+                        type="button"
+                        class="btn btn-default {{ row[5] }}"
+                      >
+                        <i class="material-icons">keyboard_arrow_right</i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <hr>
+            <div class="pull-right">          
+              <button mat-raised-button type="submit" class="btn btn-primary mr-1">
+                <span class="btn-label">
+                  <i class="material-icons">library_books</i>
+                </span>
+                Crear Libro Maestro
+              </button>          
+              <button mat-raised-button type="submit" class="btn btn-primary">
+                <span class="btn-label">
+                  <i class="material-icons">library_books</i>
+                </span>
+                Crear Libro Auxiliar
+              </button>
+            </div>                       
+          </div>
+          <!-- Fin Tab Usuario Libro Mandante -->
+          <!-- Inicio Tab Usuario Libro Mandante -->
+          <div class="tab-pane" id="link_3">
+            <div class="container-fluid mt-2">
+              <h3>usuario contratista</h3>
+            </div>
+          </div>
+          <!-- Fin Tab Usuario Libro Contratista -->  
+          
+
+
+
+
+
+
+
+
+
+          <!-- Tab Permisos -->
+          <div class="tab-pane" id="link_4">
+            <div class="container-fluid mt-2">
+              <form method="#" action="#">
+                <div class="togglebutton">
+                  <label>
+                    <input type="checkbox" checked="" />
+                    <span class="toggle"></span>
+                    Permitir al Administrador del Mandante generar folios
+                  </label>
+                </div>
+                <div class="togglebutton togglebutton-success">
+                  <label>
+                    <input type="checkbox" checked="" />
+                    <span class="toggle"></span>
+                    Permitir al Administrador del Contratista generar folios
+                  </label>
+                </div>
+                <div class="togglebutton">
+                  <label>
+                    <input type="checkbox" checked="" />
+                    <span class="toggle"></span>
+                    Permitir al Administrador del Mandante abrir el Libro
+                  </label>
+                </div>
+                <div class="togglebutton togglebutton-success">
+                  <label>
+                    <input type="checkbox" checked="" />
+                    <span class="toggle"></span>
+                    Permitir al Administrador del Contratista abrir el Libro
+                  </label>
+                </div>
+                <div class="togglebutton">
+                  <label>
+                    <input type="checkbox" checked="" />
+                    <span class="toggle"></span>
+                    Permitir al Administrador del Mandante cerrar el Libro
+                  </label>
+                </div>
+                <div class="togglebutton togglebutton-success">
+                  <label>
+                    <input type="checkbox" checked="" />
+                    <span class="toggle"></span>
+                    Permitir al Administrador del Contratista cerrar el Libro
+                  </label>
+                </div>
+                <div class="togglebutton">
+                  <label>
+                    <input type="checkbox" checked="" />
+                    <span class="toggle"></span>
+                    Solicitar confirmación de lectura de Folios al Mandante
+                  </label>
+                </div>
+                <div class="togglebutton togglebutton-success">
+                  <label>
+                    <input type="checkbox" checked="" />
+                    <span class="toggle"></span>
+                    Solicitar confirmación de lectura de Folios al Contratista
+                  </label>
+                </div>
+              </form>
+              <hr>
+              <div class="pull-right">
+                <button mat-raised-button type="submit" class="btn btn-default mr-1">
+                  Cancelar
+                </button>
+                <button mat-raised-button type="submit" class="btn btn-behance">
+                  Guardar Cambios
+                </button>
+              </div>
+            </div>            
+          </div>   
+        </div>
+      </div>
+    </div>
 </div>

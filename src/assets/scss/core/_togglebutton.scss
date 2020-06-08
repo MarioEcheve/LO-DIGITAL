@@ -70,7 +70,8 @@
     // set bg when checked
     input[type=checkbox]:checked {
       + .toggle {
-        background-color: rgba($brand-primary, (70/100)); // Switch bg on
+        background-color: rgba($brand-primary, (100/100)); // Switch bg on
+        /* background-color: rgba($brand-primary, (70/100)); // Switch bg on */
       }
 
       + .toggle:after {
