@@ -13,7 +13,7 @@ declare interface TableWithCheckboxes {
   product_name: string;
   type: string;
   quantity: number;
-  price: any;
+  price: any;  
   amount: string;
 }
 
@@ -49,13 +49,13 @@ export class ContratoComponent implements OnInit {
 
   ngOnInit() {
     this.tableData1 = {
-      headerRow: ["#", "Name", "Job Position", "Since", "Salary", "Actions"],
+      headerRow: ["Código", "Nombre", "Tipo Libro", "Tipo Firma", "Estado", "Actions"],
       dataRows: [
-        ["1", "Andrew Mike", "Develop", "2013", "99,225", ""],
-        ["2", "John Doe", "Design", "2012", "89,241", "btn-round"],
-        ["3", "Alex Mike", "Design", "2010", "92,144", "btn-link"],
-        ["4", "Mike Monday", "Marketing", "2013", "49,990", "btn-round"],
-        ["5", "Paul Dickens", "Communication", "2015", "69,201", ""],
+        ["LM01", "Libro Principal", "Maestro", "Digital Avanzada", "En creación", "btn-link"],
+        ["LC01", "Libro de Comuniaciones", "Auxiliar", "Digital Simple", "Abierto", "btn-link"],
+        ["LA01", "Libro Prevención de Riesgos", "Auxiliar", "Por Sistema", "Abierto", "btn-link"],
+        ["LA02", "Libro PAC", "Auxiliar", "Por Sistema", "Abierto", "btn-link"],
+        ["LA03", "Libro Administrativo", "Auxiliar", "Por Sistema", "Cerrado", "btn-link"],
       ],
     };
   }
