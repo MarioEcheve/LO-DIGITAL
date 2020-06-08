@@ -1,10 +1,10 @@
 {
-  "name": "material-dashboard-pro-angular",
+  "name": "LO-Digital",
   "version": "2.4.1",
-  "license": "https://demos.creative-tim.com/material-dashboard-pro-angular2/documentation/tutorial",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/creativetimofficial/ct-material-dashboard-pro-angular.git"
+    "url": "https://github.com/MarioEcheve/LO-DIGITAL.git"
   },
   "scripts": {
     "ng": "ng",
@@ -13,7 +13,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install"
+    "postinstall": "ng build --aot --prod"
   },
   "private": true,
   "dependencies": {
@@ -58,6 +58,7 @@
     "ng2-nouislider": "1.8.2",
     "ng2-select": "2.0.0",
     "ngx-chips": "2.1.0",
+    "ngx-file-drop": "^9.0.1",
     "nouislider": "14.1.1",
     "perfect-scrollbar": "1.5.0",
     "popper.js": "1.16.1",
