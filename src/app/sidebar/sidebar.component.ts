@@ -29,15 +29,12 @@ export const ROUTES: RouteInfo[] = [
     icontype: "dashboard",
   },
   {
-    path: "/components",
+    path: "/entidad",
     title: "Entidad",
     type: "sub",
     icontype: "apps",
-    collapse: "components",
-    children: [
-      { path: "buttons", title: "Lista Entidades", ab: "B" },
-      { path: "buttons", title: "Lista Usuarios", ab: "B" },
-    ],
+    collapse: "entidad",
+    children: [{ path: "entidad", title: "Mis Entidades", ab: "B" }],
   },
   {
     path: "/contrato",
@@ -56,7 +53,7 @@ export const ROUTES: RouteInfo[] = [
     title: "Folio",
     type: "sub",
     icontype: "apps",
-    collapse: "contrato",
+    collapse: "folio",
     children: [
       { path: "folio", title: "Lista Folios", ab: "B" },
       { path: "folio-borrador", title: "Folio Borrador", ab: "B" },
