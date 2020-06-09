@@ -1,10 +1,11 @@
 .mat-button.btn,.mat-raised-button.btn,.mat-raised-button.btn:not([class*=mat-elevation-z]),
 .btn{
   position: relative;
-  padding: 12px 30px;
+  /* padding: 12px 30px; */
+  padding: 9px 20px;
   margin: $bmd-btn-margin-bottom 1px;
   min-width: auto;
-  font-size: .75rem; //  12px
+  font-size: .70rem; //  12px
   font-weight: 400;
   line-height: $bmd-line-height;
   text-decoration: none;
