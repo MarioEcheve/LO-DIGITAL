@@ -5,7 +5,8 @@
   }
   label {
     cursor: pointer;
-    color: $mdb-toggle-label-color;
+    /* color: $mdb-toggle-label-color; */
+    color: rgba(80, 80, 80, 0.7);
     @include mdb-label-color-toggle-focus();
 
     // Hide original checkbox
