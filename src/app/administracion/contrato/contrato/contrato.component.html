@@ -154,9 +154,9 @@
           </div>                   
           <!-- Tab Libros -->  
           <div class="tab-pane" id="link2">
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
+            <div class="table-responsive">            
+              <table class="table table-striped">
+                <thead class="text-muted">
                   <tr>
                     <!-- <th class="text-center">{{ tableData1.headerRow[0] }}</th> -->
                     <th class="text-left">{{ tableData1.headerRow[0] }}</th>
@@ -196,20 +196,12 @@
               </table>
             </div>
             <hr>
-            <div class="pull-right">          
-              <button mat-raised-button type="submit" class="btn btn-primary mr-1">
-                <span class="btn-label">
-                  <i class="material-icons">library_books</i>
-                </span>
-                Crear Libro Maestro
-              </button>          
-              <button mat-raised-button type="submit" class="btn btn-primary">
-                <span class="btn-label">
-                  <i class="material-icons">library_books</i>
-                </span>
-                Crear Libro Auxiliar
-              </button>
-            </div>                       
+            <button mat-raised-button type="submit" class="btn btn-primary mr-1 pull-right">
+              <span class="btn-label">
+                <i class="material-icons">add</i>
+              </span>
+              Nuevo Libro
+            </button>                                 
           </div>
           <!-- Tab Permisos -->
           <div class="tab-pane" id="link3">
@@ -361,7 +353,7 @@
           <!-- Tab Libro --> 
           <div class="tab-pane active" id="link_1">
             <div class="container-fluid mt-2">              
-              <h2 class="mat-h2">Información General</h2>
+              <h2 class="mat-h2">Información General</h2>              
               <div class="row">
                 <mat-form-field class="example-full-width col-md-3">
                   <input matInput placeholder="Cod. Libro" type="text" value="LM001" disabled/>
@@ -479,7 +471,7 @@
             <!-- <div class="table-responsive"> -->
             <div>  
               <table class="table table-striped">                
-                <thead>
+                <thead class="text-muted">
                   <tr>
                     <th scope="col">{{ tableData2.headerRow[0] }}</th>
                     <!-- <th class="text-left">{{ tableData2.headerRow[0] }}</th> -->
@@ -522,15 +514,15 @@
             <div class="pull-right">          
               <button mat-raised-button type="submit" class="btn btn-primary mr-1">
                 <span class="btn-label">
-                  <i class="material-icons">library_books</i>
+                  <i class="material-icons">loop</i>
                 </span>
-                Crear Libro Maestro
+                Cambiar administrador
               </button>          
               <button mat-raised-button type="submit" class="btn btn-primary">
                 <span class="btn-label">
-                  <i class="material-icons">library_books</i>
+                  <i class="material-icons">person_add</i>
                 </span>
-                Crear Libro Auxiliar
+                Nuevo Usuario
               </button>
             </div>                       
           </div>
