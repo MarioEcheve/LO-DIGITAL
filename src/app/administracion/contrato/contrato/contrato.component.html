@@ -97,9 +97,12 @@
                   />
                 </mat-form-field>
               </div>
-              <button mat-raised-button type="submit" class="btn btn-behance pull-right">
+              <button mat-raised-button type="submit" class="btn btn-primary pull-right">
+                <span class="btn-label">
+                  <i class="material-icons">edit</i>
+                </span>
                 Editar
-              </button>
+              </button>              
               <br>
               <br>
               <hr>
@@ -468,69 +471,125 @@
           <!-- Fin Tab Libros -->
           <!-- Inicio Tab Usuario Libro Mandante -->  
           <div class="tab-pane" id="link_2">            
-            <!-- <div class="table-responsive"> -->
-            <div>  
-              <table class="table table-striped">                
-                <thead class="text-muted">
-                  <tr>
-                    <th scope="col">{{ tableData2.headerRow[0] }}</th>
-                    <!-- <th class="text-left">{{ tableData2.headerRow[0] }}</th> -->
-                    <th>{{ tableData2.headerRow[1] }}</th>
-                    <th>{{ tableData2.headerRow[2] }}</th>
-                    <th>{{ tableData2.headerRow[3] }}</th>
-                    <th>{{ tableData2.headerRow[4] }}</th>
-                    <th class="text-right">{{ tableData2.headerRow[5] }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let row of tableData2.dataRows">
-                    <td scope="row">{{ row[0] }}</td>
-                    <!-- <td class="text-left">{{ row[0] }}</td> -->
-                    <td>{{ row[1] }}</td>
-                    <td>{{ row[2] }}</td>
-                    <td>{{ row[3] }}</td>                    
-                    <td><span class="badge badge-primary">{{ row[4] }}</span></td>                    
-                    <td class="td-actions text-right">                     
-                      <button
-                        mat-raised-button
-                        type="button"
-                        class="btn btn-default {{ row[5] }}"
-                      >
-                        <i class="material-icons">edit</i>
-                      </button>
-                      <button
-                        mat-raised-button
-                        type="button"
-                        class="btn btn-default {{ row[5] }}"
-                      >
-                        <i class="material-icons">keyboard_arrow_right</i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <hr>
-            <div class="pull-right">          
-              <button mat-raised-button type="submit" class="btn btn-primary mr-1">
-                <span class="btn-label">
-                  <i class="material-icons">loop</i>
-                </span>
-                Cambiar administrador
-              </button>          
-              <button mat-raised-button type="submit" class="btn btn-primary">
-                <span class="btn-label">
-                  <i class="material-icons">person_add</i>
-                </span>
-                Nuevo Usuario
-              </button>
-            </div>                       
+            <div class="table-responsive">
+              <div>  
+                <table class="table table-striped">                
+                  <thead class="text-muted">
+                    <tr>
+                      <th scope="col">{{ tableData2.headerRow[0] }}</th>
+                      <!-- <th class="text-left">{{ tableData2.headerRow[0] }}</th> -->
+                      <th>{{ tableData2.headerRow[1] }}</th>
+                      <th>{{ tableData2.headerRow[2] }}</th>
+                      <th>{{ tableData2.headerRow[3] }}</th>
+                      <th>{{ tableData2.headerRow[4] }}</th>
+                      <th class="text-right">{{ tableData2.headerRow[5] }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of tableData2.dataRows">
+                      <td scope="row">{{ row[0] }}</td>
+                      <!-- <td class="text-left">{{ row[0] }}</td> -->
+                      <td>{{ row[1] }}</td>
+                      <td>{{ row[2] }}</td>
+                      <td>{{ row[3] }}</td>                    
+                      <td><span class="badge badge-primary">{{ row[4] }}</span></td>                    
+                      <td class="td-actions text-right">                     
+                        <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[5] }}"
+                        >
+                          <i class="material-icons">edit</i>
+                        </button>
+                        <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[5] }}"
+                        >
+                          <i class="material-icons">keyboard_arrow_right</i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <hr>
+              <div class="pull-right">          
+                <button mat-raised-button type="submit" class="btn btn-primary mr-1">
+                  <span class="btn-label">
+                    <i class="material-icons">loop</i>
+                  </span>
+                  Cambiar administrador
+                </button>          
+                <button mat-raised-button type="submit" class="btn btn-primary">
+                  <span class="btn-label">
+                    <i class="material-icons">person_add</i>
+                  </span>
+                  Nuevo Usuario
+                </button>
+              </div>
+            </div>                         
           </div>
           <!-- Fin Tab Usuario Libro Mandante -->
           <!-- Inicio Tab Usuario Libro Mandante -->
           <div class="tab-pane" id="link_3">
-            <div class="container-fluid mt-2">
-              <h3>usuario contratista</h3>
+            <div class="table-responsive">
+              <div>  
+                <table class="table table-striped">                
+                  <thead class="text-muted">
+                    <tr>
+                      <th scope="col">{{ tableData2.headerRow[0] }}</th>
+                      <!-- <th class="text-left">{{ tableData2.headerRow[0] }}</th> -->
+                      <th>{{ tableData2.headerRow[1] }}</th>
+                      <th>{{ tableData2.headerRow[2] }}</th>
+                      <th>{{ tableData2.headerRow[3] }}</th>
+                      <th>{{ tableData2.headerRow[4] }}</th>
+                      <th class="text-right">{{ tableData2.headerRow[5] }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of tableData2.dataRows">
+                      <td scope="row">{{ row[0] }}</td>
+                      <!-- <td class="text-left">{{ row[0] }}</td> -->
+                      <td>{{ row[1] }}</td>
+                      <td>{{ row[2] }}</td>
+                      <td>{{ row[3] }}</td>                    
+                      <td><span class="badge badge-primary">{{ row[4] }}</span></td>                    
+                      <td class="td-actions text-right">                     
+                        <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[5] }}"
+                        >
+                          <i class="material-icons">edit</i>
+                        </button>
+                        <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[5] }}"
+                        >
+                          <i class="material-icons">keyboard_arrow_right</i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <hr>
+              <div class="pull-right">          
+                <button mat-raised-button type="submit" class="btn btn-primary mr-1">
+                  <span class="btn-label">
+                    <i class="material-icons">loop</i>
+                  </span>
+                  Cambiar administrador
+                </button>          
+                <button mat-raised-button type="submit" class="btn btn-primary">
+                  <span class="btn-label">
+                    <i class="material-icons">person_add</i>
+                  </span>
+                  Nuevo Usuario
+                </button>
+              </div>
             </div>
           </div>
           <!-- Fin Tab Usuario Libro Contratista -->  
