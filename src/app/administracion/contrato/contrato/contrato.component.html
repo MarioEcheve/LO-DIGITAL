@@ -7,7 +7,7 @@
         </div>
         <h4 class="card-title">Nuevo Contrato</h4>
       </div>     
-      <div class="card-body ">
+      <div class="card-body ">        
         <ul class="nav nav-pills nav-pills-default mt-3" role="tablist">
           <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#link1" role="tablist">
@@ -31,9 +31,9 @@
           </li>          
         </ul>
         <div class="tab-content tab-space">
-          <!-- Tab Contrato --> 
+          <!-- Tab Contrato -->
           <div class="tab-pane active" id="link1">
-            <div class="container-fluid mt-2">              
+            <div class="container-fluid mt-2">
               <h2 class="mat-h2">Información General</h2>
               <div class="row">
                 <mat-form-field class="example-full-width col-md-3">
@@ -50,21 +50,58 @@
                 <input matInput placeholder="Dirección" type="text" value="Avenida Balmaceda Nº2543, sector 4 Esquinas" disabled/>
               </mat-form-field>
               <div class="row">
-                <mat-form-field class="example-full-width col-md-6">
-                  <input matInput placeholder="Región" type="text" value="4º Región de Coquimbo" disabled/>
+                <mat-form-field class="col-md-6">
+                  <mat-select placeholder="Región" name="city">
+                    <mat-option *ngFor="let city of cities" [value]="city.value">
+                      {{ city.viewValue }}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
-                <mat-form-field class="example-full-width col-md-6">
-                  <input matInput placeholder="Comuna" type="text" value="La Serena" disabled/>
+                <mat-form-field class="col-md-6">
+                  <mat-select placeholder="Comuna" name="city">
+                    <mat-option *ngFor="let city of cities" [value]="city.value">
+                      {{ city.viewValue }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field class="col-md-6">
+                  <mat-select placeholder="Tipo Contrato" name="city">
+                    <mat-option *ngFor="let city of cities" [value]="city.value">
+                      {{ city.viewValue }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field class="col-md-6">
+                  <mat-select placeholder="Modalidad Contrato" name="city">
+                    <mat-option *ngFor="let city of cities" [value]="city.value">
+                      {{ city.viewValue }}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
               </div>
               <div class="row">
                 <mat-form-field class="example-full-width col-md-6">
-                  <input matInput placeholder="Tipo Contrato" type="text" value="Construcción" disabled/>
+                  <input
+                    matInput
+                    placeholder="Otro tipo de Contrato"
+                    type="text"
+                  />
                 </mat-form-field>
                 <mat-form-field class="example-full-width col-md-6">
-                  <input matInput placeholder="Modalidad Contrato" type="text" value="Suma Alzada" disabled/>
+                  <input
+                    matInput
+                    placeholder="Otra modalidad de Contrato"
+                    type="text"
+                  />
                 </mat-form-field>
               </div>
+              <button mat-raised-button type="submit" class="btn btn-behance pull-right">
+                Editar
+              </button>
+              <br>
+              <br>
               <hr>
               <h2 class="mat-h2">Mandante</h2>
               <div class="row">
@@ -112,9 +149,9 @@
                 <mat-form-field class="example-full-width col-md-6">
                   <input matInput placeholder="Región" type="text" value="4º Región de Coquimbo" disabled/>
                 </mat-form-field>
-              </div>
-            </div>
-          </div>          
+              </div>  
+            </div>            
+          </div>                   
           <!-- Tab Libros -->  
           <div class="tab-pane" id="link2">
             <div class="table-responsive">
@@ -438,28 +475,29 @@
           </div>          
           <!-- Fin Tab Libros -->
           <!-- Inicio Tab Usuario Libro Mandante -->  
-          <div class="tab-pane" id="link_2">
-            <div class="table-responsive">
-              <table class="table">
+          <div class="tab-pane" id="link_2">            
+            <!-- <div class="table-responsive"> -->
+            <div>  
+              <table class="table table-striped">                
                 <thead>
                   <tr>
-                    <!-- <th class="text-center">{{ tableData1.headerRow[0] }}</th> -->
-                    <th class="text-left">{{ tableData1.headerRow[0] }}</th>
-                    <th>{{ tableData1.headerRow[1] }}</th>
-                    <th>{{ tableData1.headerRow[2] }}</th>
-                    <th>{{ tableData1.headerRow[3] }}</th>
-                    <th class="text-right">{{ tableData1.headerRow[4] }}</th>
-                    <th class="text-right">{{ tableData1.headerRow[5] }}</th>
+                    <th scope="col">{{ tableData2.headerRow[0] }}</th>
+                    <!-- <th class="text-left">{{ tableData2.headerRow[0] }}</th> -->
+                    <th>{{ tableData2.headerRow[1] }}</th>
+                    <th>{{ tableData2.headerRow[2] }}</th>
+                    <th>{{ tableData2.headerRow[3] }}</th>
+                    <th>{{ tableData2.headerRow[4] }}</th>
+                    <th class="text-right">{{ tableData2.headerRow[5] }}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let row of tableData1.dataRows">
-                    <!-- <td class="text-center">{{ row[0] }}</td> -->
-                    <td class="text-left">{{ row[0] }}</td>
+                  <tr *ngFor="let row of tableData2.dataRows">
+                    <td scope="row">{{ row[0] }}</td>
+                    <!-- <td class="text-left">{{ row[0] }}</td> -->
                     <td>{{ row[1] }}</td>
                     <td>{{ row[2] }}</td>
                     <td>{{ row[3] }}</td>                    
-                    <td class="text-right"><span class="badge badge-primary">{{ row[4] }}</span></td>                    
+                    <td><span class="badge badge-primary">{{ row[4] }}</span></td>                    
                     <td class="td-actions text-right">                     
                       <button
                         mat-raised-button

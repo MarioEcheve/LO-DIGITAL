@@ -1,11 +1,16 @@
 .table{
    > thead > tr > th{
-       border-bottom-width: 1px;
-       font-size: $font-size-h5;
-       font-weight: $font-weight-light;
+       border-bottom-width: 2px;
+       border-bottom-style: solid;
+
+       /* font-size: $font-size-h6; */
+       font-size: 13px;
+       /* font-weight: $font-weight-light; */
    }
    > thead > tr:first-child > th{
-     border-top: none;
+     /* border-top: none; */
+     border-top-width: 1px;
+        
    }
 
    .tab-pane &{
@@ -31,7 +36,7 @@
    > thead > tr > td,
    > tbody > tr > td,
    > tfoot > tr > td{
-       padding: 12px 8px;
+       padding: 8px 8px;
        vertical-align: middle;
    }
 
@@ -58,6 +63,7 @@
 
     > tbody > tr{
         position: relative;
+        
     }
 
     .flag{
