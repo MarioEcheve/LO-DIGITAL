@@ -1,28 +1,30 @@
 pipeline {
     agent {
-        docker { image 'node:10-alpine' }
+        docker {
+            image 'node:6-alpine'
+            args '-p 4200:4200'
+        }
+    }
+    environment {
+        CI = 'true'
     }
     stages {
-        stage('Restore') {
+        stage('Build') {
             steps {
                 sh 'npm install'
             }
         }
-        stage('Build') {
-            steps {
-                sh 'npm run-script build'
-            }
-        }
         stage('Test') {
             steps {
-                sh 'ng run-script test'
+                sh './jenkins/scripts/test.sh'
             }
-        }        
-        stage('Deploy') {
+        }
+        stage('Deliver') {
             steps {
-                sh 'rm ../../apps/*'
-                sh 'cp ./dist/apps/* ../../apps/'
+                sh './jenkins/scripts/deliver.sh'
+                input message: 'Finished using the web site? (Click "Proceed" to continue)'
+                sh './jenkins/scripts/kill.sh'
             }
-        }             
+        }
     }
 }
