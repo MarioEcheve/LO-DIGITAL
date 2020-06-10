@@ -9,52 +9,106 @@
         <h4 class="card-title">Lista Contrato</h4>
       </div>
       <div class="card-body">
+        <div class="row">
+          <div class="input-group col-md-6">
+            <mat-form-field class="col-md-6">
+              <input matInput placeholder="Busqueda..." type="text" value=""/>            
+            </mat-form-field>
+            <div class="input-group-append">
+              <span>
+                <button mat-raised-button type="submit" class="btn btn-default">
+                  <span class="btn-label">
+                    <i class="material-icons">search</i>
+                  </span>
+                  Buscar
+                </button>
+              </span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <button mat-raised-button type="" class="btn btn-primary pull-right">
+              <span class="btn-label">
+                <i class="material-icons">person_add</i>
+              </span>
+              Nuevo Usuario
+            </button>
+          </div>
+        </div>         
         <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                <th class="text-center">{{ tableData1.headerRow[0] }}</th>
-                <th>{{ tableData1.headerRow[1] }}</th>
-                <th>{{ tableData1.headerRow[2] }}</th>
-                <th>{{ tableData1.headerRow[3] }}</th>
-                <th class="text-right">{{ tableData1.headerRow[4] }}</th>
-                <th class="text-right">{{ tableData1.headerRow[5] }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let row of tableData1.dataRows">
-                <td class="text-center">{{ row[0] }}</td>
-                <td>{{ row[1] }}</td>
-                <td>{{ row[2] }}</td>
-                <td>{{ row[3] }}</td>
-                <td class="text-right">&euro; {{ row[4] }}</td>
-                <td class="td-actions text-right">
-                  <button
-                    mat-raised-button
-                    type="button"
-                    class="btn btn-info {{ row[5] }}"
-                  >
-                    <i class="material-icons">person</i>
-                  </button>
-                  <button
-                    mat-raised-button
-                    type="button"
-                    class="btn btn-success {{ row[5] }}"
-                  >
-                    <i class="material-icons">edit</i>
-                  </button>
-                  <button
-                    mat-raised-button
-                    type="button"
-                    class="btn btn-danger {{ row[5] }}"
-                  >
-                    <i class="material-icons">close</i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div>
+            <table class="table table-striped">
+              <thead class="text-muted">
+                <tr>
+                  <th scope="col">{{ tableData1.headerRow[0] }}</th>
+                  <!-- <th class="text-left">{{ tableData2.headerRow[0] }}</th> -->
+                  <th>{{ tableData1.headerRow[1] }}</th>
+                  <th>{{ tableData1.headerRow[2] }}</th>
+                  <th>{{ tableData1.headerRow[3] }}</th>
+                  <th>{{ tableData1.headerRow[4] }}</th>
+                  <th>{{ tableData1.headerRow[5] }}</th>
+                  <th class="text-right">{{ tableData1.headerRow[6] }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of tableData1.dataRows">
+                  <td scope="row">{{ row[0] }}</td>
+                  <!-- <td class="text-left">{{ row[0] }}</td> -->
+                  <td>{{ row[1] }}</td>
+                  <td>{{ row[2] }}</td>
+                  <td>{{ row[3] }}</td>
+                  <td>{{ row[4] }}</td>
+                  <td>
+                    <span class="badge badge-success">{{ row[5] }}</span>
+                  </td>
+                  <td class="td-actions text-right">
+                    <button
+                      mat-raised-button
+                      type="button"
+                      class="btn btn-default {{ row[6] }}"
+                    >
+                      <i class="material-icons">edit</i>
+                    </button>
+                    <button
+                      mat-raised-button
+                      type="button"
+                      class="btn btn-default {{ row[6] }}"
+                    >
+                      <i class="material-icons">keyboard_arrow_right</i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <hr />
+          <div class="pull-right">
+            <button
+              mat-raised-button
+              type="submit"
+              class="btn btn-primary mr-1"
+            >
+              <span class="btn-label">
+                <i class="material-icons">loop</i>
+              </span>
+              Cambiar administrador
+            </button>
+            <button mat-raised-button type="submit" class="btn btn-primary">
+              <span class="btn-label">
+                <i class="material-icons">person_add</i>
+              </span>
+              Nuevo Usuario
+            </button>
+          </div>
         </div>
+
+
+
+
+
+
+
+
+
       </div>
     </div>
   </div>
