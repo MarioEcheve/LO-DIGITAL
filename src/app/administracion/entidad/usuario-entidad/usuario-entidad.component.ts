@@ -12,13 +12,53 @@ export class UsuarioEntidadComponent implements OnInit {
 
   ngOnInit(): void {
     this.tableData1 = {
-      headerRow: ["#", "Name", "Job Position", "Since", "Salary", "Actions"],
+      headerRow: ["RUT", "Nombre", "Perfil", "Fecha Activación", "Fecha Desactivación", "Estado", "Acción"],
       dataRows: [
-        ["1", "Andrew Mike", "Develop", "2013", "99,225", ""],
-        ["2", "John Doe", "Design", "2012", "89,241", "btn-round"],
-        ["3", "Alex Mike", "Design", "2010", "92,144", "btn-link"],
-        ["4", "Mike Monday", "Marketing", "2013", "49,990", "btn-round"],
-        ["5", "Paul Dickens", "Communication", "2015", "69,201", ""],
+        [
+          "15.547.454-6",
+          "Nombre ApellidoP ApellidoM",
+          "Super Usuario",
+          "12/02/2020 14:30",
+          "",
+          "Activo",
+          "btn-link",
+        ],
+        [
+          "14.774.524-3",
+          "Nombre ApellidoP ApellidoM",
+          "Usuario",
+          "12/02/2020 14:30",
+          "",
+          "Activo",
+          "btn-link",
+        ],
+        [
+          "12.774.524-3",
+          "Nombre ApellidoP ApellidoM",
+          "Usuario",
+          "12/02/2020 14:30",
+          "",
+          "Activo",
+          "btn-link",
+        ],
+        [
+          "16.774.524-3",
+          "Nombre ApellidoP ApellidoM",
+          "Usuario",
+          "12/02/2020 14:30",
+          "",
+          "Activo",
+          "btn-link",
+        ],
+        [
+          "18.774.524-3",
+          "Nombre ApellidoP ApellidoM",
+          "Usuario",
+          "12/02/2020 14:30",
+          "24/06/2020 16:12",
+          "Inactivo",
+          "btn-link",
+        ],
       ],
     };
   }
