@@ -1,20 +1,13 @@
-pipeline {
-    agent any
+#!groovy
 
+pipeline {
+    agent {
+        docker { image 'nginx' }
+    }
     stages {
-        stage('Build') {
-            steps {
-                echo 'Building..'
-            }
-        }
         stage('Test') {
             steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
+                sh 'node --version'
             }
         }
     }
