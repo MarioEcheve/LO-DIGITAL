@@ -9,11 +9,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
+    "build": "node ./node_modules/@angular/cli/bin/ng ng build",
+    "test": "node ./node_modules/@angular/cli/bin/ng ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "ng build --aot --prod"
+    "postinstall": " node ./node_modules/@angular/cli/bin/ng ng build --aot --prod"
   },
   "private": true,
   "dependencies": {
