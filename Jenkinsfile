@@ -2,8 +2,8 @@ pipeline {
   agent any
   tools {nodejs "120Node"}
   environment {
-    registry = 'dockerhubusername/dockerhubusername'
-    registryCredential = 'dockerhubcredentials'
+    registry = 'mario/12345'
+    registryCredential = 'c5cdbbc4-9807-4b9a-a800-ec740e106ebd'
   }
   stages {
     stage('INSTALL PACKAGES') {
