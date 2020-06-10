@@ -34,7 +34,11 @@ export const ROUTES: RouteInfo[] = [
     type: "sub",
     icontype: "apps",
     collapse: "entidad",
-    children: [{ path: "entidad", title: "Mis Entidades", ab: "B" }],
+    children: [
+      { path: "entidad", title: "Mis Entidades", ab: "B" },
+      { path: "usuario-entidad", title: "Usuario Entidad", ab: "B" },
+      { path: "nueva-entidad", title: "Nueva Entidad", ab: "B" },
+    ],
   },
   {
     path: "/contrato",
