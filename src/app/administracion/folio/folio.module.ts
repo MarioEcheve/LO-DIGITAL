@@ -10,10 +10,16 @@ import { MaterialModule } from "src/app/app.module";
 import { FolioBorradorComponent } from "./folio-borrador/folio-borrador.component";
 import { FolioFirmadoComponent } from "./folio-firmado/folio-firmado.component";
 import { NgxFileDropModule } from "ngx-file-drop";
-import { ArchivoComponent } from './archivo/archivo.component';
+import { ArchivoComponent } from "./archivo/archivo.component";
+import { MatTableModule } from "@angular/material/table";
 
 @NgModule({
-  declarations: [FolioComponent, FolioBorradorComponent, FolioFirmadoComponent, ArchivoComponent],
+  declarations: [
+    FolioComponent,
+    FolioBorradorComponent,
+    FolioFirmadoComponent,
+    ArchivoComponent,
+  ],
   imports: [
     CommonModule,
     FolioRoutingModule,
@@ -24,6 +30,7 @@ import { ArchivoComponent } from './archivo/archivo.component';
     MaterialModule,
     AngularEditorModule,
     NgxFileDropModule,
+    MatTableModule,
   ],
 })
 export class FolioModule {}
