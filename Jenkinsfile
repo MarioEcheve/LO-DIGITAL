@@ -1,46 +1,28 @@
 pipeline {
-  agent any
-  tools {nodejs "120Node"}
-  environment {
-    registry = 'mario/12345'
-    registryCredential = 'c5cdbbc4-9807-4b9a-a800-ec740e106ebd'
-  }
-  stages {
-    stage('INSTALL PACKAGES') {
-      steps {
-        sh "npm install"
-      }
+    agent {
+        docker { image 'node:10-alpine' }
     }
-    stage('TEST') {
-      steps {
-        echo "insert your testing here"
-      }
-    }
-    stage('BUILD APP') {
-      steps {
-        sh 'npm run-script build'
-      }
-    }
-    stage("BUILD DOCKER") {
-      steps {
-        script {
-          dockerImageBuild = docker.build registry + ":latest"
-        }
-      }
-    }
-     stage("DEPLOY DOCKER") {
-       steps {
-          script {
-            docker.withRegistry('', registryCredential) {
-              dockerImageBuild.push()
+    stages {
+        stage('Restore') {
+            steps {
+                sh 'npm install'
             }
-         }
-      }
-   }
-    stage("DEPLOY & ACTIVATE") {
-      steps {
-        echo 'this part will differ depending on setup'
-      }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm run-script build'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'ng run-script test'
+            }
+        }        
+        stage('Deploy') {
+            steps {
+                sh 'rm ../../apps/*'
+                sh 'cp ./dist/apps/* ../../apps/'
+            }
+        }             
     }
-  }
 }
