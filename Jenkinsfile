@@ -1,28 +1,15 @@
 pipeline {
     agent {
-        docker { image 'node:10-alpine' }
+        docker {
+            image 'node:12-alpine' 
+            args '-p 4200:4200' 
+        }
     }
     stages {
-        stage('Restore') {
+        stage('Build') { 
             steps {
-                sh 'npm install'
+                sh 'npm install' 
             }
         }
-        stage('Build') {
-            steps {
-                sh 'npm run-script build'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'ng run-script test'
-            }
-        }        
-        stage('Deploy') {
-            steps {
-                sh 'rm ../../apps/*'
-                sh 'cp ./dist/apps/* ../../apps/'
-            }
-        }             
     }
 }
