@@ -10,17 +10,7 @@ pipeline {
         sh 'npm install'
         stash includes: 'node_modules/', name: 'node_modules'
       }
-      post {
-        success {
-          slackSend (color: "#00FF00", message:"Success: Fetch Dependencies ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
-        }
-        failure {
-          slackSend (color: "#FF0000", message:"Failed: Fetch Dependencies ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
-        }
-      }
     }
-    
-
     stage('Lint') {
       agent {
         docker 'node:10.14.0-alpine'
