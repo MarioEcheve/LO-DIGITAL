@@ -1,11 +1,30 @@
 import { Component, OnInit } from "@angular/core";
+import { DropzoneConfigInterface } from "ngx-dropzone-wrapper";
 
+const defaultConfig: DropzoneConfigInterface = {
+  clickable: true,
+  addRemoveLinks: true,
+};
 @Component({
   selector: "app-folio",
   templateUrl: "./folio.component.html",
   styleUrls: ["./folio.component.css"],
 })
 export class FolioComponent implements OnInit {
+  singleConfig: DropzoneConfigInterface = {
+    ...defaultConfig,
+    ...{
+      maxFiles: 1,
+    },
+  };
+
+  multipleConfig: DropzoneConfigInterface = {
+    ...defaultConfig,
+    ...{
+      maxFiles: 10,
+    },
+  };
+
   cities = [
     { value: "paris-0", viewValue: "Paris" },
     { value: "miami-1", viewValue: "Miami" },
@@ -18,4 +37,16 @@ export class FolioComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  onUploadInit(args: any): void {
+    // onUploadInit
+  }
+
+  onUploadError(args: any): void {
+    // onUploadError
+  }
+
+  onUploadSuccess(args: any): void {
+    // onUploadSuccess
+  }
 }

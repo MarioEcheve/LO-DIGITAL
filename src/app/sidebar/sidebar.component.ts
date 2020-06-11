@@ -29,6 +29,18 @@ export const ROUTES: RouteInfo[] = [
     icontype: "dashboard",
   },
   {
+    path: "/usuario",
+    title: "Usuario",
+    type: "sub",
+    icontype: "apps",
+    collapse: "usuario",
+    children: [
+      { path: "usuario", title: "Datos del usuario", ab: "B" },
+      { path: "editar-usuario", title: "Editar Usuario", ab: "B" },
+      { path: "setting-usuario", title: "Configuracion usuario", ab: "B" },
+    ],
+  },
+  {
     path: "/entidad",
     title: "Entidad",
     type: "sub",

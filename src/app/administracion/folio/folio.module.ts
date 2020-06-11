@@ -12,6 +12,7 @@ import { FolioFirmadoComponent } from "./folio-firmado/folio-firmado.component";
 import { NgxFileDropModule } from "ngx-file-drop";
 import { ArchivoComponent } from "./archivo/archivo.component";
 import { MatTableModule } from "@angular/material/table";
+import { DropzoneModule } from "ngx-dropzone-wrapper";
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { MatTableModule } from "@angular/material/table";
     AngularEditorModule,
     NgxFileDropModule,
     MatTableModule,
+    DropzoneModule,
   ],
 })
 export class FolioModule {}

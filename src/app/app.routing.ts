@@ -50,6 +50,10 @@ export const AppRoutes: Routes = [
         loadChildren: "./administracion/entidad/entidad.module#EntidadModule",
       },
       {
+        path: "usuario",
+        loadChildren: "./administracion/usuario/usuario.module#UsuarioModule",
+      },
+      {
         path: "contrato",
         loadChildren:
           "./administracion/contrato/contrato.module#ContratoModule",
