@@ -1,13 +1,12 @@
-version: "3"
-
+version: "2"
 services:
-  node_docker_meetup_react_app:
-    image: node:10-alpine
+  jenkins:
+    build: .
     ports:
-      - "4200:4200"
-    environment:
-      - DEBUG=myapp:*
+      - "8080:8080"
+      - "5000:5000"
     volumes:
-      - ./:/usr/src/app
-    working_dir: /usr/src/app
-    command: /bin/sh -c "npm install && npm start"
+      - /home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker # check if which docler is /usr/bin/docker
+      - /usr/local/bin/docker-compose:/usr/local/bin/docker-compose # to run docker-compose
