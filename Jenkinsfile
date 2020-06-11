@@ -30,7 +30,7 @@ pipeline {
     }
     stage('Unit Tests') {
        agent {
-        docker 'circleci/node:10.14.0-stretch-browsers'
+        docker 'circleci/node:12.0.0-stretch-browsers'
       }
       steps {
         sh 'npm install -g @angular/cli'
@@ -49,7 +49,7 @@ pipeline {
     }
     stage('E2E Tests') {
        agent {
-        docker 'circleci/node:10.14.0-stretch-browsers'
+        docker 'circleci/node:12.0.0-stretch-browsers'
       }
       steps {
         unstash 'ci_node_modules'
@@ -66,7 +66,7 @@ pipeline {
     }
     stage('Compile Browser') {
        agent {
-        docker 'node:10.14.0-alpine'
+        docker 'node:12.0.0-alpine'
       }
       steps {
         unstash 'node_modules'
@@ -83,7 +83,7 @@ pipeline {
     }
     stage('Compile SSR') {
       agent {
-        docker 'node:10.14.0-alpine'
+        docker 'node:12.0.0-alpine'
       }
       steps {
         unstash 'node_modules'
