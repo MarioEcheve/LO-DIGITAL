@@ -11,6 +11,59 @@ pipeline {
         stash includes: 'node_modules/', name: 'node_modules'
       }
     }
+    stage('Lint') {
+      agent {
+        docker 'node:12.0.0'
+      }
+      steps {
+        unstash 'node_modules'
+        sh 'npm run lint'
+      }
+      post {
+        success {
+          slackSend (color: "#00FF00", message:"Success: Lint ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+        }
+        failure {
+          slackSend (color: "#FF0000", message:"Failed: Lint ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+        }
+      }
+    }
+    stage('Unit Tests') {
+       agent {
+        docker 'circleci/node:12.0.0-stretch-browsers'
+      }
+      steps {
+        sh 'npm install -g @angular/cli'
+        sh 'npm install'
+        sh 'npm run test --code-coverage --progress=false'
+        stash includes: 'node_modules/', name: 'ci_node_modules'
+      } 
+      post {
+        success {
+          slackSend (color: "#00FF00", message:"Success: Unit Tests ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+        }
+        failure {
+          slackSend (color: "#FF0000", message:"Failed: Unit Tests ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+        }
+      }
+    }
+    stage('E2E Tests') {
+       agent {
+        docker 'circleci/node:12.0.0-stretch-browsers'
+      }
+      steps {
+        unstash 'ci_node_modules'
+        sh 'npm run e2e'
+      } 
+      post {
+        success {
+          slackSend (color: "#00FF00", message:"Success: E2E Tests ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+        }
+        failure {
+          slackSend (color: "#FF0000", message:"Failed: E2E Tests ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+        }
+      }
+    }
     stage('Compile Browser') {
        agent {
         docker 'node:12.0.0-alpine'
