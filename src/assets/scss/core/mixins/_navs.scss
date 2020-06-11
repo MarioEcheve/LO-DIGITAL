@@ -24,8 +24,10 @@
 @mixin set-wizard-color($color) {
 
     .moving-tab{
-        background-color: $color;
-        @include shadow-big-color($color);
+        /* FVS background-color: $color; */
+        background-color: #4285f4;
+        /* FVS @include shadow-big-color($color); */
+        @include shadow-big-color(#3c3d3d);
     }
 
     .picture{
