@@ -1,45 +1,11 @@
 <div class="main-content">
   <div class="container-fluid">
-    <div class="card">
-      <div class="card-header card-header-rose card-header-icon">
-        <div class="card-icon">
-          <i class="material-icons">engineering</i>
-        </div>
-        <h4 class="card-title">Nuevo Contrato</h4>
-      </div>
+    <div class="card">      
       <div class="card-body">
-        <ul class="nav nav-pills nav-pills-default mt-3" role="tablist">
-          <li class="nav-item">
-            <a
-              class="nav-link active"
-              data-toggle="tab"
-              href="#link1"
-              role="tablist"
-            >
-              Contrato
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#link2" role="tablist">
-              Libros
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#link3" role="tablist">
-              Configuración y Permisos
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#link4" role="tablist">
-              Información Servicio
-            </a>
-          </li>
-        </ul>
-        <div class="tab-content tab-space">
-          <!-- Tab Contrato -->
-          <div class="tab-pane active" id="link1">
-            <div class="container-fluid mt-2">
-              <h2 class="mat-h2">Información General</h2>
+        <mat-tab-group>
+          <mat-tab label="Contrato">
+            <div class="container-fluid mt-3">              
+              <h5 style="color:#252525"><strong>Información General</strong></h5>
               <div class="row">
                 <mat-form-field class="example-full-width col-md-3">
                   <input
@@ -151,7 +117,7 @@
               <br />
               <br />
               <hr />
-              <h2 class="mat-h2">Mandante</h2>
+              <h5 style="color:#252525"><strong>Mandante</strong></h5>              
               <div class="row">
                 <mat-form-field class="example-full-width col-md-2">
                   <input
@@ -211,7 +177,7 @@
                 </mat-form-field>
               </div>
               <hr class="text-primary" />
-              <h2 class="mat-h2">Contratista</h2>
+              <h5 style="color:#252525"><strong>Contratista</strong></h5> 
               <div class="row">
                 <mat-form-field class="example-full-width col-md-2">
                   <input
@@ -271,67 +237,60 @@
                 </mat-form-field>
               </div>
             </div>
-          </div>
-          <!-- Tab Libros -->
-          <div class="tab-pane" id="link2">
-            <div class="table-responsive">
-              <table class="table table-striped">
-                <thead class="text-muted">
-                  <tr>
-                    <!-- <th class="text-center">{{ tableData1.headerRow[0] }}</th> -->
-                    <th class="text-left">{{ tableData1.headerRow[0] }}</th>
-                    <th>{{ tableData1.headerRow[1] }}</th>
-                    <th>{{ tableData1.headerRow[2] }}</th>
-                    <th>{{ tableData1.headerRow[3] }}</th>
-                    <th class="text-right">{{ tableData1.headerRow[4] }}</th>
-                    <th class="text-right">{{ tableData1.headerRow[5] }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let row of tableData1.dataRows">
-                    <!-- <td class="text-center">{{ row[0] }}</td> -->
-                    <td class="text-left">{{ row[0] }}</td>
-                    <td>{{ row[1] }}</td>
-                    <td>{{ row[2] }}</td>
-                    <td>{{ row[3] }}</td>
-                    <td class="text-right">
-                      <span class="badge badge-primary">{{ row[4] }}</span>
-                    </td>
-                    <td class="td-actions text-right">
-                      <button
-                        mat-raised-button
-                        type="button"
-                        class="btn btn-default {{ row[5] }}"
-                      >
-                        <i class="material-icons">edit</i>
-                      </button>
-                      <button
-                        mat-raised-button
-                        type="button"
-                        class="btn btn-default {{ row[5] }}"
-                      >
-                        <i class="material-icons">keyboard_arrow_right</i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+          </mat-tab>
+          <mat-tab label="Libros">
+            <div class="container-fluid mt-3">
+              <button mat-raised-button type="" class="btn btn-primary pull-right">
+                <span class="btn-label">
+                  <i class="material-icons">add</i>
+                </span>
+                Nuevo Libro
+              </button>
+              <div class="table-responsive">
+                <table class="table table-striped mt-2">
+                  <thead class="text-muted">
+                    <tr>                      
+                      <th class="text-left">{{ tableData1.headerRow[0] }}</th>
+                      <th>{{ tableData1.headerRow[1] }}</th>
+                      <th>{{ tableData1.headerRow[2] }}</th>
+                      <th>{{ tableData1.headerRow[3] }}</th>
+                      <th>{{ tableData1.headerRow[4] }}</th>
+                      <th class="text-right">{{ tableData1.headerRow[5] }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of tableData1.dataRows">                      
+                      <td class="text-left">{{ row[0] }}</td>
+                      <td>{{ row[1] }}</td>
+                      <td>{{ row[2] }}</td>
+                      <td>{{ row[3] }}</td>
+                      <td>
+                        <span class="badge badge-primary">{{ row[4] }}</span>
+                      </td>
+                      <td class="td-actions text-right">
+                        <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[5] }}"
+                        >
+                          <i class="material-icons">edit</i>
+                        </button>
+                        <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[5] }}"
+                        >
+                          <i class="material-icons">keyboard_arrow_right</i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <hr />
-            <button
-              mat-raised-button
-              type="submit"
-              class="btn btn-primary mr-1 pull-right"
-            >
-              <span class="btn-label">
-                <i class="material-icons">add</i>
-              </span>
-              Nuevo Libro
-            </button>
-          </div>
-          <!-- Tab Permisos -->
-          <div class="tab-pane" id="link3">
-            <div class="container-fluid mt-2">
+          </mat-tab>
+          <mat-tab label="Configuración y Permisos">
+            <div class="container-fluid mt-3">
               <form method="#" action="#">
                 <div class="togglebutton">
                   <label>
@@ -373,15 +332,15 @@
                 >
                   Cancelar
                 </button>
-                <button mat-raised-button type="submit" class="btn btn-behance">
+                <button mat-raised-button type="submit" class="btn btn-primary">
                   Guardar Cambios
                 </button>
               </div>
             </div>
-          </div>
-          <div class="tab-pane" id="link4">
-            <div class="container-fluid mt-2">
-              <h2 class="mat-h2">Información del Plan</h2>
+          </mat-tab>
+          <mat-tab label="Información Servicio">
+            <div class="container-fluid mt-3">
+              <h5 style="color:252525"><strong>Información del Plan</strong></h5> 
               <div class="row">
                 <mat-form-field class="example-full-width col-md-3">
                   <input
@@ -479,7 +438,7 @@
                 </mat-form-field>
               </div>
               <hr />
-              <h2 class="mat-h2">Contacto Comercial</h2>
+              <h5 style="color:#252525"><strong>Contacto Comercial</strong></h5> 
               <div class="row">
                 <mat-form-field class="example-full-width col-md-6">
                   <input
@@ -530,51 +489,17 @@
                 </mat-form-field>
               </div>
             </div>
-          </div>
-        </div>
+          </mat-tab>
+        </mat-tab-group>  
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-header card-header-rose card-header-icon">
-        <div class="card-icon">
-          <i class="material-icons">collections_bookmark</i>
-        </div>
-        <h4 class="card-title"></h4>
-      </div>
+    <div class="card">      
       <div class="card-body">
-        <ul class="nav nav-pills nav-pills-default mt-3" role="tablist">
-          <li class="nav-item">
-            <a
-              class="nav-link active"
-              data-toggle="tab"
-              href="#link_1"
-              role="tablist"
-            >
-              Libro
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#link_2" role="tablist">
-              Usuarios Mandante
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#link_3" role="tablist">
-              Usuarios Contratista
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#link_4" role="tablist">
-              Configuración y Permisos
-            </a>
-          </li>
-        </ul>
-        <div class="tab-content tab-space">
-          <!-- Tab Libro -->
-          <div class="tab-pane active" id="link_1">
-            <div class="container-fluid mt-2">
-              <h2 class="mat-h2">Información General</h2>
+        <mat-tab-group>
+          <mat-tab label="Libro">
+            <div class="container-fluid mt-3">              
+              <h5 style="color:#252525"><strong>Información General</strong></h5>
               <div class="row">
                 <mat-form-field class="example-full-width col-md-3">
                   <input
@@ -662,8 +587,8 @@
                   />
                 </mat-form-field>
               </div>
-              <hr />
-              <h2 class="mat-h2">Administrador Mandante</h2>
+              <hr>
+              <h5 style="color:#252525"><strong>Administrador Mandante</strong></h5>              
               <div class="row">
                 <mat-form-field class="example-full-width col-md-2">
                   <input
@@ -761,7 +686,7 @@
                 </mat-form-field>
               </div>
               <hr />
-              <h2 class="mat-h2">Administrador Contratista</h2>
+              <h5 style="color:#252525"><strong>Administrador Contratista</strong></h5>
               <div class="row">
                 <mat-form-field class="example-full-width col-md-2">
                   <input
@@ -859,13 +784,29 @@
                 </mat-form-field>
               </div>
             </div>
-          </div>
-          <!-- Fin Tab Libros -->
-          <!-- Inicio Tab Usuario Libro Mandante -->
-          <div class="tab-pane" id="link_2">
-            <div class="table-responsive">
-              <div>
-                <table class="table table-striped">
+          </mat-tab>
+          <mat-tab label="Usuarios Mandante">
+            <div class="container-fluid mt-3">
+              <div class="pull-right">
+                <button
+                  mat-raised-button
+                  type="submit"
+                  class="btn btn-primary mr-1"
+                >
+                  <span class="btn-label">
+                    <i class="material-icons">loop</i>
+                  </span>
+                  Cambiar administrador
+                </button>
+                <button mat-raised-button type="submit" class="btn btn-primary">
+                  <span class="btn-label">
+                    <i class="material-icons">person_add</i>
+                  </span>
+                  Nuevo Usuario
+                </button>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-striped mt-2">
                   <thead class="text-muted">
                     <tr>
                       <th scope="col">{{ tableData2.headerRow[0] }}</th>
@@ -907,100 +848,76 @@
                   </tbody>
                 </table>
               </div>
-              <hr />
-              <div class="pull-right">
-                <button
-                  mat-raised-button
-                  type="submit"
-                  class="btn btn-primary mr-1"
-                >
-                  <span class="btn-label">
-                    <i class="material-icons">loop</i>
-                  </span>
-                  Cambiar administrador
-                </button>
-                <button mat-raised-button type="submit" class="btn btn-primary">
-                  <span class="btn-label">
-                    <i class="material-icons">person_add</i>
-                  </span>
-                  Nuevo Usuario
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- Fin Tab Usuario Libro Mandante -->
-          <!-- Inicio Tab Usuario Libro Mandante -->
-          <div class="tab-pane" id="link_3">
-            <div class="table-responsive">
-              <div>
-                <table class="table table-striped">
-                  <thead class="text-muted">
-                    <tr>
-                      <th scope="col">{{ tableData2.headerRow[0] }}</th>
-                      <!-- <th class="text-left">{{ tableData2.headerRow[0] }}</th> -->
-                      <th>{{ tableData2.headerRow[1] }}</th>
-                      <th>{{ tableData2.headerRow[2] }}</th>
-                      <th>{{ tableData2.headerRow[3] }}</th>
-                      <th>{{ tableData2.headerRow[4] }}</th>
-                      <th class="text-right">{{ tableData2.headerRow[5] }}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let row of tableData2.dataRows">
-                      <td scope="row" style="width: auto;">{{ row[0] }}</td>
-                      <!-- <td class="text-left">{{ row[0] }}</td> -->
-                      <td>{{ row[1] }}</td>
-                      <td>{{ row[2] }}</td>
-                      <td>{{ row[3] }}</td>
-                      <td>
-                        <span class="badge badge-primary">{{ row[4] }}</span>
-                      </td>
-                      <td class="td-actions text-right">
-                        <button
-                          mat-raised-button
-                          type="button"
-                          class="btn btn-default {{ row[5] }}"
-                        >
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button
-                          mat-raised-button
-                          type="button"
-                          class="btn btn-default {{ row[5] }}"
-                        >
-                          <i class="material-icons">keyboard_arrow_right</i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <hr />
-              <div class="pull-right">
-                <button
-                  mat-raised-button
-                  type="submit"
-                  class="btn btn-primary mr-1"
-                >
-                  <span class="btn-label">
-                    <i class="material-icons">loop</i>
-                  </span>
-                  Cambiar administrador
-                </button>
-                <button mat-raised-button type="submit" class="btn btn-primary">
-                  <span class="btn-label">
-                    <i class="material-icons">person_add</i>
-                  </span>
-                  Nuevo Usuario
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- Fin Tab Usuario Libro Contratista -->
 
-          <!-- Tab Permisos -->
-          <div class="tab-pane" id="link_4">
-            <div class="container-fluid mt-2">
+            </div>            
+          </mat-tab>
+          <mat-tab label="Usuarios Contratista">
+            <div class="container-fluid mt-3">
+              <div class="pull-right">
+                <button
+                  mat-raised-button
+                  type="submit"
+                  class="btn btn-primary mr-1"
+                >
+                  <span class="btn-label">
+                    <i class="material-icons">loop</i>
+                  </span>
+                  Cambiar administrador
+                </button>
+                <button mat-raised-button type="submit" class="btn btn-primary">
+                  <span class="btn-label">
+                    <i class="material-icons">person_add</i>
+                  </span>
+                  Nuevo Usuario
+                </button>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-striped mt-2">
+                  <thead class="text-muted">
+                    <tr>
+                      <th scope="col">{{ tableData2.headerRow[0] }}</th>
+                      <!-- <th class="text-left">{{ tableData2.headerRow[0] }}</th> -->
+                      <th>{{ tableData2.headerRow[1] }}</th>
+                      <th>{{ tableData2.headerRow[2] }}</th>
+                      <th>{{ tableData2.headerRow[3] }}</th>
+                      <th>{{ tableData2.headerRow[4] }}</th>
+                      <th class="text-right">{{ tableData2.headerRow[5] }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of tableData2.dataRows">
+                      <td scope="row" style="width: auto;">{{ row[0] }}</td>
+                      <!-- <td class="text-left">{{ row[0] }}</td> -->
+                      <td>{{ row[1] }}</td>
+                      <td>{{ row[2] }}</td>
+                      <td>{{ row[3] }}</td>
+                      <td>
+                        <span class="badge badge-primary">{{ row[4] }}</span>
+                      </td>
+                      <td class="td-actions text-right">
+                        <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[5] }}"
+                        >
+                          <i class="material-icons">edit</i>
+                        </button>
+                        <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[5] }}"
+                        >
+                          <i class="material-icons">keyboard_arrow_right</i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>            
+          </mat-tab>
+          <mat-tab label="Configuración y Permisos">
+            <div class="container-fluid mt-3">
               <form method="#" action="#">
                 <div class="togglebutton">
                   <label>
@@ -1073,8 +990,8 @@
                 </button>
               </div>
             </div>
-          </div>
-        </div>
+          </mat-tab>
+        </mat-tab-group>        
       </div>
     </div>
   </div>

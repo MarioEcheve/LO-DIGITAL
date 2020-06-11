@@ -53,12 +53,37 @@
                     {{ element.weight }}
                   </div>
                 </div>
-                <div class="example-element-description">
-                  {{ element.description }}
-                  <span class="example-element-description-attribution">
-                    -- Wikipedia
-                  </span>
-                </div>
+                <ng-template
+                  ngx-file-drop-content-tmp
+                  let-openFileSelector="openFileSelector"
+                >
+                  Optional custom content that replaces the the entire default
+                  content.
+                  <button
+                    mat-raised-button
+                    type="button"
+                    class="btn btn-fill btn-rose"
+                    (click)="openFileSelector()"
+                  >
+                    Buscar Archivos
+                  </button>
+                </ng-template>
+              </ngx-file-drop>             
+              <div class="upload-table">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                    </tr>
+                  </thead>
+                  <tbody class="upload-name-style">
+                    <tr *ngFor="let item of files; let i = index">
+                      <td>
+                        <strong>{{ item.relativePath }}</strong>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </td>
           </ng-container>
