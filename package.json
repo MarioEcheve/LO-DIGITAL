@@ -9,10 +9,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
+    "build": "node ./node_modules/@angular/cli/bin/ng build --prod --aot",
+    "test": "node ./node_modules/@angular/cli/bin/ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall": "rm -rf node_modules/ && rm -rf package-lock.json && npm install"
   },
   "private": true,
   "dependencies": {
