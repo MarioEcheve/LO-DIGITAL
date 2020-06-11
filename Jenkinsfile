@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Fetch Dependencies') {
       agent {
-        docker 'node:10.14.0-alpine'
+        docker 'node:12.0.0'
       }
       steps {
         sh 'npm install -g @angular/cli --unsafe-perm=true --allow-root'
@@ -13,7 +13,7 @@ pipeline {
     }
     stage('Lint') {
       agent {
-        docker 'node:10.14.0-alpine'
+        docker 'node:12.0.0'
       }
       steps {
         unstash 'node_modules'
