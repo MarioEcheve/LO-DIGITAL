@@ -7,4 +7,4 @@ RUN npm run build
 
 # Stage "Coy to Nginx"
 FROM nginx:1.17
-COPY --from=build-stag /app/dist /usr/share/nginx/html
+COPY --from=build-stage /app/dist /usr/share/nginx/html
