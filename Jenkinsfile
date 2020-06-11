@@ -6,7 +6,7 @@ pipeline {
         docker 'node:10.14.0-alpine'
       }
       steps {
-        sh 'npm install -g @angular/cli'
+        sh 'npm install -g @angular/cli --unsafe-perm=true --allow-root'
         sh 'npm install'
         stash includes: 'node_modules/', name: 'node_modules'
       }
