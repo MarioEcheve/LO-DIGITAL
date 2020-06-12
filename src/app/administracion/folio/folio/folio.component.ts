@@ -11,6 +11,20 @@ const defaultConfig: DropzoneConfigInterface = {
   styleUrls: ["./folio.component.css"],
 })
 export class FolioComponent implements OnInit {
+  singleConfig: DropzoneConfigInterface = {
+    ...defaultConfig,
+    ...{
+      maxFiles: 1,
+    },
+  };
+
+  multipleConfig: DropzoneConfigInterface = {
+    ...defaultConfig,
+    ...{
+      maxFiles: 10,
+    },
+  };
+
   cities = [
     { value: "paris-0", viewValue: "Paris" },
     { value: "miami-1", viewValue: "Miami" },
