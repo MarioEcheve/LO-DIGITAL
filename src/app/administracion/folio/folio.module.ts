@@ -13,6 +13,15 @@ import { NgxFileDropModule } from "ngx-file-drop";
 import { ArchivoComponent } from "./archivo/archivo.component";
 import { MatTableModule } from "@angular/material/table";
 import { DropzoneModule } from "ngx-dropzone-wrapper";
+import { DROPZONE_CONFIG } from "ngx-dropzone-wrapper";
+import { DropzoneConfigInterface } from "ngx-dropzone-wrapper";
+
+const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
+  // Change this to your upload POST address:
+  url: "https://httpbin.org/post",
+  maxFilesize: 50,
+  acceptedFiles: "image/*",
+};
 
 @NgModule({
   declarations: [
@@ -33,6 +42,12 @@ import { DropzoneModule } from "ngx-dropzone-wrapper";
     NgxFileDropModule,
     MatTableModule,
     DropzoneModule,
+  ],
+  providers: [
+    {
+      provide: DROPZONE_CONFIG,
+      useValue: DEFAULT_DROPZONE_CONFIG,
+    },
   ],
 })
 export class FolioModule {}
