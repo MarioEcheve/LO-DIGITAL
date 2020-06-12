@@ -9,7 +9,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "build --prod --aot",
+    "build": "node ./node_modules/@angular/cli/bin/ng build --aot --prod",
     "test": "node ./node_modules/@angular/cli/bin/ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
