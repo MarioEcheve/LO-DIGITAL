@@ -4,7 +4,7 @@ declare var $: any;
 
 @Component({
     selector: 'app-login-cmp',
-    templateUrl: './login.component.html'
+    templateUrl: './login.component.html',       
 })
 
 export class LoginComponent implements OnInit, OnDestroy {

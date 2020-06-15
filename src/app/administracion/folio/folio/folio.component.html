@@ -106,7 +106,26 @@
         <mat-form-field class="example-full-width">
           <input matInput placeholder="Asunto" type="text" value="" />
         </mat-form-field>
-        <angular-editor [placeholder]="'Ingrese anotación...'"></angular-editor>
+        <angular-editor [placeholder]="'Ingrese anotación...'"></angular-editor>        
+        <hr>
+        <div
+          [dropzone]="multipleConfig"
+          class="dropzone dropzone-container"
+          message="Click or drag images here to upload"
+          (init)="onUploadInit($event)"
+          (error)="onUploadError($event)"
+          (success)="onUploadSuccess($event)"
+        >
+          <div class="dz-message needsclick">
+            <h4 class="mt-4">
+              Arrastre los arhivos aquí o haga Click para seleccionarlos y adjuntar.
+            </h4>
+            <p class="dropzone-msg-desc">
+              El peso de cada archivo no puden superar los 50 mb, con un total máximo de 10 archivos por folio.
+            </p>
+          </div>
+        </div>
+
         <hr />
         <button
           mat-raised-button
@@ -116,58 +135,42 @@
           <span class="btn-label">
             <i class="material-icons">close</i>
           </span>
-          ELIMINAR
+          Eliminar
         </button>
-        <div class="pull-right">
+        <div class="pull-right mb-3">
           <button mat-raised-button type="submit" class="btn btn-default mr-1">
             <span class="btn-label">
               <i class="material-icons">mail</i>
             </span>
-            INFORMAR
+            Informar
+          </button>
+          <button mat-raised-button type="submit" class="btn btn-out-default mr-1">
+           
+            <span class="btn-label">
+              <i class="material-icons">mail</i>
+            </span>
+            Informar
           </button>
           <button mat-raised-button type="submit" class="btn btn-default mr-1">
             <span class="btn-label">
               <i class="material-icons">get_app</i>
             </span>
-            GUARDAR
+            Guardar
           </button>
           <button mat-raised-button type="submit" class="btn btn-default mr-1">
             <span class="btn-label">
               <i class="material-icons">pageview</i>
             </span>
-            VISTA PREVIA
+            Vista Previa
           </button>
           <button mat-raised-button type="submit" class="btn btn-primary">
             <span class="btn-label">
               <i class="material-icons">check</i>
             </span>
-            FIRMAR
+            Firmar
           </button>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <div
-            [dropzone]="multipleConfig"
-            class="dropzone dropzone-container"
-            message="Click or drag images here to upload"
-            (init)="onUploadInit($event)"
-            (error)="onUploadError($event)"
-            (success)="onUploadSuccess($event)"
-          >
-            <div class="dz-message needsclick">
-              <h3 class="dropzone-msg-title mt-4">
-                Drop files here or Click to upload.
-              </h3>
-
-              <p class="dropzone-msg-desc">
-                This is just a demo dropzone. Selected files are
-                <strong>not</strong> actually uploaded.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      </div>    
     </div>
   </div>
 </div>
