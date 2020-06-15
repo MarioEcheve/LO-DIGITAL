@@ -1,8 +1,8 @@
-import { NgModule } from "@angular/core";
+import { NgModule, LOCALE_ID } from "@angular/core";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule } from "@angular/router";
-import { HttpClientModule } from "@angular/common/http";
-import { APP_BASE_HREF } from "@angular/common";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { APP_BASE_HREF, DatePipe } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 
@@ -47,6 +47,9 @@ import { FixedpluginModule } from "./shared/fixedplugin/fixedplugin.module";
 import { AdminLayoutComponent } from "./layouts/admin/admin-layout.component";
 import { AuthLayoutComponent } from "./layouts/auth/auth-layout.component";
 import { AppRoutes } from "./app.routing";
+import { NgxWebstorageModule } from "ngx-webstorage";
+import { Title } from "@angular/platform-browser";
+import { AuthInterceptor } from "./administracion/configs/auth.interceptor";
 
 @NgModule({
   exports: [
@@ -94,7 +97,7 @@ export class MaterialModule {}
       useHash: true,
     }),
     HttpClientModule,
-
+    NgxWebstorageModule.forRoot(),
     MaterialModule,
     SidebarModule,
     NavbarModule,
@@ -102,7 +105,20 @@ export class MaterialModule {}
     FixedpluginModule,
   ],
   declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent],
-  providers: [MatNativeDateModule],
+  providers: [
+    MatNativeDateModule,
+    Title,
+    {
+      provide: LOCALE_ID,
+      useValue: "en",
+    },
+    DatePipe,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -61,6 +61,7 @@
     "ngx-chips": "2.1.0",
     "ngx-dropzone-wrapper": "^9.0.0",
     "ngx-file-drop": "^9.0.1",
+    "ngx-webstorage": "^5.0.0",
     "nouislider": "14.1.1",
     "perfect-scrollbar": "1.5.0",
     "rxjs": "6.5.4",
