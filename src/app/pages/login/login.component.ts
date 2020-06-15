@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, OnDestroy } from "@angular/core";
 import { LoginService } from "../../core/login/login.service";
 import { FormBuilder, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { AccountService } from "src/app/core/auth/account.service";
 
 declare var $: any;
 
@@ -26,10 +27,17 @@ export class LoginComponent implements OnInit {
     private element: ElementRef,
     private fb: FormBuilder,
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
+    private accountService: AccountService
   ) {
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;
+    if (this.accountService.isAuthenticated()) {
+      this.router.navigate(["dashboard"]);
+    } else {
+      this.nativeElement = element.nativeElement;
+      this.sidebarVisible = false;
+    }
   }
 
   ngOnInit() {
