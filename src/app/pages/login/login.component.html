@@ -12,13 +12,12 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-4 col-md-6 col-sm-6 ml-auto mr-auto">
-          <form class="form" method="" action="">
-            <div class="card card-login card-hidden">             
+          <form [formGroup]="loginForm">
+            <div class="card card-login card-hidden">
               <span class="mb-2 mt-5" style="text-align: center;">
                 <img src="/assets/img/accesologo.jpg" />
               </span>
               <div class="card-body">
-
                 <span class="bmd-form-group">
                   <div class="input-group">
                     <div class="input-group-prepend">
@@ -30,10 +29,11 @@
                       type="text"
                       class="form-control"
                       placeholder="RUT"
+                      formControlName="username"
                     />
                   </div>
                 </span>
-               
+
                 <span class="bmd-form-group">
                   <div class="input-group">
                     <div class="input-group-prepend">
@@ -45,17 +45,25 @@
                       type="password"
                       class="form-control"
                       placeholder="Contraseña"
+                      formControlName="password"
                     />
                   </div>
                 </span>
                 <div class="d-flex justify-content-end">
-                  <a href="" class="align-content-end"><strong>¿Olvidaste tu contraseña?</strong></a>
+                  <a href="" class="align-content-end"
+                    ><strong>¿Olvidaste tu contraseña?</strong></a
+                  >
                 </div>
               </div>
               <div class="card-footer justify-content-center mt-3">
-                <a href="#dashboard" class="btn btn-primary btn-block"
-                  >Ingresar</a
+                <button
+                  mat-raised-button
+                  class="btn btn-primary btn-block"
+                  (click)="login()"
+                  [disabled]="loginForm.invalid"
                 >
+                  Ingresar
+                </button>
               </div>
               <div style="text-align: center;" class="mt-4 mb-3">
                 <span
@@ -98,8 +106,8 @@
           </ul>
         </nav> -->
         <div class="copyright pull-right">
-          &copy;
-          LODigital, Plataforma desarrollada por <a href="https://www.linksystem.cl">LinkSystem</a> Spa.
+          &copy; LODigital, Plataforma desarrollada por
+          <a href="https://www.linksystem.cl">LinkSystem</a> Spa.
         </div>
       </div>
     </footer>
