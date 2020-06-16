@@ -10,7 +10,7 @@ declare var $: any;
   selector: "app-login-cmp",
   templateUrl: "./login.component.html",
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   authenticationError = false;
   noValidos = false;
   loginForm = this.fb.group({
@@ -68,13 +68,13 @@ export class LoginComponent implements OnInit {
       body.classList.remove("nav-open");
     }
   }
-  /*
+
   ngOnDestroy() {
     const body = document.getElementsByTagName("body")[0];
     body.classList.remove("login-page");
     body.classList.remove("off-canvas-sidebar");
   }
-  */
+
   login() {
     this.loginService
       .login({
