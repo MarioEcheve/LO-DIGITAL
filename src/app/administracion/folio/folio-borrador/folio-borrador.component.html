@@ -176,13 +176,13 @@
                   <!-- <span class="btn-label">
                     <i class="material-icons">pageview</i>
                   </span> -->
-                  Vista Previa
+                  Previsualizar
                 </button>
                 <button mat-raised-button type="submit" class="btn btn-primary">
                   <!-- <span class="btn-label">
                     <i class="material-icons">check</i>
                   </span> -->
-                  Firmar
+                  Firmar Folio
                 </button>
               </div>
             </div>
@@ -192,94 +192,58 @@
           </mat-tab>
           <mat-tab label="Alertas">
             <div class="container-fluid mt-3">
-              <div
-                class="alert alert-success alert-with-icon"
-                data-notify="container"
-              >
+              <button mat-raised-button class="btn btn-primary">
+                <!-- <span class="btn-label">
+                  <i class="material-icons">check</i>
+                </span> -->
+                Nueva Alerta
+              </button>
+              <div class="alert alert-success alert-with-icon" data-notify="container">
                 <i class="material-icons" data-notify="icon">notifications</i>
-                <button
-                  mat-button
-                  type="button"
-                  class="close"
-                  data-dismiss="alert"
-                  aria-label="Close"
-                >
-                  <i class="material-icons">close</i>
-                </button>
-                <span
-                  data-notify="icon"
-                  class="now-ui-icons ui-1_bell-53"
-                ></span>
-                <h5>Recordatorio</h5>
-                <span data-notify="message">
-                  <div class="row">
-                    <div class="col-3 text-left">
-                      <strong>Estado: </strong>Vigente
-                    </div>
-                    <div class="col-3 text-center">
-                      <strong>Alertar el: </strong>22/10/2020 12:00
-                    </div>
-                    <div class="col-3 text-right">
-                      <strong>Importancia: </strong>Normal
-                    </div>
-                    <div class="col-3 text-right">
-                      <strong>Enviar e-mail: </strong>Si
-                    </div>
+                <span data-notify="icon" class="now-ui-icons ui-1_bell-53"></span>
+                <div class="row">
+                  <div class="col-6">
+                    <h5>Recordatorio</h5>
                   </div>
-                  <hr />
+                  <div class="col-6 text-right">
+                    <button style="background-color: #ffffff" class="btn btn-sm btn-round btn-fab mr-1">
+                      <i class="material-icons">check</i>
+                    </button>
+                    <button style="background-color: #ffffff" class="btn btn-sm btn-round btn-fab mr-1">
+                      <i class="material-icons">check</i>
+                    </button>
+                    <button style="background-color: #ffffff" class="btn btn-sm btn-round btn-fab">
+                      <i class="material-icons">check</i>
+                    </button>                    
+                  </div>
+                </div>
+                <div class="row mt-1">                  
+                  <div class="col-md-3 text-left">
+                    <strong>Estado: </strong>Vigente
+                  </div>
+                  <div class="col-md-3 text-center">
+                    <strong>Alertar el: </strong>22/10/2020 12:00
+                  </div>
+                  <div class="col-md-3 text-right">
+                    <strong>Importancia: </strong>Normal
+                  </div>
+                  <div class="col-md-3 text-right">
+                    <strong>Enviar e-mail: </strong>Si
+                  </div>                    
+                </div>
+                <hr>
+                <!-- <span data-notify="message">
                   This is a notification with close button and icon and have
                   many lines. You can see that the icon and the close button are
                   always vertically aligned. This is a beautiful notification.
                   So you don't have to worry about the style.
-                </span>
-                <button>Descartar</button>
+                </span> -->
+                <p>
+                  This is a notification with close button and icon and have many lines. You can see that the icon and the close button are always vertically aligned. This is a beautiful notification.
+                  So you don't have to worry about the style.
+                </p>                
               </div>
 
-              <div
-                class="alert alert-success alert-with-icon"
-                data-notify="container"
-              >
-                <i class="material-icons" data-notify="icon">notifications</i>
-                <button
-                  mat-button
-                  type="button"
-                  class="close"
-                  data-dismiss="alert"
-                  aria-label="Close"
-                >
-                  <i class="material-icons">close</i>
-                </button>
-                <span
-                  data-notify="icon"
-                  class="now-ui-icons ui-1_bell-53"
-                ></span>
-                <h5>Recordatorio</h5>
-                <span data-notify="message">
-                  <div class="row">
-                    <div class="col-3 text-left">
-                      <strong>Estado: </strong>Vigente
-                    </div>
-                    <div class="col-3 text-center">
-                      <strong>Alertar el: </strong>22/10/2020 12:00
-                    </div>
-                    <div class="col-3 text-right">
-                      <strong>Importancia: </strong>Normal
-                    </div>
-                    <div class="col-3 text-right">
-                      <strong>Enviar e-mail: </strong>Si
-                    </div>
-                  </div>
-                  <hr />
-                  This is a notification with close button and icon and have
-                  many lines. You can see that the icon and the close button are
-                  always vertically aligned. This is a beautiful notification.
-                  So you don't have to worry about the style.
-                </span>
-                <button type="button" class="btn btn-link">Editar</button>
-                <button type="button" class="btn btn-danger btn-link">
-                  Eliminar
-                </button>
-              </div>
             </div>
           </mat-tab>
         </mat-tab-group>
