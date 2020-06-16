@@ -15,7 +15,6 @@ import { HttpModule } from "@angular/http";
     RouterModule.forChild(DashboardRoutes),
     FormsModule,
     MdModule,
-    MaterialModule,
     HttpClientModule,
     HttpModule,
   ],
