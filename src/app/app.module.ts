@@ -50,6 +50,7 @@ import { AppRoutes } from "./app.routing";
 import { NgxWebstorageModule } from "ngx-webstorage";
 import { Title } from "@angular/platform-browser";
 import { AuthInterceptor } from "./administracion/configs/auth.interceptor";
+import { AuthGuard } from "./auth-guard.service";
 
 @NgModule({
   exports: [
