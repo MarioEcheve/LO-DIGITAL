@@ -1,489 +1,289 @@
 <div class="main-content">
-    <div class="container-fluid">
-      <!-- Inicio card de Creación Contrato -->
-      <div class="card">
-        <div class="card-header card-header-rose card-header-icon">
-          <div class="card-icon">
-            <i class="material-icons">mail_outline</i>
-          </div>
-          <h4 class="card-title">Nuevo Contrato</h4>
-        </div>
-        <div class="card-body">
-          <form method="#" action="#">
-            <div class="row">
-              <mat-form-field class="example-full-width col-md-3">
-                <input matInput placeholder="Cod. Contrato *" type="text" />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-9">
-                <input matInput placeholder="Nombre Contrato *" type="text" />
-              </mat-form-field>
-            </div>
-            <mat-form-field class="example-full-width">
-              <textarea matInput placeholder="Descripción" rows="2"></textarea>
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Dirección *" type="text" />
-            </mat-form-field>
-            <div class="row">
-              <mat-form-field class="col-md-6">
-                <mat-select placeholder="Región *" name="city">
-                  <mat-option *ngFor="let city of cities" [value]="city.value">
-                    {{ city.viewValue }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field class="col-md-6">
-                <mat-select placeholder="Comuna *" name="city">
-                  <mat-option *ngFor="let city of cities" [value]="city.value">
-                    {{ city.viewValue }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="row">
-              <mat-form-field class="col-md-6">
-                <mat-select placeholder="Tipo Contrato *" name="city">
-                  <mat-option *ngFor="let city of cities" [value]="city.value">
-                    {{ city.viewValue }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field class="col-md-6">
-                <mat-select placeholder="Modalidad Contrato *" name="city">
-                  <mat-option *ngFor="let city of cities" [value]="city.value">
-                    {{ city.viewValue }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="row">
-              <mat-form-field class="example-full-width col-md-6">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <mat-tab-group>
+          <mat-tab label="Borrador">
+            <div class="container-fluid">
+              <h5 style="color: #4285f4;" class="mt-3">
+                <!-- <h5 style="color: #41739cd7;" class="mt-3"> -->
+                <strong>Edificio Santiago Centro - Cód.:1254</strong>
+              </h5>
+              <span style="line-height: 22px;">Libro Maestro - Cód.: LMO01</span
+              ><br />
+              <span>Clase libro: Maestro</span><br />
+              <span>Tipo firma: Digital Avanzada</span>
+              <hr />
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-5">
+                  <input
+                    matInput
+                    placeholder="Borrador creado por"
+                    type="text"
+                    value="Fernando Vilches Soleman"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-3">
+                  <input
+                    matInput
+                    placeholder="Perfil usuario"
+                    type="text"
+                    value="Asistente"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-2">
+                  <input
+                    matInput
+                    placeholder="Creación"
+                    type="text"
+                    value="12/02/2020 12:32"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-2">
+                  <input
+                    matInput
+                    placeholder="Actualización"
+                    type="text"
+                    value="12/02/2020 12:32"
+                    disabled
+                  />
+                </mat-form-field>
+              </div>
+              <mat-form-field class="example-full-width">
                 <input
                   matInput
-                  placeholder="Otro tipo de Contrato *"
+                  placeholder="Respuesta de:"
                   type="text"
+                  value="Libro Maestro - Folio Nº001"
+                  disabled
                 />
               </mat-form-field>
-              <mat-form-field class="example-full-width col-md-6">
+              <!-- <div class="">          
+                Folios de referencia: <tag-input [(ngModel)]='regularItems' theme='filled-theme'></tag-input>
+              </div> -->
+              <mat-form-field class="example-full-width disabled">
                 <input
                   matInput
-                  placeholder="Otra modalidad de Contrato *"
+                  placeholder="Referecia de:"
                   type="text"
+                  value="Libro Maestro - Folio Nº006"
+                  disabled
                 />
               </mat-form-field>
-            </div>
-            <div class="row">
-              <div class="row col-md-4">
-                <mat-form-field class="col-md-3">
-                  <mat-select placeholder="Tipo Moneda" name="city">
-                    <mat-option *ngFor="let city of cities" [value]="city.value">
+              <div class="row">
+                <mat-form-field class="col-md-7">
+                  <mat-select placeholder="Tipo Folio" name="city">
+                    <mat-option
+                      *ngFor="let city of cities"
+                      [value]="city.value"
+                    >
                       {{ city.viewValue }}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-  
-                <mat-form-field class="example-full-width col-md-6">
-                  <input
-                    matInput
-                    placeholder="Otro tipo de Contrato"
-                    type="text"
-                  />
-                </mat-form-field>
-                <div class="col-md-3">
-                  <mat-form-field>
-                    <mat-select placeholder="Tipo Monto" name="city">
-                      <mat-option
-                        *ngFor="let city of cities"
-                        [value]="city.value"
-                      >
-                        {{ city.viewValue }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                  <div class="row">
+                    <div class="togglebutton togglebutton-success col-md-7">
+                      <label>
+                        <input type="checkbox" checked="" />
+                        <span class="toggle"></span>
+                        Solicitar respuesta
+                      </label>
+                    </div>
+                    <mat-form-field class="col-5">
+                      <input
+                        matInput
+                        [matDatepicker]="picker"
+                        placeholder="Fecha Requerida"
+                        (click)="picker.open()"
+                      />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="picker"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
                 </div>
               </div>
-  
-              <mat-form-field class="col-md-4">
-                <input
-                  matInput
-                  [matDatepicker]="picker"
-                  placeholder="Fecha Inicio"
-                  (click)="picker.open()"
-                />
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="picker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Asunto" type="text" value="" />
               </mat-form-field>
-              <mat-form-field class="col-md-4">
-                <input
-                  matInput
-                  [matDatepicker]="picker"
-                  placeholder="Fecha Término"
-                  (click)="picker.open()"
-                />
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="picker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-            </div>
-            <hr />
-            <h4>Mandante</h4>
-            <div class="row">
-              <mat-form-field class="col-md-2">
-                <mat-select placeholder="RUT *" name="city">
-                  <mat-option *ngFor="let city of cities" [value]="city.value">
-                    {{ city.viewValue }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-5">
-                <input
-                  matInput
-                  placeholder="Razón Social"
-                  type="text"
-                  value="Ilustre Minicipalidad de La Serena"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="col-md-5">
-                <mat-select placeholder="Dependencia *" name="city">
-                  <mat-option *ngFor="let city of cities" [value]="city.value">
-                    {{ city.viewValue }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="row">
-              <mat-form-field class="example-full-width col-md-4">
-                <input
-                  matInput
-                  type="text"
-                  placeholder="Dirección"
-                  value="Av. Balmaceda 254"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-4">
-                <input
-                  matInput
-                  type="text"
-                  placeholder="Comuna"
-                  value="La Serena"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-4">
-                <input
-                  matInput
-                  type="text"
-                  placeholder="Región"
-                  value="4º Región de Coquimbo"
-                  disabled
-                />
-              </mat-form-field>
-            </div>
-            <hr />
-            <h4>Contratista</h4>
-            <div class="row">
-              <mat-form-field class="col-md-2">
-                <mat-select placeholder="RUT *" name="city">
-                  <mat-option *ngFor="let city of cities" [value]="city.value">
-                    {{ city.viewValue }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-5">
-                <input
-                  matInput
-                  placeholder="Razón Social"
-                  type="text"
-                  value="Constructora La Serena Ltda."
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="col-md-5">
-                <mat-select placeholder="Dependencia *" name="city">
-                  <mat-option *ngFor="let city of cities" [value]="city.value">
-                    {{ city.viewValue }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="row">
-              <mat-form-field class="example-full-width col-md-4">
-                <input
-                  matInput
-                  type="text"
-                  placeholder="Dirección"
-                  value="Av. Cisternas 4758"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-4">
-                <input
-                  matInput
-                  type="text"
-                  placeholder="Comuna"
-                  value="La Serena"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-4">
-                <input
-                  matInput
-                  type="text"
-                  placeholder="Región"
-                  value="4º Región de Coquimbo"
-                  disabled
-                />
-              </mat-form-field>
-            </div>
-            <hr />
-            <h4>Configuración de Permisos</h4>
-            <div class="togglebutton">
-              <label>
-                <input type="checkbox" checked="" />
-                <span class="toggle"></span>
-                Permitir al Administrador del Mandante crear Libros
-              </label>
-            </div>
-            <div class="togglebutton togglebutton-success">
-              <label>
-                <input type="checkbox" checked="" />
-                <span class="toggle"></span>
-                Permitir al Administrador del Contratista crear Libros
-              </label>
-            </div>
-            <div class="togglebutton">
-              <label>
-                <input type="checkbox" checked="" />
-                <span class="toggle"></span>
-                Permitir al Administrador del Mandante actualizar información del
-                Contrato
-              </label>
-            </div>
-            <div class="togglebutton togglebutton-success">
-              <label>
-                <input type="checkbox" checked="" />
-                <span class="toggle"></span>
-                Permitir al Administrador del Contratista actualizar información
-                del Contrato
-              </label>
-            </div>
-            <hr />
-            <h4>Contacto Comercial</h4>
-            <div class="row">
-              <mat-form-field class="example-full-width col-md-6">
-                <input matInput placeholder="Nombre Contacto *" type="text" />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-6">
-                <input matInput placeholder="Cargo" type="text" />
-              </mat-form-field>
-            </div>
-            <div class="row">
-              <mat-form-field class="example-full-width col-md-4">
-                <input matInput placeholder="Teléfono Celular *" type="text" />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-4">
-                <input matInput placeholder="Teléfono Fijo" type="text" />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-4">
-                <input matInput placeholder="Email *" type="email" />
-              </mat-form-field>
-            </div>
-            <!-- <mat-checkbox>Subscribe to newsletter</mat-checkbox> -->
-          </form>
-        </div>
-        <div class="card-footer">
-          <button mat-raised-button type="submit" class="btn btn-fill btn-rose">
-            Submit
-          </button>
-        </div>
-      </div>
-    </div>
-    <!-- Término card de Creación Contrato -->
-    <!-- card generica -->
-    <div class="card">
-      <div class="card-header card-header-rose card-header-icon">
-        <div class="card-icon">
-          <i class="material-icons">business</i>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="container col-md-4">
-              <h3>dsdasdasd</h3>
-            </div>
-            <div class="container col-md-4">
-              <h3>dsdasdasd</h3>
-            </div>
-            <div class="container col-md-4">
-              <h3>dsdasdasd</h3>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- card generica -->
-  
-    <!-- Inicio card de Creación Libro -->
-    <div class="card">
-      <div class="card-header card-header-rose card-header-icon">
-        <div class="card-icon">
-          <i class="material-icons">book</i>
-        </div>
-        <!-- <h4 class="card-title">Nuevo Libro</h4> -->
-      </div>
-      <div class="card-body">
-        <form method="#" action="#">
-          <div class="row">
-            <mat-form-field class="example-full-width col-md-3">
-              <input matInput placeholder="Cod. Libro" type="text" />
-            </mat-form-field>
-            <mat-form-field class="example-full-width col-md-9">
-              <input matInput placeholder="Nombre Libro" type="text" />
-            </mat-form-field>
-          </div>
-          <mat-form-field class="example-full-width">
-            <textarea matInput placeholder="Descripción" rows="2"></textarea>
-          </mat-form-field>
-          <div class="row">
-            <mat-form-field class="col-md-6">
-              <mat-select placeholder="Tipo Libro" name="city">
-                <mat-option *ngFor="let city of cities" [value]="city.value">
-                  {{ city.viewValue }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field class="col-md-6">
-              <mat-select placeholder="Tipo Firma" name="city">
-                <mat-option *ngFor="let city of cities" [value]="city.value">
-                  {{ city.viewValue }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <hr />
-          <h4>Configuración de Permisos</h4>
-          <div class="togglebutton">
-            <label>
-              <input type="checkbox" checked="" />
-              <span class="toggle"></span>
-              Permitir al Administrador del Mandante generar folios
-            </label>
-          </div>
-          <div class="togglebutton togglebutton-success">
-            <label>
-              <input type="checkbox" checked="" />
-              <span class="toggle"></span>
-              Permitir al Administrador del Contratista generar folios
-            </label>
-          </div>
-          <div class="togglebutton">
-            <label>
-              <input type="checkbox" checked="" />
-              <span class="toggle"></span>
-              Permitir al Administrador del Mandante abrir el Libro
-            </label>
-          </div>
-          <div class="togglebutton togglebutton-success">
-            <label>
-              <input type="checkbox" checked="" />
-              <span class="toggle"></span>
-              Permitir al Administrador del Contratista abrir el Libro
-            </label>
-          </div>
-          <div class="togglebutton">
-            <label>
-              <input type="checkbox" checked="" />
-              <span class="toggle"></span>
-              Permitir al Administrador del Mandante cerrar el Libro
-            </label>
-          </div>
-          <div class="togglebutton togglebutton-success">
-            <label>
-              <input type="checkbox" checked="" />
-              <span class="toggle"></span>
-              Permitir al Administrador del Contratista cerrar el Libro
-            </label>
-          </div>
-          <div class="togglebutton">
-            <label>
-              <input type="checkbox" checked="" />
-              <span class="toggle"></span>
-              Solicitar confirmación de lectura de Folios al Mandante
-            </label>
-          </div>
-          <div class="togglebutton togglebutton-success">
-            <label>
-              <input type="checkbox" checked="" />
-              <span class="toggle"></span>
-              Solicitar confirmación de lectura de Folios al Contratista
-            </label>
-          </div>
-        </form>
-      </div>
-      <div class="card-footer">
-        <button mat-raised-button type="" class="btn btn-fill btn-rose">
-          Cancelar
-        </button>
-        <button mat-raised-button type="submit" class="btn btn-fill btn-rose">
-          Crear Libro
-        </button>
-      </div>
-    </div>
-    <!-- Término card de Creación Libro-->
-  
-    <div class="table-responsive">
-      <table class="table">
-        <thead>
-          <tr>
-            <th class="text-center">{{ tableData1.headerRow[0] }}</th>
-            <th>{{ tableData1.headerRow[1] }}</th>
-            <th>{{ tableData1.headerRow[2] }}</th>
-            <th>{{ tableData1.headerRow[3] }}</th>
-            <th class="text-right">{{ tableData1.headerRow[4] }}</th>
-            <th class="text-right">{{ tableData1.headerRow[5] }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let row of tableData1.dataRows">
-            <td class="text-center">{{ row[0] }}</td>
-            <td>{{ row[1] }}</td>
-            <td>{{ row[2] }}</td>
-            <td>{{ row[3] }}</td>
-            <td class="text-right">&euro; {{ row[4] }}</td>
-            <td class="td-actions text-right">
+              <angular-editor
+                [placeholder]="'Ingrese anotación...'"
+              ></angular-editor>
+              <hr />
+              <div
+                [dropzone]="multipleConfig"
+                class="dropzone dropzone-container"
+                message="Click or drag images here to upload"
+                (init)="onUploadInit($event)"
+                (error)="onUploadError($event)"
+                (success)="onUploadSuccess($event)"
+              >
+                <div class="dz-message needsclick">
+                  <h4 class="mt-4">
+                    Arrastre los arhivos aquí o haga Click para seleccionarlos y
+                    adjuntar.
+                  </h4>
+                  <p class="dropzone-msg-desc">
+                    El peso de cada archivo no puden superar los 50 mb, con un
+                    total máximo de 10 archivos por folio.
+                  </p>
+                </div>
+              </div>
+              <hr />
               <button
                 mat-raised-button
-                type="button"
-                class="btn btn-info {{ row[5] }}"
+                type="submit"
+                class="btn btn-danger pull-left"
               >
-                <i class="material-icons">person</i>
+                <!--  <span class="btn-label">
+                  <i class="material-icons">close</i>
+                </span> -->
+                Eliminar
               </button>
-              <button
-                mat-raised-button
-                type="button"
-                class="btn btn-success {{ row[5] }}"
+              <div class="pull-right mb-3">
+                <button
+                  mat-raised-button
+                  type="submit"
+                  class="btn btn-default mr-1"
+                >
+                  <!-- <span class="btn-label">
+                    <i class="material-icons">mail</i>
+                  </span> -->
+                  Informar
+                </button>
+                <button
+                  mat-raised-button
+                  type="submit"
+                  class="btn btn-default mr-1"
+                >
+                  <!-- <span class="btn-label">
+                    <i class="material-icons">get_app</i>
+                  </span> -->
+                  Guardar
+                </button>
+                <button
+                  mat-raised-button
+                  type="submit"
+                  class="btn btn-default mr-1"
+                >
+                  <!-- <span class="btn-label">
+                    <i class="material-icons">pageview</i>
+                  </span> -->
+                  Vista Previa
+                </button>
+                <button mat-raised-button type="submit" class="btn btn-primary">
+                  <!-- <span class="btn-label">
+                    <i class="material-icons">check</i>
+                  </span> -->
+                  Firmar
+                </button>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Notas">
+            NOTAS
+          </mat-tab>
+          <mat-tab label="Alertas">
+            <div class="container-fluid mt-3">
+              <div
+                class="alert alert-success alert-with-icon"
+                data-notify="container"
               >
-                <i class="material-icons">edit</i>
-              </button>
-              <button
-                mat-raised-button
-                type="button"
-                class="btn btn-danger {{ row[5] }}"
+                <i class="material-icons" data-notify="icon">notifications</i>
+                <button
+                  mat-button
+                  type="button"
+                  class="close"
+                  data-dismiss="alert"
+                  aria-label="Close"
+                >
+                  <i class="material-icons">close</i>
+                </button>
+                <span
+                  data-notify="icon"
+                  class="now-ui-icons ui-1_bell-53"
+                ></span>
+                <h5>Recordatorio</h5>
+                <span data-notify="message">
+                  <div class="row">
+                    <div class="col-3 text-left">
+                      <strong>Estado: </strong>Vigente
+                    </div>
+                    <div class="col-3 text-center">
+                      <strong>Alertar el: </strong>22/10/2020 12:00
+                    </div>
+                    <div class="col-3 text-right">
+                      <strong>Importancia: </strong>Normal
+                    </div>
+                    <div class="col-3 text-right">
+                      <strong>Enviar e-mail: </strong>Si
+                    </div>
+                  </div>
+                  <hr />
+                  This is a notification with close button and icon and have
+                  many lines. You can see that the icon and the close button are
+                  always vertically aligned. This is a beautiful notification.
+                  So you don't have to worry about the style.
+                </span>
+                <button>Descartar</button>
+              </div>
+
+              <div
+                class="alert alert-success alert-with-icon"
+                data-notify="container"
               >
-                <i class="material-icons">close</i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                <i class="material-icons" data-notify="icon">notifications</i>
+                <button
+                  mat-button
+                  type="button"
+                  class="close"
+                  data-dismiss="alert"
+                  aria-label="Close"
+                >
+                  <i class="material-icons">close</i>
+                </button>
+                <span
+                  data-notify="icon"
+                  class="now-ui-icons ui-1_bell-53"
+                ></span>
+                <h5>Recordatorio</h5>
+                <span data-notify="message">
+                  <div class="row">
+                    <div class="col-3 text-left">
+                      <strong>Estado: </strong>Vigente
+                    </div>
+                    <div class="col-3 text-center">
+                      <strong>Alertar el: </strong>22/10/2020 12:00
+                    </div>
+                    <div class="col-3 text-right">
+                      <strong>Importancia: </strong>Normal
+                    </div>
+                    <div class="col-3 text-right">
+                      <strong>Enviar e-mail: </strong>Si
+                    </div>
+                  </div>
+                  <hr />
+                  This is a notification with close button and icon and have
+                  many lines. You can see that the icon and the close button are
+                  always vertically aligned. This is a beautiful notification.
+                  So you don't have to worry about the style.
+                </span>
+                <button type="button" class="btn btn-link">Editar</button>
+                <button type="button" class="btn btn-danger btn-link">
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
     </div>
   </div>
-  
+</div>

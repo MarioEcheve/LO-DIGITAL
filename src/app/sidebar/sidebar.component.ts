@@ -74,7 +74,7 @@ export const ROUTES: RouteInfo[] = [
       { path: "folio", title: "Lista Folios", ab: "B" },
       { path: "folio-borrador", title: "Folio Borrador", ab: "B" },
       { path: "folio-firmado", title: "Folio Firmado", ab: "B" },
-      { path: "folio-archivo", title: "Folio Archvio", ab: "B" },
+      //{ path: "folio-archivo", title: "Folio Archivo", ab: "B" },
     ],
   },
   /*
