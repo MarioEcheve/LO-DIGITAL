@@ -20,6 +20,8 @@ import {
   PathLocationStrategy,
 } from "@angular/common";
 import { LoginService } from "src/app/core/login/login.service";
+import { UsuarioService } from "src/app/core/user/usuario.service";
+import { IUser } from "src/app/core/user/user.model";
 const misc: any = {
   navbar_menu_visible: 0,
   active_collapse: true,
@@ -39,6 +41,7 @@ export class NavbarComponent implements OnInit {
   private toggleButton: any;
   private sidebarVisible: boolean;
   private _router: Subscription;
+  usuario: IUser;
 
   @ViewChild("app-navbar-cmp", { static: false }) button: any;
 
@@ -47,11 +50,15 @@ export class NavbarComponent implements OnInit {
     private renderer: Renderer2,
     private element: ElementRef,
     private router: Router,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private usuarioService: UsuarioService
   ) {
     this.location = location;
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;
+    this.usuarioService.usuarioActual.subscribe((res) => {
+      this.usuario = res;
+    });
   }
   minimizeSidebar() {
     const body = document.getElementsByTagName("body")[0];
@@ -131,6 +138,8 @@ export class NavbarComponent implements OnInit {
           $layer.remove();
         }
       });
+
+    // implementacion de metodo para obtener el usuario actual
   }
   onResize(event) {
     if ($(window).width() > 991) {

@@ -69,6 +69,7 @@ export class DetalleContratoComponent
   matcher = new MyErrorStateMatcher();
 
   type: FormGroup;
+
   constructor(private formBuilder: FormBuilder) {}
 
   isFieldValid(form: FormGroup, field: string) {
@@ -82,6 +83,19 @@ export class DetalleContratoComponent
     };
   }
   ngOnInit() {
+    this.type = this.formBuilder.group({
+      // To add a validator, we must first convert the string value into an array. The first item in the array is the default value if any, then the next item in the array is the validator. Here we are adding a required validator meaning that the firstName attribute must have a value in it.
+      firstName: [null, Validators.required],
+      lastName: [null, Validators.required],
+      email: [
+        null,
+        [
+          Validators.required,
+          Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
+        ],
+      ],
+    });
+
     this.tableData1 = {
       headerRow: [
         "Código",
