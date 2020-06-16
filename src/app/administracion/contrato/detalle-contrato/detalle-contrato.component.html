@@ -1,391 +1,506 @@
 <div class="main-content">
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-10 mr-auto ml-auto">
-        <!--      Wizard container        -->
-        <div class="wizard-container">
-          <div class="card card-wizard" data-color="rose" id="wizardProfile">
-            <form [formGroup]="type" action="" method="">
-              <!--        You can switch " data-color="primary" "  with one of the next bright colors: "green", "orange", "red", "blue"       -->
-              <div class="card-header text-center">
-                <h3 class="card-title">
-                  Nuevo Contrato
-                </h3>
-                <h5 class="card-description">
-                  www.lodigital.cl
-                </h5>
-              </div>
-              <div class="wizard-navigation">
-                <ul class="nav nav-pills">
-                  <li class="nav-item">
-                    <a
-                      class="nav-link active"
-                      href="#contrato"
-                      data-toggle="tab"
-                      role="tab"
-                    >
-                      Datos del Contrato
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a
-                      class="nav-link"
-                      href="#mandante"
-                      data-toggle="tab"
-                      role="tab"
-                    >
-                      Datos Mandante
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a
-                      class="nav-link"
-                      href="#contratista"
-                      data-toggle="tab"
-                      role="tab"
-                    >
-                      Datos Contratista
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a
-                      class="nav-link"
-                      href="#configuracion"
-                      data-toggle="tab"
-                      role="tab"
-                    >
-                      Configuración y Permisos
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a
-                      class="nav-link"
-                      href="#contacto"
-                      data-toggle="tab"
-                      role="tab"
-                    >
-                      Contacto Comercial
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div class="card-body">
-                <div class="tab-content">
-                  <div class="tab-pane active" id="contrato">
-                    <h5 class="info-text">
-                      Ingrese la información general del Contrato
-                    </h5>                                        
-                    <div class="row justify-content-center">
-                      <!-- <div class="col-sm-4">
-                        <div class="picture-container">
-                          <div class="picture">
-                            <img
-                              src="./assets/img/default-avatar.png"
-                              class="picture-src"
-                              id="wizardPicturePreview"
-                              title=""
-                            />
-                            <input type="file" id="wizard-picture" />
-                          </div>
-                          <h6 class="description">Choose Picture</h6>
-                        </div>
-                      </div> -->
-                      <div class="col-sm-10">
-                        <div class="row">
-                          <mat-form-field class="example-full-width col-md-3">
-                            <input matInput placeholder="Cod. Contrato" type="text" />
-                          </mat-form-field>
-                          <mat-form-field class="example-full-width col-md-9">
-                            <input matInput placeholder="Nombre Contrato" type="text" />
-                          </mat-form-field>
-                        </div>
-                        <div class="row">
-                          <mat-form-field class="example-full-width col-md-12">
-                            <textarea matInput placeholder="Descripción" rows="2"></textarea>
-                          </mat-form-field>
-                          <mat-form-field class="example-full-width col-md-12">
-                            <input matInput placeholder="Dirección" type="text" />
-                          </mat-form-field>
-                        </div>
-                        <div class="row">
-                          <mat-form-field class="col-md-6">
-                            <mat-select placeholder="Región" name="city">
-                              <mat-option *ngFor="let city of cities" [value]="city.value">
-                                {{ city.viewValue }}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                          <mat-form-field class="col-md-6">
-                            <mat-select placeholder="Comuna" name="city">
-                              <mat-option *ngFor="let city of cities" [value]="city.value">
-                                {{ city.viewValue }}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
-                        <div class="row">
-                          <mat-form-field class="col-md-6">
-                            <mat-select placeholder="Tipo Contrato" name="city">
-                              <mat-option *ngFor="let city of cities" [value]="city.value">
-                                {{ city.viewValue }}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                          <mat-form-field class="col-md-6">
-                            <mat-select placeholder="Modalidad Contrato" name="city">
-                              <mat-option *ngFor="let city of cities" [value]="city.value">
-                                {{ city.viewValue }}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
-                        <div class="row">
-                          <mat-form-field class="example-full-width col-md-6">
-                            <input
-                              matInput
-                              placeholder="Otro tipo de Contrato *"
-                              type="text"
-                            />
-                          </mat-form-field>
-                          <mat-form-field class="example-full-width col-md-6">
-                            <input
-                              matInput
-                              placeholder="Otra modalidad de Contrato *"
-                              type="text"
-                            />
-                          </mat-form-field>
-                        </div>
-                        <!-- <div class="input-group form-control-lg">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">
-                              <i class="material-icons">face</i>
-                            </span>
-                          </div>
-                          <mat-form-field
-                            class="example-full-width has-label"
-                            [ngClass]="displayFieldCss(type, 'firstName')"
-                          >
-                            <input
-                              type="text"
-                              name="firstname"
-                              matInput
-                              id="text"
-                              placeholder="First Name"
-                              formControlName="firstName"
-                            />
-                          </mat-form-field>
-                        </div>
-                        <div class="input-group form-control-lg">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">
-                              <i class="material-icons">record_voice_over</i>
-                            </span>
-                          </div>
-                          <mat-form-field
-                            class="example-full-width has-label"
-                            [ngClass]="displayFieldCss(type, 'lastName')"
-                          >
-                            <input
-                              type="text"
-                              name="lastname"
-                              matInput
-                              id="text"
-                              placeholder="last Name"
-                              formControlName="lastName"
-                            />
-                          </mat-form-field>
-                        </div> -->
-                      </div>
-                      <!-- <div class="col-lg-10 mt-3">
-                        <div class="input-group form-control-lg">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">
-                              <i class="material-icons">email</i>
-                            </span>
-                          </div>
-                          <mat-form-field class="example-full-width">
-                            <input
-                              matInput
-                              placeholder="Email (required)"
-                              [formControl]="emailFormControl"
-                              type="email"
-                              id="exampleemalil"
-                              name="email"
-                            />
-                          </mat-form-field>
-                        </div>
-                      </div> -->
-                    </div>
-                  </div>
-                  <div class="tab-pane" id="mandante">
-                    <h5 class="info-text">Ingrese la información del Mandante</h5>
-                    <div class="row justify-content-center">
-                      <div class="col-lg-10">
-                        <span>Paso 1: Ingrese RUT para asignar el Mandante</span>
-                        <div class="row">                          
-                          <mat-form-field class="example-full-width col-md-3">
-                            <input matInput placeholder="RUT" type="text" />
-                          </mat-form-field>
-                          <mat-form-field class="example-full-width col-md-9">
-                            <input matInput placeholder="Nombre Razon Social" type="text" value="s/asignar" disabled/>
-                          </mat-form-field>
-                        </div>
-                        <hr>
-                        <span>Paso 2: Seleccione la Dependencia</span>
-                        <div class="row">
-                          <mat-form-field class="col-md-12">
-                            <mat-select placeholder="Dependencia" name="city">
-                              <mat-option *ngFor="let city of cities" [value]="city.value">
-                                {{ city.viewValue }}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
-                        <div class="row">              
-                          <mat-form-field class="example-full-width col-md-6">
-                            <input matInput placeholder="Comuna" type="text" value="s/asignar" disabled/>
-                          </mat-form-field>
-                          <mat-form-field class="example-full-width col-md-6">
-                            <input matInput placeholder="Región" type="text" value="s/asignar" disabled/>
-                          </mat-form-field>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane" id="contratista">
-                    <h5 class="info-text">Ingrese la información del Contratista</h5>
-                    <div class="row justify-content-center">
-                      <div class="col-lg-10">
-                        <span>Paso 1: Ingrese RUT para asignar el Contratista</span>
-                        <div class="row">                          
-                          <mat-form-field class="example-full-width col-md-3">
-                            <input matInput placeholder="RUT" type="text" />
-                          </mat-form-field>
-                          <mat-form-field class="example-full-width col-md-9">
-                            <input matInput placeholder="Nombre Razon Social" type="text" value="s/asignar" disabled/>
-                          </mat-form-field>
-                        </div>
-                        <hr>
-                        <span>Paso 2: Seleccione la Dependencia</span>
-                        <div class="row">
-                          <mat-form-field class="col-md-12">
-                            <mat-select placeholder="Dependencia" name="city">
-                              <mat-option *ngFor="let city of cities" [value]="city.value">
-                                {{ city.viewValue }}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
-                        <div class="row">              
-                          <mat-form-field class="example-full-width col-md-6">
-                            <input matInput placeholder="Comuna" type="text" value="s/asignar" disabled/>
-                          </mat-form-field>
-                          <mat-form-field class="example-full-width col-md-6">
-                            <input matInput placeholder="Región" type="text" value="s/asignar" disabled/>
-                          </mat-form-field>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane" id="configuracion">
-                    <div class="row justify-content-center">
-                      <div class="col-sm-10">
-                        <h5 class="info-text">
-                          Ingrese la configuración y permisos
-                        </h5>
-                        <div class="togglebutton">
-                          <label>
-                            <input type="checkbox" checked="" />
-                            <span class="toggle"></span>
-                            Permitir al Administrador del Mandante crear Libros
-                          </label>
-                        </div>
-                        <div class="togglebutton togglebutton-success">
-                          <label>
-                            <input type="checkbox" checked="" />
-                            <span class="toggle"></span>
-                            Permitir al Administrador del Contratista crear Libros
-                          </label>
-                        </div>
-                        <div class="togglebutton">
-                          <label>
-                            <input type="checkbox" checked="" />
-                            <span class="toggle"></span>
-                            Permitir al Administrador del Mandante actualizar información del
-                            Contrato
-                          </label>
-                        </div>
-                        <div class="togglebutton togglebutton-success">              
-                          <label>
-                            <input type="checkbox" checked="" />
-                            <span class="toggle"></span>
-                            Permitir al Administrador del Contratista actualizar información
-                            del Contrato
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>   
-                  <div class="tab-pane" id="contacto">
-                    <div class="row justify-content-center">
-                      <div class="col-sm-10">
-                        <h5 class="info-text">
-                          Ingrese la información de contacto comercial
-                        </h5>                      
-                        <div class="row">
-                            <mat-form-field class="example-full-width col-md-6">
-                              <input matInput placeholder="Nombre Contacto" type="text" />
-                            </mat-form-field>
-                            <mat-form-field class="example-full-width col-md-6">
-                              <input matInput placeholder="Cargo" type="text" />
-                            </mat-form-field>
-                        </div>
-                        <div class="row">
-                            <mat-form-field class="example-full-width col-md-3">
-                              <input matInput placeholder="Teléfono Princial" type="text" />
-                            </mat-form-field>
-                            <mat-form-field class="example-full-width col-md-3">
-                              <input matInput placeholder="Teléfono Secundario" type="text" />
-                            </mat-form-field>
-                            <mat-form-field class="example-full-width col-md-6">
-                              <input matInput placeholder="Email" type="email" />
-                            </mat-form-field>
-                        </div>
-                      </div>  
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer">                
-                <div class="mr-auto">                  
+    <div class="card">
+      <div class="card-body">
+        <mat-tab-group>
+          <mat-tab label="Contrato">
+            <div class="container-fluid mt-3">
+              <h5 style="color: #252525;">
+                <strong>Información General</strong>
+              </h5>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-3">
                   <input
-                    type="button"
-                    class="btn btn-previous btn-fill btn-default btn-wd disabled"
-                    name="previous"
-                    value="Atrás"
+                    matInput
+                    placeholder="Cod. Contrato"
+                    type="text"
+                    value="C001E254"
+                    disabled
                   />
-                </div>
-                <div class="ml-auto">
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-9">
                   <input
-                    type="button"
-                    class="btn btn-next btn-fill btn-primary btn-wd"
-                    name="next"
-                    value="Siguiente"
+                    matInput
+                    placeholder="Nombre Contrato"
+                    type="text"
+                    value="Construcción Edificio Municipal de La Serena"
+                    disabled
                   />
-                  <input
-                    type="button"
-                    class="btn btn-finish btn-fill btn-success btn-wd"
-                    name="finish"
-                    value="Finalizar"
-                    style="display: none;"
-                  />
-                </div>
-                <div class="clearfix"></div>
+                </mat-form-field>
               </div>
-            </form>
-          </div>
-        </div>
-        <!-- wizard container -->
+              <mat-form-field class="example-full-width">
+                <textarea
+                  matInput
+                  placeholder="Descripción"
+                  rows="2"
+                  value="Construcción en hormigón armado de 22.568 m2 de superficie"
+                  disabled
+                ></textarea>
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <input
+                  matInput
+                  placeholder="Dirección"
+                  type="text"
+                  value="Avenida Balmaceda Nº2543, sector 4 Esquinas"
+                  disabled
+                />
+              </mat-form-field>
+              <div class="row">
+                <mat-form-field class="col-md-6">
+                  <mat-select placeholder="Región" name="city">
+                    <mat-option
+                      *ngFor="let city of cities"
+                      [value]="city.value"
+                    >
+                      {{ city.viewValue }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field class="col-md-6">
+                  <mat-select placeholder="Comuna" name="city">
+                    <mat-option
+                      *ngFor="let city of cities"
+                      [value]="city.value"
+                    >
+                      {{ city.viewValue }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field class="col-md-6">
+                  <mat-select placeholder="Tipo Contrato" name="city">
+                    <mat-option
+                      *ngFor="let city of cities"
+                      [value]="city.value"
+                    >
+                      {{ city.viewValue }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field class="col-md-6">
+                  <mat-select placeholder="Modalidad Contrato" name="city">
+                    <mat-option
+                      *ngFor="let city of cities"
+                      [value]="city.value"
+                    >
+                      {{ city.viewValue }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-6">
+                  <input
+                    matInput
+                    placeholder="Otro tipo de Contrato"
+                    type="text"
+                  />
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-6">
+                  <input
+                    matInput
+                    placeholder="Otra modalidad de Contrato"
+                    type="text"
+                  />
+                </mat-form-field>
+              </div>
+              <button
+                mat-raised-button
+                type="submit"
+                class="btn btn-primary pull-right"
+              >
+                <span class="btn-label">
+                  <i class="material-icons">edit</i>
+                </span>
+                Editar
+              </button>
+              <br />
+              <br />
+              <hr />
+              <h5 style="color: #252525;"><strong>Mandante</strong></h5>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-2">
+                  <input
+                    matInput
+                    placeholder="RUT"
+                    type="text"
+                    value="78.456.245-6"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-10">
+                  <input
+                    matInput
+                    placeholder="Razón Social"
+                    type="text"
+                    value="Ilustre Municialidad de La Serena"
+                    disabled
+                  />
+                </mat-form-field>
+              </div>
+              <mat-form-field class="example-full-width">
+                <input
+                  matInput
+                  placeholder="Dependencia"
+                  type="text"
+                  value="Dirección de Obras Muncipales"
+                  disabled
+                />
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <input
+                  matInput
+                  placeholder="Dirección"
+                  type="text"
+                  value="Av. Balmaceda Nº4555, Edificio Público, Piso Nº3, Of. 205"
+                  disabled
+                />
+              </mat-form-field>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-6">
+                  <input
+                    matInput
+                    placeholder="Comuna"
+                    type="text"
+                    value="La Serena"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-6">
+                  <input
+                    matInput
+                    placeholder="Región"
+                    type="text"
+                    value="4º Región de Coquimbo"
+                    disabled
+                  />
+                </mat-form-field>
+              </div>
+              <hr class="text-primary" />
+              <h5 style="color: #252525;"><strong>Contratista</strong></h5>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-2">
+                  <input
+                    matInput
+                    placeholder="RUT"
+                    type="text"
+                    value="77.355.288-1"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-10">
+                  <input
+                    matInput
+                    placeholder="Razón Social"
+                    type="text"
+                    value="Constructora Montegrande Ltda."
+                    disabled
+                  />
+                </mat-form-field>
+              </div>
+              <mat-form-field class="example-full-width">
+                <input
+                  matInput
+                  placeholder="Dependencia"
+                  type="text"
+                  value="Oficina de Obras"
+                  disabled
+                />
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <input
+                  matInput
+                  placeholder="Dirección"
+                  type="text"
+                  value="Av. Cisternas Nº445, Edificio Atrium, Piso Nº2, Of. 209"
+                  disabled
+                />
+              </mat-form-field>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-6">
+                  <input
+                    matInput
+                    placeholder="Comuna"
+                    type="text"
+                    value="La Serena"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-6">
+                  <input
+                    matInput
+                    placeholder="Región"
+                    type="text"
+                    value="4º Región de Coquimbo"
+                    disabled
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Libros">
+            <div class="container-fluid mt-3">
+              <button
+                mat-raised-button
+                type=""
+                class="btn btn-primary pull-right"
+              >
+                <span class="btn-label">
+                  <i class="material-icons">add</i>
+                </span>
+                Nuevo Libro
+              </button>
+              <div class="table-responsive">
+                <table class="table table-striped mt-2">
+                  <thead class="text-muted">
+                    <tr>
+                      <th class="text-left">{{ tableData1.headerRow[0] }}</th>
+                      <th>{{ tableData1.headerRow[1] }}</th>
+                      <th>{{ tableData1.headerRow[2] }}</th>
+                      <th>{{ tableData1.headerRow[3] }}</th>
+                      <th>{{ tableData1.headerRow[4] }}</th>
+                      <th class="text-right">{{ tableData1.headerRow[5] }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of tableData1.dataRows">
+                      <td class="text-left">{{ row[0] }}</td>
+                      <td>{{ row[1] }}</td>
+                      <td>{{ row[2] }}</td>
+                      <td>{{ row[3] }}</td>
+                      <td>
+                        <span class="badge badge-primary">{{ row[4] }}</span>
+                      </td>
+                      <td class="td-actions text-right">
+                        <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[5] }}"
+                        >
+                          <i class="material-icons">edit</i>
+                        </button>
+                        <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[5] }}"
+                        >
+                          <i class="material-icons">keyboard_arrow_right</i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Configuración y Permisos">
+            <div class="container-fluid mt-3">
+              <form method="#" action="#">
+                <div class="togglebutton">
+                  <label>
+                    <input type="checkbox" checked="" />
+                    <span class="toggle"></span>
+                    Permitir al Administrador del Mandante crear Libros
+                  </label>
+                </div>
+                <div class="togglebutton togglebutton-success">
+                  <label>
+                    <input type="checkbox" checked="" />
+                    <span class="toggle"></span>
+                    Permitir al Administrador del Contratista crear Libros
+                  </label>
+                </div>
+                <div class="togglebutton">
+                  <label>
+                    <input type="checkbox" checked="" />
+                    <span class="toggle"></span>
+                    Permitir al Administrador del Mandante actualizar
+                    información del Contrato
+                  </label>
+                </div>
+                <div class="togglebutton togglebutton-success">
+                  <label>
+                    <input type="checkbox" checked="" />
+                    <span class="toggle"></span>
+                    Permitir al Administrador del Contratista actualizar
+                    información del Contrato
+                  </label>
+                </div>
+              </form>
+              <hr />
+              <div class="pull-right">
+                <button
+                  mat-raised-button
+                  type="submit"
+                  class="btn btn-default mr-1"
+                >
+                  Cancelar
+                </button>
+                <button mat-raised-button type="submit" class="btn btn-primary">
+                  Guardar Cambios
+                </button>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Información Servicio">
+            <div class="container-fluid mt-3">
+              <h5 style="color: 252525;">
+                <strong>Información del Plan</strong>
+              </h5>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-3">
+                  <input
+                    matInput
+                    placeholder="Estado del Servicio"
+                    type="text"
+                    value="Activo"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-9">
+                  <input
+                    matInput
+                    placeholder="Plan Contratado"
+                    type="text"
+                    value="Plan básico 2"
+                    disabled
+                  />
+                </mat-form-field>
+              </div>
+              <mat-form-field class="example-full-width">
+                <textarea
+                  matInput
+                  placeholder="Características del plan"
+                  rows="2"
+                  value="Plan básico con paracidad total de 200 mb de capacidad para adjuntar arhivos"
+                  disabled
+                ></textarea>
+              </mat-form-field>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-3">
+                  <input
+                    matInput
+                    placeholder="Fecha contratación"
+                    type="text"
+                    value="12/02/2020"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-3">
+                  <input
+                    matInput
+                    placeholder="Fecha inicio"
+                    type="text"
+                    value="12/02/2020"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-3">
+                  <input
+                    matInput
+                    placeholder="Fecha término servicio"
+                    type="text"
+                    value="12/09/2020"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-3">
+                  <input
+                    matInput
+                    placeholder="Fecha término respaldo"
+                    type="text"
+                    value="12/09/2025"
+                    disabled
+                  />
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-4">
+                  <input
+                    matInput
+                    placeholder="MB contratados"
+                    type="text"
+                    value="200 Mb"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-4">
+                  <input
+                    matInput
+                    placeholder="MB utilizados"
+                    type="text"
+                    value="150 Mb"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-4">
+                  <input
+                    matInput
+                    placeholder="MB utilizados"
+                    type="text"
+                    value="50 Mb"
+                    disabled
+                  />
+                </mat-form-field>
+              </div>
+              <hr />
+              <h5 style="color: #252525;">
+                <strong>Contacto Comercial</strong>
+              </h5>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-6">
+                  <input
+                    matInput
+                    placeholder="Nombre Contacto"
+                    type="text"
+                    value="Fernando Vilches Soleman"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-6">
+                  <input
+                    matInput
+                    placeholder="Cargo"
+                    type="text"
+                    value="Administrador de Finanzas"
+                    disabled
+                  />
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field class="example-full-width col-md-3">
+                  <input
+                    matInput
+                    placeholder="Teléfono Principal"
+                    type="text"
+                    value="952341114"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-3">
+                  <input
+                    matInput
+                    placeholder="Teléfono Secundario"
+                    type="text"
+                    value="952341114"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field class="example-full-width col-md-6">
+                  <input
+                    matInput
+                    placeholder="E-mail"
+                    type="text"
+                    value="fvilchessoleman@gmail.com"
+                    disabled
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
       </div>
     </div>
   </div>
