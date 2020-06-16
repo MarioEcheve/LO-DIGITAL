@@ -41,7 +41,7 @@ export class NavbarComponent implements OnInit {
   private toggleButton: any;
   private sidebarVisible: boolean;
   private _router: Subscription;
-  usuario: IUser;
+  usuario;
 
   @ViewChild("app-navbar-cmp", { static: false }) button: any;
 
@@ -56,9 +56,6 @@ export class NavbarComponent implements OnInit {
     this.location = location;
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;
-    this.usuarioService.usuarioActual.subscribe((res) => {
-      this.usuario = res;
-    });
   }
   minimizeSidebar() {
     const body = document.getElementsByTagName("body")[0];
@@ -138,8 +135,9 @@ export class NavbarComponent implements OnInit {
           $layer.remove();
         }
       });
-
     // implementacion de metodo para obtener el usuario actual
+    this.usuario = JSON.parse(localStorage.getItem("user"));
+    console.log(this.usuario);
   }
   onResize(event) {
     if ($(window).width() > 991) {
