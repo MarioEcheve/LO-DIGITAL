@@ -3,6 +3,7 @@ import { LoginService } from "../../core/login/login.service";
 import { FormBuilder, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AccountService } from "src/app/core/auth/account.service";
+import { UsuarioService } from "src/app/core/user/usuario.service";
 
 declare var $: any;
 
@@ -28,7 +29,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private loginService: LoginService,
     private router: Router,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private usuarioService: UsuarioService
   ) {
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;
@@ -86,6 +88,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         (res) => {
           console.log(res);
           this.showNotificationSuccess("top", "right", res);
+          this.usuarioService.changeUsuarioActual(res);
           this.router.navigate(["dashboard"]);
         },
         (error) => {
