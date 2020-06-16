@@ -92,15 +92,15 @@ export const ROUTES: RouteInfo[] = [
   },
   */
   {
-    path: "/components",
+    path: "/libro",
     title: "Mis Libros",
     type: "sub",
     icontype: "apps",
-    collapse: "components",
+    collapse: "libro",
     children: [
-      { path: "buttons", title: "Lista Libros Abiertos", ab: "B" },
-      { path: "buttons", title: "Lista Libros Pendientes", ab: "B" },
-      { path: "buttons", title: "Lista Libros Cerados", ab: "B" },
+      { path: "nuevo-libro", title: "Crear Libro", ab: "B" },
+      { path: "detalle-libro", title: "Detalle Libro", ab: "B" },
+      { path: "lista-libro", title: "Lista de Libros", ab: "B" },
     ],
   },
   /*
