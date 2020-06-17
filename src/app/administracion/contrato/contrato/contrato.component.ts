@@ -6,6 +6,10 @@ import {
   AfterViewInit,
 } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { RegionService } from "../../services/region.service";
+import { IRegion } from "../../TO/region.model";
+import { ModalidadService } from "../../services/modalidad.service";
+import { TipoContratoService } from "../../services/tipo-contrato.service";
 
 declare const require: any;
 declare const $: any;
@@ -40,10 +44,20 @@ export class ContratoComponent implements OnInit, OnChanges, AfterViewInit {
   public tableData2: TableData;
   regularItems = ["Pizza", "Pasta", "Parmesan"];
   touch: boolean;
-  type: FormGroup;
+  contratoForm: FormGroup;
   selectedValue: string;
   currentCity: string[];
-  constructor(private formBuilder: FormBuilder) {}
+  regiones = [];
+  modalidades = [];
+  tiposDeContratos = [];
+  muestraOtroContrato = false;
+  muestraOtraModalidad = false;
+  constructor(
+    private formBuilder: FormBuilder,
+    private regionService: RegionService,
+    private tipoContratoService: TipoContratoService,
+    private modalidadService: ModalidadService
+  ) {}
   selectTheme = "primary";
   cities = [
     { value: "paris-0", viewValue: "Paris" },
@@ -150,8 +164,10 @@ export class ContratoComponent implements OnInit, OnChanges, AfterViewInit {
 
     const elemMainPanel = <HTMLElement>document.querySelector(".main-panel");
 
-    this.type = this.formBuilder.group({
+    this.contratoForm = this.formBuilder.group({
       // To add a validator, we must first convert the string value into an array. The first item in the array is the default value if any, then the next item in the array is the validator. Here we are adding a required validator meaning that the firstName attribute must have a value in it.
+      codigo: [],
+      tipoOtro: [],
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
       email: [
@@ -395,6 +411,11 @@ export class ContratoComponent implements OnInit, OnChanges, AfterViewInit {
     });
 
     $(".set-full-height").css("height", "auto");
+
+    // llamado de metodo para obtener regiones, tipo de contrato, modalidad
+    this.obtenerRegiones();
+    this.obtenerModalidadContrato();
+    this.obtenerTiposDeContrato();
   }
 
   myFunc(val: any) {
@@ -472,5 +493,41 @@ export class ContratoComponent implements OnInit, OnChanges, AfterViewInit {
         }, 500);
       });
     });
+  }
+
+  // servicio para obtener las regiones
+  obtenerRegiones() {
+    this.regionService.query().subscribe((respuesta) => {
+      console.log(respuesta.body);
+      this.regiones = respuesta.body;
+    });
+  }
+  // servicio para obtener los tipos de contrato
+  obtenerTiposDeContrato() {
+    this.tipoContratoService.query().subscribe((respuesta) => {
+      this.tiposDeContratos = respuesta.body;
+    });
+  }
+  // servicio para obtener las modalidades de contrato
+  obtenerModalidadContrato() {
+    this.modalidadService.query().subscribe((respuesta) => {
+      this.modalidades = respuesta.body;
+    });
+  }
+  muestraOtroTipoContrato(tipo: string) {
+    console.log(tipo);
+    if (tipo.toLowerCase() == "otro") {
+      this.muestraOtroContrato = true;
+    } else {
+      this.muestraOtroContrato = false;
+    }
+  }
+  muestraOtroTipoModalidad(tipo: string) {
+    console.log(tipo);
+    if (tipo.toLowerCase() == "otro") {
+      this.muestraOtraModalidad = true;
+    } else {
+      this.muestraOtraModalidad = false;
+    }
   }
 }

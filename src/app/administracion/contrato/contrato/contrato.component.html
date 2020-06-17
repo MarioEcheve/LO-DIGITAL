@@ -5,7 +5,7 @@
         <!--      Wizard container        -->
         <div class="wizard-container">
           <div class="card card-wizard" data-color="rose" id="wizardProfile">
-            <form [formGroup]="type" action="" method="">
+            <form [formGroup]="contratoForm" action="" method="">
               <!--        You can switch " data-color="primary" "  with one of the next bright colors: "green", "orange", "red", "blue"       -->
               <div class="card-header text-center">
                 <h3 class="card-title">
@@ -127,10 +127,10 @@
                           <mat-form-field class="col-md-6">
                             <mat-select placeholder="Región" name="city">
                               <mat-option
-                                *ngFor="let city of cities"
-                                [value]="city.value"
+                                *ngFor="let region of regiones"
+                                [value]="region.id"
                               >
-                                {{ city.viewValue }}
+                                {{ region.nombre }}
                               </mat-option>
                             </mat-select>
                           </mat-form-field>
@@ -147,12 +147,19 @@
                         </div>
                         <div class="row">
                           <mat-form-field class="col-md-6">
-                            <mat-select placeholder="Tipo Contrato" name="city">
+                            <mat-select
+                              placeholder="Tipo Contrato"
+                              name="city"
+                              formControlName="tipoOtro"
+                            >
                               <mat-option
-                                *ngFor="let city of cities"
-                                [value]="city.value"
+                                *ngFor="let tipoContrato of tiposDeContratos"
+                                [value]="tipoContrato.id"
+                                (click)="
+                                  muestraOtroTipoContrato(tipoContrato.nombre)
+                                "
                               >
-                                {{ city.viewValue }}
+                                {{ tipoContrato.nombre }}
                               </mat-option>
                             </mat-select>
                           </mat-form-field>
@@ -162,23 +169,30 @@
                               name="city"
                             >
                               <mat-option
-                                *ngFor="let city of cities"
-                                [value]="city.value"
+                                *ngFor="let modalidad of modalidades"
+                                [value]="modalidad.id"
+                                (click)=" muestraOtroTipoModalidad(modalidad.nombre)"
                               >
-                                {{ city.viewValue }}
+                                {{ modalidad.nombre }}
                               </mat-option>
                             </mat-select>
                           </mat-form-field>
                         </div>
                         <div class="row">
-                          <mat-form-field class="example-full-width col-md-6">
+                          <mat-form-field
+                            class="example-full-width col-md-6"
+                            *ngIf="muestraOtroContrato"
+                          >
                             <input
                               matInput
                               placeholder="Otro tipo de Contrato *"
                               type="text"
                             />
                           </mat-form-field>
-                          <mat-form-field class="example-full-width col-md-6">
+                          <mat-form-field
+                            class="example-full-width col-md-6"
+                            *ngIf="muestraOtraModalidad"
+                          >
                             <input
                               matInput
                               placeholder="Otra modalidad de Contrato *"
