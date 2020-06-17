@@ -1,4 +1,10 @@
-import { Component, OnInit, SimpleChanges } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  SimpleChanges,
+  OnChanges,
+  AfterViewInit,
+} from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 
 declare const require: any;
@@ -27,7 +33,7 @@ export interface TableData2 {
   templateUrl: "./contrato.component.html",
   styleUrls: ["./contrato.component.css"],
 })
-export class ContratoComponent implements OnInit {
+export class ContratoComponent implements OnInit, OnChanges, AfterViewInit {
   simpleSlider = 40;
   doubleSlider = [20, 60];
   public tableData1: TableData;
