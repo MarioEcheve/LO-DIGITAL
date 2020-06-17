@@ -260,9 +260,17 @@
                       <span>Paso 1: Ingrese RUT para asignar el Mandante</span>
                       <div class="row">
                         <mat-form-field class="example-full-width col-md-3">
-                          <input matInput placeholder="RUT" type="text" />
+                          <input
+                            matInput
+                            placeholder="RUT"
+                            type="text"
+                            disabled
+                          />
                         </mat-form-field>
-                        <mat-form-field class="example-full-width col-md-9">
+                        <button mat-icon-button class="botonSearch" (click)="openDialogBuscaEntidad()">
+                          <mat-icon>search</mat-icon>
+                        </button>
+                        <mat-form-field class="example-full-width col-md-8">
                           <input
                             matInput
                             placeholder="Nombre Razon Social"

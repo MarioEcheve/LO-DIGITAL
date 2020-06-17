@@ -12,6 +12,8 @@ import { ModalidadService } from "../../services/modalidad.service";
 import { TipoContratoService } from "../../services/tipo-contrato.service";
 import { ComunaService } from "../../services/comuna.service";
 import { IComuna } from "../../TO/comuna.model";
+import { MatDialog } from "@angular/material/dialog";
+import { ModalBuscarEntidadComponent } from "../modal-buscar-entidad/modal-buscar-entidad.component";
 
 declare const require: any;
 declare const $: any;
@@ -66,7 +68,8 @@ export class ContratoComponent implements OnInit {
     private regionService: RegionService,
     private tipoContratoService: TipoContratoService,
     private modalidadService: ModalidadService,
-    private comunaService: ComunaService
+    private comunaService: ComunaService,
+    private dialog: MatDialog
   ) {}
   selectTheme = "primary";
 
@@ -172,7 +175,7 @@ export class ContratoComponent implements OnInit {
       // To add a validator, we must first convert the string value into an array. The first item in the array is the default value if any, then the next item in the array is the validator. Here we are adding a required validator meaning that the firstName attribute must have a value in it.
       codigo: ["", Validators.required],
       nombre: ["", Validators.required],
-      descripcion: [""],
+      descripcion: ["", Validators.required],
       direccion: ["", Validators.required],
       region: ["", Validators.required],
       tipoContrato: ["", Validators.required],
@@ -219,7 +222,6 @@ export class ContratoComponent implements OnInit {
     }
   }
   muestraOtroTipoModalidad(tipo: string) {
-    console.log(this.contratoForm.value);
     if (tipo.toLowerCase() == "otro") {
       this.muestraOtraModalidad = true;
     } else {
@@ -236,5 +238,12 @@ export class ContratoComponent implements OnInit {
   // datos primer stepper
   datosPrimerStepper() {
     console.log(this.contratoForm.value);
+  }
+  // metodo para abrir un pop up que permite buscar entidades
+  openDialogBuscaEntidad() {
+    this.dialog.open(ModalBuscarEntidadComponent, {
+      width: "50%",
+      height: "30%",
+    });
   }
 }

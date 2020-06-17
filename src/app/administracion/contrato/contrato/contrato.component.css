@@ -8,3 +8,7 @@
 .mat-radio-button ~ .mat-radio-button {
   margin-left: 16px;
 }
+.botonSearch {
+  align-self: center;
+  margin-left: -25px;
+}
