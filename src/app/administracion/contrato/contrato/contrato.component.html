@@ -129,6 +129,7 @@
                               <mat-option
                                 *ngFor="let region of regiones"
                                 [value]="region.id"
+                                (click)="buscaComuna(region.id)"
                               >
                                 {{ region.nombre }}
                               </mat-option>
@@ -137,10 +138,10 @@
                           <mat-form-field class="col-md-6">
                             <mat-select placeholder="Comuna" name="city">
                               <mat-option
-                                *ngFor="let city of cities"
-                                [value]="city.value"
+                                *ngFor="let comuna of comunas"
+                                [value]="comuna.id"
                               >
-                                {{ city.viewValue }}
+                                {{ comuna.nombre }}
                               </mat-option>
                             </mat-select>
                           </mat-form-field>
@@ -171,7 +172,9 @@
                               <mat-option
                                 *ngFor="let modalidad of modalidades"
                                 [value]="modalidad.id"
-                                (click)=" muestraOtroTipoModalidad(modalidad.nombre)"
+                                (click)="
+                                  muestraOtroTipoModalidad(modalidad.nombre)
+                                "
                               >
                                 {{ modalidad.nombre }}
                               </mat-option>

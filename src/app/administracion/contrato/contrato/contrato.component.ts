@@ -10,6 +10,8 @@ import { RegionService } from "../../services/region.service";
 import { IRegion } from "../../TO/region.model";
 import { ModalidadService } from "../../services/modalidad.service";
 import { TipoContratoService } from "../../services/tipo-contrato.service";
+import { ComunaService } from "../../services/comuna.service";
+import { IComuna } from "../../TO/comuna.model";
 
 declare const require: any;
 declare const $: any;
@@ -48,6 +50,7 @@ export class ContratoComponent implements OnInit, OnChanges, AfterViewInit {
   selectedValue: string;
   currentCity: string[];
   regiones = [];
+  comunas: IComuna;
   modalidades = [];
   tiposDeContratos = [];
   muestraOtroContrato = false;
@@ -56,7 +59,8 @@ export class ContratoComponent implements OnInit, OnChanges, AfterViewInit {
     private formBuilder: FormBuilder,
     private regionService: RegionService,
     private tipoContratoService: TipoContratoService,
-    private modalidadService: ModalidadService
+    private modalidadService: ModalidadService,
+    private comunaService: ComunaService
   ) {}
   selectTheme = "primary";
   cities = [
@@ -515,7 +519,6 @@ export class ContratoComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
   muestraOtroTipoContrato(tipo: string) {
-    console.log(tipo);
     if (tipo.toLowerCase() == "otro") {
       this.muestraOtroContrato = true;
     } else {
@@ -529,5 +532,12 @@ export class ContratoComponent implements OnInit, OnChanges, AfterViewInit {
     } else {
       this.muestraOtraModalidad = false;
     }
+  }
+  // metodo para buscar las comunas por medio del id region
+  buscaComuna(idRegion: number) {
+    this.comunaService.buscaComunaPorRegion(idRegion).subscribe((respuesta) => {
+      this.comunas = respuesta.body;
+      console.log(respuesta.body);
+    });
   }
 }
