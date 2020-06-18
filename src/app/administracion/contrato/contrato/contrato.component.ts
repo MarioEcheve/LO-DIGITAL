@@ -183,6 +183,7 @@ export class ContratoComponent implements OnInit {
       comuna: ["", Validators.required],
       tipoOtro: [],
       modalidadOtra: [],
+      entidadPerfil: [""],
     });
 
     // llamado de metodo para obtener regiones, tipo de contrato, modalidad
@@ -240,10 +241,15 @@ export class ContratoComponent implements OnInit {
     console.log(this.contratoForm.value);
   }
   // metodo para abrir un pop up que permite buscar entidades
-  openDialogBuscaEntidad() {
+  openDialogBuscaEntidad(usuario?: string) {
+    console.log(usuario);
     this.dialog.open(ModalBuscarEntidadComponent, {
-      width: "50%",
-      height: "30%",
+      width: "80%",
+      height: "90%",
+      data: {
+        entidadPerfil: this.contratoForm.get("entidadPerfil").value,
+        usuario: usuario,
+      },
     });
   }
 }

@@ -95,7 +95,7 @@
                             >
                               <mat-option
                                 *ngFor="let comuna of comunas"
-                                [value]="comuna.id"
+                                [value]="comuna"
                               >
                                 {{ comuna.nombre }}
                               </mat-option>
@@ -168,7 +168,10 @@
                             </label>
                           </div>
                           <div class="example-full-width col-md-12">
-                            <mat-radio-group aria-label="Select an option">
+                            <mat-radio-group
+                              aria-label="Select an option"
+                              formControlName="entidadPerfil"
+                            >
                               <mat-radio-button value="1"
                                 >Mandante
                               </mat-radio-button>
@@ -267,7 +270,11 @@
                             disabled
                           />
                         </mat-form-field>
-                        <button mat-icon-button class="botonSearch" (click)="openDialogBuscaEntidad()">
+                        <button
+                          mat-icon-button
+                          class="botonSearch"
+                          (click)="openDialogBuscaEntidad()"
+                        >
                           <mat-icon>search</mat-icon>
                         </button>
                         <mat-form-field class="example-full-width col-md-8">
@@ -332,9 +339,21 @@
                       >
                       <div class="row">
                         <mat-form-field class="example-full-width col-md-3">
-                          <input matInput placeholder="RUT" type="text" />
+                          <input
+                            matInput
+                            placeholder="RUT"
+                            type="text"
+                            disabled
+                          />
                         </mat-form-field>
-                        <mat-form-field class="example-full-width col-md-9">
+                        <button
+                          mat-icon-button
+                          class="botonSearch"
+                          (click)="openDialogBuscaEntidad(true)"
+                        >
+                          <mat-icon>search</mat-icon>
+                        </button>
+                        <mat-form-field class="example-full-width col-md-8">
                           <input
                             matInput
                             placeholder="Nombre Razon Social"
