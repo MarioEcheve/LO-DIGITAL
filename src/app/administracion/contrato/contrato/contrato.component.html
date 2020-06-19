@@ -13,8 +13,8 @@
                 www.lodigital.cl
               </h5>
             </div>
-            <mat-horizontal-stepper labelPosition="bottom" #stepper>
-              <mat-step [stepControl]="firstFormGroup">
+            <mat-horizontal-stepper labelPosition="bottom" linear #stepper>
+              <mat-step [stepControl]="contratoForm">
                 <form [formGroup]="contratoForm">
                   <ng-template matStepLabel>Datos Del Contrato</ng-template>
                   <div class="tab-pane active">
@@ -80,7 +80,7 @@
                             >
                               <mat-option
                                 *ngFor="let region of regiones"
-                                [value]="region.id"
+                                [value]="region"
                                 (click)="buscaComuna(region.id)"
                               >
                                 {{ region.nombre }}
@@ -255,8 +255,8 @@
                   </div>
                 </form>
               </mat-step>
-              <mat-step [stepControl]="secondFormGroup" optional>
-                <form [formGroup]="secondFormGroup">
+              <mat-step [stepControl]="MandanteFormGroup">
+                <form [formGroup]="MandanteFormGroup">
                   <ng-template matStepLabel>Datos Mandante</ng-template>
                   <div class="row justify-content-center">
                     <div class="col-lg-10">
@@ -267,7 +267,7 @@
                             matInput
                             placeholder="RUT"
                             type="text"
-                            disabled
+                            formControlName="rut"
                           />
                         </mat-form-field>
                         <button
@@ -283,6 +283,7 @@
                             placeholder="Nombre Razon Social"
                             type="text"
                             value="s/asignar"
+                            formControlName="nombre"
                             disabled
                           />
                         </mat-form-field>
@@ -291,12 +292,19 @@
                       <span>Paso 2: Seleccione la Dependencia</span>
                       <div class="row">
                         <mat-form-field class="col-md-12">
-                          <mat-select placeholder="Dependencia" name="city">
+                          <mat-select
+                            placeholder="Dependencia"
+                            name="city"
+                            formControlName="dependenciaMandante"
+                          >
                             <mat-option
-                              *ngFor="let city of cities"
-                              [value]="city.value"
+                              *ngFor="let dependencia of dependenciasMandante"
+                              [value]="dependencia"
+                              (click)="
+                                mustraRegionComunaDependencia(dependencia)
+                              "
                             >
-                              {{ city.viewValue }}
+                              {{ dependencia.nombre }}
                             </mat-option>
                           </mat-select>
                         </mat-form-field>
@@ -309,6 +317,7 @@
                             type="text"
                             value="s/asignar"
                             disabled
+                            formControlName="comuna"
                           />
                         </mat-form-field>
                         <mat-form-field class="example-full-width col-md-6">
@@ -317,6 +326,7 @@
                             placeholder="Región"
                             type="text"
                             value="s/asignar"
+                            formControlName="region"
                             disabled
                           />
                         </mat-form-field>
@@ -325,12 +335,18 @@
                   </div>
                   <div>
                     <button mat-button matStepperPrevious>Atras</button>
-                    <button mat-button matStepperNext>Siguiente</button>
+                    <button
+                      mat-button
+                      matStepperNext
+                      [disabled]="!MandanteFormGroup.valid"
+                    >
+                      Siguiente
+                    </button>
                   </div>
                 </form>
               </mat-step>
-              <mat-step [stepControl]="secondFormGroup" optional>
-                <form [formGroup]="secondFormGroup">
+              <mat-step [stepControl]="contratistaFormGroup">
+                <form [formGroup]="contratistaFormGroup">
                   <ng-template matStepLabel>Datos Contratista</ng-template>
                   <div class="row justify-content-center">
                     <div class="col-lg-10">
@@ -343,7 +359,7 @@
                             matInput
                             placeholder="RUT"
                             type="text"
-                            disabled
+                            formControlName="rut"
                           />
                         </mat-form-field>
                         <button
@@ -359,7 +375,7 @@
                             placeholder="Nombre Razon Social"
                             type="text"
                             value="s/asignar"
-                            disabled
+                            formControlName="nombre"
                           />
                         </mat-form-field>
                       </div>
@@ -367,12 +383,23 @@
                       <span>Paso 2: Seleccione la Dependencia</span>
                       <div class="row">
                         <mat-form-field class="col-md-12">
-                          <mat-select placeholder="Dependencia" name="city">
+                          <mat-select
+                            placeholder="Dependencia"
+                            name="city"
+                            formControlName="dependenciaContratista"
+                          >
                             <mat-option
-                              *ngFor="let city of cities"
-                              [value]="city.value"
+                              *ngFor="
+                                let dependencia of dependenciasContratista
+                              "
+                              [value]="dependencia.id"
+                              (click)="
+                                mustraRegionComunaDependenciaContratista(
+                                  dependencia
+                                )
+                              "
                             >
-                              {{ city.viewValue }}
+                              {{ dependencia.nombre }}
                             </mat-option>
                           </mat-select>
                         </mat-form-field>
@@ -384,7 +411,7 @@
                             placeholder="Comuna"
                             type="text"
                             value="s/asignar"
-                            disabled
+                            formControlName="comuna"
                           />
                         </mat-form-field>
                         <mat-form-field class="example-full-width col-md-6">
@@ -393,7 +420,7 @@
                             placeholder="Región"
                             type="text"
                             value="s/asignar"
-                            disabled
+                            formControlName="region"
                           />
                         </mat-form-field>
                       </div>
@@ -401,12 +428,18 @@
                   </div>
                   <div>
                     <button mat-button matStepperPrevious>Atras</button>
-                    <button mat-button matStepperNext>Siguiente</button>
+                    <button
+                      mat-button
+                      matStepperNext
+                      [disabled]="!contratistaFormGroup.valid"
+                    >
+                      Siguiente
+                    </button>
                   </div>
                 </form>
               </mat-step>
-              <mat-step [stepControl]="secondFormGroup" optional>
-                <form [formGroup]="secondFormGroup">
+              <mat-step [stepControl]="permisosFormGroup">
+                <form [formGroup]="permisosFormGroup">
                   <ng-template matStepLabel
                     >Configuracion y Permisos</ng-template
                   >
@@ -417,21 +450,33 @@
                       </h5>
                       <div class="togglebutton">
                         <label>
-                          <input type="checkbox" checked="" />
+                          <input
+                            type="checkbox"
+                            checked=""
+                            formControlName="creaLibroAdminMan"
+                          />
                           <span class="toggle"></span>
                           Permitir al Administrador del Mandante crear Libros
                         </label>
                       </div>
                       <div class="togglebutton togglebutton-success">
                         <label>
-                          <input type="checkbox" checked="" />
+                          <input
+                            type="checkbox"
+                            checked=""
+                            formControlName="creaLibroAdminCon"
+                          />
                           <span class="toggle"></span>
                           Permitir al Administrador del Contratista crear Libros
                         </label>
                       </div>
                       <div class="togglebutton">
                         <label>
-                          <input type="checkbox" checked="" />
+                          <input
+                            type="checkbox"
+                            checked=""
+                            formControlName="actualizarContratoAdminMan"
+                          />
                           <span class="toggle"></span>
                           Permitir al Administrador del Mandante actualizar
                           información del Contrato
@@ -439,7 +484,11 @@
                       </div>
                       <div class="togglebutton togglebutton-success">
                         <label>
-                          <input type="checkbox" checked="" />
+                          <input
+                            type="checkbox"
+                            checked=""
+                            formControlName="actualizarContratoAdminCon"
+                          />
                           <span class="toggle"></span>
                           Permitir al Administrador del Contratista actualizar
                           información del Contrato
@@ -449,53 +498,75 @@
                   </div>
                   <div>
                     <button mat-button matStepperPrevious>Atras</button>
-                    <button mat-button matStepperNext>Siguiente</button>
+                    <button mat-button matStepperNext (click)="datosPermisos()">
+                      Siguiente
+                    </button>
                   </div>
                 </form>
               </mat-step>
-              <mat-step>
+              <mat-step [stepControl]="contactoFormGroup">
                 <ng-template matStepLabel>Contacto Comercial</ng-template>
-                <div class="row justify-content-center">
-                  <div class="col-sm-10">
-                    <h5 class="info-text">
-                      Ingrese la información de contacto comercial
-                    </h5>
-                    <div class="row">
-                      <mat-form-field class="example-full-width col-md-6">
-                        <input
-                          matInput
-                          placeholder="Nombre Contacto"
-                          type="text"
-                        />
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width col-md-6">
-                        <input matInput placeholder="Cargo" type="text" />
-                      </mat-form-field>
-                    </div>
-                    <div class="row">
-                      <mat-form-field class="example-full-width col-md-3">
-                        <input
-                          matInput
-                          placeholder="Teléfono Princial"
-                          type="text"
-                        />
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width col-md-3">
-                        <input
-                          matInput
-                          placeholder="Teléfono Secundario"
-                          type="text"
-                        />
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width col-md-6">
-                        <input matInput placeholder="Email" type="email" />
-                      </mat-form-field>
+                <form [formGroup]="contactoFormGroup">
+                  <div class="row justify-content-center">
+                    <div class="col-sm-10">
+                      <h5 class="info-text">
+                        Ingrese la información de contacto comercial
+                      </h5>
+                      <div class="row">
+                        <mat-form-field class="example-full-width col-md-6">
+                          <input
+                            matInput
+                            placeholder="Nombre Contacto"
+                            type="text"
+                            formControlName="nombreContacto"
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width col-md-6">
+                          <input
+                            matInput
+                            placeholder="Cargo"
+                            type="text"
+                            formControlName="monto"
+                          />
+                        </mat-form-field>
+                      </div>
+                      <div class="row">
+                        <mat-form-field class="example-full-width col-md-3">
+                          <input
+                            matInput
+                            placeholder="Teléfono Princial"
+                            type="text"
+                            formControlName="telefonoContacto"
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width col-md-3">
+                          <input
+                            matInput
+                            placeholder="Teléfono Secundario"
+                            type="text"
+                            formControlName="telefonoContactoSecundario"
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width col-md-6">
+                          <input
+                            matInput
+                            placeholder="Email"
+                            type="email"
+                            formControlName="emailContacto"
+                          />
+                        </mat-form-field>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </form>
                 <div>
                   <button mat-button matStepperPrevious>Atras</button>
-                  <button mat-button (click)="stepper.reset()">
+                  <!--
+                    <button mat-button (click)="stepper.reset()">
+                    Finalizar
+                  </button>
+                  -->
+                  <button mat-button (click)="guardaContrato()">
                     Finalizar
                   </button>
                 </div>

@@ -14,6 +14,14 @@ import {
 } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material/core";
 import { FormBuilder } from "@angular/forms";
+import { Route } from "@angular/compiler/src/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import { ContratoService } from "../../services/contrato.service";
+import { RegionService } from "../../services/region.service";
+import { IRegion } from "../../TO/region.model";
+import { ComunaService } from "../../services/comuna.service";
+import { IComuna } from "../../TO/comuna.model";
+import { DependenciaService } from "../../services/dependencia.service";
 
 declare const $: any;
 interface FileReaderEventTarget extends EventTarget {
@@ -52,6 +60,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 export class DetalleContratoComponent
   implements OnInit, OnChanges, AfterViewInit {
   public tableData1: TableData;
+  listaRegiones: IRegion[];
+  listaComunas: IComuna;
   cities = [
     { value: "paris-0", viewValue: "Paris" },
     { value: "miami-1", viewValue: "Miami" },
@@ -69,8 +79,18 @@ export class DetalleContratoComponent
   matcher = new MyErrorStateMatcher();
 
   type: FormGroup;
+  infoGeneralForm: FormGroup;
+  permisosForm: FormGroup;
+  informacionServicioForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private contratoService: ContratoService,
+    private regionService: RegionService,
+    private comunaService: ComunaService,
+    private dependenciaService: DependenciaService
+  ) {}
 
   isFieldValid(form: FormGroup, field: string) {
     return !form.get(field).valid && form.get(field).touched;
@@ -95,7 +115,6 @@ export class DetalleContratoComponent
         ],
       ],
     });
-
     this.tableData1 = {
       headerRow: [
         "Código",
@@ -141,6 +160,78 @@ export class DetalleContratoComponent
         ],
       ],
     };
+    // implementacion propia
+    // definicion de formgroups
+    this.infoGeneralForm = this.formBuilder.group({
+      codigo: ["", Validators.required],
+      nombre: ["", Validators.required],
+      descripcion: ["", Validators.required],
+      direccion: ["", Validators.required],
+      region: ["", Validators.required],
+      tipoContrato: ["", Validators.required],
+      modalidad: ["", Validators.required],
+      comuna: ["", Validators.required],
+      tipoOtro: [],
+      modalidadOtra: [],
+      entidadPerfil: [""],
+      rutMandante: [],
+      razonSocialMandante: [],
+      dependenciaMandante: [],
+      direccionDependenciaMandante: [],
+      comunaMandante: [],
+      regionMandante: [],
+      rutContratista: [],
+      razonSocialContratista: [],
+      dependenciaContratista: [],
+      direccionDependenciaContratista: [],
+      comunaContratista: [],
+      regionContratista: [],
+    });
+    this.infoGeneralForm.controls["codigo"].disable();
+    this.infoGeneralForm.controls["nombre"].disable();
+    this.infoGeneralForm.controls["descripcion"].disable();
+    this.infoGeneralForm.controls["direccion"].disable();
+    this.infoGeneralForm.controls["rutMandante"].disable();
+    this.infoGeneralForm.controls["razonSocialMandante"].disable();
+    this.infoGeneralForm.controls["dependenciaMandante"].disable();
+    this.infoGeneralForm.controls["direccionDependenciaMandante"].disable();
+    this.infoGeneralForm.controls["comunaMandante"].disable();
+    this.infoGeneralForm.controls["regionMandante"].disable();
+    this.infoGeneralForm.controls["rutContratista"].disable();
+    this.infoGeneralForm.controls["razonSocialContratista"].disable();
+    this.infoGeneralForm.controls["dependenciaContratista"].disable();
+    this.infoGeneralForm.controls["direccionDependenciaContratista"].disable();
+    this.infoGeneralForm.controls["comunaContratista"].disable();
+    this.infoGeneralForm.controls["regionContratista"].disable();
+
+    this.permisosForm = this.formBuilder.group({
+      creaLibroAdminMan: [false],
+      creaLibroAdminCon: [false],
+      actualizarContratoAdminMan: [false],
+      actualizarContratoAdminCon: [false],
+    });
+    this.permisosForm.controls["creaLibroAdminMan"].disable();
+    this.permisosForm.controls["creaLibroAdminCon"].disable();
+    this.permisosForm.controls["actualizarContratoAdminMan"].disable();
+    this.permisosForm.controls["actualizarContratoAdminCon"].disable();
+
+    this.informacionServicioForm = this.formBuilder.group({
+      nombreContacto: [""],
+      telefonoContacto: [""],
+      telefonoContactoSecundario: [""],
+      emailContacto: [""],
+      cargo: [""],
+    });
+    this.informacionServicioForm.controls["nombreContacto"].disable();
+    this.informacionServicioForm.controls["telefonoContacto"].disable();
+    this.informacionServicioForm.controls[
+      "telefonoContactoSecundario"
+    ].disable();
+    this.informacionServicioForm.controls["emailContacto"].disable();
+    this.informacionServicioForm.controls["cargo"].disable();
+
+    let id = this.route.snapshot.paramMap.get("id");
+    this.buscaContrato(id);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -214,6 +305,100 @@ export class DetalleContratoComponent
           });
         }, 500);
       });
+    });
+  }
+  buscaContrato(id) {
+    this.contratoService.find(id).subscribe((respuesta) => {
+      //console.log(respuesta.body);
+      this.obtenerRegiones();
+      this.infoGeneralForm.controls["codigo"].setValue(respuesta.body.codigo);
+      this.infoGeneralForm.controls["nombre"].setValue(respuesta.body.nombre);
+      this.infoGeneralForm.controls["direccion"].setValue(
+        respuesta.body.direccion
+      );
+      this.infoGeneralForm.controls["descripcion"].setValue(
+        respuesta.body.descripcion
+      );
+      this.infoGeneralForm.controls["rutMandante"].setValue(
+        respuesta.body.dependenciaMandante.entidad.rut
+      );
+      this.infoGeneralForm.controls["razonSocialMandante"].setValue(
+        respuesta.body.dependenciaMandante.entidad.nombre
+      );
+      this.infoGeneralForm.controls["dependenciaMandante"].setValue(
+        respuesta.body.dependenciaMandante.nombre
+      );
+      this.infoGeneralForm.controls["direccionDependenciaMandante"].setValue(
+        respuesta.body.dependenciaMandante.direccion
+      );
+      this.infoGeneralForm.controls["comunaMandante"].setValue(
+        respuesta.body.dependenciaMandante.comuna.nombre
+      );
+      this.infoGeneralForm.controls["regionMandante"].setValue(
+        respuesta.body.dependenciaMandante.region.nombre
+      );
+      //this.infoGeneralForm.get("region").setValue(respuesta.body.region);
+
+      // servicio para buscar una dependencia por id
+      this.dependenciaService
+        .find(respuesta.body.idDependenciaContratista)
+        .subscribe((respuesta) => {
+          console.log(respuesta.body);
+          this.infoGeneralForm.controls["rutContratista"].setValue(
+            respuesta.body.entidad.rut
+          );
+          this.infoGeneralForm.controls["razonSocialContratista"].setValue(
+            respuesta.body.entidad.nombre
+          );
+          this.infoGeneralForm.controls["dependenciaContratista"].setValue(
+            respuesta.body.nombre
+          );
+          this.infoGeneralForm.controls[
+            "direccionDependenciaContratista"
+          ].setValue(respuesta.body.direccion);
+          this.infoGeneralForm.controls["comunaContratista"].setValue(
+            respuesta.body.comuna.nombre
+          );
+          this.infoGeneralForm.controls["regionContratista"].setValue(
+            respuesta.body.region.nombre
+          );
+        });
+      this.permisosForm.controls["creaLibroAdminMan"].setValue(
+        respuesta.body.creaLibroAdminMan
+      );
+      this.permisosForm.controls["creaLibroAdminCon"].setValue(
+        respuesta.body.creaLibroAdminCon
+      );
+      this.permisosForm.controls["actualizarContratoAdminMan"].setValue(
+        respuesta.body.actualizarContratoAdminMan
+      );
+      this.permisosForm.controls["actualizarContratoAdminCon"].setValue(
+        respuesta.body.actualizarContratoAdminCon
+      );
+      this.informacionServicioForm.controls["nombreContacto"].setValue(
+        respuesta.body.nombreContacto
+      );
+      this.informacionServicioForm.controls["cargo"].setValue(
+        respuesta.body.monto
+      );
+      this.informacionServicioForm.controls["telefonoContacto"].setValue(
+        respuesta.body.telefonoContacto
+      );
+      this.informacionServicioForm.controls["emailContacto"].setValue(
+        respuesta.body.emailContacto
+      );
+    });
+  }
+  // metodo para listar regiones
+  obtenerRegiones() {
+    this.regionService.query().subscribe((respuesta) => {
+      this.listaRegiones = respuesta.body;
+    });
+  }
+  buscaComuna(idRegion: number) {
+    this.comunaService.buscaComunaPorRegion(idRegion).subscribe((respuesta) => {
+      this.listaComunas = respuesta.body;
+      console.log(respuesta.body);
     });
   }
 }

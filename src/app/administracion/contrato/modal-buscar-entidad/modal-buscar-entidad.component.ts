@@ -11,7 +11,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
   styleUrls: ["./modal-buscar-entidad.component.css"],
 })
 export class ModalBuscarEntidadComponent implements OnInit {
-  displayedColumns: string[] = ["RUT", "NOMBRE", "DIRECCION", "REGION"];
+  displayedColumns: string[] = ["RUT", "NOMBRE", "DIRECCION", "ACTIVIDADRUBRO"];
   dataSource: MatTableDataSource<any>;
   entidadSeleccionada = [];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -64,6 +64,10 @@ export class ModalBuscarEntidadComponent implements OnInit {
   columnaSeleccionada(row) {
     this.entidadSeleccionada = [];
     this.entidadSeleccionada.push(row);
-    console.log(this.entidadSeleccionada);
+  }
+  datosEntidad(): void {
+    if (this.entidadSeleccionada !== undefined) {
+      this.dialogRef.close(this.entidadSeleccionada);
+    }
   }
 }

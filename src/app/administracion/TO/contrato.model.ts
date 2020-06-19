@@ -29,6 +29,10 @@ export interface IContrato {
   telefonoContacto?: string;
   emailContacto?: string;
   idDependenciaContratista?: number;
+  creaLibroAdminMan?: boolean;
+  creaLibroAdminCon?: boolean;
+  actualizarContratoAdminMan?: boolean;
+  actualizarContratoAdminCon?: boolean;
   libros?: ILibro[];
   dependenciaMandante?: IDependencia;
   region?: IRegion;
@@ -61,6 +65,10 @@ export class Contrato implements IContrato {
     public telefonoContacto?: string,
     public emailContacto?: string,
     public idDependenciaContratista?: number,
+    public creaLibroAdminMan?: boolean,
+    public creaLibroAdminCon?: boolean,
+    public actualizarContratoAdminMan?: boolean,
+    public actualizarContratoAdminCon?: boolean,
     public libros?: ILibro[],
     public dependenciaMandante?: IDependencia,
     public region?: IRegion,
@@ -70,5 +78,10 @@ export class Contrato implements IContrato {
     public tipoMoneda?: ITipoMoneda,
     public tipoMonto?: ITipoMonto,
     public estadoServicio?: IEstadoServicio
-  ) {}
+  ) {
+    this.creaLibroAdminMan = this.creaLibroAdminMan || false;
+    this.creaLibroAdminCon = this.creaLibroAdminCon || false;
+    this.actualizarContratoAdminMan = this.actualizarContratoAdminMan || false;
+    this.actualizarContratoAdminCon = this.actualizarContratoAdminCon || false;
+  }
 }

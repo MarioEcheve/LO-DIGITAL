@@ -17,7 +17,7 @@ const routes: Routes = [
         component: ListaContratoComponent,
       },
       {
-        path: "detalle-contrato",
+        path: "detalle-contrato/:id",
         component: DetalleContratoComponent,
       },
     ],

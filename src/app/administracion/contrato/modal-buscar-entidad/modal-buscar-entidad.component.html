@@ -4,7 +4,6 @@
     <mat-label>Filtro de busqueda</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" />
   </mat-form-field>
-
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort>
       <!-- ID Column -->
@@ -26,10 +25,12 @@
       </ng-container>
 
       <!-- Color Column -->
-      <ng-container matColumnDef="REGION">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>REGION</th>
+      <ng-container matColumnDef="ACTIVIDADRUBRO">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Actividad o Rubro
+        </th>
         <td mat-cell *matCellDef="let row" [style.color]="row.color">
-          {{ row.region.nombre }}
+          {{ row.actividadRubro.nombre }}
         </td>
       </ng-container>
 
@@ -43,11 +44,10 @@
         "
       ></tr>
     </table>
-
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancelar</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Aceptar</button>
+  <button mat-button (click)="datosEntidad()" cdkFocusInitial>Aceptar</button>
 </mat-dialog-actions>
