@@ -1,805 +1,307 @@
-<!--
-  <div class="card">      
-    <div class="card-body">
-      <mat-tab-group>
-        <mat-tab label="Libro">
-          <div class="container-fluid mt-3">              
-            <h5 style="color:#252525"><strong>Información General</strong></h5>
-            <div class="row">
-              <mat-form-field class="example-full-width col-md-3">
-                <input
-                  matInput
-                  placeholder="Cod. Libro"
-                  type="text"
-                  value="LM001"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-9">
-                <input
-                  matInput
-                  placeholder="Nombre Libro"
-                  type="text"
-                  value="Libro principal de obras"
-                  disabled
-                />
-              </mat-form-field>
-            </div>
-            <div class="row">
-              <mat-form-field class="example-full-width col-md-3">
-                <input
-                  matInput
-                  placeholder="Estado"
-                  type="text"
-                  value="Abierto"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-3">
-                <input
-                  matInput
-                  placeholder="Fecha creación"
-                  type="text"
-                  value="01/02/2020"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-3">
-                <input
-                  matInput
-                  placeholder="Fecha apertura"
-                  type="text"
-                  value="01/02/2020"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-3">
-                <input
-                  matInput
-                  placeholder="Fecha cierre"
-                  type="text"
-                  value="sin información"
-                  disabled
-                />
-              </mat-form-field>
-            </div>
-            <mat-form-field class="example-full-width">
-              <textarea
-                matInput
-                placeholder="Descripción"
-                rows="2"
-                value="Libro en el cual se realizan las anotaciones generales referente al proyecto."
-                disabled
-              ></textarea>
-            </mat-form-field>
-            <div class="row">
-              <mat-form-field class="example-full-width col-md-6">
-                <input
-                  matInput
-                  placeholder="Clase Libro"
-                  type="text"
-                  value="Maestro"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-6">
-                <input
-                  matInput
-                  placeholder="Tipo Firma"
-                  type="text"
-                  value="Digital Avanzada"
-                  disabled
-                />
-              </mat-form-field>
-            </div>
-            <hr>
-            <h5 style="color:#252525"><strong>Administrador Mandante</strong></h5>              
-            <div class="row">
-              <mat-form-field class="example-full-width col-md-2">
-                <input
-                  matInput
-                  placeholder="RUT"
-                  type="text"
-                  value="13.224.233-k"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-5">
-                <input
-                  matInput
-                  placeholder="Nombre"
-                  type="text"
-                  value="Fernando Vilches Soleman"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-3">
-                <input
-                  matInput
-                  placeholder="Perfil Usuario"
-                  type="text"
-                  value="Administrador (s)"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-2">
-                <input
-                  matInput
-                  placeholder="Fecha Asignación"
-                  type="text"
-                  value="12/05/2020"
-                  disabled
-                />
-              </mat-form-field>
-            </div>
-            <div class="row">
-              <mat-form-field class="example-full-width col-md-5">
-                <input
-                  matInput
-                  placeholder="Cargo/Función"
-                  type="text"
-                  value="Inspector Fiscal"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-3">
-                <input
-                  matInput
-                  placeholder="Teféfono"
-                  type="text"
-                  value="966453188"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-4">
-                <input
-                  matInput
-                  placeholder="E-mail"
-                  type="text"
-                  value="fvilchessoleman@gmail.com"
-                  disabled
-                />
-              </mat-form-field>
-            </div>
-            <div class="row">
-              <mat-form-field class="example-full-width col-md-5">
-                <input
-                  matInput
-                  placeholder="Entidad"
-                  type="text"
-                  value="Ilustre Municipalidad de La Serena"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-2">
-                <input
-                  matInput
-                  placeholder="RUT"
-                  type="text"
-                  value="78.456.415-9"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-5">
-                <input
-                  matInput
-                  placeholder="Dependencia"
-                  type="text"
-                  value="Dirección de Obras Muncipales"
-                  disabled
-                />
-              </mat-form-field>
-            </div>
-            <hr />
-            <h5 style="color:#252525"><strong>Administrador Contratista</strong></h5>
-            <div class="row">
-              <mat-form-field class="example-full-width col-md-2">
-                <input
-                  matInput
-                  placeholder="RUT"
-                  type="text"
-                  value="14.455.225-1"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-5">
-                <input
-                  matInput
-                  placeholder="Nombre"
-                  type="text"
-                  value="Héctor Segovia Cabrera"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-3">
-                <input
-                  matInput
-                  placeholder="Perfil Usuario"
-                  type="text"
-                  value="Administrador"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-2">
-                <input
-                  matInput
-                  placeholder="Fecha Asignación"
-                  type="text"
-                  value="12/05/2020"
-                  disabled
-                />
-              </mat-form-field>
-            </div>
-            <div class="row">
-              <mat-form-field class="example-full-width col-md-5">
-                <input
-                  matInput
-                  placeholder="Cargo/Función"
-                  type="text"
-                  value="Administrador de Contrato"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-3">
-                <input
-                  matInput
-                  placeholder="Teféfono"
-                  type="text"
-                  value="945555763"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-4">
-                <input
-                  matInput
-                  placeholder="E-mail"
-                  type="text"
-                  value="hsegoviac@gmail.com"
-                  disabled
-                />
-              </mat-form-field>
-            </div>
-            <div class="row">
-              <mat-form-field class="example-full-width col-md-5">
-                <input
-                  matInput
-                  placeholder="Entidad"
-                  type="text"
-                  value="Constructora La Serena Ltda."
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-2">
-                <input
-                  matInput
-                  placeholder="RUT"
-                  type="text"
-                  value="77.124.245-5"
-                  disabled
-                />
-              </mat-form-field>
-              <mat-form-field class="example-full-width col-md-5">
-                <input
-                  matInput
-                  placeholder="Dependencia"
-                  type="text"
-                  value="Oficina de Obras"
-                  disabled
-                />
-              </mat-form-field>
-            </div>
-          </div>
-        </mat-tab>
-        <mat-tab label="Usuarios Mandante">
-          <div class="container-fluid mt-3">
-            <div class="pull-right">
-              <button
-                mat-raised-button
-                type="submit"
-                class="btn btn-primary mr-1"
-              >
-                <span class="btn-label">
-                  <i class="material-icons">loop</i>
-                </span>
-                Cambiar administrador
-              </button>
-              <button mat-raised-button type="submit" class="btn btn-primary">
-                <span class="btn-label">
-                  <i class="material-icons">person_add</i>
-                </span>
-                Nuevo Usuario
-              </button>
-            </div>
-            <div class="table-responsive">
-              <table class="table table-striped mt-2">
-                <thead class="text-muted">
-                  <tr>
-                    <th scope="col">{{ tableData2.headerRow[0] }}</th>
-
-                    <th>{{ tableData2.headerRow[1] }}</th>
-                    <th>{{ tableData2.headerRow[2] }}</th>
-                    <th>{{ tableData2.headerRow[3] }}</th>
-                    <th>{{ tableData2.headerRow[4] }}</th>
-                    <th class="text-right">{{ tableData2.headerRow[5] }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let row of tableData2.dataRows">
-                    <td scope="row" style="width: auto;">{{ row[0] }}</td>
-                  
-                    <td>{{ row[1] }}</td>
-                    <td>{{ row[2] }}</td>
-                    <td>{{ row[3] }}</td>
-                    <td>
-                      <span class="badge badge-primary">{{ row[4] }}</span>
-                    </td>
-                    <td class="td-actions text-right">
-                      <button
-                        mat-raised-button
-                        type="button"
-                        class="btn btn-default {{ row[5] }}"
-                      >
-                        <i class="material-icons">edit</i>
-                      </button>
-                      <button
-                        mat-raised-button
-                        type="button"
-                        class="btn btn-default {{ row[5] }}"
-                      >
-                        <i class="material-icons">keyboard_arrow_right</i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-          </div>            
-        </mat-tab>
-        <mat-tab label="Usuarios Contratista">
-          <div class="container-fluid mt-3">
-            <div class="pull-right">
-              <button
-                mat-raised-button
-                type="submit"
-                class="btn btn-primary mr-1"
-              >
-                <span class="btn-label">
-                  <i class="material-icons">loop</i>
-                </span>
-                Cambiar administrador
-              </button>
-              <button mat-raised-button type="submit" class="btn btn-primary">
-                <span class="btn-label">
-                  <i class="material-icons">person_add</i>
-                </span>
-                Nuevo Usuario
-              </button>
-            </div>
-            <div class="table-responsive">
-              <table class="table table-striped mt-2">
-                <thead class="text-muted">
-                  <tr>
-                    <th scope="col">{{ tableData2.headerRow[0] }}</th>
-                    
-                    <th>{{ tableData2.headerRow[1] }}</th>
-                    <th>{{ tableData2.headerRow[2] }}</th>
-                    <th>{{ tableData2.headerRow[3] }}</th>
-                    <th>{{ tableData2.headerRow[4] }}</th>
-                    <th class="text-right">{{ tableData2.headerRow[5] }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let row of tableData2.dataRows">
-                    <td scope="row" style="width: auto;">{{ row[0] }}</td>
-                    
-                    <td>{{ row[1] }}</td>
-                    <td>{{ row[2] }}</td>
-                    <td>{{ row[3] }}</td>
-                    <td>
-                      <span class="badge badge-primary">{{ row[4] }}</span>
-                    </td>
-                    <td class="td-actions text-right">
-                      <button
-                        mat-raised-button
-                        type="button"
-                        class="btn btn-default {{ row[5] }}"
-                      >
-                        <i class="material-icons">edit</i>
-                      </button>
-                      <button
-                        mat-raised-button
-                        type="button"
-                        class="btn btn-default {{ row[5] }}"
-                      >
-                        <i class="material-icons">keyboard_arrow_right</i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>            
-        </mat-tab>
-        <mat-tab label="Configuración y Permisos">
-          <div class="container-fluid mt-3">
-            <form method="#" action="#">
-              <div class="togglebutton">
-                <label>
-                  <input type="checkbox" checked="" />
-                  <span class="toggle"></span>
-                  Permitir al Administrador del Mandante generar folios
-                </label>
-              </div>
-              <div class="togglebutton togglebutton-success">
-                <label>
-                  <input type="checkbox" checked="" />
-                  <span class="toggle"></span>
-                  Permitir al Administrador del Contratista generar folios
-                </label>
-              </div>
-              <div class="togglebutton">
-                <label>
-                  <input type="checkbox" checked="" />
-                  <span class="toggle"></span>
-                  Permitir al Administrador del Mandante abrir el Libro
-                </label>
-              </div>
-              <div class="togglebutton togglebutton-success">
-                <label>
-                  <input type="checkbox" checked="" />
-                  <span class="toggle"></span>
-                  Permitir al Administrador del Contratista abrir el Libro
-                </label>
-              </div>
-              <div class="togglebutton">
-                <label>
-                  <input type="checkbox" checked="" />
-                  <span class="toggle"></span>
-                  Permitir al Administrador del Mandante cerrar el Libro
-                </label>
-              </div>
-              <div class="togglebutton togglebutton-success">
-                <label>
-                  <input type="checkbox" checked="" />
-                  <span class="toggle"></span>
-                  Permitir al Administrador del Contratista cerrar el Libro
-                </label>
-              </div>
-              <div class="togglebutton">
-                <label>
-                  <input type="checkbox" checked="" />
-                  <span class="toggle"></span>
-                  Solicitar confirmación de lectura de Folios al Mandante
-                </label>
-              </div>
-              <div class="togglebutton togglebutton-success">
-                <label>
-                  <input type="checkbox" checked="" />
-                  <span class="toggle"></span>
-                  Solicitar confirmación de lectura de Folios al Contratista
-                </label>
-              </div>
-            </form>
-            <hr />
-            <div class="pull-right">
-              <button
-                mat-raised-button
-                type="submit"
-                class="btn btn-default mr-1"
-              >
-                Cancelar
-              </button>
-              <button mat-raised-button type="submit" class="btn btn-behance">
-                Guardar Cambios
-              </button>
-            </div>
-          </div>
-        </mat-tab>
-      </mat-tab-group>        
-    </div>
-  </div>
-</div>
-</div>
--->
 <div class="main-content">
   <div class="container-fluid">
     <div class="card">
       <div class="card-body">
         <mat-tab-group>
           <mat-tab label="Libro">
-            <div class="container-fluid mt-3">
-              <h5 style="color: #252525;">
-                <strong>Información General</strong>
-              </h5>
-              <div class="row">
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
+            <form [formGroup]="libroInfoGeneralFormGroup">
+              <div class="container-fluid mt-3">
+                <h5 style="color: #252525;">
+                  <strong>Información General</strong>
+                </h5>
+                <div class="row">
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Cod. Libro"
+                      type="text"
+                      formControlName="codigo"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-9">
+                    <input
+                      matInput
+                      placeholder="Nombre Libro"
+                      type="text"
+                      formControlName="nombre"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="row">
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Estado"
+                      type="text"
+                      value="Abierto"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Fecha creación"
+                      type="text"
+                      formControlName="fechaCreacion"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Fecha apertura"
+                      type="text"
+                      formControlName="fechaApertura"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Fecha cierre"
+                      type="text"
+                      formControlName="fechaCierre"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+                <mat-form-field class="example-full-width">
+                  <textarea
                     matInput
-                    placeholder="Cod. Libro"
-                    type="text"
-                    value="LM001"
+                    placeholder="Descripción"
+                    rows="2"
+                    formControlName="descripcion"
                     disabled
-                  />
+                  ></textarea>
                 </mat-form-field>
-                <mat-form-field class="example-full-width col-md-9">
-                  <input
-                    matInput
-                    placeholder="Nombre Libro"
-                    type="text"
-                    value="Libro principal de obras"
-                    disabled
-                  />
-                </mat-form-field>
+                <div class="row">
+                  <mat-form-field class="col-md-6">
+                    <mat-select
+                      placeholder="Clase Libro"
+                      name="city"
+                      formControlName="tipoLibro"
+                    >
+                      <mat-option *ngFor="let tipo of tipoLibro" [value]="tipo">
+                        {{ tipo.descripcion }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field class="col-md-6">
+                    <mat-select
+                      placeholder="Tipo Firma"
+                      name="city"
+                      formControlName="tipoFirma"
+                    >
+                      <mat-option *ngFor="let tipo of tipoFirma" [value]="tipo">
+                        {{ tipo.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <hr />
+                <h5 style="color: #252525;">
+                  <strong>Administrador Mandante</strong>
+                </h5>
+                <div class="row">
+                  <mat-form-field class="example-full-width col-md-2">
+                    <input
+                      matInput
+                      placeholder="RUT"
+                      type="text"
+                      formControlName="rutAdminMandante"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-5">
+                    <input
+                      matInput
+                      placeholder="Nombre"
+                      type="text"
+                      formControlName="nombreAdminMandante"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Perfil Usuario"
+                      type="text"
+                      formControlName="perfilUsuarioAdminMandante"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-2">
+                    <input
+                      matInput
+                      placeholder="Fecha Asignación"
+                      type="text"
+                      formControlName="fechaAsignacionAdminMandante"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="row">
+                  <mat-form-field class="example-full-width col-md-5">
+                    <input
+                      matInput
+                      placeholder="Cargo/Función"
+                      type="text"
+                      formControlName="cargoAdminMandante"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Teféfono"
+                      type="text"
+                      formControlName="telefonoAdminMandante"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-4">
+                    <input
+                      matInput
+                      placeholder="E-mail"
+                      type="text"
+                      formControlName="emailAdminMandante"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="row">
+                  <mat-form-field class="example-full-width col-md-5">
+                    <input
+                      matInput
+                      placeholder="Entidad"
+                      type="text"
+                      formControlName="entidadAdminMandante"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-2">
+                    <input
+                      matInput
+                      placeholder="RUT"
+                      type="text"
+                      formControlName="rutEntidadAdminMandante"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-5">
+                    <input
+                      matInput
+                      placeholder="Dependencia"
+                      type="text"
+                      formControlName="dependenciaEntidadMandante"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+                <hr />
+                <h5 style="color: #252525;">
+                  <strong>Administrador Contratista</strong>
+                </h5>
+                <div class="row">
+                  <mat-form-field class="example-full-width col-md-2">
+                    <input
+                      matInput
+                      placeholder="RUT"
+                      type="text"
+                      formControlName="rutAdminContratista"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-5">
+                    <input
+                      matInput
+                      placeholder="Nombre"
+                      type="text"
+                      formControlName="nombreAdminContratista"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Perfil Usuario"
+                      type="text"
+                      formControlName="perfilUsuarioAdminContratista"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-2">
+                    <input
+                      matInput
+                      placeholder="Fecha Asignación"
+                      type="text"
+                      formControlName="fechaAsignacionAdminContratista"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="row">
+                  <mat-form-field class="example-full-width col-md-5">
+                    <input
+                      matInput
+                      placeholder="Cargo/Función"
+                      type="text"
+                      formControlName="cargoAdminContratista"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Teféfono"
+                      type="text"
+                      formControlName="telefonoAdminContratista"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-4">
+                    <input
+                      matInput
+                      placeholder="E-mail"
+                      type="text"
+                      formControlName="emailAdminContratista"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="row">
+                  <mat-form-field class="example-full-width col-md-5">
+                    <input
+                      matInput
+                      placeholder="Entidad"
+                      type="text"
+                      formControlName="entidadAdminContratista"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-2">
+                    <input
+                      matInput
+                      placeholder="RUT"
+                      type="text"
+                      formControlName="rutEntidadAdminContratista"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-5">
+                    <input
+                      matInput
+                      placeholder="Dependencia"
+                      type="text"
+                      formControlName="dependenciaEntidadContratista"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
               </div>
-              <div class="row">
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
-                    matInput
-                    placeholder="Estado"
-                    type="text"
-                    value="Abierto"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
-                    matInput
-                    placeholder="Fecha creación"
-                    type="text"
-                    value="01/02/2020"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
-                    matInput
-                    placeholder="Fecha apertura"
-                    type="text"
-                    value="01/02/2020"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
-                    matInput
-                    placeholder="Fecha cierre"
-                    type="text"
-                    value="sin información"
-                    disabled
-                  />
-                </mat-form-field>
-              </div>
-              <mat-form-field class="example-full-width">
-                <textarea
-                  matInput
-                  placeholder="Descripción"
-                  rows="2"
-                  value="Libro en el cual se realizan las anotaciones generales referente al proyecto."
-                  disabled
-                ></textarea>
-              </mat-form-field>
-              <div class="row">
-                <mat-form-field class="example-full-width col-md-6">
-                  <input
-                    matInput
-                    placeholder="Clase Libro"
-                    type="text"
-                    value="Maestro"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-6">
-                  <input
-                    matInput
-                    placeholder="Tipo Firma"
-                    type="text"
-                    value="Digital Avanzada"
-                    disabled
-                  />
-                </mat-form-field>
-              </div>
-              <hr />
-              <h5 style="color: #252525;">
-                <strong>Administrador Mandante</strong>
-              </h5>
-              <div class="row">
-                <mat-form-field class="example-full-width col-md-2">
-                  <input
-                    matInput
-                    placeholder="RUT"
-                    type="text"
-                    value="13.224.233-k"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-5">
-                  <input
-                    matInput
-                    placeholder="Nombre"
-                    type="text"
-                    value="Fernando Vilches Soleman"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
-                    matInput
-                    placeholder="Perfil Usuario"
-                    type="text"
-                    value="Administrador (s)"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-2">
-                  <input
-                    matInput
-                    placeholder="Fecha Asignación"
-                    type="text"
-                    value="12/05/2020"
-                    disabled
-                  />
-                </mat-form-field>
-              </div>
-              <div class="row">
-                <mat-form-field class="example-full-width col-md-5">
-                  <input
-                    matInput
-                    placeholder="Cargo/Función"
-                    type="text"
-                    value="Inspector Fiscal"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
-                    matInput
-                    placeholder="Teféfono"
-                    type="text"
-                    value="966453188"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-4">
-                  <input
-                    matInput
-                    placeholder="E-mail"
-                    type="text"
-                    value="fvilchessoleman@gmail.com"
-                    disabled
-                  />
-                </mat-form-field>
-              </div>
-              <div class="row">
-                <mat-form-field class="example-full-width col-md-5">
-                  <input
-                    matInput
-                    placeholder="Entidad"
-                    type="text"
-                    value="Ilustre Municipalidad de La Serena"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-2">
-                  <input
-                    matInput
-                    placeholder="RUT"
-                    type="text"
-                    value="78.456.415-9"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-5">
-                  <input
-                    matInput
-                    placeholder="Dependencia"
-                    type="text"
-                    value="Dirección de Obras Muncipales"
-                    disabled
-                  />
-                </mat-form-field>
-              </div>
-              <hr />
-              <h5 style="color: #252525;">
-                <strong>Administrador Contratista</strong>
-              </h5>
-              <div class="row">
-                <mat-form-field class="example-full-width col-md-2">
-                  <input
-                    matInput
-                    placeholder="RUT"
-                    type="text"
-                    value="14.455.225-1"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-5">
-                  <input
-                    matInput
-                    placeholder="Nombre"
-                    type="text"
-                    value="Héctor Segovia Cabrera"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
-                    matInput
-                    placeholder="Perfil Usuario"
-                    type="text"
-                    value="Administrador"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-2">
-                  <input
-                    matInput
-                    placeholder="Fecha Asignación"
-                    type="text"
-                    value="12/05/2020"
-                    disabled
-                  />
-                </mat-form-field>
-              </div>
-              <div class="row">
-                <mat-form-field class="example-full-width col-md-5">
-                  <input
-                    matInput
-                    placeholder="Cargo/Función"
-                    type="text"
-                    value="Administrador de Contrato"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
-                    matInput
-                    placeholder="Teféfono"
-                    type="text"
-                    value="945555763"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-4">
-                  <input
-                    matInput
-                    placeholder="E-mail"
-                    type="text"
-                    value="hsegoviac@gmail.com"
-                    disabled
-                  />
-                </mat-form-field>
-              </div>
-              <div class="row">
-                <mat-form-field class="example-full-width col-md-5">
-                  <input
-                    matInput
-                    placeholder="Entidad"
-                    type="text"
-                    value="Constructora La Serena Ltda."
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-2">
-                  <input
-                    matInput
-                    placeholder="RUT"
-                    type="text"
-                    value="77.124.245-5"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-5">
-                  <input
-                    matInput
-                    placeholder="Dependencia"
-                    type="text"
-                    value="Oficina de Obras"
-                    disabled
-                  />
-                </mat-form-field>
-              </div>
-            </div>
+            </form>
           </mat-tab>
           <mat-tab label="Usuarios Mandante">
             <div class="container-fluid mt-3">
@@ -814,14 +316,19 @@
                   </span>
                   Cambiar administrador
                 </button>
-                <button mat-raised-button type="submit" class="btn btn-primary">
+                <button
+                  mat-raised-button
+                  type="submit"
+                  class="btn btn-primary"
+                  (click)="modalCrearUsuario()"
+                >
                   <span class="btn-label">
                     <i class="material-icons">person_add</i>
                   </span>
                   Nuevo Usuario
                 </button>
               </div>
-              <div class="table-responsive">
+              <div *ngIf="muestraListaUsuarios" class="table-responsive">
                 <table class="table table-striped mt-2">
                   <thead class="text-muted">
                     <tr>
@@ -835,14 +342,16 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let row of tableData2.dataRows">
-                      <td scope="row" style="width: auto;">{{ row[0] }}</td>
+                    <tr *ngFor="let row of usuariosAgregados">
+                      <td scope="row" style="width: auto;">{{ row.rut }}</td>
 
-                      <td>{{ row[1] }}</td>
-                      <td>{{ row[2] }}</td>
-                      <td>{{ row[3] }}</td>
+                      <td>{{ row.nombre }}</td>
+                      <td>{{ row.cargoFuncion }}</td>
+                      <td>{{ row.perfilUsuarioLibro.nombre }}</td>
                       <td>
-                        <span class="badge badge-primary">{{ row[4] }}</span>
+                        <span class="badge badge-primary">{{
+                          row.estado
+                        }}</span>
                       </td>
                       <td class="td-actions text-right">
                         <button
@@ -879,7 +388,12 @@
                   </span>
                   Cambiar administrador
                 </button>
-                <button mat-raised-button type="submit" class="btn btn-primary">
+                <button
+                  mat-raised-button
+                  type="submit"
+                  class="btn btn-primary"
+                  (click)="modalCrearUsuarioContratista()"
+                >
                   <span class="btn-label">
                     <i class="material-icons">person_add</i>
                   </span>
@@ -900,14 +414,16 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let row of tableData2.dataRows">
-                      <td scope="row" style="width: auto;">{{ row[0] }}</td>
+                    <tr *ngFor="let row of usuariosAgregadosContratista">
+                      <td scope="row" style="width: auto;">{{ row.rut }}</td>
 
-                      <td>{{ row[1] }}</td>
-                      <td>{{ row[2] }}</td>
-                      <td>{{ row[3] }}</td>
+                      <td>{{ row.nombre }}</td>
+                      <td>{{ row.cargoFuncion }}</td>
+                      <td>{{ row.perfilUsuarioLibro.nombre }}</td>
                       <td>
-                        <span class="badge badge-primary">{{ row[4] }}</span>
+                        <span class="badge badge-primary">{{
+                          row.estado
+                        }}</span>
                       </td>
                       <td class="td-actions text-right">
                         <button
@@ -933,59 +449,91 @@
           </mat-tab>
           <mat-tab label="Configuración y Permisos">
             <div class="container-fluid mt-3">
-              <form method="#" action="#">
+              <form [formGroup]="permisosFormGroup">
                 <div class="togglebutton">
                   <label>
-                    <input type="checkbox" checked="" />
+                    <input
+                      type="checkbox"
+                      checked=""
+                      formControlName="aperturaMandante"
+                    />
                     <span class="toggle"></span>
                     Permitir al Administrador del Mandante generar folios
                   </label>
                 </div>
                 <div class="togglebutton togglebutton-success">
                   <label>
-                    <input type="checkbox" checked="" />
+                    <input
+                      type="checkbox"
+                      checked=""
+                      formControlName="aperturaContratista"
+                    />
                     <span class="toggle"></span>
                     Permitir al Administrador del Contratista generar folios
                   </label>
                 </div>
                 <div class="togglebutton">
                   <label>
-                    <input type="checkbox" checked="" />
+                    <input
+                      type="checkbox"
+                      checked=""
+                      formControlName="escrituraMandante"
+                    />
                     <span class="toggle"></span>
                     Permitir al Administrador del Mandante abrir el Libro
                   </label>
                 </div>
                 <div class="togglebutton togglebutton-success">
                   <label>
-                    <input type="checkbox" checked="" />
+                    <input
+                      type="checkbox"
+                      checked=""
+                      formControlName="escrituraContratista"
+                    />
                     <span class="toggle"></span>
                     Permitir al Administrador del Contratista abrir el Libro
                   </label>
                 </div>
                 <div class="togglebutton">
                   <label>
-                    <input type="checkbox" checked="" />
+                    <input
+                      type="checkbox"
+                      checked=""
+                      formControlName="cierreMandante"
+                    />
                     <span class="toggle"></span>
                     Permitir al Administrador del Mandante cerrar el Libro
                   </label>
                 </div>
                 <div class="togglebutton togglebutton-success">
                   <label>
-                    <input type="checkbox" checked="" />
+                    <input
+                      type="checkbox"
+                      checked=""
+                      formControlName="cierreContratista"
+                    />
                     <span class="toggle"></span>
                     Permitir al Administrador del Contratista cerrar el Libro
                   </label>
                 </div>
                 <div class="togglebutton">
                   <label>
-                    <input type="checkbox" checked="" />
+                    <input
+                      type="checkbox"
+                      checked=""
+                      formControlName="lecturaMandante"
+                    />
                     <span class="toggle"></span>
                     Solicitar confirmación de lectura de Folios al Mandante
                   </label>
                 </div>
                 <div class="togglebutton togglebutton-success">
                   <label>
-                    <input type="checkbox" checked="" />
+                    <input
+                      type="checkbox"
+                      checked=""
+                      formControlName="lecturaContratista"
+                    />
                     <span class="toggle"></span>
                     Solicitar confirmación de lectura de Folios al Contratista
                   </label>
@@ -1000,7 +548,12 @@
                 >
                   Cancelar
                 </button>
-                <button mat-raised-button type="submit" class="btn btn-behance">
+                <button
+                  mat-raised-button
+                  type="submit"
+                  class="btn btn-behance"
+                  (click)="guardaLibro()"
+                >
                   Guardar Cambios
                 </button>
               </div>

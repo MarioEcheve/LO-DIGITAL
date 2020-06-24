@@ -9,9 +9,15 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NouisliderModule } from "ng2-nouislider";
 import { TagInputModule } from "ngx-chips";
 import { MaterialModule } from "src/app/app.module";
+import { CrearUsuarioComponent } from "../componentes/crear-usuario/crear-usuario.component";
 
 @NgModule({
-  declarations: [LibroComponent, DetalleLibroComponent, ListaLibroComponent],
+  declarations: [
+    LibroComponent,
+    DetalleLibroComponent,
+    ListaLibroComponent,
+    CrearUsuarioComponent,
+  ],
   imports: [
     CommonModule,
     LibroRoutingModule,
@@ -21,5 +27,6 @@ import { MaterialModule } from "src/app/app.module";
     TagInputModule,
     MaterialModule,
   ],
+  entryComponents: [CrearUsuarioComponent],
 })
 export class LibroModule {}

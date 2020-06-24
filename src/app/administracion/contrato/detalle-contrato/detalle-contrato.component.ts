@@ -89,7 +89,8 @@ export class DetalleContratoComponent
     private contratoService: ContratoService,
     private regionService: RegionService,
     private comunaService: ComunaService,
-    private dependenciaService: DependenciaService
+    private dependenciaService: DependenciaService,
+    private router: Router
   ) {}
 
   isFieldValid(form: FormGroup, field: string) {
@@ -400,5 +401,10 @@ export class DetalleContratoComponent
       this.listaComunas = respuesta.body;
       console.log(respuesta.body);
     });
+  }
+  nuevoLibro() {
+    let id = this.route.snapshot.paramMap.get("id");
+    console.log(id);
+    this.router.navigate(["/libro/nuevo-libro/", id]);
   }
 }

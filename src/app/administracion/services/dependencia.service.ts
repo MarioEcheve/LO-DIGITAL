@@ -17,6 +17,8 @@ export class DependenciaService {
   public resourceUrl = this.SERVER_API_URL + "api/dependencias";
   public resourceUrlBuscaDependenciaPorEntidad =
     this.SERVER_API_URL + "api/buscaDependenciaPorEntidad";
+  public resourceUrlBuscaUsuarioDependencia =
+    this.SERVER_API_URL + "api/buscaUsuariosDependencia";
   constructor(protected http: HttpClient) {}
 
   create(dependencia: IDependencia): Observable<EntityResponseType> {
@@ -64,6 +66,22 @@ export class DependenciaService {
     return this.http
       .get<IDependencia[]>(
         `${this.resourceUrlBuscaDependenciaPorEntidad}/${idEntidad}`,
+        {
+          observe: "response",
+        }
+      )
+      .pipe(
+        map((res: EntityArrayResponseType) =>
+          this.convertDateArrayFromServer(res)
+        )
+      );
+  }
+  buscaUsuariosDependencia(
+    idDependencia: number
+  ): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<any[]>(
+        `${this.resourceUrlBuscaUsuarioDependencia}/${idDependencia}`,
         {
           observe: "response",
         }
