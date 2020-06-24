@@ -22,12 +22,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let row of tableData1.dataRows">
-                <td class="text-center">{{ row[0] }}</td>
-                <td>{{ row[1] }}</td>
-                <td>{{ row[2] }}</td>
-                <td>{{ row[3] }}</td>
-                <td class="text-right">&euro; {{ row[4] }}</td>
+              <tr *ngFor="let row of listaDeContratos">
+                <td class="text-center">{{ row.id }}</td>
+                <td>{{ row.nombre }}</td>
+                <td>{{ row.codigo }}</td>
+                <td>{{ row.direccion }}</td>
+                <td class="text-right">{{ row.tipoContrato.nombre }}</td>
                 <td class="td-actions text-right">
                   <button
                     mat-raised-button
@@ -40,6 +40,7 @@
                     mat-raised-button
                     type="button"
                     class="btn btn-success {{ row[5] }}"
+                    (click)="editarContrato(row.id)"
                   >
                     <i class="material-icons">edit</i>
                   </button>

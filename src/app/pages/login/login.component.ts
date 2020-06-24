@@ -86,10 +86,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       })
       .subscribe(
         (res) => {
-          console.log(res);
           this.showNotificationSuccess("top", "right", res);
-          this.usuarioService.changeUsuarioActual(res);
+          localStorage.setItem("user", JSON.stringify(res));
           this.router.navigate(["dashboard"]);
+          //console.log(JSON.parse(localStorage.getItem("user")));
         },
         (error) => {
           this.noValidos = true;

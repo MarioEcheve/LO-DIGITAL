@@ -7,11 +7,17 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NouisliderModule } from "ng2-nouislider";
 import { TagInputModule } from "ngx-chips";
 import { MaterialModule } from "src/app/app.module";
-import { ListaContratoComponent } from './lista-contrato/lista-contrato.component';
-import { DetalleContratoComponent } from './detalle-contrato/detalle-contrato.component';
+import { ListaContratoComponent } from "./lista-contrato/lista-contrato.component";
+import { DetalleContratoComponent } from "./detalle-contrato/detalle-contrato.component";
+import { ModalBuscarEntidadComponent } from "./modal-buscar-entidad/modal-buscar-entidad.component";
 
 @NgModule({
-  declarations: [ContratoComponent, ListaContratoComponent, DetalleContratoComponent],
+  declarations: [
+    ContratoComponent,
+    ListaContratoComponent,
+    DetalleContratoComponent,
+    ModalBuscarEntidadComponent,
+  ],
   imports: [
     CommonModule,
     ContratoRoutingModule,
@@ -21,5 +27,6 @@ import { DetalleContratoComponent } from './detalle-contrato/detalle-contrato.co
     TagInputModule,
     MaterialModule,
   ],
+  entryComponents: [ModalBuscarEntidadComponent],
 })
 export class ContratoModule {}

@@ -1,0 +1,53 @@
+<h2 mat-dialog-title>Buscador de Entidades</h2>
+<mat-dialog-content class="mat-typography">
+  <mat-form-field>
+    <mat-label>Filtro de busqueda</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" />
+  </mat-form-field>
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <!-- ID Column -->
+      <ng-container matColumnDef="RUT">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>RUT</th>
+        <td mat-cell *matCellDef="let row">{{ row.rut }}</td>
+      </ng-container>
+
+      <!-- Progress Column -->
+      <ng-container matColumnDef="NOMBRE">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>NOMBRE</th>
+        <td mat-cell *matCellDef="let row">{{ row.nombre }}%</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="DIRECCION">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>DIRECCION</th>
+        <td mat-cell *matCellDef="let row">{{ row.direccion }}</td>
+      </ng-container>
+
+      <!-- Color Column -->
+      <ng-container matColumnDef="ACTIVIDADRUBRO">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Actividad o Rubro
+        </th>
+        <td mat-cell *matCellDef="let row" [style.color]="row.color">
+          {{ row.actividadRubro.nombre }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="columnaSeleccionada(row)"
+        [style.background]="
+          entidadSeleccionada.indexOf(row) != -1 ? 'lightblue' : ''
+        "
+      ></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-button (click)="datosEntidad()" cdkFocusInitial>Aceptar</button>
+</mat-dialog-actions>

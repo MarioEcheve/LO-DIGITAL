@@ -1,6 +1,23 @@
-import { Component, OnInit, SimpleChanges } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  SimpleChanges,
+  OnChanges,
+  AfterViewInit,
+} from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-
+import { RegionService } from "../../services/region.service";
+import { IRegion } from "../../TO/region.model";
+import { ModalidadService } from "../../services/modalidad.service";
+import { TipoContratoService } from "../../services/tipo-contrato.service";
+import { ComunaService } from "../../services/comuna.service";
+import { IComuna } from "../../TO/comuna.model";
+import { MatDialog } from "@angular/material/dialog";
+import { ModalBuscarEntidadComponent } from "../modal-buscar-entidad/modal-buscar-entidad.component";
+import { DependenciaService } from "../../services/dependencia.service";
+import { ContratoService } from "../../services/contrato.service";
+import { Contrato } from "../../TO/contrato.model";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 declare const require: any;
 declare const $: any;
 
@@ -18,10 +35,6 @@ declare interface TableWithCheckboxes {
   amount: string;
 }
 
-export interface TableData2 {
-  headerRow: string[];
-  dataRows: TableWithCheckboxes[];
-}
 @Component({
   selector: "app-contrato",
   templateUrl: "./contrato.component.html",
@@ -30,441 +43,370 @@ export interface TableData2 {
 export class ContratoComponent implements OnInit {
   simpleSlider = 40;
   doubleSlider = [20, 60];
-  public tableData1: TableData;
-  public tableData2: TableData;
-  regularItems = ["Pizza", "Pasta", "Parmesan"];
   touch: boolean;
-  type: FormGroup;
   selectedValue: string;
   currentCity: string[];
-  constructor(private formBuilder: FormBuilder) {}
+  regiones = [];
+  comunas: IComuna;
+  modalidades = [];
+  tiposDeContratos = [];
+  muestraOtroContrato = false;
+  muestraOtraModalidad = false;
+  dependenciasMandante = [];
+  dependenciasContratista = [];
+  // DATOS IMPLEMENTACION STEEPPER
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+  contratoForm: FormGroup;
+  MandanteFormGroup: FormGroup;
+  contratistaFormGroup: FormGroup;
+  permisosFormGroup: FormGroup;
+  contactoFormGroup: FormGroup;
+  isEditable = false;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private regionService: RegionService,
+    private tipoContratoService: TipoContratoService,
+    private modalidadService: ModalidadService,
+    private comunaService: ComunaService,
+    private dialog: MatDialog,
+    private dependenciaService: DependenciaService,
+    private contratoService: ContratoService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {}
   selectTheme = "primary";
-  cities = [
-    { value: "paris-0", viewValue: "Paris" },
-    { value: "miami-1", viewValue: "Miami" },
-    { value: "bucharest-2", viewValue: "Bucharest" },
-    { value: "new-york-3", viewValue: "New York" },
-    { value: "london-4", viewValue: "London" },
-    { value: "barcelona-5", viewValue: "Barcelona" },
-    { value: "moscow-6", viewValue: "Moscow" },
-  ];
 
   ngOnInit() {
-    this.tableData1 = {
-      headerRow: [
-        "Código",
-        "Nombre",
-        "Tipo Libro",
-        "Tipo Firma",
-        "Estado",
-        "Acción",
-      ],
-      dataRows: [
-        [
-          "LM01",
-          "Libro Principal",
-          "Maestro",
-          "Digital Avanzada",
-          "En creación",
-          "btn-link",
-        ],
-        [
-          "LC01",
-          "Libro de Comuniaciones",
-          "Auxiliar",
-          "Digital Simple",
-          "Abierto",
-          "btn-link",
-        ],
-        [
-          "LA01",
-          "Libro Prevención de Riesgos",
-          "Auxiliar",
-          "Por Sistema",
-          "Abierto",
-          "btn-link",
-        ],
-        ["LA02", "Libro PAC", "Auxiliar", "Por Sistema", "Abierto", "btn-link"],
-        [
-          "LA03",
-          "Libro Administrativo",
-          "Auxiliar",
-          "Por Sistema",
-          "Cerrado",
-          "btn-link",
-        ],
-      ],
-    };
-
-    this.tableData2 = {
-      headerRow: ["RUT", "Nombre", "Cargo", "Perfil", "Estado", "Acción"],
-      dataRows: [
-        [
-          "15.547.454-6",
-          "Nombre ApellidoP ApellidoM",
-          "Inspector Fiscal",
-          "Administrador",
-          "Activo",
-          "btn-link",
-        ],
-        [
-          "14.774.524-3",
-          "Nombre ApellidoP ApellidoM",
-          "Asistente ITO",
-          "Asistente",
-          "Abierto",
-          "btn-link",
-        ],
-        [
-          "12.774.524-3",
-          "Nombre ApellidoP ApellidoM",
-          "Inpector Fiscal (S)",
-          "Administrador (s)",
-          "Activo",
-          "btn-link",
-        ],
-        [
-          "16.774.524-3",
-          "Nombre ApellidoP ApellidoM",
-          "Jefe Area Construcción",
-          "Superior",
-          "Activo",
-          "btn-link",
-        ],
-        [
-          "18.774.524-3",
-          "Nombre ApellidoP ApellidoM",
-          "Secretaria Administrativa",
-          "Visita",
-          "Inactivo",
-          "btn-link",
-        ],
-      ],
-    };
-
-    const elemMainPanel = <HTMLElement>document.querySelector(".main-panel");
-
-    this.type = this.formBuilder.group({
+    this.contratoForm = this.formBuilder.group({
       // To add a validator, we must first convert the string value into an array. The first item in the array is the default value if any, then the next item in the array is the validator. Here we are adding a required validator meaning that the firstName attribute must have a value in it.
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
-      email: [
-        null,
-        [
-          Validators.required,
-          Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
-        ],
-      ],
+      codigo: ["", Validators.required],
+      nombre: ["", Validators.required],
+      descripcion: ["", Validators.required],
+      direccion: ["", Validators.required],
+      region: ["", Validators.required],
+      tipoContrato: ["", Validators.required],
+      modalidad: ["", Validators.required],
+      comuna: ["", Validators.required],
+      tipoOtro: [],
+      modalidadOtra: [],
+      entidadPerfil: ["", Validators.required],
     });
-    // Code for the Validator
-    const $validator = $(".card-wizard form").validate({
-      rules: {
-        firstname: {
-          required: true,
-          minlength: 3,
-        },
-        lastname: {
-          required: true,
-          minlength: 3,
-        },
-        email: {
-          required: true,
-          minlength: 3,
-        },
-      },
-
-      highlight: function (element) {
-        $(element)
-          .closest(".form-group")
-          .removeClass("has-success")
-          .addClass("has-danger");
-      },
-      success: function (element) {
-        $(element)
-          .closest(".form-group")
-          .removeClass("has-danger")
-          .addClass("has-success");
-      },
-      errorPlacement: function (error, element) {
-        $(element).append(error);
-      },
+    this.MandanteFormGroup = this.formBuilder.group({
+      rut: ["", Validators.required],
+      nombre: ["", Validators.required],
+      comuna: [""],
+      region: [""],
+      dependenciaMandante: ["", Validators.required],
     });
+    this.MandanteFormGroup.controls["rut"].disable();
+    this.MandanteFormGroup.controls["nombre"].disable();
+    this.MandanteFormGroup.controls["comuna"].disable();
+    this.MandanteFormGroup.controls["region"].disable();
 
-    // Wizard Initialization
-    $(".card-wizard").bootstrapWizard({
-      tabClass: "nav nav-pills",
-      nextSelector: ".btn-next",
-      previousSelector: ".btn-previous",
+    this.contratistaFormGroup = this.formBuilder.group({
+      rut: ["", Validators.required],
+      nombre: ["", Validators.required],
+      comuna: [""],
+      region: [""],
+      dependenciaContratista: ["", Validators.required],
+    });
+    this.contratistaFormGroup.controls["rut"].disable();
+    this.contratistaFormGroup.controls["nombre"].disable();
+    this.contratistaFormGroup.controls["comuna"].disable();
+    this.contratistaFormGroup.controls["region"].disable();
 
-      onNext: function (tab, navigation, index) {
-        var $valid = $(".card-wizard form").valid();
-        if (!$valid) {
-          $validator.focusInvalid();
-          return false;
-        }
-      },
-
-      onInit: function (tab: any, navigation: any, index: any) {
-        // check number of tabs and fill the entire row
-        let $total = navigation.find("li").length;
-        let $wizard = navigation.closest(".card-wizard");
-
-        let $first_li = navigation.find("li:first-child a").html();
-        let $moving_div = $('<div class="moving-tab">' + $first_li + "</div>");
-        $(".card-wizard .wizard-navigation").append($moving_div);
-
-        $total = $wizard.find(".nav li").length;
-        let $li_width = 100 / $total;
-
-        let total_steps = $wizard.find(".nav li").length;
-        let move_distance = $wizard.width() / total_steps;
-        let index_temp = index;
-        let vertical_level = 0;
-
-        let mobile_device = $(document).width() < 600 && $total > 3;
-
-        if (mobile_device) {
-          move_distance = $wizard.width() / 2;
-          index_temp = index % 2;
-          $li_width = 50;
-        }
-
-        $wizard.find(".nav li").css("width", $li_width + "%");
-
-        let step_width = move_distance;
-        move_distance = move_distance * index_temp;
-
-        let $current = index + 1;
-
-        if ($current == 1 || (mobile_device == true && index % 2 == 0)) {
-          move_distance -= 8;
-        } else if (
-          $current == total_steps ||
-          (mobile_device == true && index % 2 == 1)
-        ) {
-          move_distance += 8;
-        }
-
-        if (mobile_device) {
-          let x: any = index / 2;
-          vertical_level = parseInt(x);
-          vertical_level = vertical_level * 38;
-        }
-
-        $wizard.find(".moving-tab").css("width", step_width);
-        $(".moving-tab").css({
-          transform:
-            "translate3d(" + move_distance + "px, " + vertical_level + "px, 0)",
-          transition: "all 0.5s cubic-bezier(0.29, 1.42, 0.79, 1)",
-        });
-        $(".moving-tab").css("transition", "transform 0s");
-      },
-
-      onTabClick: function (tab: any, navigation: any, index: any) {
-        const $valid = $(".card-wizard form").valid();
-
-        if (!$valid) {
-          return false;
-        } else {
-          return true;
-        }
-      },
-
-      onTabShow: function (tab: any, navigation: any, index: any) {
-        let $total = navigation.find("li").length;
-        let $current = index + 1;
-        elemMainPanel.scrollTop = 0;
-        const $wizard = navigation.closest(".card-wizard");
-
-        // If it's the last tab then hide the last button and show the finish instead
-        if ($current >= $total) {
-          $($wizard).find(".btn-next").hide();
-          $($wizard).find(".btn-finish").show();
-        } else {
-          $($wizard).find(".btn-next").show();
-          $($wizard).find(".btn-finish").hide();
-        }
-
-        const button_text = navigation
-          .find("li:nth-child(" + $current + ") a")
-          .html();
-
-        setTimeout(function () {
-          $(".moving-tab").text(button_text);
-        }, 150);
-
-        const checkbox = $(".footer-checkbox");
-
-        if (index !== 0) {
-          $(checkbox).css({
-            opacity: "0",
-            visibility: "hidden",
-            position: "absolute",
-          });
-        } else {
-          $(checkbox).css({
-            opacity: "1",
-            visibility: "visible",
-          });
-        }
-        $total = $wizard.find(".nav li").length;
-        let $li_width = 100 / $total;
-
-        let total_steps = $wizard.find(".nav li").length;
-        let move_distance = $wizard.width() / total_steps;
-        let index_temp = index;
-        let vertical_level = 0;
-
-        let mobile_device = $(document).width() < 600 && $total > 3;
-
-        if (mobile_device) {
-          move_distance = $wizard.width() / 2;
-          index_temp = index % 2;
-          $li_width = 50;
-        }
-
-        $wizard.find(".nav li").css("width", $li_width + "%");
-
-        let step_width = move_distance;
-        move_distance = move_distance * index_temp;
-
-        $current = index + 1;
-
-        if ($current == 1 || (mobile_device == true && index % 2 == 0)) {
-          move_distance -= 8;
-        } else if (
-          $current == total_steps ||
-          (mobile_device == true && index % 2 == 1)
-        ) {
-          move_distance += 8;
-        }
-
-        if (mobile_device) {
-          let x: any = index / 2;
-          vertical_level = parseInt(x);
-          vertical_level = vertical_level * 38;
-        }
-
-        $wizard.find(".moving-tab").css("width", step_width);
-        $(".moving-tab").css({
-          transform:
-            "translate3d(" + move_distance + "px, " + vertical_level + "px, 0)",
-          transition: "all 0.5s cubic-bezier(0.29, 1.42, 0.79, 1)",
-        });
-      },
+    this.permisosFormGroup = this.formBuilder.group({
+      creaLibroAdminMan: [false],
+      creaLibroAdminCon: [false],
+      actualizarContratoAdminMan: [false],
+      actualizarContratoAdminCon: [false],
     });
 
-    // Prepare the preview for profile picture
-    $("#wizard-picture").change(function () {
-      const input = $(this);
-
-      if (input[0].files && input[0].files[0]) {
-        const reader = new FileReader();
-
-        reader.onload = function (e: any) {
-          $("#wizardPicturePreview")
-            .attr("src", e.target.result)
-            .fadeIn("slow");
-        };
-        reader.readAsDataURL(input[0].files[0]);
-      }
+    this.contactoFormGroup = this.formBuilder.group({
+      nombreContacto: [""],
+      telefonoContacto: [""],
+      telefonoContactoSecundario: [""],
+      emailContacto: [""],
+      monto: [""],
     });
 
-    $('[data-toggle="wizard-radio"]').click(function () {
-      const wizard = $(this).closest(".card-wizard");
-      wizard.find('[data-toggle="wizard-radio"]').removeClass("active");
-      $(this).addClass("active");
-      $(wizard).find('[type="radio"]').removeAttr("checked");
-      $(this).find('[type="radio"]').attr("checked", "true");
-    });
-
-    $('[data-toggle="wizard-checkbox"]').click(function () {
-      if ($(this).hasClass("active")) {
-        $(this).removeClass("active");
-        $(this).find('[type="checkbox"]').removeAttr("checked");
-      } else {
-        $(this).addClass("active");
-        $(this).find('[type="checkbox"]').attr("checked", "true");
-      }
-    });
-
-    $(".set-full-height").css("height", "auto");
+    // llamado de metodo para obtener regiones, tipo de contrato, modalidad
+    this.obtenerRegiones();
+    this.obtenerModalidadContrato();
+    this.obtenerTiposDeContrato();
   }
 
   myFunc(val: any) {
     // code here
   }
-  ngOnChanges(changes: SimpleChanges) {
-    const input = $(this);
 
-    if (input[0].files && input[0].files[0]) {
-      const reader: any = new FileReader();
-
-      reader.onload = function (e: any) {
-        $("#wizardPicturePreview").attr("src", e.target.result).fadeIn("slow");
-      };
-      reader.readAsDataURL(input[0].files[0]);
+  // servicio para obtener las regiones
+  obtenerRegiones() {
+    this.regionService.query().subscribe((respuesta) => {
+      console.log(respuesta.body);
+      this.regiones = respuesta.body;
+    });
+  }
+  // servicio para obtener los tipos de contrato
+  obtenerTiposDeContrato() {
+    this.tipoContratoService.query().subscribe((respuesta) => {
+      this.tiposDeContratos = respuesta.body;
+    });
+  }
+  // servicio para obtener las modalidades de contrato
+  obtenerModalidadContrato() {
+    this.modalidadService.query().subscribe((respuesta) => {
+      this.modalidades = respuesta.body;
+    });
+  }
+  muestraOtroTipoContrato(tipo: string) {
+    if (tipo.toLowerCase() == "otro") {
+      this.muestraOtroContrato = true;
+    } else {
+      this.muestraOtroContrato = false;
     }
   }
-  ngAfterViewInit() {
-    $(window).resize(() => {
-      $(".card-wizard").each(function () {
-        setTimeout(() => {
-          const $wizard = $(this);
-          const index = $wizard.bootstrapWizard("currentIndex");
-          let $total = $wizard.find(".nav li").length;
-          let $li_width = 100 / $total;
-
-          let total_steps = $wizard.find(".nav li").length;
-          let move_distance = $wizard.width() / total_steps;
-          let index_temp = index;
-          let vertical_level = 0;
-
-          let mobile_device = $(document).width() < 600 && $total > 3;
-          if (mobile_device) {
-            move_distance = $wizard.width() / 2;
-            index_temp = index % 2;
-            $li_width = 50;
-          }
-
-          $wizard.find(".nav li").css("width", $li_width + "%");
-
-          let step_width = move_distance;
-          move_distance = move_distance * index_temp;
-
-          let $current = index + 1;
-
-          if ($current == 1 || (mobile_device == true && index % 2 == 0)) {
-            move_distance -= 8;
-          } else if (
-            $current == total_steps ||
-            (mobile_device == true && index % 2 == 1)
-          ) {
-            move_distance += 8;
-          }
-
-          if (mobile_device) {
-            let x: any = index / 2;
-            vertical_level = parseInt(x);
-            vertical_level = vertical_level * 38;
-          }
-
-          $wizard.find(".moving-tab").css("width", step_width);
-          $(".moving-tab").css({
-            transform:
-              "translate3d(" +
-              move_distance +
-              "px, " +
-              vertical_level +
-              "px, 0)",
-            transition: "all 0.5s cubic-bezier(0.29, 1.42, 0.79, 1)",
-          });
-
-          $(".moving-tab").css({
-            transition: "transform 0s",
-          });
-        }, 500);
-      });
+  muestraOtroTipoModalidad(tipo: string) {
+    if (tipo.toLowerCase() == "otro") {
+      this.muestraOtraModalidad = true;
+    } else {
+      this.muestraOtraModalidad = false;
+    }
+  }
+  // metodo para buscar las comunas por medio del id region
+  buscaComuna(idRegion: number) {
+    this.comunaService.buscaComunaPorRegion(idRegion).subscribe((respuesta) => {
+      this.comunas = respuesta.body;
+      console.log(respuesta.body);
     });
+  }
+  // datos primer stepper
+  datosPrimerStepper() {
+    console.log(this.contratoForm.value);
+  }
+  // metodo para abrir un pop up que permite buscar entidades
+  openDialogBuscaEntidad(usuario?: string) {
+    const dialogRef = this.dialog.open(ModalBuscarEntidadComponent, {
+      width: "80%",
+      height: "90%",
+      data: {
+        entidadPerfil: this.contratoForm.get("entidadPerfil").value,
+        usuario: usuario,
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(usuario);
+      if (result.length <= 0) {
+        if (usuario === undefined) {
+          this.MandanteFormGroup.controls["rut"].setValue("");
+          this.MandanteFormGroup.controls["nombre"].setValue("");
+          this.MandanteFormGroup.controls["region"].setValue("");
+          this.MandanteFormGroup.controls["comuna"].setValue("");
+          this.MandanteFormGroup.controls["dependenciaMandante"].setValue("");
+          this.dependenciasMandante = [];
+        } else {
+          this.contratistaFormGroup.controls["rut"].setValue("");
+          this.contratistaFormGroup.controls["nombre"].setValue("");
+          this.contratistaFormGroup.controls["region"].setValue("");
+          this.contratistaFormGroup.controls["comuna"].setValue("");
+          this.contratistaFormGroup.controls["dependenciaContratista"].setValue(
+            ""
+          );
+          this.dependenciasContratista = [];
+        }
+      } else {
+        if (usuario === undefined) {
+          this.MandanteFormGroup.controls["rut"].setValue(result[0].rut);
+          this.MandanteFormGroup.controls["nombre"].setValue(result[0].nombre);
+          this.dependenciaService
+            .buscaDependenciaPorEntidad(result[0].id)
+            .subscribe((respuesta) => {
+              this.dependenciasMandante = respuesta.body;
+            });
+        } else {
+          this.contratistaFormGroup.controls["rut"].setValue(result[0].rut);
+          this.contratistaFormGroup.controls["nombre"].setValue(
+            result[0].nombre
+          );
+          this.dependenciaService
+            .buscaDependenciaPorEntidad(result[0].id)
+            .subscribe((respuesta) => {
+              this.dependenciasContratista = respuesta.body;
+            });
+        }
+      }
+    });
+  }
+  mustraRegionComunaDependencia(dependencia: any) {
+    this.MandanteFormGroup.controls["comuna"].setValue(
+      dependencia.comuna.nombre
+    );
+    this.MandanteFormGroup.controls["region"].setValue(
+      dependencia.region.nombre
+    );
+  }
+  mustraRegionComunaDependenciaContratista(dependencia: any) {
+    this.contratistaFormGroup.controls["comuna"].setValue(
+      dependencia.comuna.nombre
+    );
+    this.contratistaFormGroup.controls["region"].setValue(
+      dependencia.region.nombre
+    );
+  }
+
+  // metodo para obtener la data del stepper de permisos
+  datosPermisos() {
+    console.log(this.permisosFormGroup.value);
+  }
+  guardaContrato() {
+    //console.log(this.contratoForm.value);
+    //console.log(this.MandanteFormGroup.value);
+    //console.log(this.contratistaFormGroup.value);
+    //console.log(this.permisosFormGroup.value);
+    //console.log(this.contactoFormGroup.value);
+
+    let contrato = new Contrato();
+    contrato.actualizarContratoAdminCon = this.permisosFormGroup.get(
+      "actualizarContratoAdminCon"
+    ).value;
+    contrato.actualizarContratoAdminMan = this.permisosFormGroup.get(
+      "actualizarContratoAdminMan"
+    ).value;
+    (contrato.creaLibroAdminCon = this.permisosFormGroup.get(
+      "creaLibroAdminCon"
+    ).value),
+      (contrato.creaLibroAdminMan = this.permisosFormGroup.get(
+        "creaLibroAdminMan"
+      ).value),
+      (contrato.codigo = this.contratoForm.get("codigo").value),
+      (contrato.comuna = this.contratoForm.get("comuna").value),
+      (contrato.region = this.contratoForm.get("region").value),
+      (contrato.dependenciaMandante = this.MandanteFormGroup.get(
+        "dependenciaMandante"
+      ).value),
+      (contrato.idDependenciaContratista = this.contratistaFormGroup.get(
+        "dependenciaContratista"
+      ).value),
+      (contrato.descripcion = this.contratoForm.get("descripcion").value),
+      (contrato.direccion = this.contratoForm.get("direccion").value),
+      (contrato.emailContacto = this.contactoFormGroup.get(
+        "emailContacto"
+      ).value),
+      (contrato.estadoServicio = null),
+      //contrato.fechaInicio= "2020-06-18T04:00:00.000Z",
+      //contrato.fechaInicioServicio =  "2020-06-18T04:00:00.000Z",
+      //fechaTermino: "2020-06-18T04:00:00.000Z",
+      //fechaTerminoAcceso: "2020-06-18T04:00:00.000Z",
+      //fechaTerminoServicio: "2020-06-18T04:00:00.000Z",
+      (contrato.modalidad = this.contratoForm.get("modalidad").value),
+      (contrato.modalidadOtra = null),
+      //(contrato.cargo = this.contactoFormGroup.get("monto").value),
+      (contrato.nombre = this.contratoForm.get("nombre").value),
+      (contrato.nombreContacto = this.contactoFormGroup.get(
+        "nombreContacto"
+      ).value),
+      (contrato.observaciones = "1"),
+      (contrato.observacionesServicio = "prueba"),
+      (contrato.telefonoContacto = this.contactoFormGroup.get(
+        "telefonoContacto"
+      ).value),
+      (contrato.tipoContrato = this.contratoForm.get("tipoContrato").value),
+      (contrato.tipoMoneda = null),
+      (contrato.tipoMonto = null),
+      (contrato.tipoOtro = null),
+      this.contratoService.create(contrato).subscribe(
+        (respuesta) => {
+          console.log(respuesta);
+          this.showNotificationSuccess("top", "right");
+          this.router.navigate([
+            "/contrato/detalle-contrato",
+            respuesta.body.id,
+          ]);
+          //this.stepper.reset();
+        },
+        (error) => {
+          this.showNotificationDanger("top", "right");
+        }
+      );
+  }
+  showNotificationSuccess(from: any, align: any) {
+    const type = [
+      "",
+      "info",
+      "success",
+      "warning",
+      "danger",
+      "rose",
+      "primary",
+    ];
+
+    const color = 2;
+
+    $.notify(
+      {
+        icon: "notifications",
+        message: "Contrato Creado Correctamente ",
+      },
+      {
+        type: type[color],
+        timer: 3000,
+        placement: {
+          from: from,
+          align: align,
+        },
+        template:
+          '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0} alert-with-icon" role="alert">' +
+          '<button mat-raised-button type="button" aria-hidden="true" class="close" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
+          '<i class="material-icons" data-notify="icon">notifications</i> ' +
+          '<span data-notify="title">{1}</span> ' +
+          '<span data-notify="message">{2}</span>' +
+          '<div class="progress" data-notify="progressbar">' +
+          '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+          "</div>" +
+          '<a href="{3}" target="{4}" data-notify="url"></a>' +
+          "</div>",
+      }
+    );
+  }
+  showNotificationDanger(from: any, align: any) {
+    const type = [
+      "",
+      "info",
+      "success",
+      "warning",
+      "danger",
+      "rose",
+      "primary",
+    ];
+
+    const color = 4;
+
+    $.notify(
+      {
+        icon: "notifications",
+        message: "Error al crear el contrato",
+      },
+      {
+        type: type[color],
+        timer: 3000,
+        placement: {
+          from: from,
+          align: align,
+        },
+        template:
+          '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0} alert-with-icon" role="alert">' +
+          '<button mat-raised-button type="button" aria-hidden="true" class="close" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
+          '<i class="material-icons" data-notify="icon">notifications</i> ' +
+          '<span data-notify="title">{1}</span> ' +
+          '<span data-notify="message">{2}</span>' +
+          '<div class="progress" data-notify="progressbar">' +
+          '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+          "</div>" +
+          '<a href="{3}" target="{4}" data-notify="url"></a>' +
+          "</div>",
+      }
+    );
   }
 }
