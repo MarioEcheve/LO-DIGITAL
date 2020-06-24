@@ -6,7 +6,8 @@ html * {
 body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {
   font-family: $font-family-sans-serif;
   font-weight: 300;
-  line-height: 1.5em;
+  /* FVS line-height: 1.5em; */
+  line-height: 1.2em;
 }
 
 
@@ -29,8 +30,10 @@ h4, .h4{
 }
 h5, .h5 {
     font-size: $font-size-h5;
-    line-height: 1.4em;
-    margin-bottom: 15px;
+    line-height: 1em;
+    /* margin-bottom: 15px; */
+    margin-bottom: 3px;
+   
 }
 h6, .h6{
     font-size: $font-size-h6;
