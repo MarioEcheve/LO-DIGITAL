@@ -1,18 +1,198 @@
 <div class="main-content">
   <div class="container-fluid">
-    <!-- Inicio card de Creación Contrato -->
     <div class="card">
-      <div class="card-header card-header-rose card-header-icon">
-        <div class="card-icon">
-          <i class="material-icons">mail_outline</i>
-        </div>
-        <h4 class="card-title">Folio Firmado</h4>
-      </div>
-      <div class="card-body"></div>
-      <div class="card-footer">
-        <button mat-raised-button type="submit" class="btn btn-fill btn-rose">
-          Submit
-        </button>
+      <div class="card-body">
+        <mat-tab-group>
+          <mat-tab label="Folio">
+            <div class="container-fluid">
+              <div class="mt-2">
+                <button mat-raised-button class="btn btn-just-icon btn-white btn-fab btn-round mr-1">
+                  <i class="material-icons" style="color: #4e4e4e;">forward_to_inbox</i>
+                </button>
+                <button mat-raised-button class="btn btn-just-icon btn-white btn-fab btn-round mr-1">
+                  <i class="material-icons" style="color: #4e4e4e;">star_border</i>
+                </button>
+                <button mat-raised-button class="btn btn-just-icon btn-white btn-fab btn-round mr-1">
+                  <i class="material-icons" style="color: #4e4e4e;">cloud_download</i>
+                </button>
+                <button mat-raised-button class="btn btn-just-icon btn-white btn-fab btn-round mr-1">
+                  <i class="material-icons" style="color: #4e4e4e;">push_pin</i>
+                </button>
+                <button mat-raised-button class="btn btn-just-icon btn-white btn-fab btn-round mr-1">
+                  <i class="material-icons" style="color: #4e4e4e;">reply</i>
+                </button>
+                <button mat-raised-button class="btn btn-just-icon btn-white btn-fab btn-round" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="material-icons" style="color: #5c5c5c;">more_vert</i>
+                </button>               
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href=""><i class="material-icons" style="font-size: 18px;">reply</i>Responder</a>
+                  <a class="dropdown-item" href=""><i class="material-icons">push_pin</i>Referenciar</a>
+                  <a class="dropdown-item" href="">Exportar Archivos Adjuntos</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="">Imprimir Folio</a>
+                  <a class="dropdown-item" href="">Imprimir Folio Respuesta</a>
+                </div>
+              </div>
+              <hr>
+              <img class="mr-1" src="/assets/img/logo42.png">
+              <img src="/assets/img/letra120x34.png">
+              <hr>
+              <div class="row">
+                <div class="col-6 d-flex justify-content-start">                  
+                  <table>
+                    <tr>              
+                      <td style="font-size:15px;font-weight: bold;">Contrato:</td>              
+                      <td style="font-size:15px;font-weight: bold;">&nbsp;<strong>Construccion Edificio La Serena</strong></td>
+                    </tr>                         
+                    <tr>              
+                      <td>Código:</td>              
+                      <td>&nbsp;C01564546</td>
+                    </tr>
+                    <tr>              
+                      <td>Mandante:</td>              
+                      <td>&nbsp;Ilustre Municipalidad de La Serena</td>
+                    </tr>
+                    <tr>              
+                      <td></td>              
+                      <td>&nbsp;RUT: 78.644.555-6, Dirección Obras Municipales</td>
+                    </tr>
+                    <tr>              
+                      <td>Contratista:</td>              
+                      <td>&nbsp;Constructora Perico Los Palotes Ltda.</td>
+                    </tr>
+                    <tr>              
+                      <td></td>              
+                      <td>&nbsp;RUT: 78.644.555-6, Oficina Central</td>
+                    </tr>                    
+                  </table>
+                </div>                
+                <div class="col-6 d-flex justify-content-end">                  
+                  <table>
+                    <tr>              
+                      <td style="font-size:15px;font-weight: bold;"><strong>Libro:</strong></td>              
+                      <td style="font-size:15px;font-weight: bold;">&nbsp;<strong>Libro Maestro</strong></td>
+                    </tr>
+                    <tr>              
+                      <td>Código:</td>              
+                      <td>&nbsp;LM001</td>
+                    </tr>
+                    <tr>              
+                      <td>Clase Libro:</td>              
+                      <td>&nbsp;Maestro</td>
+                    </tr>
+                    <tr>              
+                      <td>Tipo Firma:</td>              
+                      <td>&nbsp;Digital Avanzada</td>
+                    </tr>
+                    <tr>              
+                      <td>Fecha Apertura:</td>              
+                      <td>&nbsp;12/01/2020 08:30</td>
+                    </tr>
+                    <tr>              
+                      <td>Fecha Cierre:</td>              
+                      <td>&nbsp;-</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <hr>
+              <!-- <h4>Folio Nº: 00001</h4>
+              fecha: 12/02/2020 a las 14:15 -->
+              <table>
+                <tr>              
+                  <td style="font-size:15px;font-weight: bold;">Folio #00001</td>              
+                  <td>&nbsp;12/04/2020 14:32:06</td>
+                </tr>
+                <tr>              
+                  <td>Emisor:</td>              
+                  <td>&nbsp;Fernando Vilches Soleman - RUT:13.224.233-k</td>
+                </tr>
+                <tr>              
+                  <td></td>              
+                  <td>&nbsp;Administrador Contratista</td>
+                </tr>
+                <tr>              
+                  <td>Receptor:</td>              
+                  <td>&nbsp;Alex Rojas Carmona - RUT:10.455.563-0</td>
+                </tr>
+                <tr>              
+                  <td></td>              
+                  <td>&nbsp;Administrador Mandante</td>
+                </tr>
+                <tr>              
+                  <td>Tipo de Folio:</td>              
+                  <td>&nbsp;Solicitud</td>
+                </tr>
+                <tr>                                
+                  <td>Respuesta de:</td>              
+                  <td>&nbsp;n/a</td>
+                </tr>
+                <tr>              
+                  <td>Referencia de:</td>
+                  <td>
+                    &nbsp;<li class="list-inline-item"><a href="">Libro Maestro, Folio Nº003</a></li>
+                    &nbsp;<li class="list-inline-item"><a href="">Libro Maestro, Folio Nº010</a></li>
+                    &nbsp;<li class="list-inline-item"><a href="">Libro Maestro, Folio Nº012</a></li>
+                  </td>
+                </tr>
+                <tr>              
+                  <td>Fecha Requerida:</td>              
+                  <td>&nbsp;<span class="badge badge-primary">Si</span>&nbsp;&nbsp;12/02/2020</td>
+                </tr>
+                <tr>              
+                  <td>Asunto:</td>              
+                  <td>&nbsp;Se solicita mayor detalle de partidas de moficicación de obras</td>
+                </tr>
+              </table>
+              <hr>              
+              <div style="font-size:15px;font-weight: bold;">Anotación:</div>
+              <br>
+              <p>
+                El Gobierno informó este miércoles que, debido al aumento de casos de coronavirus, en todo el país se disminuirán a dos los permisos semanales para movilizarse en caurentena, medida que regirá desde este lunes 22 de junio.
+                Así lo informó la subsecretaria de Prevención del Delito, Katherine Martorell, quien en el marco de un nuevo balance señaló que "lamentablemente todas las medidas que se han adoptado en las cuarentenas, sobre todo en la región Metropolitana, no han sido suficientes para disminuir el desplazamiento de las personas. Eso significa que no hemos logrado contener los contagios, por lo tanto necesitamos adoptar medidas que nos permitan actuar de manera más drástica aún".
+              </p>
+              <hr>
+              <div class="row">
+                <div class="col-6" style="font-size:15px;font-weight: bold;">3 Archivos Adjuntos:</div>
+                <div class="col-6 text-right">                  
+                    <a href=""><i style="color: #000000;" class="material-icons mr-1">get_app</i></a>
+                    <a href=""><i style="color: #000000;" class="material-icons">cloud_download</i></a>                                 
+                </div>                
+              </div>              
+              <ul class="list-inline">
+                <li class="list-inline-item"><a href="">Foto Sector.jpg</a></li>                
+                &nbsp;<li class="list-inline-item"><a href="">Planos de planta.zip</a></li>
+                &nbsp;<li class="list-inline-item"><a href="">Detalle Constructivo.dwg</a></li>
+              </ul>                    
+              <hr>
+              <strong>Fernando Vilches Soleman</strong>
+              <br>Administrador de Contrato
+              <br>Fecha Firma: 12/02/2020 18:32:15
+              <br>Fimar Digital Avanzada
+              <br>Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745
+              <mat-divider class="mt-2"></mat-divider>
+              <p style="font-size:smaller;" class="text-right mt-1">Creado mediante en plataforma <a href="">www.lodigital.cl</a>, Diseñada por LinkSystem Spa.</p> 
+            </div>
+          </mat-tab>
+          <mat-tab label="Notas">
+            <div class="container-fluid">
+
+              <p style="font-weight: bold;">dasdasdas</p>
+              
+              
+            </div>
+          </mat-tab>
+          <mat-tab label="Alertas">
+            <div class="container-fluid">
+              ddasdasdasd
+            </div>
+          </mat-tab>
+          <mat-tab label="Relaciones">
+            <div class="container-fluid">
+              ddasdasdasd
+            </div>
+          </mat-tab>
+        </mat-tab-group>
       </div>
     </div>
   </div>

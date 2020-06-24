@@ -5,15 +5,70 @@
         <mat-tab-group>
           <mat-tab label="Borrador">
             <div class="container-fluid">
-              <h5 style="color: #4285f4;" class="mt-3">
-                <!-- <h5 style="color: #41739cd7;" class="mt-3"> -->
-                <strong>Edificio Santiago Centro - Cód.:1254</strong>
-              </h5>
-              <span style="line-height: 22px;">Libro Maestro - Cód.: LMO01</span
-              ><br />
-              <span>Clase libro: Maestro</span><br />
-              <span>Tipo firma: Digital Avanzada</span>
-              <hr />
+              <div class="mt-3">
+                <img class="mr-1" src="/assets/img/logo42.png">
+                <img src="/assets/img/letra120x34.png">
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-6 d-flex justify-content-start">                  
+                  <table>
+                    <tr>              
+                      <td style="font-size:15px;font-weight: bold;">Contrato:</td>              
+                      <td style="font-size:15px;font-weight: bold;">&nbsp;<strong>Construccion Edificio La Serena</strong></td>
+                    </tr>                         
+                    <tr>              
+                      <td>Código:</td>              
+                      <td>&nbsp;C01564546</td>
+                    </tr>
+                    <tr>              
+                      <td>Mandante:</td>              
+                      <td>&nbsp;Ilustre Municipalidad de La Serena</td>
+                    </tr>
+                    <tr>              
+                      <td></td>              
+                      <td>&nbsp;RUT: 78.644.555-6, Dirección Obras Municipales</td>
+                    </tr>
+                    <tr>              
+                      <td>Contratista:</td>              
+                      <td>&nbsp;Constructora Perico Los Palotes Ltda.</td>
+                    </tr>
+                    <tr>              
+                      <td></td>              
+                      <td>&nbsp;RUT: 78.644.555-6, Oficina Central</td>
+                    </tr>                    
+                  </table>
+                </div>                
+                <div class="col-6 d-flex justify-content-end">                  
+                  <table>
+                    <tr>              
+                      <td style="font-size:15px;font-weight: bold;"><strong>Libro:</strong></td>              
+                      <td style="font-size:15px;font-weight: bold;">&nbsp;<strong>Libro Maestro</strong></td>
+                    </tr>
+                    <tr>              
+                      <td>Código:</td>              
+                      <td>&nbsp;LM001</td>
+                    </tr>
+                    <tr>              
+                      <td>Clase Libro:</td>              
+                      <td>&nbsp;Maestro</td>
+                    </tr>
+                    <tr>              
+                      <td>Tipo Firma:</td>              
+                      <td>&nbsp;Digital Avanzada</td>
+                    </tr>
+                    <tr>              
+                      <td>Fecha Apertura:</td>              
+                      <td>&nbsp;12/01/2020 08:30</td>
+                    </tr>
+                    <tr>              
+                      <td>Fecha Cierre:</td>              
+                      <td>&nbsp;-</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <hr>           
               <div class="row">
                 <mat-form-field class="example-full-width col-md-5">
                   <input
@@ -52,6 +107,16 @@
                   />
                 </mat-form-field>
               </div>
+              <mat-form-field>
+                <mat-select placeholder="Receptor" name="city">
+                  <mat-option
+                    *ngFor="let city of cities"
+                    [value]="city.value"
+                  >
+                    {{ city.viewValue }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
               <mat-form-field class="example-full-width">
                 <input
                   matInput
@@ -113,10 +178,27 @@
               <mat-form-field class="example-full-width">
                 <input matInput placeholder="Asunto" type="text" value="" />
               </mat-form-field>
+              <!-- <div class="row mb-1">
+                <div style="font-weight: bold;"class="col-6 align-self-end">
+                  Anotación
+                </div>
+                <div class="col-6 text-right">                  
+                  <button mat-raised-button type="submit" class="btn btn-sm btn-primary btn-just-icon">
+                    <span class="btn-label">
+                      <i style="font-weight: normal" class="material-icons">record_voice_over</i>
+                    </span>                   
+                  </button>
+                  <button mat-raised-button type="submit" class="btn btn-sm btn-primary btn-just-icon">
+                    <span class="btn-label">
+                      <i class="material-icons">mic</i>
+                    </span>                   
+                  </button>                  
+                </div>
+              </div> -->
               <angular-editor
                 [placeholder]="'Ingrese anotación...'"
               ></angular-editor>
-              <hr />
+              <hr>              
               <div
                 [dropzone]="multipleConfig"
                 class="dropzone dropzone-container"
@@ -127,7 +209,7 @@
               >
                 <div class="dz-message needsclick">
                   <h4 class="mt-4">
-                    Arrastre los arhivos aquí o haga Click para seleccionarlos y
+                    Arrastre los arhivos aquí o haga Click en el cuadro para seleccionarlos y
                     adjuntar.
                   </h4>
                   <p class="dropzone-msg-desc">
@@ -147,7 +229,7 @@
                 </span> -->
                 Eliminar
               </button>
-              <div class="pull-right mb-3">
+              <div class="text-right mb-3">
                 <button
                   mat-raised-button
                   type="submit"
@@ -193,9 +275,9 @@
           <mat-tab label="Alertas">
             <div class="container-fluid mt-3">
               <button mat-raised-button class="btn btn-primary">
-                <!-- <span class="btn-label">
-                  <i class="material-icons">check</i>
-                </span> -->
+                <span class="btn-label">
+                  <i class="material-icons">add_alert</i>
+                </span>
                 Nueva Alerta
               </button>
               <div class="alert alert-success alert-with-icon" data-notify="container">
@@ -207,43 +289,156 @@
                   </div>
                   <div class="col-6 text-right">
                     <button style="background-color: #ffffff" class="btn btn-sm btn-round btn-fab mr-1">
-                      <i class="material-icons">check</i>
+                      <i class="material-icons">edit</i>
                     </button>
                     <button style="background-color: #ffffff" class="btn btn-sm btn-round btn-fab mr-1">
-                      <i class="material-icons">check</i>
+                      <i class="material-icons">delete</i>
                     </button>
                     <button style="background-color: #ffffff" class="btn btn-sm btn-round btn-fab">
-                      <i class="material-icons">check</i>
+                      <i class="material-icons">notifications_off</i>
                     </button>                    
                   </div>
                 </div>
                 <div class="row mt-1">                  
-                  <div class="col-md-3 text-left">
+                  <div class="col-md-3 float-md-left">
                     <strong>Estado: </strong>Vigente
                   </div>
-                  <div class="col-md-3 text-center">
+                  <div class="col-md-3 float-md-left">
                     <strong>Alertar el: </strong>22/10/2020 12:00
                   </div>
-                  <div class="col-md-3 text-right">
+                  <div class="col-md-3 float-md-left">
                     <strong>Importancia: </strong>Normal
                   </div>
-                  <div class="col-md-3 text-right">
+                  <div class="col-md-3 float-md-left">
                     <strong>Enviar e-mail: </strong>Si
                   </div>                    
                 </div>
-                <hr>
-                <!-- <span data-notify="message">
-                  This is a notification with close button and icon and have
-                  many lines. You can see that the icon and the close button are
-                  always vertically aligned. This is a beautiful notification.
-                  So you don't have to worry about the style.
-                </span> -->
+                <hr>                
                 <p>
                   This is a notification with close button and icon and have many lines. You can see that the icon and the close button are always vertically aligned. This is a beautiful notification.
                   So you don't have to worry about the style.
                 </p>                
               </div>
 
+              <div class="alert alert-warning alert-with-icon" data-notify="container">
+                <i class="material-icons" data-notify="icon">notifications</i>
+                <span data-notify="icon" class="now-ui-icons ui-1_bell-53"></span>
+                <div class="row">
+                  <div class="col-6">
+                    <h5>Recordatorio</h5>
+                  </div>
+                  <div class="col-6 text-right">
+                    <button style="background-color: #ffffff" class="btn btn-sm btn-round btn-fab mr-1">
+                      <i class="material-icons">edit</i>
+                    </button>
+                    <button style="background-color: #ffffff" class="btn btn-sm btn-round btn-fab mr-1">
+                      <i class="material-icons">delete</i>
+                    </button>
+                    <button style="background-color: #ffffff" class="btn btn-sm btn-round btn-fab">
+                      <i class="material-icons">notifications_off</i>
+                    </button>                    
+                  </div>
+                </div>
+                <div class="row mt-1">                  
+                  <div class="col-md-3 float-md-left">
+                    <strong>Estado: </strong>Vigente
+                  </div>
+                  <div class="col-md-3 float-md-left">
+                    <strong>Alertar el: </strong>22/10/2020 12:00
+                  </div>
+                  <div class="col-md-3 float-md-left">
+                    <strong>Importancia: </strong>Normal
+                  </div>
+                  <div class="col-md-3 float-md-left">
+                    <strong>Enviar e-mail: </strong>Si
+                  </div>                    
+                </div>
+                <hr>                
+                <p>
+                  This is a notification with close button and icon and have many lines. You can see that the icon and the close button are always vertically aligned. This is a beautiful notification.
+                  So you don't have to worry about the style.
+                </p>                
+              </div>
+
+              <div class="alert alert-danger alert-with-icon" data-notify="container">
+                <i class="material-icons" data-notify="icon">notifications</i>
+                <span data-notify="icon" class="now-ui-icons ui-1_bell-53"></span>
+                <div class="row">
+                  <div class="col-6">
+                    <h5>Recordatorio</h5>
+                  </div>
+                  <div class="col-6 text-right">
+                    <button style="background-color: #ffffff" class="btn btn-sm btn-round btn-fab mr-1">
+                      <i class="material-icons">edit</i>
+                    </button>
+                    <button style="background-color: #ffffff" class="btn btn-sm btn-round btn-fab mr-1">
+                      <i class="material-icons">delete</i>
+                    </button>
+                    <button style="background-color: #ffffff" class="btn btn-sm btn-round btn-fab">
+                      <i class="material-icons">notifications_off</i>
+                    </button>                    
+                  </div>
+                </div>
+                <div class="row mt-1">                  
+                  <div class="col-md-3 float-md-left">
+                    <strong>Estado: </strong>Vigente
+                  </div>
+                  <div class="col-md-3 float-md-left">
+                    <strong>Alertar el: </strong>22/10/2020 12:00
+                  </div>
+                  <div class="col-md-3 float-md-left">
+                    <strong>Importancia: </strong>Normal
+                  </div>
+                  <div class="col-md-3 float-md-left">
+                    <strong>Enviar e-mail: </strong>Si
+                  </div>                    
+                </div>
+                <hr>                
+                <p>
+                  This is a notification with close button and icon and have many lines. You can see that the icon and the close button are always vertically aligned. This is a beautiful notification.
+                  So you don't have to worry about the style.
+                </p>                
+              </div>
+
+              <div class="alert alert-info alert-with-icon" data-notify="container">
+                <i class="material-icons" data-notify="icon">notifications</i>
+                <span data-notify="icon" class="now-ui-icons ui-1_bell-53"></span>
+                <div class="row">
+                  <div class="col-6">
+                    <h5>Recordatorio</h5>
+                  </div>
+                  <div class="col-6 text-right">
+                    <button style="background-color: #ffffff" class="btn btn-sm btn-round btn-fab mr-1">
+                      <i class="material-icons">edit</i>
+                    </button>
+                    <button style="background-color: #ffffff" class="btn btn-sm btn-round btn-fab mr-1">
+                      <i class="material-icons">delete</i>
+                    </button>
+                    <button style="background-color: #ffffff" class="btn btn-sm btn-round btn-fab">
+                      <i class="material-icons">notifications_off</i>
+                    </button>                    
+                  </div>
+                </div>
+                <div class="row mt-1">                  
+                  <div class="col-md-3 float-md-left">
+                    <strong>Estado: </strong>Vigente
+                  </div>
+                  <div class="col-md-3 float-md-left">
+                    <strong>Alertar el: </strong>22/10/2020 12:00
+                  </div>
+                  <div class="col-md-3 float-md-left">
+                    <strong>Importancia: </strong>Normal
+                  </div>
+                  <div class="col-md-3 float-md-left">
+                    <strong>Enviar e-mail: </strong>Si
+                  </div>                    
+                </div>
+                <hr>                
+                <p>
+                  This is a notification with close button and icon and have many lines. You can see that the icon and the close button are always vertically aligned. This is a beautiful notification.
+                  So you don't have to worry about the style.
+                </p>                
+              </div>
             </div>
           </mat-tab>
         </mat-tab-group>
