@@ -22,6 +22,8 @@ import { IRegion } from "../../TO/region.model";
 import { ComunaService } from "../../services/comuna.service";
 import { IComuna } from "../../TO/comuna.model";
 import { DependenciaService } from "../../services/dependencia.service";
+import { LibroService } from "../../services/libro.service";
+import { ILibro } from "../../TO/libro.model";
 
 declare const $: any;
 interface FileReaderEventTarget extends EventTarget {
@@ -62,6 +64,7 @@ export class DetalleContratoComponent
   public tableData1: TableData;
   listaRegiones: IRegion[];
   listaComunas: IComuna;
+  libros: ILibro[] = [];
   cities = [
     { value: "paris-0", viewValue: "Paris" },
     { value: "miami-1", viewValue: "Miami" },
@@ -90,7 +93,8 @@ export class DetalleContratoComponent
     private regionService: RegionService,
     private comunaService: ComunaService,
     private dependenciaService: DependenciaService,
-    private router: Router
+    private router: Router,
+    private libroService: LibroService
   ) {}
 
   isFieldValid(form: FormGroup, field: string) {
@@ -388,6 +392,13 @@ export class DetalleContratoComponent
       this.informacionServicioForm.controls["emailContacto"].setValue(
         respuesta.body.emailContacto
       );
+
+      this.libroService
+        .buscarlibroPorContrato(respuesta.body.id)
+        .subscribe((respuesta) => {
+          this.libros = respuesta.body;
+          console.log(this.libros);
+        });
     });
   }
   // metodo para listar regiones
@@ -406,5 +417,11 @@ export class DetalleContratoComponent
     let id = this.route.snapshot.paramMap.get("id");
     console.log(id);
     this.router.navigate(["/libro/nuevo-libro/", id]);
+  }
+  editarLibro(row) {
+    this.router.navigate(["/libro/detalle-libro/", row.id]);
+  }
+  folios(row) {
+    //this.router.navigate(["/folio/folio-borrador/", row.id]);
   }
 }

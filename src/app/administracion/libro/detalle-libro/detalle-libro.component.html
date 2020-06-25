@@ -4,296 +4,314 @@
       <div class="card-body">
         <mat-tab-group>
           <mat-tab label="Libro">
-            <div class="container-fluid mt-3">
-              <h5 style="color: #252525;">
-                <strong>Información General</strong>
-              </h5>
-              <div class="row">
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
+            <form [formGroup]="libroInfoGeneralFormGroup">
+              <div class="container-fluid mt-3">
+                <h5 style="color: #252525;">
+                  <strong>Información General</strong>
+                </h5>
+                <div class="row">
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Cod. Libro"
+                      type="text"
+                      formControlName="codigo"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-9">
+                    <input
+                      matInput
+                      placeholder="Nombre Libro"
+                      type="text"
+                      formControlName="nombre"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="row">
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Estado"
+                      type="text"
+                      value="Abierto"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Fecha creación"
+                      type="text"
+                      value="01/02/2020"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Fecha apertura"
+                      type="text"
+                      value="01/02/2020"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Fecha cierre"
+                      type="text"
+                      value="sin información"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+                <mat-form-field class="example-full-width">
+                  <textarea
                     matInput
-                    placeholder="Cod. Libro"
-                    type="text"
-                    value="LM001"
+                    placeholder="Descripción"
+                    rows="2"
+                    formControlName="descripcion"
                     disabled
-                  />
+                  ></textarea>
                 </mat-form-field>
-                <mat-form-field class="example-full-width col-md-9">
-                  <input
-                    matInput
-                    placeholder="Nombre Libro"
-                    type="text"
-                    value="Libro principal de obras"
-                    disabled
-                  />
-                </mat-form-field>
+                <div class="row">
+                  <mat-form-field class="example-full-width col-md-6">
+                    <input
+                      matInput
+                      placeholder="Clase Libro"
+                      type="text"
+                      formControlName="tipoLibro"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-6">
+                    <input
+                      matInput
+                      placeholder="Tipo Firma"
+                      type="text"
+                      formControlName="tipoFirma"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+                <hr />
+                <h5 style="color: #252525;">
+                  <strong>Administrador Mandante</strong>
+                </h5>
+                <div class="row">
+                  <mat-form-field class="example-full-width col-md-2">
+                    <input
+                      matInput
+                      placeholder="RUT"
+                      type="text"
+                      value="13.224.233-k"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-5">
+                    <input
+                      matInput
+                      placeholder="Nombre"
+                      type="text"
+                      value="Fernando Vilches Soleman"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Perfil Usuario"
+                      type="text"
+                      value="Administrador (s)"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-2">
+                    <input
+                      matInput
+                      placeholder="Fecha Asignación"
+                      type="text"
+                      value="12/05/2020"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="row">
+                  <mat-form-field class="example-full-width col-md-5">
+                    <input
+                      matInput
+                      placeholder="Cargo/Función"
+                      type="text"
+                      value="Inspector Fiscal"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Teféfono"
+                      type="text"
+                      value="966453188"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-4">
+                    <input
+                      matInput
+                      placeholder="E-mail"
+                      type="text"
+                      value="fvilchessoleman@gmail.com"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="row">
+                  <mat-form-field class="example-full-width col-md-5">
+                    <input
+                      matInput
+                      placeholder="Entidad"
+                      type="text"
+                      value="Ilustre Municipalidad de La Serena"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-2">
+                    <input
+                      matInput
+                      placeholder="RUT"
+                      type="text"
+                      value="78.456.415-9"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-5">
+                    <input
+                      matInput
+                      placeholder="Dependencia"
+                      type="text"
+                      value="Dirección de Obras Muncipales"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+                <hr />
+                <h5 style="color: #252525;">
+                  <strong>Administrador Contratista</strong>
+                </h5>
+                <div class="row">
+                  <mat-form-field class="example-full-width col-md-2">
+                    <input
+                      matInput
+                      placeholder="RUT"
+                      type="text"
+                      value="14.455.225-1"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-5">
+                    <input
+                      matInput
+                      placeholder="Nombre"
+                      type="text"
+                      value="Héctor Segovia Cabrera"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Perfil Usuario"
+                      type="text"
+                      value="Administrador"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-2">
+                    <input
+                      matInput
+                      placeholder="Fecha Asignación"
+                      type="text"
+                      value="12/05/2020"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="row">
+                  <mat-form-field class="example-full-width col-md-5">
+                    <input
+                      matInput
+                      placeholder="Cargo/Función"
+                      type="text"
+                      value="Administrador de Contrato"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-3">
+                    <input
+                      matInput
+                      placeholder="Teféfono"
+                      type="text"
+                      value="945555763"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-4">
+                    <input
+                      matInput
+                      placeholder="E-mail"
+                      type="text"
+                      value="hsegoviac@gmail.com"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="row">
+                  <mat-form-field class="example-full-width col-md-5">
+                    <input
+                      matInput
+                      placeholder="Entidad"
+                      type="text"
+                      value="Constructora La Serena Ltda."
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-2">
+                    <input
+                      matInput
+                      placeholder="RUT"
+                      type="text"
+                      value="77.124.245-5"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width col-md-5">
+                    <input
+                      matInput
+                      placeholder="Dependencia"
+                      type="text"
+                      value="Oficina de Obras"
+                      disabled
+                    />
+                  </mat-form-field>
+                </div>
               </div>
-              <div class="row">
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
-                    matInput
-                    placeholder="Estado"
-                    type="text"
-                    value="Abierto"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
-                    matInput
-                    placeholder="Fecha creación"
-                    type="text"
-                    value="01/02/2020"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
-                    matInput
-                    placeholder="Fecha apertura"
-                    type="text"
-                    value="01/02/2020"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
-                    matInput
-                    placeholder="Fecha cierre"
-                    type="text"
-                    value="sin información"
-                    disabled
-                  />
-                </mat-form-field>
-              </div>
-              <mat-form-field class="example-full-width">
-                <textarea
-                  matInput
-                  placeholder="Descripción"
-                  rows="2"
-                  value="Libro en el cual se realizan las anotaciones generales referente al proyecto."
-                  disabled
-                ></textarea>
-              </mat-form-field>
-              <div class="row">
-                <mat-form-field class="example-full-width col-md-6">
-                  <input
-                    matInput
-                    placeholder="Clase Libro"
-                    type="text"
-                    value="Maestro"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-6">
-                  <input
-                    matInput
-                    placeholder="Tipo Firma"
-                    type="text"
-                    value="Digital Avanzada"
-                    disabled
-                  />
-                </mat-form-field>
-              </div>
+            </form>
+            <div class="container-fluid mt-3" *ngIf="abrirLibroMostrar">
               <hr />
-              <h5 style="color: #252525;">
-                <strong>Administrador Mandante</strong>
-              </h5>
               <div class="row">
-                <mat-form-field class="example-full-width col-md-2">
-                  <input
-                    matInput
-                    placeholder="RUT"
-                    type="text"
-                    value="13.224.233-k"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-5">
-                  <input
-                    matInput
-                    placeholder="Nombre"
-                    type="text"
-                    value="Fernando Vilches Soleman"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
-                    matInput
-                    placeholder="Perfil Usuario"
-                    type="text"
-                    value="Administrador (s)"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-2">
-                  <input
-                    matInput
-                    placeholder="Fecha Asignación"
-                    type="text"
-                    value="12/05/2020"
-                    disabled
-                  />
-                </mat-form-field>
-              </div>
-              <div class="row">
-                <mat-form-field class="example-full-width col-md-5">
-                  <input
-                    matInput
-                    placeholder="Cargo/Función"
-                    type="text"
-                    value="Inspector Fiscal"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
-                    matInput
-                    placeholder="Teféfono"
-                    type="text"
-                    value="966453188"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-4">
-                  <input
-                    matInput
-                    placeholder="E-mail"
-                    type="text"
-                    value="fvilchessoleman@gmail.com"
-                    disabled
-                  />
-                </mat-form-field>
-              </div>
-              <div class="row">
-                <mat-form-field class="example-full-width col-md-5">
-                  <input
-                    matInput
-                    placeholder="Entidad"
-                    type="text"
-                    value="Ilustre Municipalidad de La Serena"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-2">
-                  <input
-                    matInput
-                    placeholder="RUT"
-                    type="text"
-                    value="78.456.415-9"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-5">
-                  <input
-                    matInput
-                    placeholder="Dependencia"
-                    type="text"
-                    value="Dirección de Obras Muncipales"
-                    disabled
-                  />
-                </mat-form-field>
-              </div>
-              <hr />
-              <h5 style="color: #252525;">
-                <strong>Administrador Contratista</strong>
-              </h5>
-              <div class="row">
-                <mat-form-field class="example-full-width col-md-2">
-                  <input
-                    matInput
-                    placeholder="RUT"
-                    type="text"
-                    value="14.455.225-1"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-5">
-                  <input
-                    matInput
-                    placeholder="Nombre"
-                    type="text"
-                    value="Héctor Segovia Cabrera"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
-                    matInput
-                    placeholder="Perfil Usuario"
-                    type="text"
-                    value="Administrador"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-2">
-                  <input
-                    matInput
-                    placeholder="Fecha Asignación"
-                    type="text"
-                    value="12/05/2020"
-                    disabled
-                  />
-                </mat-form-field>
-              </div>
-              <div class="row">
-                <mat-form-field class="example-full-width col-md-5">
-                  <input
-                    matInput
-                    placeholder="Cargo/Función"
-                    type="text"
-                    value="Administrador de Contrato"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-3">
-                  <input
-                    matInput
-                    placeholder="Teféfono"
-                    type="text"
-                    value="945555763"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-4">
-                  <input
-                    matInput
-                    placeholder="E-mail"
-                    type="text"
-                    value="hsegoviac@gmail.com"
-                    disabled
-                  />
-                </mat-form-field>
-              </div>
-              <div class="row">
-                <mat-form-field class="example-full-width col-md-5">
-                  <input
-                    matInput
-                    placeholder="Entidad"
-                    type="text"
-                    value="Constructora La Serena Ltda."
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-2">
-                  <input
-                    matInput
-                    placeholder="RUT"
-                    type="text"
-                    value="77.124.245-5"
-                    disabled
-                  />
-                </mat-form-field>
-                <mat-form-field class="example-full-width col-md-5">
-                  <input
-                    matInput
-                    placeholder="Dependencia"
-                    type="text"
-                    value="Oficina de Obras"
-                    disabled
-                  />
-                </mat-form-field>
+                <button
+                  mat-raised-button
+                  type="submit"
+                  class="btn btn-primary mr-1"
+                  (click)="abrirLibro()"
+                >
+                  <span class="btn-label">
+                    <i class="material-icons">loop</i>
+                  </span>
+                  Abrir Libro
+                </button>
               </div>
             </div>
           </mat-tab>

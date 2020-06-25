@@ -6,7 +6,7 @@ import { DependenciaService } from "../../services/dependencia.service";
 import { ITipoFirma } from "../../TO/tipo-firma.model";
 import { ITipoLibro } from "../../TO/tipo-libro.model";
 import { ContratoService } from "../../services/contrato.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { IContrato, Contrato } from "../../TO/contrato.model";
 import { MatDialog } from "@angular/material/dialog";
 import { CrearUsuarioComponent } from "../../componentes/crear-usuario/crear-usuario.component";
@@ -55,7 +55,8 @@ export class LibroComponent implements OnInit {
     private usuarioService: UsuarioService,
     private usuarioDependenciaService: UsuarioDependenciaService,
     private libroService: LibroService,
-    private usuarioLibroService: UsuarioLibroService
+    private usuarioLibroService: UsuarioLibroService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -170,18 +171,22 @@ export class LibroComponent implements OnInit {
       // buscamos el contrato para verificar si posee libros creados,
       // si posee solo se dejara crear libros auxiliares
       // si no posee se dejara crear libro maestro por obligacion
-      if (this.contrato.libros === null) {
-        const resutado = this.tipoLibro.filter(
-          (tipo) => tipo.descripcion.toLowerCase() === "maestro"
-        );
-        this.tipoLibro = resutado;
-      } else {
-        this.obtenerTipoLibros();
-      }
-      this.libroInfoGeneralFormGroup.controls["tipoLibro"].setValue(
-        this.tipoLibro
-      );
-      this.libroInfoGeneralFormGroup.controls["tipoLibro"].setValue("1");
+
+      this.libroService
+        .buscarlibroPorContrato(this.contrato.id)
+        .subscribe((respuesta) => {
+          if (respuesta.body.length <= 0) {
+            const resutado = this.tipoLibro.filter(
+              (tipo) => tipo.descripcion.toLowerCase() === "maestro"
+            );
+            this.tipoLibro = resutado;
+          } else {
+            const resutado = this.tipoLibro.filter(
+              (tipo) => tipo.descripcion.toLowerCase() === "auxiliar"
+            );
+            this.tipoLibro = resutado;
+          }
+        });
     });
   }
   obtenerContrato() {
@@ -477,6 +482,7 @@ export class LibroComponent implements OnInit {
         this.guardaUsuariosMandante(respuesta.body);
         // guarda usuarios contratista
         this.guardaUsuariosContratista(respuesta.body);
+        this.router.navigate(["/contrato/detalle-contrato/", this.idContrato]);
       },
       (error) => {
         this.showNotificationDanger("top", "right");

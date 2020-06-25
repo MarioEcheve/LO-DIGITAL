@@ -15,6 +15,8 @@ type EntityArrayResponseType = HttpResponse<ILibro[]>;
 export class LibroService {
   SERVER_API_URL = "http://localhost:8080/";
   public resourceUrl = this.SERVER_API_URL + "api/libros";
+  public resourceUrlBuscLibroPorContrato =
+    this.SERVER_API_URL + "api/buscarlibroPorContrato";
 
   constructor(protected http: HttpClient) {}
 
@@ -105,5 +107,17 @@ export class LibroService {
       });
     }
     return res;
+  }
+
+  buscarlibroPorContrato(id: number): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<ILibro[]>(`${this.resourceUrlBuscLibroPorContrato}/${id}`, {
+        observe: "response",
+      })
+      .pipe(
+        map((res: EntityArrayResponseType) =>
+          this.convertDateArrayFromServer(res)
+        )
+      );
   }
 }

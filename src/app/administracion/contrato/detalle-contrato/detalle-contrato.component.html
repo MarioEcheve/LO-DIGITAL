@@ -264,7 +264,7 @@
                 </span>
                 Nuevo Libro
               </button>
-              <div class="table-responsive">
+              <div class="table-responsive" *ngIf="libros.length > 0">
                 <table class="table table-striped mt-2">
                   <thead class="text-muted">
                     <tr>
@@ -277,19 +277,22 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let row of tableData1.dataRows">
-                      <td class="text-left">{{ row[0] }}</td>
-                      <td>{{ row[1] }}</td>
-                      <td>{{ row[2] }}</td>
-                      <td>{{ row[3] }}</td>
+                    <tr *ngFor="let row of libros">
+                      <td class="text-left">{{ row.codigo }}</td>
+                      <td>{{ row.nombre }}</td>
+                      <td>{{ row.tipoLibro.descripcion }}</td>
+                      <td>{{ row.tipoFirma.nombre }}</td>
                       <td>
-                        <span class="badge badge-primary">{{ row[4] }}</span>
+                        <span class="badge badge-primary">{{
+                          row.estado
+                        }}</span>
                       </td>
                       <td class="td-actions text-right">
                         <button
                           mat-raised-button
                           type="button"
                           class="btn btn-default {{ row[5] }}"
+                          (click)="editarLibro(row)"
                         >
                           <i class="material-icons">edit</i>
                         </button>
@@ -297,6 +300,7 @@
                           mat-raised-button
                           type="button"
                           class="btn btn-default {{ row[5] }}"
+                          (click)="folios(row)"
                         >
                           <i class="material-icons">keyboard_arrow_right</i>
                         </button>
