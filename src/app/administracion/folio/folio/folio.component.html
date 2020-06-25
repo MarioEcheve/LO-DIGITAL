@@ -1,0 +1,109 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div>
+                    <div class="row">
+                        <div class="col-6 d-flex justify-content-start">
+                            <table class="mb-1">
+                                <tr>              
+                                    <td style="font-size:15px;font-weight: bold;">Contrato:</td>              
+                                    <td style="font-size:15px;font-weight: bold;">&nbsp;<strong>Construccion Edificio La Serena</strong></td>
+                                </tr>                         
+                                <tr>              
+                                    <td>Código:</td>              
+                                    <td>&nbsp;C01564546</td>
+                                </tr>                                
+                            </table>
+                        </div>
+                        <div class="col-6 d-flex justify-content-end">
+                            <table class="mb-1">
+                                <tr>              
+                                    <td style="font-size:15px;font-weight: bold;">Perfil Libro:</td>              
+                                    <td style="font-size:15px;font-weight: bold;">&nbsp;<strong>Administrador</strong></td>
+                                </tr>                         
+                                <tr>              
+                                    <td>Cargo:</td>              
+                                    <td>&nbsp;Constructor Civil</td>
+                                </tr>                                       
+                            </table>
+                        </div>
+                    </div>
+                    <mat-form-field>
+                        <mat-select placeholder="Libro Seleccionado" name="city">
+                          <mat-option
+                            *ngFor="let city of cities"
+                            [value]="city.value"
+                          >
+                            {{ city.viewValue }}
+                          </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                
+                <button mat-raised-button class="btn btn-primary pull-right">
+                    <span class="btn-label">
+                        <i class="material-icons">add</i>
+                    </span>
+                    Nuevo Folio
+                </button>
+                
+                <div class="table-responsive">
+                    <div>
+                      <table class="table table-striped mt-2">
+                        <thead class="text-muted">
+                          <tr>
+                            <th>{{ tableData1.headerRow[0] }}</th>
+                            <th>{{ tableData1.headerRow[1] }}</th>
+                            <th>{{ tableData1.headerRow[2] }}</th>
+                            <th>{{ tableData1.headerRow[3] }}</th>
+                            <th>{{ tableData1.headerRow[4] }}</th>                                                       
+                            <th class="text-right">
+                              {{ tableData1.headerRow[5] }}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let row of tableData1.dataRows">
+                            <td>                             
+                                <!-- <a href=""><i style="font-size: 22px;" class="material-icons align-middle text-gray">check_box_outline_blank</i></a> -->
+                                <a href=""><i style="font-size: 22px;" class="material-icons align-middle text-gray">star_border</i></a>
+                                <a href=""><i style="font-size: 22px;" class="material-icons align-middle text-gray">label_important_outline</i></a>
+                                {{ row[0] }}
+                            </td>                                               
+                            <td style="font-weight: bold;">{{ row[1] }}</td>
+                            <td><a style="font-weight: bold;" class="text-muted">{{ row[2] }}</a> - {{ row[3] }}</td>                                                       
+                            <td>
+                                <span class="badge {{ row[4] }}">{{ row[5] }}</span>                                
+                            </td>
+                            <td>{{ row[6] }}</td>                            
+                            <td class="td-actions text-right">
+                                <button
+                                mat-raised-button
+                                type="button"
+                                class="btn btn-default {{ row[7] }}"
+                              >
+                                <i class="material-icons">get_app</i>
+                              </button>
+                              <button
+                                mat-raised-button
+                                type="button"
+                                class="btn btn-default {{ row[7] }}"
+                              >
+                                <i class="material-icons">keyboard_arrow_right</i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+
+
+
+                
+
+            </div>
+        </div>        
+    </div>
+</div>

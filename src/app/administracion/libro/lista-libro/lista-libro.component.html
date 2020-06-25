@@ -8,6 +8,7 @@
         <h4 class="card-title">Folio</h4>
       </div>
       <div class="card-body">
+        
         <mat-form-field>
           <mat-label>Filter</mat-label>
           <input matInput (keyup)="applyFilter($event)" placeholder="Ingrese" />
@@ -28,7 +29,7 @@
             </td>
           </ng-container>
 
-          <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+         
           <ng-container matColumnDef="expandedDetail">
             <td
               mat-cell
@@ -53,23 +54,7 @@
                     {{ element.weight }}
                   </div>
                 </div>
-              </div>
-              <div class="upload-table">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                    </tr>
-                  </thead>
-                  <tbody class="upload-name-style">
-                    <tr *ngFor="let item of files; let i = index">
-                      <td>
-                        <strong>{{ item.relativePath }}</strong>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              </div>              
             </td>
           </ng-container>
 
@@ -90,11 +75,15 @@
           ></tr>
         </table>
 
+        
+
+
         <mat-paginator
-          [pageSizeOptions]="[5, 10, 20]"
-          showFirstLastButtons
+          [pageSizeOptions]="[25, 50, 100]"
+          showFirstLastButtons 
         ></mat-paginator>
       </div>
+      
     </div>
   </div>
 </div>
