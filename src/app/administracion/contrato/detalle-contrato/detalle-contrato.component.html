@@ -56,8 +56,9 @@
                     >
                       <mat-option
                         *ngFor="let region of listaRegiones"
-                        [value]="region"
+                        [value]="region.nombre"
                         (click)="buscaComuna(region.id)"
+                        (selectionChange)="onChangeRegion()"
                       >
                         {{ region.nombre }}
                       </mat-option>
@@ -71,7 +72,7 @@
                     >
                       <mat-option
                         *ngFor="let comuna of listaComunas"
-                        [value]="comuna"
+                        [value]="comuna.nombre"
                       >
                         {{ comuna.nombre }}
                       </mat-option>
@@ -80,22 +81,30 @@
                 </div>
                 <div class="row">
                   <mat-form-field class="col-md-6">
-                    <mat-select placeholder="Tipo Contrato" name="city">
+                    <mat-select
+                      placeholder="Tipo Contrato"
+                      name="city"
+                      formControlName="tipoContrato"
+                    >
                       <mat-option
-                        *ngFor="let city of cities"
-                        [value]="city.value"
+                        *ngFor="let tipo of tipoContrato"
+                        [value]="tipo.nombre"
                       >
-                        {{ city.viewValue }}
+                        {{ tipo.nombre }}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
                   <mat-form-field class="col-md-6">
-                    <mat-select placeholder="Modalidad Contrato" name="city">
+                    <mat-select
+                      placeholder="Modalidad Contrato"
+                      name="city"
+                      formControlName="modalidad"
+                    >
                       <mat-option
-                        *ngFor="let city of cities"
-                        [value]="city.value"
+                        *ngFor="let modalidad of modalidadContrato"
+                        [value]="modalidad.nombre"
                       >
-                        {{ city.viewValue }}
+                        {{ modalidad.nombre }}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>

@@ -1,14 +1,15 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { LibroService } from "../../services/libro.service";
-import { ILibro } from "../../TO/libro.model";
+import { ILibro, Libro } from "../../TO/libro.model";
 import { DependenciaService } from "../../services/dependencia.service";
-import { IDependencia } from "../../TO/dependencia.model";
+import { IDependencia, Dependencia } from "../../TO/dependencia.model";
 import { ITipoFolio } from "../../TO/tipo-folio.model";
 import { TipoFolioService } from "../../services/tipo-folio.service";
 import { AngularEditorConfig } from "@kolkov/angular-editor";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { FolioService } from "../../services/folio.service";
+import * as moment from "moment";
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -21,8 +22,8 @@ declare interface TableData {
 })
 export class FolioBorradorComponent implements OnInit {
   public tableData1: TableData;
-  libro: ILibro;
-  dependenciaContratista: IDependencia;
+  libro = new Libro();
+  dependenciaContratista = new Dependencia();
   tipoFolio: ITipoFolio[];
   // IMPLEMENTACION CONFIG ANGULAR-EDITOR
   editorConfig: AngularEditorConfig = {
@@ -90,7 +91,7 @@ export class FolioBorradorComponent implements OnInit {
 
   ngOnInit() {
     this.folioForm = this.fb.group({
-      asunto: [],
+      asunto: ["", Validators.required],
       entidadCreacion: [null],
       estadoFolio: [false],
       estadoLectura: [null],
@@ -102,7 +103,7 @@ export class FolioBorradorComponent implements OnInit {
       fechaRequerida: [null],
       libro: [""],
       requiereRespuesta: [null],
-      tipoFolio: [],
+      tipoFolio: ["", Validators.required],
       anotacion: [],
     });
     this.tableData1 = {
@@ -118,6 +119,7 @@ export class FolioBorradorComponent implements OnInit {
     let idLibro = this.route.snapshot.paramMap.get("id");
     this.buscarLibro(idLibro);
     this.obtenerTipoFolio();
+    this.buscarFolioPorLibro(idLibro);
   }
   buscarLibro(id) {
     this.libroService.find(id).subscribe((respuesta) => {
@@ -140,16 +142,34 @@ export class FolioBorradorComponent implements OnInit {
     let fecha = new Date();
     console.log(fecha);
     this.folioForm.controls["libro"].setValue(this.libro);
+    this.folioForm.controls["fechaCreacion"].setValue(moment(Date.now()));
     this.folioService.create(this.folioForm.value).subscribe(
       (respuesta) => {
         console.log(respuesta);
         this.showNotificationSuccess("top", "right");
+        this.router.navigate(["/folio/folio/", this.libro.contrato.id]);
       },
       (error) => {
         this.showNotificationDanger("top", "right");
       }
     );
-    this.router.navigate(["/libro/detalle-libro/", this.libro.id]);
+  }
+  buscarFolioPorLibro(idLibro) {
+    this.folioService.buscarFolioPorLibro(idLibro).subscribe((respuesta) => {
+      if (respuesta.body.length <= 0) {
+        this.tipoFolio = this.tipoFolio.filter(
+          (tipo) => tipo.nombre.toLowerCase() === "apertura libro"
+        );
+        console.log("menor");
+        console.log(this.tipoFolio);
+      } else {
+        this.tipoFolio = this.tipoFolio.filter(
+          (tipo) => tipo.nombre.toLowerCase() !== "apertura libro"
+        );
+        console.log("Mayor");
+        console.log(this.tipoFolio);
+      }
+    });
   }
   showNotificationSuccess(from: any, align: any) {
     const type = [

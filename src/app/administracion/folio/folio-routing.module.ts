@@ -14,6 +14,10 @@ const routes: Routes = [
         component: FolioComponent,
       },
       {
+        path: "folio/:id",
+        component: FolioComponent,
+      },
+      {
         path: "folio-borrador/:id",
         component: FolioBorradorComponent,
       },

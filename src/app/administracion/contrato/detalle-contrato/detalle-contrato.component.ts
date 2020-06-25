@@ -24,6 +24,11 @@ import { IComuna } from "../../TO/comuna.model";
 import { DependenciaService } from "../../services/dependencia.service";
 import { LibroService } from "../../services/libro.service";
 import { ILibro } from "../../TO/libro.model";
+import { IContrato } from "../../TO/contrato.model";
+import { TipoContratoService } from "../../services/tipo-contrato.service";
+import { ITipoContrato } from "../../TO/tipo-contrato.model";
+import { IModalidad } from "../../TO/modalidad.model";
+import { ModalidadService } from "../../services/modalidad.service";
 
 declare const $: any;
 interface FileReaderEventTarget extends EventTarget {
@@ -65,6 +70,9 @@ export class DetalleContratoComponent
   listaRegiones: IRegion[];
   listaComunas: IComuna;
   libros: ILibro[] = [];
+  contrato: IContrato;
+  tipoContrato: ITipoContrato[];
+  modalidadContrato: IModalidad[];
   cities = [
     { value: "paris-0", viewValue: "Paris" },
     { value: "miami-1", viewValue: "Miami" },
@@ -94,7 +102,9 @@ export class DetalleContratoComponent
     private comunaService: ComunaService,
     private dependenciaService: DependenciaService,
     private router: Router,
-    private libroService: LibroService
+    private libroService: LibroService,
+    private tipoContratoService: TipoContratoService,
+    private modalidadService: ModalidadService
   ) {}
 
   isFieldValid(form: FormGroup, field: string) {
@@ -237,6 +247,8 @@ export class DetalleContratoComponent
 
     let id = this.route.snapshot.paramMap.get("id");
     this.buscaContrato(id);
+    this.buscaTipoContrato();
+    this.obtenerModalidadContrato();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -314,7 +326,7 @@ export class DetalleContratoComponent
   }
   buscaContrato(id) {
     this.contratoService.find(id).subscribe((respuesta) => {
-      //console.log(respuesta.body);
+      this.contrato = respuesta.body;
       this.obtenerRegiones();
       this.infoGeneralForm.controls["codigo"].setValue(respuesta.body.codigo);
       this.infoGeneralForm.controls["nombre"].setValue(respuesta.body.nombre);
@@ -342,7 +354,6 @@ export class DetalleContratoComponent
       this.infoGeneralForm.controls["regionMandante"].setValue(
         respuesta.body.dependenciaMandante.region.nombre
       );
-      //this.infoGeneralForm.get("region").setValue(respuesta.body.region);
 
       // servicio para buscar una dependencia por id
       this.dependenciaService
@@ -392,7 +403,13 @@ export class DetalleContratoComponent
       this.informacionServicioForm.controls["emailContacto"].setValue(
         respuesta.body.emailContacto
       );
-
+      this.onChangeRegion(respuesta.body.region.id);
+      this.infoGeneralForm.patchValue({
+        region: respuesta.body.region.nombre,
+        comuna: respuesta.body.comuna.nombre,
+        tipoContrato: respuesta.body.tipoContrato.nombre,
+        modalidad: respuesta.body.modalidad.nombre,
+      });
       this.libroService
         .buscarlibroPorContrato(respuesta.body.id)
         .subscribe((respuesta) => {
@@ -422,6 +439,22 @@ export class DetalleContratoComponent
     this.router.navigate(["/libro/detalle-libro/", row.id]);
   }
   folios(row) {
-    //this.router.navigate(["/folio/folio-borrador/", row.id]);
+    this.router.navigate(["/folio/folio", this.contrato.id]);
+  }
+  buscaTipoContrato() {
+    this.tipoContratoService.query().subscribe((respuesta) => {
+      this.tipoContrato = respuesta.body;
+    });
+  }
+  obtenerModalidadContrato() {
+    this.modalidadService.query().subscribe((respuesta) => {
+      this.modalidadContrato = respuesta.body;
+    });
+  }
+  onChangeRegion(idRegion) {
+    console.log("onchange");
+    this.comunaService.buscaComunaPorRegion(idRegion).subscribe((respuesta) => {
+      this.listaComunas = respuesta.body;
+    });
   }
 }
