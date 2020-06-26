@@ -61,7 +61,7 @@ export const ROUTES: RouteInfo[] = [
     children: [
       { path: "contrato", title: "Nuevo Contrato", ab: "B" },
       { path: "lista-contrato", title: "Lista Contrato", ab: "B" },
-      { path: "detalle-contrato", title: "Detalle Contrato", ab: "B" },
+      //{ path: "detalle-contrato", title: "Detalle Contrato", ab: "B" },
     ],
   },
   {

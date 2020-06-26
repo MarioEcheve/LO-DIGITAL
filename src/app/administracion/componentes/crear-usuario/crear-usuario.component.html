@@ -1,0 +1,54 @@
+<h2 mat-dialog-title>Buscador de Entidades</h2>
+<mat-dialog-content>
+  <form [formGroup]="usuarioFormGroup" class="example-form">
+    <mat-form-field class="example-full-width">
+      <input
+        type="text"
+        placeholder="Pick one"
+        aria-label="Number"
+        matInput
+        [formControl]="myControl"
+        [matAutocomplete]="auto"
+      />
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option
+          *ngFor="let option of filteredOptions | async"
+          [value]="option.nombre"
+          (click)="valorAutoComplete(option)"
+        >
+          {{ option.nombre }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input
+        matInput
+        placeholder="Cargo"
+        type="text"
+        disabled
+        formControlName="cargo"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Perfil" formControlName="perfil">
+        <mat-option
+          *ngFor="let perfil of data.usuarioLibroPerfil"
+          [value]="perfil"
+        >
+          {{ perfil.nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cerrar()">Cancelar</button>
+  <button
+    mat-button
+    (click)="asignarUsuario()"
+    [disabled]="!usuarioFormGroup.valid"
+    cdkFocusInitial
+  >
+    Aceptar
+  </button>
+</mat-dialog-actions>

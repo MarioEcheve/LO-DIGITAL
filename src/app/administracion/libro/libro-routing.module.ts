@@ -13,7 +13,15 @@ const routes: Routes = [
         component: LibroComponent,
       },
       {
+        path: "nuevo-libro/:id",
+        component: LibroComponent,
+      },
+      {
         path: "detalle-libro",
+        component: DetalleLibroComponent,
+      },
+      {
+        path: "detalle-libro/:id",
         component: DetalleLibroComponent,
       },
       {
