@@ -176,7 +176,8 @@
     &.bg-info,
     &.card-rotate.bg-info .front,
     &.card-rotate.bg-info .back{
-      background: linear-gradient(60deg, $cyan-400, $cyan-600);
+      background: linear-gradient(60deg, #040d2d, #0379ff);
+      /* FVS background: linear-gradient(60deg, $cyan-400, $cyan-600); */
     }
     .card-header-success .card-icon,
     .card-header-success .card-text,
@@ -241,7 +242,8 @@
     .card-header-info .card-icon,
     .card-header-info:not(.card-header-icon):not(.card-header-text),
     .card-header-info .card-text{
-        @include shadow-big-color($brand-info);
+       /*  @include shadow-big-color($brand-info); */
+        @include shadow-big-color(rgba(43, 42, 42, 0.4));
     }
 
     .card-header-success .card-icon,
