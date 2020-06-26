@@ -77,23 +77,33 @@
                   ></textarea>
                 </mat-form-field>
                 <div class="row">
-                  <mat-form-field class="example-full-width col-md-6">
-                    <input
-                      matInput
+                  <mat-form-field class="col-md-6">
+                    <mat-select
                       placeholder="Clase Libro"
-                      type="text"
+                      name="city"
                       formControlName="tipoLibro"
-                      disabled
-                    />
+                    >
+                      <mat-option
+                        *ngFor="let tipo of tipoLibro"
+                        [value]="tipo.descripcion"
+                      >
+                        {{ tipo.descripcion }}
+                      </mat-option>
+                    </mat-select>
                   </mat-form-field>
-                  <mat-form-field class="example-full-width col-md-6">
-                    <input
-                      matInput
+                  <mat-form-field class="col-md-6">
+                    <mat-select
                       placeholder="Tipo Firma"
-                      type="text"
+                      name="city"
                       formControlName="tipoFirma"
-                      disabled
-                    />
+                    >
+                      <mat-option
+                        *ngFor="let tipo of tipoFirma"
+                        [value]="tipo.nombre"
+                      >
+                        {{ tipo.nombre }}
+                      </mat-option>
+                    </mat-select>
                   </mat-form-field>
                 </div>
                 <hr />

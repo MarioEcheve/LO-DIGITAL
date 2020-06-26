@@ -4,6 +4,10 @@ import { LibroService } from "../../services/libro.service";
 import { ILibro } from "../../TO/libro.model";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { FolioService } from "../../services/folio.service";
+import { TipoLibroService } from "../../services/tipo-libro.service";
+import { TipoFirmaService } from "../../services/tipo-firma.service";
+import { ITipoLibro } from "../../TO/tipo-libro.model";
+import { TipoFirma } from "../../TO/tipo-firma.model";
 
 declare interface TableData {
   headerRow: string[];
@@ -19,12 +23,16 @@ export class DetalleLibroComponent implements OnInit {
   libro: ILibro;
   abrirLibroMostrar = false;
   libroInfoGeneralFormGroup: FormGroup;
+  tipoLibro: ITipoLibro[];
+  tipoFirma: TipoFirma[];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private libroService: LibroService,
     private folio: FolioService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private tipoLibroService: TipoLibroService,
+    private tipoFirmaService: TipoFirmaService
   ) {}
 
   ngOnInit(): void {
@@ -75,6 +83,8 @@ export class DetalleLibroComponent implements OnInit {
       ],
     };
     this.obtenerLibro(parseInt(this.route.snapshot.paramMap.get("id")));
+    this.obtenerTipoLibro();
+    this.obtenerTipoFirma();
   }
   abrirLibro() {
     this.router.navigate(["/folio/folio-borrador/", this.libro.id]);
@@ -82,21 +92,18 @@ export class DetalleLibroComponent implements OnInit {
   obtenerLibro(idLibro) {
     this.libroService.find(idLibro).subscribe((respuesta) => {
       this.libro = respuesta.body;
-      this.libroInfoGeneralFormGroup.controls["codigo"].setValue(
-        respuesta.body.codigo
-      );
-      this.libroInfoGeneralFormGroup.controls["nombre"].setValue(
-        respuesta.body.nombre
-      );
-      this.libroInfoGeneralFormGroup.controls["descripcion"].setValue(
-        respuesta.body.descripcion
-      );
       this.folio.buscarFolioPorLibro(this.libro.id).subscribe((respuesta) => {
         if (respuesta.body.length <= 0) {
           this.abrirLibroMostrar = true;
         } else {
           this.abrirLibroMostrar = false;
         }
+      });
+      this.libroInfoGeneralFormGroup.patchValue({
+        codigo: respuesta.body.codigo,
+        nombre: respuesta.body.nombre,
+        descripcion: respuesta.body.descripcion,
+        tipoFirma: respuesta.body.tipoFirma.nombre,
       });
     });
   }
@@ -136,5 +143,15 @@ export class DetalleLibroComponent implements OnInit {
     this.libroInfoGeneralFormGroup.controls["codigo"].disable();
     this.libroInfoGeneralFormGroup.controls["nombre"].disable();
     this.libroInfoGeneralFormGroup.controls["descripcion"].disable();
+  }
+  obtenerTipoLibro() {
+    this.tipoLibroService.query().subscribe((respuesta) => {
+      this.tipoLibro = respuesta.body;
+    });
+  }
+  obtenerTipoFirma() {
+    this.tipoFirmaService.query().subscribe((respuesta) => {
+      this.tipoFirma = respuesta.body;
+    });
   }
 }
