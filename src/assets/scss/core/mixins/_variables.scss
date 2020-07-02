@@ -21,7 +21,8 @@ $bottombar-x:          bottombar-x !default;
 $bottombar-back:       bottombar-back !default;
 
 // Sidebar variables
-$sidebar-width:              calc(100% - 260px) !default;
+/* FVS (cambia ancho body respecto ancho sidevar) $sidebar-width:              calc(100% - 260px) !default; */
+$sidebar-width:              calc(100% - 240px) !default;
 $sidebar-mini-width:         calc(100% - 80px) !default;
 
 

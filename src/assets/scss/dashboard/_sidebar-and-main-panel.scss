@@ -10,7 +10,8 @@
     bottom: 0;
     left: 0;
     z-index: 2;
-    width: 260px;
+    /* FVS (ancho del menu) width: 260px; */
+    width: 240px;
     background: $white-color;
     @include shadow-big();
 
@@ -50,7 +51,8 @@
         position: relative;
         height: calc(100vh - 75px);
         overflow: auto;
-        width: 260px;
+        /* FVS (regula el ancho del boton respecto al ancho del menu) width: 260px; */
+        width: 240px;
         z-index: 4;
 
         padding-bottom: 30px;
@@ -129,7 +131,8 @@
         display: block;
 
         .caret{
-            margin-top: 13px;
+            /* FVS margin-top: 13px; */
+            margin-top: 9px;
             position: absolute;
             right: 6px;
         }
@@ -187,8 +190,10 @@
 
         p{
             margin: 0;
-            line-height: 30px;
-            font-size: 14px;
+            /* FVS (altura del boton menu) line-height: 30px; */
+            line-height: 20px;
+            /* FVS (tamaño letra del menu) font-size: 14px; */
+            font-size: 13px;
             position: relative;
             display: block;
             height: auto;
@@ -197,10 +202,13 @@
         }
 
         i{
-            font-size: 24px;
+            /* FVS (Tamaño icono) font-size: 24px; */
+            font-size: 20px;
             float: left;
-            margin-right: 15px;
-            line-height: 30px;
+            /* FVS (Distancia entre icono y letras) margin-right: 15px; */
+            margin-right: 5px;
+            /* FVS (pocisión desde la parte superior) line-height: 30px; */
+            line-height: 19px;           
             width: 30px;
             text-align: center;
             color: #a9afbb;
@@ -456,6 +464,7 @@
 .main-panel{
     position: relative;
     float: right;
+    /* width: $sidebar-width; */
     width: $sidebar-width;
     @include transition (0.33s, cubic-bezier(0.685, 0.0473, 0.346, 1));
 
@@ -553,7 +562,7 @@
             }
         }
 
-        .sidebar:hover{
+        .sidebar:hover{            
             width: 260px;
 
             .logo{
