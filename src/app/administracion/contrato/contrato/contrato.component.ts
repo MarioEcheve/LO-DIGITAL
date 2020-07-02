@@ -261,12 +261,6 @@ export class ContratoComponent implements OnInit {
     console.log(this.permisosFormGroup.value);
   }
   guardaContrato() {
-    //console.log(this.contratoForm.value);
-    //console.log(this.MandanteFormGroup.value);
-    //console.log(this.contratistaFormGroup.value);
-    //console.log(this.permisosFormGroup.value);
-    //console.log(this.contactoFormGroup.value);
-
     let contrato = new Contrato();
     contrato.actualizarContratoAdminCon = this.permisosFormGroup.get(
       "actualizarContratoAdminCon"

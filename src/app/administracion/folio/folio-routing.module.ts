@@ -4,6 +4,7 @@ import { FolioComponent } from "./folio/folio.component";
 import { FolioBorradorComponent } from "./folio-borrador/folio-borrador.component";
 import { FolioFirmadoComponent } from "./folio-firmado/folio-firmado.component";
 import { ArchivoComponent } from "./archivo/archivo.component";
+import { FolioDetalleComponent } from "./folio-detalle/folio-detalle.component";
 
 const routes: Routes = [
   {
@@ -14,16 +15,24 @@ const routes: Routes = [
         component: FolioComponent,
       },
       {
-        path: "folio/:id",
+        path: "folio/:id/:idLibro",
         component: FolioComponent,
       },
       {
-        path: "folio-borrador/:id",
+        path: "folio-borrador/:id/:idUsuario",
         component: FolioBorradorComponent,
       },
       {
         path: "folio-firmado",
         component: FolioFirmadoComponent,
+      },
+      {
+        path: "folio-firmado/:id",
+        component: FolioFirmadoComponent,
+      },
+      {
+        path: "folio-detalle/:id",
+        component: FolioDetalleComponent,
       },
       {
         path: "folio-archivo",

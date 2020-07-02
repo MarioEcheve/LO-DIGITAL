@@ -9,7 +9,10 @@ import { LibroService } from "../../services/libro.service";
 import { Folio } from "../../TO/folio.model";
 import { FolioService } from "../../services/folio.service";
 import { DatePipe } from "@angular/common";
-import * as moment from "moment";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import { FormGroup, FormBuilder } from "@angular/forms";
+import { UsuarioLibroService } from "../../services/usuario-libro.service";
+import { UsuarioLibro } from "../../TO/usuario-libro.model";
 
 const defaultConfig: DropzoneConfigInterface = {
   clickable: true,
@@ -26,6 +29,8 @@ export class FolioComponent implements OnInit {
   libros: Libro[] = [];
   folios: Folio[] = [];
   idlibro: number;
+  folioFormGroup: FormGroup;
+  usuarioLibro = new UsuarioLibro();
   singleConfig: DropzoneConfigInterface = {
     ...defaultConfig,
     ...{
@@ -62,10 +67,16 @@ export class FolioComponent implements OnInit {
     private contratoService: ContratoService,
     private libroService: LibroService,
     private folioServie: FolioService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder,
+    private usuarioLibroService: UsuarioLibroService
   ) {}
 
   ngOnInit(): void {
+    this.folioFormGroup = this.fb.group({
+      libro: [],
+    });
+
     let id = parseInt(this.route.snapshot.paramMap.get("id"));
     this.contratoService.find(id).subscribe((respuesta) => {
       this.contrato = respuesta.body;
@@ -75,6 +86,22 @@ export class FolioComponent implements OnInit {
           this.libros = respuesta.body;
         });
     });
+
+    console.log(
+      "idLibro" + parseInt(this.route.snapshot.paramMap.get("idLibro"))
+    );
+
+    this.libroService
+      .find(parseInt(this.route.snapshot.paramMap.get("idLibro")))
+      .subscribe((respuesta) => {
+        this.buscaFolios(respuesta.body);
+        let usuario = JSON.parse(localStorage.getItem("user"));
+        this.obtenerPerfilLibroUsuario(respuesta.body.id, usuario.id);
+        this.folioFormGroup.patchValue({
+          libro: respuesta.body.nombre,
+        });
+      });
+
     this.tableData1 = {
       headerRow: [
         "# Folio",
@@ -143,11 +170,45 @@ export class FolioComponent implements OnInit {
     this.folioServie.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
       console.log(respuesta.body);
       this.folios = respuesta.body;
-      this.folios.forEach((element) => {});
+      let usuario = JSON.parse(localStorage.getItem("user"));
+      this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
     });
   }
   nuevoFolio() {
-    this.router.navigate(["/folio/folio-borrador/", this.idlibro]);
+    let usuario = JSON.parse(localStorage.getItem("user"));
+    this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
+    this.router.navigate(["/folio/folio-borrador/", this.idlibro, usuario.id]);
+  }
+  eliminarFolio(row) {
+    console.log(row);
+    Swal.fire({
+      title: "Esta Seguro ?",
+      text: "Los cambios no podran ser revertidos!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Si, Eliminar folio!",
+      cancelButtonText: "No, Mantener folio",
+    }).then((result) => {
+      if (result.value) {
+        let libro = new Libro();
+        libro.id = this.idlibro;
+        this.folioServie.delete(row.id).subscribe((respuesta) => {
+          //console.log(respuesta);
+          this.buscaFolios(libro);
+        });
+        Swal.fire("Eliminado!", "Folio Eliminado Correctamente.", "success");
+        // For more information about handling dismissals please visit
+        // https://sweetalert2.github.io/#handling-dismissals
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        //Swal.fire("Cancelado", "Your imaginary file is safe :)", "error");
+      }
+    });
+  }
+  folioFirmado(row) {
+    this.router.navigate(["/folio/folio-firmado/", row.id]);
+  }
+  detalleLibro(row) {
+    this.router.navigate(["/folio/folio-detalle/", row.id]);
   }
   onUploadInit(args: any): void {
     // onUploadInit
@@ -159,5 +220,14 @@ export class FolioComponent implements OnInit {
 
   onUploadSuccess(args: any): void {
     // onUploadSuccess
+  }
+
+  obtenerPerfilLibroUsuario(idLibro, idUsuario) {
+    this.usuarioLibroService
+      .buscarlibroPorContrato(idLibro, idUsuario)
+      .subscribe((respuesta) => {
+        console.log(respuesta.body);
+        this.usuarioLibro = respuesta.body[0];
+      });
   }
 }

@@ -23,6 +23,7 @@ export interface IFolio {
   fechaFirma?: Moment;
   fechaLectura?: Moment;
   asunto?: string;
+  anotacion?: string;
   pdfFirmadoContentType?: string;
   pdfFirmado?: any;
   pdfLecturaContentType?: string;
@@ -53,6 +54,7 @@ export class Folio implements IFolio {
     public fechaFirma?: Moment,
     public fechaLectura?: Moment,
     public asunto?: string,
+    public anotacion?: string,
     public pdfFirmadoContentType?: string,
     public pdfFirmado?: any,
     public pdfLecturaContentType?: string,

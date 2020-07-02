@@ -35,7 +35,7 @@
                       matInput
                       placeholder="Estado"
                       type="text"
-                      value="Abierto"
+                      formControlName="estadoLibro"
                       disabled
                     />
                   </mat-form-field>
@@ -44,7 +44,7 @@
                       matInput
                       placeholder="Fecha creación"
                       type="text"
-                      value="01/02/2020"
+                      formControlName="fechaCreacion"
                       disabled
                     />
                   </mat-form-field>
@@ -53,7 +53,6 @@
                       matInput
                       placeholder="Fecha apertura"
                       type="text"
-                      value="01/02/2020"
                       disabled
                     />
                   </mat-form-field>
@@ -457,59 +456,91 @@
           </mat-tab>
           <mat-tab label="Configuración y Permisos">
             <div class="container-fluid mt-3">
-              <form method="#" action="#">
+              <form [formGroup]="permisosFormGroup">
                 <div class="togglebutton">
                   <label>
-                    <input type="checkbox" checked="" />
+                    <input
+                      type="checkbox"
+                      checked=""
+                      formControlName="aperturaMandante"
+                    />
                     <span class="toggle"></span>
                     Permitir al Administrador del Mandante generar folios
                   </label>
                 </div>
                 <div class="togglebutton togglebutton-success">
                   <label>
-                    <input type="checkbox" checked="" />
+                    <input
+                      type="checkbox"
+                      checked=""
+                      formControlName="aperturaContratista"
+                    />
                     <span class="toggle"></span>
                     Permitir al Administrador del Contratista generar folios
                   </label>
                 </div>
                 <div class="togglebutton">
                   <label>
-                    <input type="checkbox" checked="" />
+                    <input
+                      type="checkbox"
+                      checked=""
+                      formControlName="escrituraMandante"
+                    />
                     <span class="toggle"></span>
                     Permitir al Administrador del Mandante abrir el Libro
                   </label>
                 </div>
                 <div class="togglebutton togglebutton-success">
                   <label>
-                    <input type="checkbox" checked="" />
+                    <input
+                      type="checkbox"
+                      checked=""
+                      formControlName="escrituraContratista"
+                    />
                     <span class="toggle"></span>
                     Permitir al Administrador del Contratista abrir el Libro
                   </label>
                 </div>
                 <div class="togglebutton">
                   <label>
-                    <input type="checkbox" checked="" />
+                    <input
+                      type="checkbox"
+                      checked=""
+                      formControlName="cierreMandante"
+                    />
                     <span class="toggle"></span>
                     Permitir al Administrador del Mandante cerrar el Libro
                   </label>
                 </div>
                 <div class="togglebutton togglebutton-success">
                   <label>
-                    <input type="checkbox" checked="" />
+                    <input
+                      type="checkbox"
+                      checked=""
+                      formControlName="cierreContratista"
+                    />
                     <span class="toggle"></span>
                     Permitir al Administrador del Contratista cerrar el Libro
                   </label>
                 </div>
                 <div class="togglebutton">
                   <label>
-                    <input type="checkbox" checked="" />
+                    <input
+                      type="checkbox"
+                      checked=""
+                      formControlName="lecturaMandante"
+                    />
                     <span class="toggle"></span>
                     Solicitar confirmación de lectura de Folios al Mandante
                   </label>
                 </div>
                 <div class="togglebutton togglebutton-success">
                   <label>
-                    <input type="checkbox" checked="" />
+                    <input
+                      type="checkbox"
+                      checked=""
+                      formControlName="lecturaContratista"
+                    />
                     <span class="toggle"></span>
                     Solicitar confirmación de lectura de Folios al Contratista
                   </label>
