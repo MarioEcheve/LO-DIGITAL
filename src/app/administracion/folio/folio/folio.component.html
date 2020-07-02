@@ -3,51 +3,62 @@
     <div class="card">
       <div class="card-body">
         <div>
-          <div class="row">
-            <div class="col-6 d-flex justify-content-start">
-              <table class="mb-1">
-                <tr>
-                  <td style="font-size: 15px; font-weight: bold;">Contrato:</td>
-                  <td style="font-size: 15px; font-weight: bold;">
-                    &nbsp;<strong>{{ contrato.nombre }}</strong>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Código:</td>
-                  <td>&nbsp;{{ contrato.codigo }}</td>
-                </tr>
-              </table>
+          <form [formGroup]="folioFormGroup">
+            <div class="row">
+              <div class="col-6 d-flex justify-content-start">
+                <table class="mb-1">
+                  <tr>
+                    <td style="font-size: 15px; font-weight: bold;">
+                      Contrato:
+                    </td>
+                    <td style="font-size: 15px; font-weight: bold;">
+                      &nbsp;<strong>{{ contrato.nombre }}</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Código:</td>
+                    <td>&nbsp;{{ contrato.codigo }}</td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-6 d-flex justify-content-end">
+                <table class="mb-1">
+                  <tr>
+                    <td style="font-size: 15px; font-weight: bold;">
+                      Perfil Libro:
+                    </td>
+                    <td style="font-size: 15px; font-weight: bold;">
+                      &nbsp;<strong>{{
+                        usuarioLibro.perfilUsuarioLibro.nombre
+                      }}</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Cargo:</td>
+                    <td>&nbsp;{{ usuarioLibro.cargoFuncion }}</td>
+                  </tr>
+                </table>
+              </div>
             </div>
-            <div class="col-6 d-flex justify-content-end">
-              <table class="mb-1">
-                <tr>
-                  <td style="font-size: 15px; font-weight: bold;">
-                    Perfil Libro:
-                  </td>
-                  <td style="font-size: 15px; font-weight: bold;">
-                    &nbsp;<strong>Falta implementar</strong>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Cargo:</td>
-                  <td>&nbsp;Falta implementar</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-          <mat-form-field>
-            <mat-select placeholder="Libro Seleccionado" name="city">
-              <mat-option
-                *ngFor="let libro of libros"
-                [value]="libro"
-                (click)="buscaFolios(libro)"
+            <mat-form-field>
+              <mat-select
+                placeholder="Libro Seleccionado"
+                name="city"
+                formControlName="libro"
               >
-                {{ libro.nombre }} | Cod.: {{ libro.codigo }} | Clase Libro:
-                {{ libro.tipoLibro.descripcion }} | Tipo Firma:
-                {{ libro.tipoFirma.nombre }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+                <mat-option
+                  *ngFor="let libro of libros"
+                  [value]="libro.nombre"
+                  (click)="buscaFolios(libro)"
+                >
+                  {{ libro.nombre }} | Cod.: {{ libro.codigo }} | Clase Libro:
+                  {{ libro.tipoLibro.descripcion }} | Tipo Firma:
+                  {{ libro.tipoFirma.nombre }} | Estado :
+                  {{ libro.estadoLibro.nombre }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </form>
         </div>
 
         <button
@@ -108,12 +119,15 @@
                       row.fechaCreacion
                     }}</span>
                   </td>
-                  <td>{{ row.fechaCreacion | date }}</td>
+                  <td>
+                    {{ row.fechaCreacion | date: "dd-MM-yyyy HH:mm" }}
+                  </td>
                   <td class="td-actions text-right">
                     <button
                       mat-raised-button
                       type="button"
                       class="btn btn-default {{ row[7] }}"
+                      *ngIf="row.numeroFolio !== null"
                     >
                       <i class="material-icons">get_app</i>
                     </button>
@@ -121,6 +135,26 @@
                       mat-raised-button
                       type="button"
                       class="btn btn-default {{ row[7] }}"
+                      *ngIf="row.numeroFolio === null"
+                      (click)="eliminarFolio(row)"
+                    >
+                      <i class="material-icons">delete</i>
+                    </button>
+                    <button
+                      mat-raised-button
+                      type="button"
+                      class="btn btn-default {{ row[7] }}"
+                      (click)="folioFirmado(row)"
+                      *ngIf="row.numeroFolio !== null"
+                    >
+                      <i class="material-icons">keyboard_arrow_right</i>
+                    </button>
+                    <button
+                      mat-raised-button
+                      type="button"
+                      class="btn btn-default {{ row[7] }}"
+                      (click)="detalleLibro(row)"
+                      *ngIf="row.numeroFolio === null"
                     >
                       <i class="material-icons">keyboard_arrow_right</i>
                     </button>

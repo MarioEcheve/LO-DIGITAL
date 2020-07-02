@@ -103,7 +103,7 @@
                       matInput
                       placeholder="Borrador creado por"
                       type="text"
-                      formControlName="usuarioNombre"
+                      value="Fernando Vilches Soleman"
                       disabled
                     />
                   </mat-form-field>
@@ -112,7 +112,7 @@
                       matInput
                       placeholder="Perfil usuario"
                       type="text"
-                      formControlName="perfilUsuario"
+                      value="Asistente"
                       disabled
                     />
                   </mat-form-field>
@@ -154,8 +154,8 @@
                   />
                 </mat-form-field>
                 <!-- <div class="">          
-                  Folios de referencia: <tag-input [(ngModel)]='regularItems' theme='filled-theme'></tag-input>
-                </div> -->
+                    Folios de referencia: <tag-input [(ngModel)]='regularItems' theme='filled-theme'></tag-input>
+                  </div> -->
                 <mat-form-field class="example-full-width disabled">
                   <input
                     matInput
@@ -219,22 +219,22 @@
                   />
                 </mat-form-field>
                 <!-- <div class="row mb-1">
-                  <div style="font-weight: bold;"class="col-6 align-self-end">
-                    Anotación
-                  </div>
-                  <div class="col-6 text-right">                  
-                    <button mat-raised-button type="submit" class="btn btn-sm btn-primary btn-just-icon">
-                      <span class="btn-label">
-                        <i style="font-weight: normal" class="material-icons">record_voice_over</i>
-                      </span>                   
-                    </button>
-                    <button mat-raised-button type="submit" class="btn btn-sm btn-primary btn-just-icon">
-                      <span class="btn-label">
-                        <i class="material-icons">mic</i>
-                      </span>                   
-                    </button>                  
-                  </div>
-                </div> -->
+                    <div style="font-weight: bold;"class="col-6 align-self-end">
+                      Anotación
+                    </div>
+                    <div class="col-6 text-right">                  
+                      <button mat-raised-button type="submit" class="btn btn-sm btn-primary btn-just-icon">
+                        <span class="btn-label">
+                          <i style="font-weight: normal" class="material-icons">record_voice_over</i>
+                        </span>                   
+                      </button>
+                      <button mat-raised-button type="submit" class="btn btn-sm btn-primary btn-just-icon">
+                        <span class="btn-label">
+                          <i class="material-icons">mic</i>
+                        </span>                   
+                      </button>                  
+                    </div>
+                  </div> -->
                 <angular-editor
                   [placeholder]="'Ingrese anotación...'"
                   [config]="editorConfig"
@@ -267,8 +267,8 @@
                   class="btn btn-danger pull-left"
                 >
                   <!--  <span class="btn-label">
-                    <i class="material-icons">close</i>
-                  </span> -->
+                      <i class="material-icons">close</i>
+                    </span> -->
                   Eliminar
                 </button>
                 <div class="text-right mb-3">
@@ -279,8 +279,8 @@
                     [disabled]="!folioForm.valid"
                   >
                     <!-- <span class="btn-label">
-                      <i class="material-icons">mail</i>
-                    </span> -->
+                        <i class="material-icons">mail</i>
+                      </span> -->
                     Informar
                   </button>
                   <button
@@ -291,8 +291,8 @@
                     [disabled]="!folioForm.valid"
                   >
                     <!-- <span class="btn-label">
-                      <i class="material-icons">get_app</i>
-                    </span> -->
+                        <i class="material-icons">get_app</i>
+                      </span> -->
                     Guardar
                   </button>
                   <button
@@ -302,8 +302,8 @@
                     [disabled]="!folioForm.valid"
                   >
                     <!-- <span class="btn-label">
-                      <i class="material-icons">pageview</i>
-                    </span> -->
+                        <i class="material-icons">pageview</i>
+                      </span> -->
                     Previsualizar
                   </button>
                   <button
@@ -314,8 +314,8 @@
                     (click)="firmarFolio()"
                   >
                     <!-- <span class="btn-label">
-                      <i class="material-icons">check</i>
-                    </span> -->
+                        <i class="material-icons">check</i>
+                      </span> -->
                     Firmar Folio
                   </button>
                 </div>

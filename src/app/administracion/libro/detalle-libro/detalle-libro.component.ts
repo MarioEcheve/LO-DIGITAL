@@ -8,6 +8,7 @@ import { TipoLibroService } from "../../services/tipo-libro.service";
 import { TipoFirmaService } from "../../services/tipo-firma.service";
 import { ITipoLibro } from "../../TO/tipo-libro.model";
 import { TipoFirma } from "../../TO/tipo-firma.model";
+import { DatePipe } from "@angular/common";
 
 declare interface TableData {
   headerRow: string[];
@@ -23,6 +24,7 @@ export class DetalleLibroComponent implements OnInit {
   libro: ILibro;
   abrirLibroMostrar = false;
   libroInfoGeneralFormGroup: FormGroup;
+  permisosFormGroup: FormGroup;
   tipoLibro: ITipoLibro[];
   tipoFirma: TipoFirma[];
   constructor(
@@ -32,7 +34,8 @@ export class DetalleLibroComponent implements OnInit {
     private folio: FolioService,
     private fb: FormBuilder,
     private tipoLibroService: TipoLibroService,
-    private tipoFirmaService: TipoFirmaService
+    private tipoFirmaService: TipoFirmaService,
+    public datepipe: DatePipe
   ) {}
 
   ngOnInit(): void {
@@ -104,7 +107,37 @@ export class DetalleLibroComponent implements OnInit {
         nombre: respuesta.body.nombre,
         descripcion: respuesta.body.descripcion,
         tipoFirma: respuesta.body.tipoFirma.nombre,
+        estadoLibro: respuesta.body.estadoLibro.nombre,
+        fechaCreacion: this.datepipe.transform(
+          respuesta.body.fechaCreacion,
+          "dd-MM-yyyy"
+        ),
+        tipoLibro: respuesta.body.tipoLibro.descripcion,
       });
+      this.permisosFormGroup.controls["aperturaMandante"].setValue(
+        respuesta.body.aperturaMandante
+      );
+      this.permisosFormGroup.controls["aperturaContratista"].setValue(
+        respuesta.body.aperturaContratista
+      );
+      this.permisosFormGroup.controls["escrituraMandante"].setValue(
+        respuesta.body.escrituraMandante
+      );
+      this.permisosFormGroup.controls["escrituraContratista"].setValue(
+        respuesta.body.escrituraContratista
+      );
+      this.permisosFormGroup.controls["cierreMandante"].setValue(
+        respuesta.body.cierreMandante
+      );
+      this.permisosFormGroup.controls["cierreContratista"].setValue(
+        respuesta.body.cierreContratista
+      );
+      this.permisosFormGroup.controls["lecturaMandante"].setValue(
+        respuesta.body.lecturaMandante
+      );
+      this.permisosFormGroup.controls["lecturaContratista"].setValue(
+        respuesta.body.lecturaContratista
+      );
     });
   }
   inicializadorForms() {
@@ -143,6 +176,19 @@ export class DetalleLibroComponent implements OnInit {
     this.libroInfoGeneralFormGroup.controls["codigo"].disable();
     this.libroInfoGeneralFormGroup.controls["nombre"].disable();
     this.libroInfoGeneralFormGroup.controls["descripcion"].disable();
+    this.libroInfoGeneralFormGroup.controls["estadoLibro"].disable();
+    this.libroInfoGeneralFormGroup.controls["fechaCreacion"].disable();
+
+    this.permisosFormGroup = this.fb.group({
+      aperturaMandante: [false],
+      aperturaContratista: [false],
+      escrituraMandante: [false],
+      escrituraContratista: [false],
+      cierreMandante: [false],
+      cierreContratista: [false],
+      lecturaMandante: [false],
+      lecturaContratista: [false],
+    });
   }
   obtenerTipoLibro() {
     this.tipoLibroService.query().subscribe((respuesta) => {

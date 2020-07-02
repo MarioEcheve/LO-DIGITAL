@@ -18,6 +18,8 @@ import { Libro } from "../../TO/libro.model";
 import { LibroService } from "../../services/libro.service";
 import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 import { UsuarioLibroService } from "../../services/usuario-libro.service";
+import { EstadoLibroService } from "../../services/estado-libro.service";
+import * as moment from "moment";
 declare interface TableData {
   headerRow: string[];
   dataRows: string[][];
@@ -42,6 +44,7 @@ export class LibroComponent implements OnInit {
   usuariosAgregados: IUsuarioLibro[] = [];
   listaUsuariosContratista = [];
   usuariosAgregadosContratista: IUsuarioLibro[] = [];
+  estadoLibro;
 
   constructor(
     private fb: FormBuilder,
@@ -56,7 +59,8 @@ export class LibroComponent implements OnInit {
     private usuarioDependenciaService: UsuarioDependenciaService,
     private libroService: LibroService,
     private usuarioLibroService: UsuarioLibroService,
-    private router: Router
+    private router: Router,
+    private estadoLibroService: EstadoLibroService
   ) {}
 
   ngOnInit(): void {
@@ -114,9 +118,11 @@ export class LibroComponent implements OnInit {
     this.obtenerTipoFirmas();
     this.obtenerTipoLibros();
     this.obtenerPerfilUsuariolibro();
+    this.obtenerEstadoLibro();
   }
   desabilitaElementosFormGroup() {
     this.libroInfoGeneralFormGroup.controls["fechaCreacion"].disable();
+    this.libroInfoGeneralFormGroup.controls["estadoLibro"].disable();
     this.libroInfoGeneralFormGroup.controls["fechaCierre"].disable();
     this.libroInfoGeneralFormGroup.controls["fechaApertura"].disable();
     this.libroInfoGeneralFormGroup.controls["rutAdminMandante"].disable();
@@ -168,10 +174,6 @@ export class LibroComponent implements OnInit {
   obtenerTipoLibros() {
     this.tipoLibroService.query().subscribe((respuesta) => {
       this.tipoLibro = respuesta.body;
-      // buscamos el contrato para verificar si posee libros creados,
-      // si posee solo se dejara crear libros auxiliares
-      // si no posee se dejara crear libro maestro por obligacion
-
       this.libroService
         .buscarlibroPorContrato(this.contrato.id)
         .subscribe((respuesta) => {
@@ -187,6 +189,22 @@ export class LibroComponent implements OnInit {
             this.tipoLibro = resutado;
           }
         });
+    });
+  }
+  obtenerEstadoLibro() {
+    this.estadoLibroService.query().subscribe((respuesta) => {
+      console.log(respuesta.body);
+      for (var i = 0; i < respuesta.body.length; i++) {
+        if (
+          respuesta.body[i].nombre === "En creacion" ||
+          respuesta.body[i].nombre.toLowerCase() === "en creacion"
+        ) {
+          this.libroInfoGeneralFormGroup.controls["estadoLibro"].setValue(
+            respuesta.body[i].nombre
+          );
+          this.estadoLibro = respuesta.body[i];
+        }
+      }
     });
   }
   obtenerContrato() {
@@ -473,7 +491,8 @@ export class LibroComponent implements OnInit {
       "tipoLibro"
     ].value;
     libro.contrato = this.contrato;
-    libro.estadoLibro = null;
+    libro.estadoLibro = this.estadoLibro;
+    libro.fechaCreacion = moment(Date.now());
 
     this.libroService.create(libro).subscribe(
       (respuesta) => {
@@ -493,6 +512,7 @@ export class LibroComponent implements OnInit {
     for (var i = 0; i < this.usuariosAgregados.length; i++) {
       console.log(this.usuariosAgregados[i]);
       this.usuariosAgregados[i].libro = libro;
+      this.usuariosAgregados[i].fechaCreacion = moment(Date.now());
       this.usuarioLibroService
         .create(this.usuariosAgregados[i])
         .subscribe((respuesta) => {});
@@ -502,8 +522,9 @@ export class LibroComponent implements OnInit {
     for (var i = 0; i < this.usuariosAgregadosContratista.length; i++) {
       console.log(this.usuariosAgregadosContratista[i]);
       this.usuariosAgregadosContratista[i].libro = libro;
+      this.usuariosAgregadosContratista[i].fechaCreacion = moment(Date.now());
       this.usuarioLibroService
-        .create(this.usuariosAgregados[i])
+        .create(this.usuariosAgregadosContratista[i])
         .subscribe((respuesta) => {});
     }
   }

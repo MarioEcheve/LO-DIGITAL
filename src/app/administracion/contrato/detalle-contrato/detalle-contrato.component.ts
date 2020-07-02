@@ -23,7 +23,7 @@ import { ComunaService } from "../../services/comuna.service";
 import { IComuna } from "../../TO/comuna.model";
 import { DependenciaService } from "../../services/dependencia.service";
 import { LibroService } from "../../services/libro.service";
-import { ILibro } from "../../TO/libro.model";
+import { ILibro, Libro } from "../../TO/libro.model";
 import { IContrato } from "../../TO/contrato.model";
 import { TipoContratoService } from "../../services/tipo-contrato.service";
 import { ITipoContrato } from "../../TO/tipo-contrato.model";
@@ -69,7 +69,7 @@ export class DetalleContratoComponent
   public tableData1: TableData;
   listaRegiones: IRegion[];
   listaComunas: IComuna;
-  libros: ILibro[] = [];
+  libros = [];
   contrato: IContrato;
   tipoContrato: ITipoContrato[];
   modalidadContrato: IModalidad[];
@@ -414,6 +414,11 @@ export class DetalleContratoComponent
         .buscarlibroPorContrato(respuesta.body.id)
         .subscribe((respuesta) => {
           this.libros = respuesta.body;
+          for (var i = 0; i < respuesta.body.length; i++) {
+            if (respuesta.body[i].estadoLibro.nombre === null) {
+              respuesta.body[i].estadoLibro.nombre = "";
+            }
+          }
           console.log(this.libros);
         });
     });
@@ -439,7 +444,7 @@ export class DetalleContratoComponent
     this.router.navigate(["/libro/detalle-libro/", row.id]);
   }
   folios(row) {
-    this.router.navigate(["/folio/folio", this.contrato.id]);
+    this.router.navigate(["/folio/folio", this.contrato.id, row.id]);
   }
   buscaTipoContrato() {
     this.tipoContratoService.query().subscribe((respuesta) => {

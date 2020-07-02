@@ -17,6 +17,8 @@ export class FolioService {
   public resourceUrl = this.SERVER_API_URL + "api/folios";
   public resourceUrlBuscarFolioPorLibro =
     this.SERVER_API_URL + "api/buscarFolioPorLibro";
+  public resourceUrlCorrelativoFolio =
+    this.SERVER_API_URL + "api/correlativoFolio";
 
   constructor(protected http: HttpClient) {}
 
@@ -67,6 +69,13 @@ export class FolioService {
           this.convertDateArrayFromServer(res)
         )
       );
+  }
+  correlativoFolio(id: number): Observable<EntityResponseType> {
+    return this.http
+      .get<any>(`${this.resourceUrlCorrelativoFolio}/${id}`, {
+        observe: "response",
+      })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   protected convertDateFromClient(folio: IFolio): IFolio {

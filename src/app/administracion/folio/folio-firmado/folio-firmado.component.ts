@@ -1,4 +1,9 @@
 import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { FolioService } from "../../services/folio.service";
+import { Folio } from "../../TO/folio.model";
+import { DependenciaService } from "../../services/dependencia.service";
+import { UsuarioLibroService } from "../../services/usuario-libro.service";
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -11,6 +16,9 @@ declare interface TableData {
 })
 export class FolioFirmadoComponent implements OnInit {
   public tableData1: TableData;
+  Folio = new Folio();
+  dependenciaMandante;
+  emisor;
   cities = [
     { value: "paris-0", viewValue: "Paris" },
     { value: "miami-1", viewValue: "Miami" },
@@ -20,8 +28,15 @@ export class FolioFirmadoComponent implements OnInit {
     { value: "barcelona-5", viewValue: "Barcelona" },
     { value: "moscow-6", viewValue: "Moscow" },
   ];
-  constructor() {}
+  constructor(
+    private route: ActivatedRoute,
+    private folioService: FolioService,
+    private dependenciaService: DependenciaService,
+    private usuarioLibroService: UsuarioLibroService
+  ) {}
   ngOnInit() {
+    let idFolio = this.route.snapshot.paramMap.get("id");
+    this.obtenerFolio(idFolio);
     this.tableData1 = {
       headerRow: ["#", "Name", "Job Position", "Since", "Salary", "Actions"],
       dataRows: [
@@ -32,5 +47,23 @@ export class FolioFirmadoComponent implements OnInit {
         ["5", "Paul Dickens", "Communication", "2015", "69,201", ""],
       ],
     };
+  }
+  obtenerFolio(idFolio) {
+    this.folioService.find(idFolio).subscribe((respuesta) => {
+      this.Folio = respuesta.body;
+      this.obtenerEmisorFolio(respuesta.body.idUsuarioCreador);
+
+      this.dependenciaService
+        .find(respuesta.body.libro.contrato.idDependenciaContratista)
+        .subscribe((respuesta) => {
+          this.dependenciaMandante = respuesta.body;
+        });
+    });
+  }
+  obtenerEmisorFolio(idEmisor) {
+    this.usuarioLibroService.find(idEmisor).subscribe((respuesta) => {
+      console.log(respuesta.body);
+      this.emisor = respuesta.body;
+    });
   }
 }

@@ -15,6 +15,8 @@ import { MatTableModule } from "@angular/material/table";
 import { DropzoneModule } from "ngx-dropzone-wrapper";
 import { DROPZONE_CONFIG } from "ngx-dropzone-wrapper";
 import { DropzoneConfigInterface } from "ngx-dropzone-wrapper";
+import { ModalFirmaFolioComponent } from "./modal-firma-folio/modal-firma-folio.component";
+import { FolioDetalleComponent } from './folio-detalle/folio-detalle.component';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   // Change this to your upload POST address:
@@ -29,6 +31,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     FolioBorradorComponent,
     FolioFirmadoComponent,
     ArchivoComponent,
+    ModalFirmaFolioComponent,
+    FolioDetalleComponent,
   ],
   imports: [
     CommonModule,
@@ -49,5 +53,6 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
       useValue: DEFAULT_DROPZONE_CONFIG,
     },
   ],
+  entryComponents: [ModalFirmaFolioComponent],
 })
 export class FolioModule {}
