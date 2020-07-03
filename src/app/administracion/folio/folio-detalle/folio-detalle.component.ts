@@ -15,6 +15,7 @@ import { ModalFirmaFolioComponent } from "../modal-firma-folio/modal-firma-folio
 import { DatePipe } from "@angular/common";
 import { Folio } from "../../TO/folio.model";
 import { UsuarioLibroService } from "../../services/usuario-libro.service";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -379,5 +380,31 @@ export class FolioDetalleComponent implements OnInit {
           respuesta.body[0].perfilUsuarioLibro.nombre
         );
       });
+  }
+  eliminarFolio(row) {
+    console.log(row);
+    Swal.fire({
+      title: "Esta Seguro ?",
+      text: "Los cambios no podran ser revertidos!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Si, Eliminar folio!",
+      cancelButtonText: "No, Mantener folio",
+    }).then((result) => {
+      if (result.value) {
+        this.folioService.delete(this.Folio.id).subscribe((respuesta) => {
+          Swal.fire("Eliminado!", "Folio Eliminado Correctamente.", "success");
+          // For more information about handling dismissals please visit
+          // https://sweetalert2.github.io/#handling-dismissals
+          this.router.navigate([
+            "/folio/folio/",
+            this.libro.contrato.id,
+            this.libro.id,
+          ]);
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        //Swal.fire("Cancelado", "Your imaginary file is safe :)", "error");
+      }
+    });
   }
 }

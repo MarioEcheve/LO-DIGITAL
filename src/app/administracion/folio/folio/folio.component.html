@@ -147,23 +147,6 @@
                           mat-raised-button
                           type="button"
                           class="btn btn-default {{ row[7] }}"
-                          *ngIf="row.numeroFolio !== null"
-                        >
-                          <i class="material-icons">get_app</i>
-                        </button>
-                        <button
-                          mat-raised-button
-                          type="button"
-                          class="btn btn-default {{ row[7] }}"
-                          *ngIf="row.numeroFolio === null"
-                          (click)="eliminarFolio(row)"
-                        >
-                          <i class="material-icons">delete</i>
-                        </button>
-                        <button
-                          mat-raised-button
-                          type="button"
-                          class="btn btn-default {{ row[7] }}"
                           (click)="folioFirmado(row)"
                           *ngIf="row.numeroFolio !== null"
                         >
