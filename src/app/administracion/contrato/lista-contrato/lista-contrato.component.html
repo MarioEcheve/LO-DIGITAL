@@ -1,13 +1,16 @@
 <div class="main-content">
-  <div class="container-fluid">
+  <div class="container-fluid mt-5">
     <!-- Inicio card de Creación Contrato -->
     <div class="card">
-      <div class="card-header card-header-rose card-header-icon">
+      <div class="card-header card-header-info card-header-tabs">                
+        <h4 class="card-title">Lista de Contratos</h4>                  
+      </div>
+     <!--  <div class="card-header card-header-rose card-header-icon">
         <div class="card-icon">
           <i class="material-icons">mail_outline</i>
         </div>
         <h4 class="card-title">Lista Contrato</h4>
-      </div>
+      </div> -->
       <div class="card-body">
         <div class="table-responsive">
           <mat-form-field>
@@ -49,7 +52,7 @@
                   <button
                     mat-raised-button
                     type="button"
-                    class="btn btn-success {{ row[7] }}"
+                    class="btn btn-default {{ row[7] }}"
                     (click)="editarContrato(row.id)"
                   >
                     <i class="material-icons">keyboard_arrow_right</i>
