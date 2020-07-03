@@ -8,13 +8,22 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 })
 export class VisorPdfComponent implements OnInit {
   ruta;
+  pdfArchivo;
+
   constructor(
     public dialogRef: MatDialogRef<VisorPdfComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit(): void {
-    console.log(this.data.pdf);
-    this.ruta = "assets/file.pdf";
+    let pdfCreadoBase64 = btoa(JSON.stringify(this.data.pdf));
+    const byteArray = new Uint8Array(
+      atob(pdfCreadoBase64)
+        .split("")
+        .map((char) => char.charCodeAt(0))
+    );
+    this.pdfArchivo = new Blob([byteArray], { type: "application/pdf" });
+    this.ruta = window.URL.createObjectURL(this.pdfArchivo);
+    console.log(this.ruta);
   }
 }
