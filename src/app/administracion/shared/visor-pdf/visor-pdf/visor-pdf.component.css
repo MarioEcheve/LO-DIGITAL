@@ -1,0 +1,6 @@
+@media print {
+  #printContainer > div {
+    display: inline;
+    overflow-y: visible;
+  }
+}

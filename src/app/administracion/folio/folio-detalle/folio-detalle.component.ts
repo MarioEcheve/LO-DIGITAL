@@ -12,6 +12,9 @@ import { FolioService } from "../../services/folio.service";
 import * as moment from "moment";
 import { MatDialog } from "@angular/material/dialog";
 import { ModalFirmaFolioComponent } from "../modal-firma-folio/modal-firma-folio.component";
+import { DatePipe } from "@angular/common";
+import { Folio } from "../../TO/folio.model";
+import { UsuarioLibroService } from "../../services/usuario-libro.service";
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -25,9 +28,11 @@ declare interface TableData {
 export class FolioDetalleComponent implements OnInit {
   public tableData1: TableData;
   libro = new Libro();
+  Folio = new Folio();
   dependenciaContratista = new Dependencia();
   tipoFolio: ITipoFolio[];
   muestraFechaRequerida = false;
+  usuario;
   // IMPLEMENTACION CONFIG ANGULAR-EDITOR
   editorConfig: AngularEditorConfig = {
     editable: true,
@@ -90,11 +95,14 @@ export class FolioDetalleComponent implements OnInit {
     private fb: FormBuilder,
     private folioService: FolioService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private datePipe: DatePipe,
+    private usuarioLibroService: UsuarioLibroService
   ) {}
 
   ngOnInit() {
     this.folioForm = this.fb.group({
+      id: [],
       asunto: ["", Validators.required],
       entidadCreacion: [null],
       estadoFolio: [false],
@@ -110,6 +118,10 @@ export class FolioDetalleComponent implements OnInit {
       tipoFolio: ["", Validators.required],
       anotacion: [],
       numeroFolio: [],
+      emisor: [],
+      usuarioPerfilLibro: [],
+      usuarioNombre: [],
+      perfilUsuario: [],
     });
     this.tableData1 = {
       headerRow: ["#", "Name", "Job Position", "Since", "Salary", "Actions"],
@@ -124,19 +136,56 @@ export class FolioDetalleComponent implements OnInit {
     let idFolio = this.route.snapshot.paramMap.get("id");
     this.buscarFolio(idFolio);
     this.obtenerTipoFolio();
+
     //this.buscarFolioPorLibro(idLibro);
   }
   buscarFolio(id) {
     this.folioService.find(id).subscribe((respuesta) => {
-      console.log(respuesta.body);
+      this.Folio = respuesta.body;
+
+      let usuarioActual = JSON.parse(localStorage.getItem("user"));
+      this.obtenerPerfilLibroUsuario(this.Folio.libro.id, usuarioActual.id);
+
+      this.folioForm.controls["asunto"].setValue(respuesta.body.asunto);
       this.folioForm.controls["anotacion"].setValue(respuesta.body.anotacion);
+      this.folioForm.controls["tipoFolio"].setValue(respuesta.body.tipoFolio);
+      this.folioForm.controls["fechaCreacion"].setValue(
+        this.datePipe.transform(
+          respuesta.body.fechaCreacion,
+          "dd/MM/yyyy hh:mm:ss"
+        )
+      );
+      this.folioForm.controls["fechaModificacion"].setValue(
+        this.datePipe.transform(
+          respuesta.body.fechaModificacion,
+          "dd/MM/yyyy hh:mm:ss"
+        )
+      );
+      this.folioForm.controls["id"].setValue(respuesta.body.id);
       this.libro = respuesta.body.libro;
       this.dependenciaService
         .find(respuesta.body.libro.contrato.idDependenciaContratista)
         .subscribe((respuesta) => {
           this.dependenciaContratista = respuesta.body;
         });
+      this.usuarioLibroService
+        .find(respuesta.body.idUsuarioCreador)
+        .subscribe((respuesta) => {
+          this.folioForm.controls["emisor"].setValue(
+            respuesta.body.usuarioDependencia.usuario.firstName +
+              " " +
+              respuesta.body.usuarioDependencia.usuario.lastName
+          );
+          this.folioForm.controls["usuarioPerfilLibro"].setValue(
+            respuesta.body.perfilUsuarioLibro.nombre
+          );
+        });
     });
+    // desabilitamos los inputs del form
+    this.folioForm.controls["fechaModificacion"].disable();
+    this.folioForm.controls["fechaCreacion"].disable();
+    this.folioForm.controls["emisor"].disable();
+    this.folioForm.controls["usuarioPerfilLibro"].disable();
   }
   obtenerTipoFolio() {
     this.tipoFolioService.query().subscribe((respuesta) => {
@@ -144,23 +193,23 @@ export class FolioDetalleComponent implements OnInit {
     });
   }
   guardarFolio() {
-    console.log(this.folioForm.value);
-    let fecha = new Date();
-    console.log(fecha);
-    this.folioForm.controls["libro"].setValue(this.libro);
-    this.folioForm.controls["fechaCreacion"].setValue(moment(Date.now()));
-    this.folioService.create(this.folioForm.value).subscribe(
+    this.Folio.fechaModificacion = moment(Date.now());
+    this.Folio.libro = this.libro;
+    this.Folio.anotacion = this.folioForm.controls["anotacion"].value;
+    this.Folio.asunto = this.folioForm.controls["asunto"].value;
+    this.Folio.idUsuarioCreador = this.usuario.id;
+    this.Folio.estadoFolio = false;
+    //console.log(this.usuario);
+    // actualiza el folio
+
+    this.folioService.update(this.Folio).subscribe(
       (respuesta) => {
-        /*
-        let libro = new Libro();
-        libro = respuesta.body.libro;
-        libro.fechaApertura = moment(Date.now());
-        libro.fechaCreacion = moment(libro.fechaCreacion);
-        this.libroService.update(libro).subscribe((respuesta) => {});
-        */
-        console.log(respuesta.body.libro);
         this.showNotificationSuccess("top", "right");
-        this.router.navigate(["/folio/folio/", this.libro.contrato.id]);
+        this.router.navigate([
+          "/folio/folio/",
+          this.libro.contrato.id,
+          this.libro.id,
+        ]);
       },
       (error) => {
         this.showNotificationDanger("top", "right");
@@ -173,14 +222,10 @@ export class FolioDetalleComponent implements OnInit {
         this.tipoFolio = this.tipoFolio.filter(
           (tipo) => tipo.nombre.toLowerCase() === "apertura libro"
         );
-        console.log("menor");
-        console.log(this.tipoFolio);
       } else {
         this.tipoFolio = this.tipoFolio.filter(
           (tipo) => tipo.nombre.toLowerCase() !== "apertura libro"
         );
-        console.log("Mayor");
-        console.log(this.tipoFolio);
       }
     });
   }
@@ -190,25 +235,23 @@ export class FolioDetalleComponent implements OnInit {
       height: "35%",
     });
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
       if (result === null) {
       } else {
-        let fecha = new Date();
-        console.log(fecha);
-        this.folioForm.controls["libro"].setValue(this.libro);
-        this.folioForm.controls["fechaCreacion"].setValue(moment(Date.now()));
-        this.folioForm.controls["estadoFolio"].setValue(true);
-        // falta folear el folio
-        // buscamos el ultimo folio asignado y lo seteamos en el numero de folio
+        this.Folio.fechaFirma = moment(Date.now());
+        this.Folio.libro = this.libro;
+        this.Folio.anotacion = this.folioForm.controls["anotacion"].value;
+        this.Folio.asunto = this.folioForm.controls["asunto"].value;
+        this.Folio.idUsuarioCreador = this.usuario.id;
+        this.Folio.idUsuarioFirma = this.usuario.id;
+        this.Folio.estadoFolio = true;
+
         this.folioService
-          .correlativoFolio(this.libro.id)
+          .correlativoFolio(this.Folio.libro.id)
           .subscribe((respuesta) => {
-            this.folioForm.controls["numeroFolio"].setValue(
-              respuesta.body[0].numero_folio
-            );
+            this.Folio.numeroFolio = respuesta.body[0].numero_folio;
           });
 
-        this.folioService.create(this.folioForm.value).subscribe(
+        this.folioService.update(this.Folio).subscribe(
           (respuesta) => {
             let libro = new Libro();
             libro = respuesta.body.libro;
@@ -216,13 +259,16 @@ export class FolioDetalleComponent implements OnInit {
             libro.fechaCreacion = moment(libro.fechaCreacion);
             this.libroService.update(libro).subscribe((respuesta) => {});
             this.showNotificationSuccess("top", "right");
-            this.router.navigate(["/folio/folio/", this.libro.contrato.id]);
             // actualizo el folio
-            respuesta.body.numeroFolio = this.folioForm.controls[
-              "numeroFolio"
-            ].value;
+            respuesta.body.numeroFolio = this.Folio.numeroFolio;
 
-            this.folioService.update(respuesta.body).subscribe();
+            this.folioService.update(respuesta.body).subscribe((respuesta) => {
+              this.router.navigate([
+                "/folio/folio/",
+                this.libro.contrato.id,
+                this.libro.id,
+              ]);
+            });
           },
           (error) => {
             this.showNotificationDanger("top", "right");
@@ -232,7 +278,6 @@ export class FolioDetalleComponent implements OnInit {
     });
   }
   ocultaFechaRequerida() {
-    console.log(this.folioForm.controls["requiereRespuesta"].value);
     if (this.folioForm.controls["requiereRespuesta"].value === true) {
       this.muestraFechaRequerida = false;
     } else {
@@ -255,7 +300,7 @@ export class FolioDetalleComponent implements OnInit {
     $.notify(
       {
         icon: "notifications",
-        message: "Folio Creado Correctamente ",
+        message: "Folio Actualizado Correctamente ",
       },
       {
         type: type[color],
@@ -294,7 +339,7 @@ export class FolioDetalleComponent implements OnInit {
     $.notify(
       {
         icon: "notifications",
-        message: "Error al crear el Folio",
+        message: "Error al Actualizar el Folio",
       },
       {
         type: type[color],
@@ -316,5 +361,23 @@ export class FolioDetalleComponent implements OnInit {
           "</div>",
       }
     );
+  }
+  onUploadInit(event) {}
+
+  obtenerPerfilLibroUsuario(idLibro, idUsuario) {
+    this.usuarioLibroService
+      .buscarlibroPorContrato(idLibro, idUsuario)
+      .subscribe((respuesta) => {
+        console.log(respuesta.body);
+        this.usuario = respuesta.body[0];
+        this.folioForm.controls["usuarioNombre"].setValue(
+          respuesta.body[0].usuarioDependencia.usuario.firstName +
+            " " +
+            respuesta.body[0].usuarioDependencia.usuario.lastName
+        );
+        this.folioForm.controls["perfilUsuario"].setValue(
+          respuesta.body[0].perfilUsuarioLibro.nombre
+        );
+      });
   }
 }

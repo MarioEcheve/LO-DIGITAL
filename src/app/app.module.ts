@@ -52,6 +52,8 @@ import { Title } from "@angular/platform-browser";
 import { AuthInterceptor } from "./administracion/configs/auth.interceptor";
 import { AuthGuard } from "./auth-guard.service";
 import { CrearUsuarioComponent } from "./administracion/componentes/crear-usuario/crear-usuario.component";
+import { VisorPdfComponent } from "./administracion/shared/visor-pdf/visor-pdf/visor-pdf.component";
+import { NgxExtendedPdfViewerModule } from "ngx-extended-pdf-viewer";
 
 @NgModule({
   exports: [
@@ -85,8 +87,9 @@ import { CrearUsuarioComponent } from "./administracion/componentes/crear-usuari
     MatToolbarModule,
     MatTooltipModule,
     MatNativeDateModule,
+    NgxExtendedPdfViewerModule,
   ],
-  declarations: [],
+  declarations: [VisorPdfComponent],
 })
 export class MaterialModule {}
 

@@ -90,7 +90,12 @@ export class DetalleLibroComponent implements OnInit {
     this.obtenerTipoFirma();
   }
   abrirLibro() {
-    this.router.navigate(["/folio/folio-borrador/", this.libro.id]);
+    let usuarioActual = JSON.parse(localStorage.getItem("user"));
+    this.router.navigate([
+      "/folio/folio-borrador/",
+      this.libro.id,
+      usuarioActual.id,
+    ]);
   }
   obtenerLibro(idLibro) {
     this.libroService.find(idLibro).subscribe((respuesta) => {

@@ -14,6 +14,9 @@ import { MatDialog } from "@angular/material/dialog";
 import { ModalFirmaFolioComponent } from "../modal-firma-folio/modal-firma-folio.component";
 import { UsuarioLibro } from "../../TO/usuario-libro.model";
 import { UsuarioLibroService } from "../../services/usuario-libro.service";
+import { PdfMakeWrapper } from "pdfmake-wrapper";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+import { VisorPdfComponent } from "../../shared/visor-pdf/visor-pdf/visor-pdf.component";
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -343,4 +346,15 @@ export class FolioBorradorComponent implements OnInit {
     );
   }
   onUploadInit(event) {}
+  previsualizar() {
+    PdfMakeWrapper.setFonts(pdfFonts);
+    const pdf = new PdfMakeWrapper();
+    pdf.header("Hello world!");
+    let valor = pdf.create();
+    const dialogRef = this.dialog.open(VisorPdfComponent, {
+      width: "100%",
+      height: "90%",
+      data: { pdf: valor },
+    });
+  }
 }
