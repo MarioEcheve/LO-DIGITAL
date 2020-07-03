@@ -60,108 +60,122 @@
             </mat-form-field>
           </form>
         </div>
-
-        <button
-          mat-raised-button
-          class="btn btn-primary pull-right"
-          (click)="nuevoFolio()"
-        >
-          <span class="btn-label">
-            <i class="material-icons">add</i>
-          </span>
-          Nuevo Folio
-        </button>
-
-        <div class="table-responsive">
-          <div>
-            <table class="table table-striped mt-2">
-              <thead class="text-muted">
-                <tr>
-                  <th>{{ tableData1.headerRow[0] }}</th>
-                  <th>{{ tableData1.headerRow[1] }}</th>
-                  <th>{{ tableData1.headerRow[2] }}</th>
-                  <th>{{ tableData1.headerRow[3] }}</th>
-                  <th>{{ tableData1.headerRow[4] }}</th>
-                  <th class="text-right">
-                    {{ tableData1.headerRow[5] }}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let row of folios">
-                  <td>
-                    <!-- <a href=""><i style="font-size: 22px;" class="material-icons align-middle text-gray">check_box_outline_blank</i></a> -->
-                    <a href=""
-                      ><i
-                        style="font-size: 22px;"
-                        class="material-icons align-middle text-gray"
-                        >star_border</i
-                      ></a
-                    >
-                    <a href=""
-                      ><i
-                        style="font-size: 22px;"
-                        class="material-icons align-middle text-gray"
-                        >label_important_outline</i
-                      ></a
-                    >
-                    {{ row.numeroFolio }}
-                  </td>
-                  <td style="font-weight: bold;">{{ row[1] }}</td>
-                  <td>
-                    <a style="font-weight: bold;" class="text-muted">{{
-                      row.tipoFolio.nombre
-                    }}</a>
-                    - {{ row.asunto }}
-                  </td>
-                  <td>
-                    <span class="badge {{ row[4] }}">{{
-                      row.fechaCreacion
-                    }}</span>
-                  </td>
-                  <td>
-                    {{ row.fechaCreacion | date: "dd-MM-yyyy HH:mm" }}
-                  </td>
-                  <td class="td-actions text-right">
-                    <button
-                      mat-raised-button
-                      type="button"
-                      class="btn btn-default {{ row[7] }}"
-                      *ngIf="row.numeroFolio !== null"
-                    >
-                      <i class="material-icons">get_app</i>
-                    </button>
-                    <button
-                      mat-raised-button
-                      type="button"
-                      class="btn btn-default {{ row[7] }}"
-                      *ngIf="row.numeroFolio === null"
-                      (click)="eliminarFolio(row)"
-                    >
-                      <i class="material-icons">delete</i>
-                    </button>
-                    <button
-                      mat-raised-button
-                      type="button"
-                      class="btn btn-default {{ row[7] }}"
-                      (click)="folioFirmado(row)"
-                      *ngIf="row.numeroFolio !== null"
-                    >
-                      <i class="material-icons">keyboard_arrow_right</i>
-                    </button>
-                    <button
-                      mat-raised-button
-                      type="button"
-                      class="btn btn-default {{ row[7] }}"
-                      (click)="detalleLibro(row)"
-                      *ngIf="row.numeroFolio === null"
-                    >
-                      <i class="material-icons">keyboard_arrow_right</i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="row">
+          <div
+            class="row col-md-2"
+            style="margin-left: initial; margin-right: auto;"
+          >
+            <div>
+              <button
+                mat-raised-button
+                class="btn btn-primary pull-right"
+                (click)="nuevoFolio()"
+              >
+                <span class="btn-label">
+                  <i class="material-icons">add</i>
+                </span>
+                Nuevo Folio
+              </button>
+            </div>
+          </div>
+          <div class="row col-md-10">
+            <div class="table-responsive" style="margin-right: 2%;">
+              <div>
+                <mat-form-field>
+                  <mat-label>Filtro de busqueda</mat-label>
+                  <input matInput placeholder="Buscar" />
+                </mat-form-field>
+                <table class="table table-striped mt-2">
+                  <thead class="text-muted">
+                    <tr>
+                      <th>{{ tableData1.headerRow[0] }}</th>
+                      <th>{{ tableData1.headerRow[1] }}</th>
+                      <th>{{ tableData1.headerRow[2] }}</th>
+                      <th>{{ tableData1.headerRow[3] }}</th>
+                      <th>{{ tableData1.headerRow[4] }}</th>
+                      <th class="text-right">
+                        {{ tableData1.headerRow[5] }}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of folios">
+                      <td>
+                        <!-- <a href=""><i style="font-size: 22px;" class="material-icons align-middle text-gray">check_box_outline_blank</i></a> -->
+                        <a href=""
+                          ><i
+                            style="font-size: 22px;"
+                            class="material-icons align-middle text-gray"
+                            >star_border</i
+                          ></a
+                        >
+                        <a href=""
+                          ><i
+                            style="font-size: 22px;"
+                            class="material-icons align-middle text-gray"
+                            >label_important_outline</i
+                          ></a
+                        >
+                        {{ row.numeroFolio }}
+                      </td>
+                      <td style="font-weight: bold;">{{ row[1] }}</td>
+                      <td>
+                        <a style="font-weight: bold;" class="text-muted">{{
+                          row.tipoFolio.nombre
+                        }}</a>
+                        - {{ row.asunto }}
+                      </td>
+                      <td>
+                        <span class="badge {{ row[4] }}">{{
+                          row.fechaCreacion
+                        }}</span>
+                      </td>
+                      <td>
+                        {{ row.fechaCreacion | date: "dd-MM-yyyy HH:mm" }}
+                      </td>
+                      <td class="td-actions text-right">
+                        <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[7] }}"
+                          *ngIf="row.numeroFolio !== null"
+                        >
+                          <i class="material-icons">get_app</i>
+                        </button>
+                        <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[7] }}"
+                          *ngIf="row.numeroFolio === null"
+                          (click)="eliminarFolio(row)"
+                        >
+                          <i class="material-icons">delete</i>
+                        </button>
+                        <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[7] }}"
+                          (click)="folioFirmado(row)"
+                          *ngIf="row.numeroFolio !== null"
+                        >
+                          <i class="material-icons">keyboard_arrow_right</i>
+                        </button>
+                        <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[7] }}"
+                          (click)="detalleLibro(row)"
+                          *ngIf="row.numeroFolio === null"
+                        >
+                          <i class="material-icons">keyboard_arrow_right</i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -10,6 +10,10 @@
       </div>
       <div class="card-body">
         <div class="table-responsive">
+          <mat-form-field>
+            <mat-label>Filtro de busqueda</mat-label>
+            <input matInput placeholder="Buscar" />
+          </mat-form-field>
           <table class="table">
             <thead>
               <tr>
@@ -19,38 +23,46 @@
                 <th>{{ tableData1.headerRow[3] }}</th>
                 <th class="text-right">{{ tableData1.headerRow[4] }}</th>
                 <th class="text-right">{{ tableData1.headerRow[5] }}</th>
+                <th class="text-right">{{ tableData1.headerRow[6] }}</th>
+                <th class="text-right">{{ tableData1.headerRow[7] }}</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let row of listaDeContratos">
-                <td class="text-center">{{ row.id }}</td>
+                <td class="text-center">{{ row.codigo }}</td>
                 <td>{{ row.nombre }}</td>
-                <td>{{ row.codigo }}</td>
                 <td>{{ row.direccion }}</td>
-                <td class="text-right">{{ row.tipoContrato.nombre }}</td>
+                <td>{{ row.tipoContrato.nombre }}</td>
+                <td class="text-right">{{ row.modalidad.nombre }}</td>
+                <td class="text-right">{{ row.estadoServicio }}</td>
+                <td class="text-right">{{ row.estadoServicio }}</td>
                 <td class="td-actions text-right">
-                  <button
+                  <!--
+                    <button
                     mat-raised-button
                     type="button"
                     class="btn btn-info {{ row[5] }}"
                   >
                     <i class="material-icons">person</i>
                   </button>
+                  -->
                   <button
                     mat-raised-button
                     type="button"
-                    class="btn btn-success {{ row[5] }}"
+                    class="btn btn-success {{ row[7] }}"
                     (click)="editarContrato(row.id)"
                   >
-                    <i class="material-icons">edit</i>
+                    <i class="material-icons">keyboard_arrow_right</i>
                   </button>
-                  <button
+                  <!--
+                    <button
                     mat-raised-button
                     type="button"
                     class="btn btn-danger {{ row[5] }}"
                   >
                     <i class="material-icons">close</i>
                   </button>
+                  -->
                 </td>
               </tr>
             </tbody>

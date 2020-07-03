@@ -23,11 +23,13 @@ export class ListaContratoComponent implements OnInit {
   ngOnInit() {
     this.tableData1 = {
       headerRow: [
-        "#",
-        "Nombre Contrato",
         "Codigo",
+        "Nombre Contrato",
         "Direccion",
         "Tipo Contrato",
+        "Modalidad",
+        "Estado Contrato",
+        "Estado Servicio",
         "Acciones",
       ],
       dataRows: [],
