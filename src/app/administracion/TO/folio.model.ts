@@ -35,6 +35,7 @@ export interface IFolio {
   libro?: ILibro;
   tipoFolio?: ITipoFolio;
   estadoRespuesta?: IEstadoRespuesta;
+  emisor: string;
 }
 
 export class Folio implements IFolio {
@@ -65,11 +66,13 @@ export class Folio implements IFolio {
     public gesFavoritos?: IGesFavorito[],
     public libro?: ILibro,
     public tipoFolio?: ITipoFolio,
-    public estadoRespuesta?: IEstadoRespuesta
+    public estadoRespuesta?: IEstadoRespuesta,
+    public emisor = ""
   ) {
     this.requiereRespuesta = this.requiereRespuesta || false;
     this.estadoLectura = this.estadoLectura || false;
     this.estadoFolio = this.estadoFolio || false;
     this.entidadCreacion = this.entidadCreacion || false;
+    this.emisor = this.emisor;
   }
 }

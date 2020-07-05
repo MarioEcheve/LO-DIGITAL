@@ -357,4 +357,11 @@ export class FolioBorradorComponent implements OnInit {
       data: { pdf: valor },
     });
   }
+  cancelar() {
+    this.router.navigate([
+      "/folio/folio/",
+      this.libro.contrato.id,
+      this.libro.id,
+    ]);
+  }
 }

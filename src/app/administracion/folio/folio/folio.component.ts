@@ -28,6 +28,7 @@ export class FolioComponent implements OnInit {
   contrato = new Contrato();
   libros: Libro[] = [];
   folios: Folio[] = [];
+  listaFolios: Folio[] = [];
   idlibro: number;
   folioFormGroup: FormGroup;
   usuarioLibro = new UsuarioLibro();
@@ -166,11 +167,19 @@ export class FolioComponent implements OnInit {
     };
   }
   buscaFolios(libro) {
+    let usuario = JSON.parse(localStorage.getItem("user"));
     this.idlibro = libro.id;
     this.folioServie.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
-      console.log(respuesta.body);
+      for (var i = 0; i < respuesta.body.length; i++) {
+        console.log(respuesta.body[i]);
+        this.usuarioLibroService
+          .find(respuesta.body[i].idUsuarioFirma)
+          .subscribe((respuesta2) => {
+            console.log(respuesta2);
+          });
+      }
+
       this.folios = respuesta.body;
-      let usuario = JSON.parse(localStorage.getItem("user"));
       this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
     });
   }
@@ -226,7 +235,6 @@ export class FolioComponent implements OnInit {
     this.usuarioLibroService
       .buscarlibroPorContrato(idLibro, idUsuario)
       .subscribe((respuesta) => {
-        console.log(respuesta.body);
         this.usuarioLibro = respuesta.body[0];
       });
   }
