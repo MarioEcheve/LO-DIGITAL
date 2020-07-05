@@ -1,24 +1,109 @@
 <div class="main-content">
-    <div class="container-fluid">
+    <div class="container-fluid mt-3">
+      <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-6">
+          <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">notifications_active</i>
+              </div>
+              <p class="card-category">Alertas Activas</p>
+              <h3 class="card-title">14</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons text-danger">notifications_active</i>
+                <a href="#pablo">Revisar alertas</a>
+              </div>              
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+          <div class="card card-stats">
+            <div class="card-header card-header-rose card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">reply_all</i>
+              </div>
+              <p class="card-category">Folios sin Respuesta</p>
+              <h3 class="card-title">7</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">local_offer</i> Tracked from Google Analytics
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+          <div class="card card-stats">
+            <div class="card-header card-header-success card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">store</i>
+              </div>
+              <p class="card-category">Folios sin Leer</p>
+              <h3 class="card-title">$34,245</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">date_range</i> Last 24 Hours
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+          <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+              <div class="card-icon">
+                <i class="fa fa-twitter"></i>
+              </div>
+              <p class="card-category">Followers</p>
+              <h3 class="card-title">+245</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">update</i> Just Updated
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+              <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                  <i class="material-icons">book</i>
+                </div>
+                <h4 class="card-title">Libros Activos</h4>
+              </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <app-md-table
+                              [data]="tableData">
+                          </app-md-table>
+                        </div>                          
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
       <div class="row">
           <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-success card-header-icon">
                   <div class="card-icon">
-                    <i class="material-icons"></i>
+                    <i class="material-icons">book</i>
                   </div>
-                  <h4 class="card-title">Global Sales by Top Locations</h4>
+                  <h4 class="card-title">Folios Recientes</h4>
                 </div>
                   <div class="card-body">
                       <div class="row">
-                          <div class="col-md-6">
+                          <div class="col-md-12">
                               <app-md-table
                                 [data]="tableData">
                             </app-md-table>
-                          </div>
-                          <div class="col-md-6 ml-auto mr-auto">
-                              <div id="worldMap" class="map"></div>
-                          </div>
+                          </div>                          
                       </div>
                   </div>
               </div>

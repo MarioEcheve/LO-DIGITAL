@@ -1,10 +1,11 @@
-<h2 mat-dialog-title>Buscador de Entidades</h2>
-<mat-dialog-content>
-  <form [formGroup]="usuarioFormGroup" class="example-form">
+<h5 style="font-weight: bold;">Asignar Usuario</h5>
+<br>
+<mat-dialog-content >
+  <form [formGroup]="usuarioFormGroup" class="example-form">    
     <mat-form-field class="example-full-width">
       <input
         type="text"
-        placeholder="Pick one"
+        placeholder="Seleccione Usuario"
         aria-label="Number"
         matInput
         [formControl]="myControl"
@@ -20,17 +21,17 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-    <mat-form-field class="example-full-width">
+    <mat-form-field class="example-full-width">      
       <input
         matInput
-        placeholder="Cargo"
+        placeholder="Ingrese Cargo"
         type="text"
         disabled
         formControlName="cargo"
       />
     </mat-form-field>
     <mat-form-field>
-      <mat-select placeholder="Perfil" formControlName="perfil">
+      <mat-select placeholder="Seleccione Perfil" formControlName="perfil">
         <mat-option
           *ngFor="let perfil of data.usuarioLibroPerfil"
           [value]="perfil"
@@ -42,13 +43,16 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button (click)="cerrar()">Cancelar</button>
+  <button mat-raised-button class="btn btn-default" (click)="cerrar()">Cancelar</button>
   <button
-    mat-button
+    mat-raised-button
     (click)="asignarUsuario()"
     [disabled]="!usuarioFormGroup.valid"
     cdkFocusInitial
+    class="btn btn-primary"
   >
     Aceptar
   </button>
 </mat-dialog-actions>
+
+

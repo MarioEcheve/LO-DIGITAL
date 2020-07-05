@@ -19,7 +19,8 @@
     .navbar-nav{
       .nav-item .nav-link{
         position: relative;
-        padding: 10px 15px;
+        /* FVS padding: 10px 15px; */
+        padding: 10px 5px;
         font-weight: $font-weight-default;
         font-size: $mdb-btn-font-size-base;
         text-transform: uppercase;

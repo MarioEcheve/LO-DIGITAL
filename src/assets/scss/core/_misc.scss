@@ -1,5 +1,5 @@
 body{
-    background-color: #eee;
+    background-color: #f5f5f5;
     color: $black-color;
     font-weight: 300;
 }
@@ -51,7 +51,8 @@ label{
     /* FVS font-size: 14px; */
     font-size: 13px;
     line-height: 1.42857;
-    color: $checkboxes-text-color;
+    /* FVS color: $checkboxes-text-color; */
+    color: #555555;
     font-weight: 400;
 }
 
