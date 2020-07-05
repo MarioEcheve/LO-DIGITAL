@@ -67,6 +67,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 export class DetalleContratoComponent
   implements OnInit, OnChanges, AfterViewInit {
   public tableData1: TableData;
+  codigoContrato;
+  nombreContrato;
   listaRegiones: IRegion[];
   listaComunas: IComuna;
   libros = [];
@@ -326,8 +328,10 @@ export class DetalleContratoComponent
   }
   buscaContrato(id) {
     this.contratoService.find(id).subscribe((respuesta) => {
-      this.contrato = respuesta.body;
+      this.contrato = respuesta.body;      
       this.obtenerRegiones();
+      this.codigoContrato=respuesta.body.codigo
+      this.nombreContrato=respuesta.body.nombre
       this.infoGeneralForm.controls["codigo"].setValue(respuesta.body.codigo);
       this.infoGeneralForm.controls["nombre"].setValue(respuesta.body.nombre);
       this.infoGeneralForm.controls["direccion"].setValue(

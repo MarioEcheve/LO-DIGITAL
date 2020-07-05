@@ -8,9 +8,9 @@
 .card-collapse{
     margin: 0;
 
-    & .card-header{
+    & .card-header{       
         border-bottom: 1px solid #ddd;
-        padding: 25px 10px 5px 0px;
+        padding: 20px 10px 5px 0px;
         margin: 0;
         box-shadow: none !important;
         background: $white;
@@ -23,12 +23,14 @@
             &:hover,
             &:active,
             &[aria-expanded="true"]{
-                color: $brand-rose;
+                /* FVS color: $brand-rose; */
+                color: #4285f4;
             }
 
             i{
                 float: right;
-                top: 4px;
+                /* FVS top: 4px; */
+                top: 0px;
                 position: relative;
             }
 
