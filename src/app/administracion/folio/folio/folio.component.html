@@ -40,24 +40,33 @@
                 </table>
               </div>
             </div>
-            <mat-form-field>
-              <mat-select
-                placeholder="Libro Seleccionado"
-                name="city"
-                formControlName="libro"
-              >
-                <mat-option
-                  *ngFor="let libro of libros"
-                  [value]="libro.nombre"
-                  (click)="buscaFolios(libro)"
-                >
-                  {{ libro.nombre }} | Cod.: {{ libro.codigo }} | Clase Libro:
-                  {{ libro.tipoLibro.descripcion }} | Tipo Firma:
-                  {{ libro.tipoFirma.nombre }} | Estado :
-                  {{ libro.estadoLibro.nombre }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+            <div class="row col-md-12">
+              <div class="col-10 d-flex justify-content-start">
+                <mat-form-field>
+                  <mat-select
+                    placeholder="Libro Seleccionado"
+                    name="city"
+                    formControlName="libro"
+                  >
+                    <mat-option
+                      *ngFor="let libro of libros"
+                      [value]="libro.nombre"
+                      (click)="buscaFolios(libro)"
+                    >
+                      {{ libro.nombre }} | Cod.: {{ libro.codigo }} | Clase
+                      Libro: {{ libro.tipoLibro.descripcion }} | Tipo Firma:
+                      {{ libro.tipoFirma.nombre }} | Estado :
+                      {{ libro.estadoLibro.nombre }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-2 d-flex justify-content-sta">
+                <button mat-raised-button type="button" class="btn btn-default">
+                  <i class="material-icons">keyboard_arrow_right</i>
+                </button>
+              </div>
+            </div>
           </form>
         </div>
         <div class="row">

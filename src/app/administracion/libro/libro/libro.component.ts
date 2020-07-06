@@ -230,7 +230,7 @@ export class LibroComponent implements OnInit {
   }
   modalCrearUsuario() {
     const dialogRef = this.dialog.open(CrearUsuarioComponent, {
-      width: "40%",
+      width: "500px",
       data: {
         usuarioLibroPerfil: this.usuarioLibroPerfil,
         usuariosDependenciaMandante: this.listaUsuarios,
