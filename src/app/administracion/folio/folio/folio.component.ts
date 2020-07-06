@@ -13,6 +13,8 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { UsuarioLibroService } from "../../services/usuario-libro.service";
 import { UsuarioLibro } from "../../TO/usuario-libro.model";
+import { MatDialog } from "@angular/material/dialog";
+import { ModalCrearFolioComponent } from "../modal-crear-folio/modal-crear-folio.component";
 
 const defaultConfig: DropzoneConfigInterface = {
   clickable: true,
@@ -31,6 +33,7 @@ export class FolioComponent implements OnInit {
   listaFolios: Folio[] = [];
   idlibro: number;
   folioFormGroup: FormGroup;
+  libroSeleccionado: Libro;
   usuarioLibro = new UsuarioLibro();
   singleConfig: DropzoneConfigInterface = {
     ...defaultConfig,
@@ -70,7 +73,8 @@ export class FolioComponent implements OnInit {
     private folioServie: FolioService,
     private router: Router,
     private fb: FormBuilder,
-    private usuarioLibroService: UsuarioLibroService
+    private usuarioLibroService: UsuarioLibroService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -167,6 +171,7 @@ export class FolioComponent implements OnInit {
     };
   }
   buscaFolios(libro) {
+    this.libroSeleccionado = libro;
     let usuario = JSON.parse(localStorage.getItem("user"));
     this.idlibro = libro.id;
     this.folioServie.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
@@ -184,9 +189,19 @@ export class FolioComponent implements OnInit {
     });
   }
   nuevoFolio() {
+    const dialogRef = this.dialog.open(ModalCrearFolioComponent, {
+      width: "40%",
+      height: "50%%",
+      data: {
+        libros: this.libros,
+        libroSeleccionado: this.libroSeleccionado,
+      },
+    });
+    /*
     let usuario = JSON.parse(localStorage.getItem("user"));
     this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
     this.router.navigate(["/folio/folio-borrador/", this.idlibro, usuario.id]);
+    */
   }
   eliminarFolio(row) {
     console.log(row);

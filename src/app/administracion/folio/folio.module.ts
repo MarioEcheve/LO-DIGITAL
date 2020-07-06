@@ -19,6 +19,7 @@ import { ModalFirmaFolioComponent } from "./modal-firma-folio/modal-firma-folio.
 import { FolioDetalleComponent } from "./folio-detalle/folio-detalle.component";
 import { VisorPdfComponent } from "../shared/visor-pdf/visor-pdf/visor-pdf.component";
 import { NgxExtendedPdfViewerModule } from "ngx-extended-pdf-viewer";
+import { ModalCrearFolioComponent } from "./modal-crear-folio/modal-crear-folio.component";
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   // Change this to your upload POST address:
@@ -35,6 +36,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     ArchivoComponent,
     ModalFirmaFolioComponent,
     FolioDetalleComponent,
+    ModalCrearFolioComponent,
   ],
   imports: [
     CommonModule,
@@ -56,6 +58,10 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
       useValue: DEFAULT_DROPZONE_CONFIG,
     },
   ],
-  entryComponents: [ModalFirmaFolioComponent, VisorPdfComponent],
+  entryComponents: [
+    ModalFirmaFolioComponent,
+    VisorPdfComponent,
+    ModalCrearFolioComponent,
+  ],
 })
 export class FolioModule {}
