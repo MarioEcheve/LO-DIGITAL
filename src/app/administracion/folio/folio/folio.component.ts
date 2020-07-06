@@ -238,4 +238,7 @@ export class FolioComponent implements OnInit {
         this.usuarioLibro = respuesta.body[0];
       });
   }
+  volverContrato() {
+    this.router.navigate(["/contrato/detalle-contrato/", this.contrato.id]);
+  }
 }

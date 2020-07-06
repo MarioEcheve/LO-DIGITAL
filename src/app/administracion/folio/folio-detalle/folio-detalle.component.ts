@@ -205,12 +205,8 @@ export class FolioDetalleComponent implements OnInit {
 
     this.folioService.update(this.Folio).subscribe(
       (respuesta) => {
+        this.buscarFolio(respuesta.body.id);
         this.showNotificationSuccess("top", "right");
-        this.router.navigate([
-          "/folio/folio/",
-          this.libro.contrato.id,
-          this.libro.id,
-        ]);
       },
       (error) => {
         this.showNotificationDanger("top", "right");

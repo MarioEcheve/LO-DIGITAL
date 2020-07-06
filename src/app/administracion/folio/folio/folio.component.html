@@ -66,6 +66,7 @@
                   mat-raised-button
                   type="button"
                   class="btn btn-default btn-sm btn-fab"
+                  (click)="volverContrato()"
                 >
                   <i class="material-icons">keyboard_arrow_right</i>
                 </button>
@@ -75,13 +76,13 @@
         </div>
         <div class="row">
           <div
-            class="row col-md-2"
+            class="col-md-2"
             style="margin-left: initial; margin-right: auto;"
           >
             <div>
               <button
                 mat-raised-button
-                class="btn btn-primary pull-right"
+                class="btn btn-primary"
                 (click)="nuevoFolio()"
               >
                 <span class="btn-label">
@@ -89,6 +90,53 @@
                 </span>
                 Nuevo Folio
               </button>
+            </div>
+            <div>
+              <mat-list role="list">
+                <hr />
+                <mat-list-item role="listitem">
+                  <i class="material-icons material-icons-lista"
+                    >forward_to_inbox</i
+                  >
+                  Bandeja de Folio</mat-list-item
+                >
+                <mat-list-item role="listitem">
+                  <i class="material-icons material-icons-lista"
+                    >forward_to_inbox</i
+                  >
+                  Folio Mandante</mat-list-item
+                >
+                <mat-list-item role="listitem">
+                  <i class="material-icons material-icons-lista"
+                    >forward_to_inbox</i
+                  >
+                  Folio Contratista</mat-list-item
+                >
+                <mat-list-item role="listitem">
+                  <i class="material-icons material-icons-lista"
+                    >forward_to_inbox</i
+                  >
+                  Sin respuesta</mat-list-item
+                >
+                <mat-list-item role="listitem">
+                  <i class="material-icons material-icons-lista"
+                    >forward_to_inbox</i
+                  >
+                  Sin Leer</mat-list-item
+                >
+                <mat-list-item role="listitem">
+                  <i class="material-icons material-icons-lista"
+                    >forward_to_inbox</i
+                  >
+                  Destacados</mat-list-item
+                >
+                <mat-list-item role="listitem">
+                  <i class="material-icons material-icons-lista"
+                    >forward_to_inbox</i
+                  >
+                  Borradores</mat-list-item
+                >
+              </mat-list>
             </div>
           </div>
           <div class="row col-md-10">
