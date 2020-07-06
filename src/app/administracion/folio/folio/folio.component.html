@@ -39,25 +39,35 @@
                   </tr>
                 </table>
               </div>
+            </div>          
+            <div class="d-flex">
+              <div class="flex-grow-1">
+                <mat-form-field>              
+                  <mat-select
+                    placeholder="Libro Seleccionado"
+                    name="city"
+                    formControlName="libro"
+                    
+                  >
+                    <mat-option
+                      *ngFor="let libro of libros"
+                      [value]="libro.nombre"
+                      (click)="buscaFolios(libro)"
+                    >
+                      {{ libro.nombre }} | Cod.: {{ libro.codigo }} | Clase Libro:
+                      {{ libro.tipoLibro.descripcion }} | Tipo Firma:
+                      {{ libro.tipoFirma.nombre }} | Estado :
+                      {{ libro.estadoLibro.nombre }}
+                    </mat-option>
+                  </mat-select>                
+                </mat-form-field>
+              </div>              
+              <div class="ml-2">
+                <button mat-raised-button type="button" class="btn btn-default btn-sm btn-fab">
+                  <i class="material-icons">keyboard_arrow_right</i>
+                </button>                
+              </div>
             </div>
-            <mat-form-field>
-              <mat-select
-                placeholder="Libro Seleccionado"
-                name="city"
-                formControlName="libro"
-              >
-                <mat-option
-                  *ngFor="let libro of libros"
-                  [value]="libro.nombre"
-                  (click)="buscaFolios(libro)"
-                >
-                  {{ libro.nombre }} | Cod.: {{ libro.codigo }} | Clase Libro:
-                  {{ libro.tipoLibro.descripcion }} | Tipo Firma:
-                  {{ libro.tipoFirma.nombre }} | Estado :
-                  {{ libro.estadoLibro.nombre }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
           </form>
         </div>
         <div class="row">
