@@ -153,13 +153,13 @@ export class FolioDetalleComponent implements OnInit {
       this.folioForm.controls["fechaCreacion"].setValue(
         this.datePipe.transform(
           respuesta.body.fechaCreacion,
-          "dd/MM/yyyy hh:mm:ss"
+          "dd-MM-yyyy HH:mm"
         )
       );
       this.folioForm.controls["fechaModificacion"].setValue(
         this.datePipe.transform(
           respuesta.body.fechaModificacion,
-          "dd/MM/yyyy hh:mm:ss"
+          "dd-MM-yyyy HH:mm"
         )
       );
       this.folioForm.controls["id"].setValue(respuesta.body.id);
@@ -406,5 +406,12 @@ export class FolioDetalleComponent implements OnInit {
         //Swal.fire("Cancelado", "Your imaginary file is safe :)", "error");
       }
     });
+  }
+  volverListaFolios() {
+    this.router.navigate([
+      "/folio/folio/",
+      this.Folio.libro.contrato.id,
+      this.Folio.libro.id,
+    ]);
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { FolioService } from "../../services/folio.service";
 import { Folio } from "../../TO/folio.model";
 import { DependenciaService } from "../../services/dependencia.service";
@@ -32,7 +32,8 @@ export class FolioFirmadoComponent implements OnInit {
     private route: ActivatedRoute,
     private folioService: FolioService,
     private dependenciaService: DependenciaService,
-    private usuarioLibroService: UsuarioLibroService
+    private usuarioLibroService: UsuarioLibroService,
+    private router: Router
   ) {}
   ngOnInit() {
     let idFolio = this.route.snapshot.paramMap.get("id");
@@ -65,5 +66,12 @@ export class FolioFirmadoComponent implements OnInit {
       console.log(respuesta.body);
       this.emisor = respuesta.body;
     });
+  }
+  volverListaFolios() {
+    this.router.navigate([
+      "/folio/folio/",
+      this.Folio.libro.contrato.id,
+      this.Folio.libro.id,
+    ]);
   }
 }

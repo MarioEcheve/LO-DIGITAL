@@ -39,38 +39,9 @@
                   </tr>
                 </table>
               </div>
-            </div>          
+            </div>
             <div class="d-flex">
               <div class="flex-grow-1">
-                <mat-form-field>              
-                  <mat-select
-                    placeholder="Libro Seleccionado"
-                    name="city"
-                    formControlName="libro"
-                    
-                  >
-                    <mat-option
-                      *ngFor="let libro of libros"
-                      [value]="libro.nombre"
-                      (click)="buscaFolios(libro)"
-                    >
-                      {{ libro.nombre }} | Cod.: {{ libro.codigo }} | Clase Libro:
-                      {{ libro.tipoLibro.descripcion }} | Tipo Firma:
-                      {{ libro.tipoFirma.nombre }} | Estado :
-                      {{ libro.estadoLibro.nombre }}
-                    </mat-option>
-                  </mat-select>                
-                </mat-form-field>
-              </div>              
-              <div class="ml-2">
-                <button mat-raised-button type="button" class="btn btn-default btn-sm btn-fab">
-                  <i class="material-icons">keyboard_arrow_right</i>
-                </button>                
-              </div>
-            </div>
-<<<<<<< HEAD
-            <div class="row col-md-12">
-              <div class="col-10 d-flex justify-content-start">
                 <mat-form-field>
                   <mat-select
                     placeholder="Libro Seleccionado"
@@ -90,14 +61,16 @@
                   </mat-select>
                 </mat-form-field>
               </div>
-              <div class="col-2 d-flex justify-content-sta">
-                <button mat-raised-button type="button" class="btn btn-default">
+              <div class="ml-2">
+                <button
+                  mat-raised-button
+                  type="button"
+                  class="btn btn-default btn-sm btn-fab"
+                >
                   <i class="material-icons">keyboard_arrow_right</i>
                 </button>
               </div>
             </div>
-=======
->>>>>>> cc0f80c4ce03a6fc04ce26065bad5549bb3d662d
           </form>
         </div>
         <div class="row">

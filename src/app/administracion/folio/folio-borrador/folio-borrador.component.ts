@@ -200,10 +200,8 @@ export class FolioBorradorComponent implements OnInit {
       } else {
         let fecha = new Date();
         this.folioForm.controls["libro"].setValue(this.libro);
-        this.folioForm.controls["fechaCreacion"].setValue(moment(Date.now()));
         this.folioForm.controls["fechaFirma"].setValue(moment(Date.now()));
         this.folioForm.controls["estadoFolio"].setValue(true);
-        this.folioForm.controls["idUsuarioCreador"].setValue(this.usuario.id);
         this.folioForm.controls["idUsuarioFirma"].setValue(this.usuario.id);
         // falta folear el folio
         // buscamos el ultimo folio asignado y lo seteamos en el numero de folio

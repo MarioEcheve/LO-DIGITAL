@@ -1,7 +1,7 @@
 <h5 style="font-weight: bold;">Asignar Usuario</h5>
-<br>
-<mat-dialog-content >
-  <form [formGroup]="usuarioFormGroup" class="example-form">    
+<br />
+<mat-dialog-content>
+  <form [formGroup]="usuarioFormGroup" class="example-form">
     <mat-form-field class="example-full-width">
       <input
         type="text"
@@ -17,11 +17,11 @@
           [value]="option.nombre"
           (click)="valorAutoComplete(option)"
         >
-          {{ option.nombre }}
+          {{ option.nombre }} {{ option.apellidos }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-    <mat-form-field class="example-full-width">      
+    <mat-form-field class="example-full-width">
       <input
         matInput
         placeholder="Ingrese Cargo"
@@ -43,7 +43,9 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-raised-button class="btn btn-default" (click)="cerrar()">Cancelar</button>
+  <button mat-raised-button class="btn btn-default" (click)="cerrar()">
+    Cancelar
+  </button>
   <button
     mat-raised-button
     (click)="asignarUsuario()"
@@ -54,5 +56,3 @@
     Aceptar
   </button>
 </mat-dialog-actions>
-
-
