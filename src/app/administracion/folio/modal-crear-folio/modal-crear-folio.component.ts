@@ -74,8 +74,10 @@ export class ModalCrearFolioComponent implements OnInit {
     this.folioService.create(folio).subscribe(
       (respuesta) => {
         this.dialogRef.close();
-        this.showNotificationSuccess("top", "right");
-        this.router.navigate(["/folio/folio-detalle/", respuesta.body.id]);
+        this.dialogRef.beforeClosed().subscribe((respuesta2) => {
+          this.router.navigate(["/folio/folio-detalle/", respuesta.body.id]);
+          this.showNotificationSuccess("top", "right");
+        });
       },
       (error) => {
         console.log("error :::" + error);
