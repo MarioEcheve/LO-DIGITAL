@@ -1,6 +1,16 @@
-<ngx-extended-pdf-viewer
-  [src]="ruta"
-  [textLayer]="true"
-  useBrowserLocale="true"
-  height="85vh"
-></ngx-extended-pdf-viewer>
+<h2 mat-dialog-title style="text-align: center;">Firmar Folio</h2>
+<mat-dialog-content class="mat-typography">
+  <ngx-extended-pdf-viewer
+    [src]="data.pdf"
+    [textLayer]="true"
+    useBrowserLocale="true"
+    height="85vh"
+  ></ngx-extended-pdf-viewer>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-button class="btn btn-primary" (click)="firmar()" cdkFocusInitial>
+    Firmar
+  </button>
+</mat-dialog-actions>

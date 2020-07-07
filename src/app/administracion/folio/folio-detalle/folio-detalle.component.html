@@ -178,7 +178,11 @@
                       name="city"
                       formControlName="tipoFolio"
                     >
-                      <mat-option *ngFor="let tipo of tipoFolio" [value]="tipo">
+                      <mat-option
+                        *ngFor="let tipo of tipoFolio"
+                        [value]="tipo.nombre"
+                        (click)="valorTipoFolio(tipo)"
+                      >
                         {{ tipo.nombre }}
                       </mat-option>
                     </mat-select>
@@ -295,19 +299,8 @@
                     mat-raised-button
                     type="submit"
                     class="btn btn-default mr-1"
-                    (click)="guardarFolio()"
                     [disabled]="!folioForm.valid"
-                  >
-                    <!-- <span class="btn-label">
-                        <i class="material-icons">get_app</i>
-                      </span> -->
-                    Guardar
-                  </button>
-                  <button
-                    mat-raised-button
-                    type="submit"
-                    class="btn btn-default mr-1"
-                    [disabled]="!folioForm.valid"
+                    (click)="previsualizar()"
                   >
                     <!-- <span class="btn-label">
                         <i class="material-icons">pageview</i>
@@ -318,13 +311,13 @@
                     mat-raised-button
                     type="submit"
                     class="btn btn-primary"
+                    (click)="guardarFolio()"
                     [disabled]="!folioForm.valid"
-                    (click)="firmarFolio()"
                   >
                     <!-- <span class="btn-label">
-                        <i class="material-icons">check</i>
-                      </span> -->
-                    Firmar Folio
+                      <i class="material-icons">get_app</i>
+                    </span> -->
+                    Guardar
                   </button>
                 </div>
               </div>

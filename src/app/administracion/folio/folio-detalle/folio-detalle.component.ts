@@ -16,6 +16,11 @@ import { DatePipe } from "@angular/common";
 import { Folio } from "../../TO/folio.model";
 import { UsuarioLibroService } from "../../services/usuario-libro.service";
 import Swal from "sweetalert2/dist/sweetalert2.js";
+
+import { VisorPdfComponent } from "../../shared/visor-pdf/visor-pdf/visor-pdf.component";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -32,6 +37,7 @@ export class FolioDetalleComponent implements OnInit {
   Folio = new Folio();
   dependenciaContratista = new Dependencia();
   tipoFolio: ITipoFolio[];
+  tipoFolioSeleccionado: any = "";
   muestraFechaRequerida = false;
   usuario;
   // IMPLEMENTACION CONFIG ANGULAR-EDITOR
@@ -163,6 +169,9 @@ export class FolioDetalleComponent implements OnInit {
         )
       );
       this.folioForm.controls["id"].setValue(respuesta.body.id);
+      this.folioForm.controls["tipoFolio"].setValue(
+        respuesta.body.tipoFolio.nombre
+      );
       this.libro = respuesta.body.libro;
       this.dependenciaService
         .find(respuesta.body.libro.contrato.idDependenciaContratista)
@@ -200,6 +209,10 @@ export class FolioDetalleComponent implements OnInit {
     this.Folio.asunto = this.folioForm.controls["asunto"].value;
     this.Folio.idUsuarioCreador = this.usuario.id;
     this.Folio.estadoFolio = false;
+    console.log(this.tipoFolioSeleccionado);
+    if (this.tipoFolioSeleccionado !== "") {
+      this.Folio.tipoFolio = this.tipoFolioSeleccionado;
+    }
     //console.log(this.usuario);
     // actualiza el folio
 
@@ -409,5 +422,58 @@ export class FolioDetalleComponent implements OnInit {
       this.Folio.libro.contrato.id,
       this.Folio.libro.id,
     ]);
+  }
+  valorTipoFolio(tipo) {
+    this.tipoFolioSeleccionado = tipo;
+  }
+  previsualizar() {
+    var docDefinition = {
+      content: [
+        "This paragraph fills full width, as there are no columns. Next paragraph however consists of three columns",
+        {
+          columns: [
+            {
+              // auto-sized columns have their widths based on their content
+              width: "auto",
+              text: "First column",
+            },
+            {
+              // star-sized columns fill the remaining space
+              // if there's more than one star-column, available width is divided equally
+              width: "*",
+              text: "Second column",
+            },
+            {
+              // fixed width
+              width: 100,
+              text: "Third column",
+            },
+            {
+              // % width
+              width: "20%",
+              text: "Fourth column",
+            },
+          ],
+          // optional space between columns
+          columnGap: 10,
+        },
+        "This paragraph goes below all columns and has full width",
+      ],
+    };
+    const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+    let url;
+    let promise = new Promise(function (resolve, reject) {
+      pdfDocGenerator.getBlob((blob) => {
+        url = URL.createObjectURL(blob);
+        resolve(url);
+      });
+    });
+    promise.then((resultado) => {
+      const dialogRef = this.dialog.open(VisorPdfComponent, {
+        width: "100%",
+        height: "90%",
+        data: { pdf: resultado },
+      });
+    });
   }
 }
