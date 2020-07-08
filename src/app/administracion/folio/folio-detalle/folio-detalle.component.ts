@@ -16,7 +16,6 @@ import { DatePipe } from "@angular/common";
 import { Folio } from "../../TO/folio.model";
 import { UsuarioLibroService } from "../../services/usuario-libro.service";
 import Swal from "sweetalert2/dist/sweetalert2.js";
-
 import { VisorPdfComponent } from "../../shared/visor-pdf/visor-pdf/visor-pdf.component";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
@@ -39,7 +38,9 @@ export class FolioDetalleComponent implements OnInit {
   tipoFolio: ITipoFolio[];
   tipoFolioSeleccionado: any = "";
   muestraFechaRequerida = false;
+  base64textString: string = "";
   usuario;
+  muestraImagenes = false;
   // IMPLEMENTACION CONFIG ANGULAR-EDITOR
   editorConfig: AngularEditorConfig = {
     editable: true,
@@ -435,37 +436,28 @@ export class FolioDetalleComponent implements OnInit {
     this.tipoFolioSeleccionado = tipo;
   }
   previsualizar() {
+    var imagenLogo1 = getBase64Image(document.getElementById("imagenLogo1"));
+    var imagenLogo2 = getBase64Image(document.getElementById("imagenLogo2"));
+    console.log(imagenLogo1);
     var docDefinition = {
       content: [
-        "This paragraph fills full width, as there are no columns. Next paragraph however consists of three columns",
         {
+          alignment: "justify",
           columns: [
             {
-              // auto-sized columns have their widths based on their content
-              width: "auto",
-              text: "First column",
+              image: "data:image/png;base64," + imagenLogo1,
+              width: 40,
+              absolutePosition: { x: 50, y: 50 },
             },
+
             {
-              // star-sized columns fill the remaining space
-              // if there's more than one star-column, available width is divided equally
-              width: "*",
-              text: "Second column",
-            },
-            {
-              // fixed width
+              image: "data:image/png;base64," + imagenLogo2,
               width: 100,
-              text: "Third column",
-            },
-            {
-              // % width
-              width: "20%",
-              text: "Fourth column",
+              absolutePosition: { x: 90, y: 57 },
             },
           ],
-          // optional space between columns
-          columnGap: 10,
+          columnGap: 5,
         },
-        "This paragraph goes below all columns and has full width",
       ],
     };
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
@@ -489,4 +481,18 @@ export class FolioDetalleComponent implements OnInit {
       });
     });
   }
+  _handleReaderLoaded(readerEvt) {
+    var binaryString = readerEvt.target.result;
+    this.base64textString = btoa(binaryString);
+    console.log(btoa(binaryString));
+  }
+}
+function getBase64Image(img) {
+  var canvas = document.createElement("canvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+  var ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0);
+  var dataURL = canvas.toDataURL("image/png");
+  return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
