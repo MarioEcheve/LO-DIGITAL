@@ -67,9 +67,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
             this.folio.libro.fechaCreacion = moment(
               this.folio.libro.fechaCreacion
             );
-            this.folio.libro.fechaApertura = moment(
-              this.folio.libro.fechaApertura
-            );
+            this.folio.libro.fechaApertura = moment(Date.now());
             this.folioService.update(this.folio).subscribe((respuesta) => {
               if (
                 this.folio.tipoFolio.nombre.toLowerCase() === "apertura libro"

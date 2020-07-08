@@ -15,6 +15,7 @@ import { UsuarioLibroService } from "../../services/usuario-libro.service";
 import { UsuarioLibro } from "../../TO/usuario-libro.model";
 import { MatDialog } from "@angular/material/dialog";
 import { ModalCrearFolioComponent } from "../modal-crear-folio/modal-crear-folio.component";
+import { element } from "protractor";
 
 const defaultConfig: DropzoneConfigInterface = {
   clickable: true,
@@ -174,18 +175,19 @@ export class FolioComponent implements OnInit {
     this.libroSeleccionado = libro;
     let usuario = JSON.parse(localStorage.getItem("user"));
     this.idlibro = libro.id;
+    let nombreEmisor = "";
     this.folioServie.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
-      for (var i = 0; i < respuesta.body.length; i++) {
-        console.log(respuesta.body[i]);
-        this.usuarioLibroService
-          .find(respuesta.body[i].idUsuarioFirma)
-          .subscribe((respuesta2) => {
-            console.log(respuesta2);
-          });
-      }
-
       this.folios = respuesta.body;
       this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
+      this.folios.forEach((element) => {
+        this.usuarioLibroService
+          .find(element.idUsuarioFirma)
+          .subscribe((respuesta2) => {
+            nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName;
+            element.emisor = nombreEmisor;
+            console.log(element.emisor);
+          });
+      });
     });
   }
   nuevoFolio() {
