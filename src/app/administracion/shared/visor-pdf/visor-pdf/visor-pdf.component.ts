@@ -15,6 +15,7 @@ import { FolioService } from "src/app/administracion/services/folio.service";
 import { Router } from "@angular/router";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import * as moment from "moment";
+import { LibroService } from "src/app/administracion/services/libro.service";
 declare var $: any;
 @Component({
   selector: "app-visor-pdf",
@@ -29,7 +30,8 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private folioService: FolioService,
-    private router: Router
+    private router: Router,
+    private libroService: LibroService
   ) {}
 
   ngOnInit(): void {}
@@ -62,8 +64,23 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
             this.folio.numeroFolio = respuesta.body[0].numero_folio;
             this.folio.fechaFirma = moment(Date.now());
             this.folio.idUsuarioFirma = this.usuario.id;
-
+            this.folio.libro.fechaCreacion = moment(
+              this.folio.libro.fechaCreacion
+            );
+            this.folio.libro.fechaApertura = moment(
+              this.folio.libro.fechaApertura
+            );
             this.folioService.update(this.folio).subscribe((respuesta) => {
+              if (
+                this.folio.tipoFolio.nombre.toLowerCase() === "apertura libro"
+              ) {
+                this.folio.libro.estadoLibro = {
+                  id: 5651,
+                  nombre: "Abierto",
+                  libros: null,
+                };
+                this.libroService.update(this.folio.libro).subscribe();
+              }
               this.dialogRef.close();
               this.dialogRef.beforeClosed().subscribe((respuesta) => {
                 this.showNotificationSuccess("top", "right");

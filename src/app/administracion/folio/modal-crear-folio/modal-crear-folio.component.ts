@@ -3,12 +3,13 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Libro } from "../../TO/libro.model";
 import { TipoFolioService } from "../../services/tipo-folio.service";
 import { TipoFolio } from "../../TO/tipo-folio.model";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { FolioService } from "../../services/folio.service";
 import { Folio } from "../../TO/folio.model";
 import * as moment from "moment";
 import { Router } from "@angular/router";
 import { UsuarioLibroService } from "../../services/usuario-libro.service";
+import { LibroService } from "../../services/libro.service";
 declare var $: any;
 @Component({
   selector: "app-modal-crear-folio",
@@ -30,7 +31,8 @@ export class ModalCrearFolioComponent implements OnInit {
     private fb: FormBuilder,
     private folioService: FolioService,
     private router: Router,
-    private usuarioLibroService: UsuarioLibroService
+    private usuarioLibroService: UsuarioLibroService,
+    private libroService: LibroService
   ) {}
 
   ngOnInit(): void {
@@ -52,25 +54,22 @@ export class ModalCrearFolioComponent implements OnInit {
   inicializarForm() {
     this.crearFolioFormGroup = this.fb.group({
       libro: [],
-      asunto: [],
-      tipoFolio: [],
+      asunto: ["", Validators.required],
+      tipoFolio: [Validators.required],
     });
   }
   asignarValorForm() {
-    console.log(this.libroSeleccionado);
     this.crearFolioFormGroup.patchValue({
       libro: this.libroSeleccionado.nombre,
     });
   }
   guardarFolio() {
     let folio = new Folio();
-
     folio.asunto = this.crearFolioFormGroup.controls["asunto"].value;
     folio.tipoFolio = this.crearFolioFormGroup.controls["tipoFolio"].value;
     folio.idUsuarioCreador = this.usuario.id;
     folio.libro = this.libroSeleccionado;
     folio.fechaCreacion = moment(Date.now());
-    console.log(folio);
     this.folioService.create(folio).subscribe(
       (respuesta) => {
         this.dialogRef.close();

@@ -54,5 +54,12 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancelar</button>
-  <button mat-button cdkFocusInitial (click)="guardarFolio()">Crear</button>
+  <button
+    mat-button
+    cdkFocusInitial
+    (click)="guardarFolio()"
+    [disabled]="!crearFolioFormGroup.valid"
+  >
+    Crear
+  </button>
 </mat-dialog-actions>

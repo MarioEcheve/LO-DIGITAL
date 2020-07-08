@@ -108,6 +108,7 @@ export class FolioDetalleComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.obtenerTipoFolio();
     this.folioForm = this.fb.group({
       id: [],
       asunto: ["", Validators.required],
@@ -142,20 +143,32 @@ export class FolioDetalleComponent implements OnInit {
     };
     let idFolio = this.route.snapshot.paramMap.get("id");
     this.buscarFolio(idFolio);
-    this.obtenerTipoFolio();
 
     //this.buscarFolioPorLibro(idLibro);
   }
   buscarFolio(id) {
     this.folioService.find(id).subscribe((respuesta) => {
       this.Folio = respuesta.body;
-
       let usuarioActual = JSON.parse(localStorage.getItem("user"));
       this.obtenerPerfilLibroUsuario(this.Folio.libro.id, usuarioActual.id);
-
       this.folioForm.controls["asunto"].setValue(respuesta.body.asunto);
       this.folioForm.controls["anotacion"].setValue(respuesta.body.anotacion);
-      this.folioForm.controls["tipoFolio"].setValue(respuesta.body.tipoFolio);
+      let tipo = this.folioForm.controls["tipoFolio"].setValue(
+        respuesta.body.tipoFolio
+      );
+      if (
+        respuesta.body.tipoFolio.nombre.toLocaleLowerCase() === "apertura libro"
+      ) {
+        let tipo = this.tipoFolio.filter((tipo) => {
+          return tipo.nombre.toLowerCase() === "apertura libro";
+        });
+        this.tipoFolio = tipo;
+      } else {
+        let tipo = this.tipoFolio.filter((tipo) => {
+          return tipo.nombre.toLowerCase() !== "apertura libro";
+        });
+        this.tipoFolio = tipo;
+      }
       this.folioForm.controls["fechaCreacion"].setValue(
         this.datePipe.transform(
           respuesta.body.fechaCreacion,
@@ -209,13 +222,9 @@ export class FolioDetalleComponent implements OnInit {
     this.Folio.asunto = this.folioForm.controls["asunto"].value;
     this.Folio.idUsuarioCreador = this.usuario.id;
     this.Folio.estadoFolio = false;
-    console.log(this.tipoFolioSeleccionado);
     if (this.tipoFolioSeleccionado !== "") {
       this.Folio.tipoFolio = this.tipoFolioSeleccionado;
     }
-    //console.log(this.usuario);
-    // actualiza el folio
-
     this.folioService.update(this.Folio).subscribe(
       (respuesta) => {
         this.buscarFolio(respuesta.body.id);
@@ -271,7 +280,6 @@ export class FolioDetalleComponent implements OnInit {
             this.showNotificationSuccess("top", "right");
             // actualizo el folio
             respuesta.body.numeroFolio = this.Folio.numeroFolio;
-
             this.folioService.update(respuesta.body).subscribe((respuesta) => {
               this.router.navigate([
                 "/folio/folio/",
