@@ -64,16 +64,29 @@ export class ModalCrearFolioComponent implements OnInit {
     });
   }
   guardarFolio() {
+    // creo un folio nuevo
     let folio = new Folio();
     folio.asunto = this.crearFolioFormGroup.controls["asunto"].value;
     folio.tipoFolio = this.crearFolioFormGroup.controls["tipoFolio"].value;
     folio.idUsuarioCreador = this.usuario.id;
     folio.libro = this.libroSeleccionado;
     folio.fechaCreacion = moment(Date.now());
+    if(this.data.habilitar === true){
+      let folioOrigen = this.data.folio.id;
+      folio.idFolioRelacionado = folioOrigen;
+      folio.idlibroRelacionado = this.data.folio.libro.id;
+      console.log(folio);
+    }
     this.folioService.create(folio).subscribe(
       (respuesta) => {
         this.dialogRef.close();
         this.dialogRef.beforeClosed().subscribe((respuesta2) => {
+          if(this.data.habilitar === true){
+            this.data.folio.idFolioRespuesta = respuesta.body.id;
+            this.folioService.update(this.data.folio).subscribe(
+              respuesta=>{}
+            );
+          }
           this.router.navigate(["/folio/folio-detalle/", respuesta.body.id]);
           this.showNotificationSuccess("top", "right");
         });
@@ -85,12 +98,17 @@ export class ModalCrearFolioComponent implements OnInit {
     );
   }
   buscaFolios(libro) {
+    if(this.data.habilitar === true){
+      this.obtenerTipoFolio();
+    }
     this.libroSeleccionado = libro;
     this.folioService.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
       if (respuesta.body.length === 0) {
+        console.log(respuesta.body);
         let tipo = this.tipoFolio.filter((tipo) => {
           return tipo.nombre.toLowerCase() === "apertura libro";
         });
+        console.log(this.tipoFolio);
         this.tipoFolio = tipo;
       } else {
         let tipo = this.tipoFolio.filter((tipo) => {
@@ -99,6 +117,7 @@ export class ModalCrearFolioComponent implements OnInit {
         this.tipoFolio = tipo;
       }
     });
+    
   }
   showNotificationSuccess(from: any, align: any) {
     const type = [

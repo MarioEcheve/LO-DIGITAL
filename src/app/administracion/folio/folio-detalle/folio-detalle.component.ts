@@ -124,7 +124,7 @@ export class FolioDetalleComponent implements OnInit {
       fechaModificacion: [null],
       fechaRequerida: [false],
       libro: [""],
-      requiereRespuesta: [null],
+      requiereRespuesta: [false],
       tipoFolio: ["", Validators.required],
       anotacion: [],
       numeroFolio: [],
@@ -132,6 +132,8 @@ export class FolioDetalleComponent implements OnInit {
       usuarioPerfilLibro: [],
       usuarioNombre: [],
       perfilUsuario: [],
+      respuestaFolio : [],
+      fechaRequeridaDatepicker : []
     });
     this.tableData1 = {
       headerRow: ["#", "Name", "Job Position", "Since", "Salary", "Actions"],
@@ -155,6 +157,24 @@ export class FolioDetalleComponent implements OnInit {
       this.obtenerPerfilLibroUsuario(this.Folio.libro.id, usuarioActual.id);
       this.folioForm.controls["asunto"].setValue(respuesta.body.asunto);
       this.folioForm.controls["anotacion"].setValue(respuesta.body.anotacion);
+      this.folioForm.controls["requiereRespuesta"].setValue(respuesta.body.requiereRespuesta);
+      if(this.folioForm.controls["requiereRespuesta"].value === false){
+        this.muestraFechaRequerida = false;
+        this.folioService.find(respuesta.body.idFolioRelacionado).subscribe(
+          folioRelacionado => {
+            this.folioForm.controls["respuestaFolio"].setValue(
+              "Libro :" +folioRelacionado.body.libro.nombre+" | " +
+              "Folio : " + folioRelacionado.body.numeroFolio + " | " +
+              "Asunto :" + folioRelacionado.body.asunto + " | " + 
+              "Fecha Firma :" + this.datePipe.transform( folioRelacionado.body.fechaFirma, 'dd-MM-yyyy')
+              )
+          }
+        );
+      }else{
+        //this.folioForm.controls["fechaRequeridaDatepicker"].setValue(this.datePipe.transform(respuesta.body.fechaRequerida,"dd-MM-yyyy"));
+        this.muestraFechaRequerida = true;
+        //console.log(this.folioForm.controls["fechaRequeridaDatepicker"].value);
+      }
       let tipo = this.folioForm.controls["tipoFolio"].setValue(
         respuesta.body.tipoFolio
       );
@@ -211,6 +231,7 @@ export class FolioDetalleComponent implements OnInit {
     this.folioForm.controls["fechaCreacion"].disable();
     this.folioForm.controls["emisor"].disable();
     this.folioForm.controls["usuarioPerfilLibro"].disable();
+    this.folioForm.controls["respuestaFolio"].disable();
   }
   obtenerTipoFolio() {
     this.tipoFolioService.query().subscribe((respuesta) => {
@@ -224,6 +245,7 @@ export class FolioDetalleComponent implements OnInit {
     this.Folio.asunto = this.folioForm.controls["asunto"].value;
     this.Folio.idUsuarioCreador = this.usuario.id;
     this.Folio.estadoFolio = false;
+    this.Folio.fechaRequerida = moment(this.folioForm.controls["fechaRequeridaDatepicker"].value);
     if (this.tipoFolioSeleccionado !== "") {
       this.Folio.tipoFolio = this.tipoFolioSeleccionado;
     }
@@ -265,7 +287,7 @@ export class FolioDetalleComponent implements OnInit {
         this.Folio.idUsuarioCreador = this.usuario.id;
         this.Folio.idUsuarioFirma = this.usuario.id;
         this.Folio.estadoFolio = true;
-
+        this.Folio.fechaRequerida = moment(this.folioForm.controls["fechaRequeridaDatepicker"].value);
         this.folioService
           .correlativoFolio(this.Folio.libro.id)
           .subscribe((respuesta) => {
@@ -300,8 +322,10 @@ export class FolioDetalleComponent implements OnInit {
   ocultaFechaRequerida() {
     if (this.folioForm.controls["requiereRespuesta"].value === true) {
       this.muestraFechaRequerida = false;
+      this.Folio.requiereRespuesta = false;
     } else {
       this.muestraFechaRequerida = true;
+      this.Folio.requiereRespuesta = true;
     }
   }
   showNotificationSuccess(from: any, align: any) {

@@ -197,6 +197,8 @@ export class FolioComponent implements OnInit {
       data: {
         libros: this.libros,
         libroSeleccionado: this.libroSeleccionado,
+        habilitar : false,
+        folio : null
       },
     });
     /*

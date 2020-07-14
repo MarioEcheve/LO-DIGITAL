@@ -48,6 +48,8 @@
                 <button
                   mat-raised-button
                   class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
+                  [disabled]="Folio.requiereRespuesta === false || idlibroRelacionado !== null"
+                  (click)="responderFolio()"
                 >
                   <i class="material-icons" style="color: #4e4e4e;">reply</i>
                 </button>
@@ -209,7 +211,12 @@
                 </tr>
                 <tr>
                   <td>Respuesta de:</td>
-                  <td>&nbsp;n/a</td>
+                  <td  *ngIf="Folio.idlibroRelacionado !== null">&nbsp;Libro : {{folioRelacionado.libro.nombre}} 
+                            | Folio : Libro : {{folioRelacionado.numeroFolio }} 
+                            | Asunto : | {{folioRelacionado.asunto }}
+                            | Fecha Firma : {{folioRelacionado.fechaFirma | date: "dd-MM-yyyy HH:mm" }}
+                  </td>
+                  <td *ngIf="Folio.idlibroRelacionado === null">&nbsp;n/a</td>
                 </tr>
                 <tr>
                   <td>Referencia de:</td>

@@ -159,7 +159,7 @@
                 <mat-form-field class="example-full-width">
                   <input
                     matInput
-                    placeholder="Respuesta de:"
+                    formControlName="respuestaFolio"
                     type="text"
                     disabled
                   />
@@ -211,9 +211,11 @@
                       >
                         <input
                           matInput
+                          formControlName="fechaRequeridaDatepicker"
                           [matDatepicker]="picker"
                           placeholder="Fecha Requerida"
                           (click)="picker.open()"
+                          
                         />
                         <mat-datepicker-toggle
                           matSuffix
