@@ -25,6 +25,7 @@ declare var $: any;
 export class VisorPdfComponent implements OnInit, AfterViewInit {
   folio = new Folio();
   usuario;
+  mostrar=true;
   constructor(
     public dialogRef: MatDialogRef<VisorPdfComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -34,7 +35,10 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
     private libroService: LibroService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.data.previsualisar);
+    //this.mostrar = t
+  }
   ngAfterViewInit() {
     if(this.data.previsualisar === true){
       this.folio = this.data.folio;
@@ -49,7 +53,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
         });
       });
     }else{
-      
+
     }
     
   }
