@@ -29,17 +29,17 @@
                         <td style="font-size: 15px; font-weight: bold;">
                           Contrato:
                         </td>
-                        <td style="font-size: 15px; font-weight: bold;">
+                        <td style="font-size: 15px; font-weight: bold;" *ngIf="libro.contrato">
                           &nbsp;<strong>{{ libro.contrato.nombre }}</strong>
                         </td>
                       </tr>
                       <tr>
                         <td>Código:</td>
-                        <td>&nbsp;{{ libro.contrato.codigo }}</td>
+                        <td *ngIf="libro.contrato">&nbsp;{{ libro.contrato.codigo }}</td>
                       </tr>
                       <tr>
                         <td>Mandante:</td>
-                        <td>
+                        <td *ngIf="libro.contrato">
                           &nbsp;{{
                             libro.contrato.dependenciaMandante.entidad.nombre
                           }}
@@ -47,7 +47,7 @@
                       </tr>
                       <tr>
                         <td></td>
-                        <td>
+                        <td *ngIf="libro.contrato">
                           &nbsp;RUT:
                           {{ libro.contrato.dependenciaMandante.entidad.rut }},
                           Dirección
@@ -56,13 +56,13 @@
                       </tr>
                       <tr>
                         <td>Contratista:</td>
-                        <td>
+                        <td *ngIf="dependenciaContratista.entidad">
                           &nbsp;{{ dependenciaContratista.entidad.nombre }}
                         </td>
                       </tr>
                       <tr>
                         <td></td>
-                        <td>
+                        <td *ngIf="dependenciaContratista.entidad">
                           &nbsp;RUT:
                           {{ dependenciaContratista.entidad.rut }}, Dirección
                           {{ dependenciaContratista.direccion }}
@@ -86,11 +86,11 @@
                       </tr>
                       <tr>
                         <td>Clase Libro:</td>
-                        <td>&nbsp;{{ libro.tipoLibro.descripcion }}</td>
+                        <td *ngIf="libro.tipoLibro">&nbsp;{{ libro.tipoLibro.descripcion }}</td>
                       </tr>
                       <tr>
                         <td>Tipo Firma:</td>
-                        <td>&nbsp;{{ libro.tipoFirma.nombre }}</td>
+                        <td *ngIf="libro.tipoFirma">&nbsp;{{ libro.tipoFirma.nombre }}</td>
                       </tr>
                       <tr>
                         <td>Fecha Apertura:</td>
@@ -163,7 +163,7 @@
                     type="text"
                     disabled
                   />
-                  <i style="font-weight: normal;float: right;" (click)="visualizarPdfOrigen()" class="material-icons">record_voice_over</i>
+                  <i *ngIf="Folio.idFolioRelacionado !== null "style="font-weight: normal;float: right;" (click)="visualizarPdfOrigen()" class="material-icons">record_voice_over</i>
                 </mat-form-field>
                 <!-- <div class="">          
                     Folios de referencia: <tag-input [(ngModel)]='regularItems' theme='filled-theme'></tag-input>

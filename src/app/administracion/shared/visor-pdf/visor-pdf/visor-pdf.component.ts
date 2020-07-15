@@ -25,7 +25,6 @@ declare var $: any;
 export class VisorPdfComponent implements OnInit, AfterViewInit {
   folio = new Folio();
   usuario;
-  mostrar=true;
   constructor(
     public dialogRef: MatDialogRef<VisorPdfComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,

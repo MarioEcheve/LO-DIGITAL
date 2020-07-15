@@ -435,16 +435,43 @@ export class FolioDetalleComponent implements OnInit {
       cancelButtonText: "No, Mantener folio",
     }).then((result) => {
       if (result.value) {
-        this.folioService.delete(this.Folio.id).subscribe((respuesta) => {
-          Swal.fire("Eliminado!", "Folio Eliminado Correctamente.", "success");
-          // For more information about handling dismissals please visit
-          // https://sweetalert2.github.io/#handling-dismissals
-          this.router.navigate([
-            "/folio/folio/",
-            this.libro.contrato.id,
-            this.libro.id,
-          ]);
-        });
+        if(this.Folio.idFolioRelacionado !== null){
+          console.log("si");
+          this.folioService.find(this.Folio.idFolioRelacionado).subscribe(
+            respuesta=>{
+              respuesta.body.idFolioRespuesta = null;
+              this.folioService.update(respuesta.body).subscribe(
+                respuesta2=>{
+                  this.folioService.delete(this.Folio.id).subscribe((respuesta) => {
+                    Swal.fire("Eliminado!", "Folio Eliminado Correctamente.", "success");
+                    // For more information about handling dismissals please visit
+                    // https://sweetalert2.github.io/#handling-dismissals
+                    this.router.navigate([
+                      "/folio/folio/",
+                      this.libro.contrato.id,
+                      this.libro.id,
+                    ]);
+                  });
+                }
+              );
+            }
+          );
+        }
+        else{
+          this.folioService.delete(this.Folio.id).subscribe((respuesta) => {
+            Swal.fire("Eliminado!", "Folio Eliminado Correctamente.", "success");
+            // For more information about handling dismissals please visit
+            // https://sweetalert2.github.io/#handling-dismissals
+            this.router.navigate([
+              "/folio/folio/",
+              this.libro.contrato.id,
+              this.libro.id,
+            ]);
+          });
+        }
+        /*
+       
+        */
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         //Swal.fire("Cancelado", "Your imaginary file is safe :)", "error");
       }
