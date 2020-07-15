@@ -36,18 +36,22 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {}
   ngAfterViewInit() {
-    this.folio = this.data.folio;
-    this.usuario = this.data.usuario;
-    this.data.pdfArchivoCompleto.getBlob((blob) => {
-      blobToBase64(blob).then((res: string) => {
-        var documento = res.split(",");
-        var aux = documento[0].split("data:");
-        var tipoDocumento = aux[1].split(";");
-        this.folio.pdfFirmado = documento[1];
-        this.folio.pdfFirmadoContentType = tipoDocumento[0];
+    if(this.data.previsualisar === true){
+      this.folio = this.data.folio;
+      this.usuario = this.data.usuario;
+      this.data.pdfArchivoCompleto.getBlob((blob) => {
+        blobToBase64(blob).then((res: string) => {
+          var documento = res.split(",");
+          var aux = documento[0].split("data:");
+          var tipoDocumento = aux[1].split(";");
+          this.folio.pdfFirmado = documento[1];
+          this.folio.pdfFirmadoContentType = tipoDocumento[0];
+        });
       });
-    });
-    console.log(this.folio);
+    }else{
+      
+    }
+    
   }
   modalFirmarFolio() {
     const dialogRef = this.dialog.open(ModalFirmaFolioComponent, {

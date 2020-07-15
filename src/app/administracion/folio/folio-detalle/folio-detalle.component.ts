@@ -936,6 +936,7 @@ export class FolioDetalleComponent implements OnInit {
     let url;
     let promise = new Promise(function (resolve, reject) {
       pdfDocGenerator.getBlob((blob) => {
+        console.log(blob);
         url = URL.createObjectURL(blob);
         resolve(url);
       });
@@ -949,10 +950,47 @@ export class FolioDetalleComponent implements OnInit {
           folio: this.Folio,
           usuario: this.usuario,
           pdfArchivoCompleto: pdfDocGenerator,
+          previsualisar : true
         },
       });
     });
   }
+  visualizarPdfOrigen(){
+    this.folioService.find(this.Folio.idFolioRelacionado).subscribe(
+      folioOrigen => {
+        let pdf = folioOrigen.body.pdfFirmado;
+        let contentType = folioOrigen.body.pdfFirmadoContentType;
+        let url = "data:"+contentType+";base64,"+pdf;
+        let valor ;
+        let promise = new Promise(function (resolve, reject) {
+          fetch(url)
+          .then(res => {
+            return res.blob();
+          })
+          .then(blob => {
+            console.log(blob);
+            resolve(URL.createObjectURL(blob));
+          });
+        });
+        promise.then((resultado) => {
+          console.log(resultado);
+          const dialogRef = this.dialog.open(VisorPdfComponent, {
+            width: "100%",
+            height: "90%",
+            data: {
+              pdf: resultado,
+              folio: this.Folio,
+              usuario: null,
+              pdfArchivoCompleto: null,
+              previsualisar : false
+            },
+          });
+        });
+      }
+    );
+  }
+  
+
   _handleReaderLoaded(readerEvt) {
     var binaryString = readerEvt.target.result;
     this.base64textString = btoa(binaryString);
