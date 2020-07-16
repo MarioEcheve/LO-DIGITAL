@@ -146,25 +146,32 @@
                     />
                   </mat-form-field>
                 </div>
-                <mat-form-field>
-                  <mat-select placeholder="Receptor" name="city">
-                    <mat-option
-                      *ngFor="let city of cities"
-                      [value]="city.value"
-                    >
-                      {{ city.viewValue }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                  <input
-                    matInput
-                    formControlName="respuestaFolio"
-                    type="text"
-                    disabled
-                  />
-                  <i *ngIf="Folio.idFolioRelacionado !== null "style="font-weight: normal;float: right;" (click)="visualizarPdfOrigen()" class="material-icons">record_voice_over</i>
-                </mat-form-field>
+                <div class="row"> 
+                  <mat-form-field class="example-full-width col-md-12">
+                    <mat-select placeholder="Receptor" name="city">
+                      <mat-option
+                        *ngFor="let city of cities"
+                        [value]="city.value"
+                      >
+                        {{ city.viewValue }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="row"> 
+                  <mat-form-field class="example-full-width" class="example-full-width col-md-11">
+                    <input
+                      matInput
+                      formControlName="respuestaFolio"
+                      type="text"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <button (click)="visualizarPdfOrigen()" *ngIf="Folio.idFolioRelacionado !== null " class="col-md-1" mat-icon-button aria-label="Example icon-button with a heart icon">
+                    <i   class="material-icons ">visibility</i>
+                  </button>
+                </div>
+                
                 <!-- <div class="">          
                     Folios de referencia: <tag-input [(ngModel)]='regularItems' theme='filled-theme'></tag-input>
                   </div> -->
@@ -209,6 +216,7 @@
                       <mat-form-field
                         class="col-5"
                         *ngIf="muestraFechaRequerida"
+                        
                       >
                         <input
                           matInput

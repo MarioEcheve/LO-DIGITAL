@@ -37,6 +37,14 @@ export class ModalCrearFolioComponent implements OnInit {
 
   ngOnInit(): void {
     this.inicializarForm();
+    console.log(this.data.habilitar);
+    if(this.data.habilitar === true){
+      for(var i = 0; i < this.data.libros.length; i++){
+        if(this.data.libros[i].fechaApertura === undefined){ 
+            this.data.libros.splice(i,1)
+        }
+      }
+    }
     this.libros = this.data.libros;
     this.libroSeleccionado = this.data.libroSeleccionado;
     this.obtenerTipoFolio();

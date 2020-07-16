@@ -198,8 +198,8 @@
                         - {{ row.asunto }}
                       </td>
                       <td>
-                        <span class="badge {{ row[4] }}">{{
-                          row.fechaCreacion
+                        <span class=" {{ row[4] }}">{{
+                          row.fechaRequerida | date: "dd-MM-yyyy HH:mm"
                         }}</span>
                       </td>
                       <td>
