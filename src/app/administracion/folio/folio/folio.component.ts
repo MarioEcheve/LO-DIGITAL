@@ -183,7 +183,7 @@ export class FolioComponent implements OnInit {
         this.usuarioLibroService
           .find(element.idUsuarioFirma)
           .subscribe((respuesta2) => {
-            nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName;
+            nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
             element.emisor = nombreEmisor;
             console.log(element.emisor);
           });
