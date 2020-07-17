@@ -178,6 +178,7 @@ export class FolioComponent implements OnInit {
     this.idlibro = libro.id;
     let nombreEmisor = "";
     this.folioServie.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
+      this.folios = respuesta.body;
       this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
       respuesta.body.forEach(element=>{
         if(element.fechaRequerida!== undefined){
@@ -190,17 +191,35 @@ export class FolioComponent implements OnInit {
           console.log(element.fechaRequerida.local());
           let resultado = calcDate(element.fechaRequerida.toDate(),new Date());
           console.log(resultado);
-          if(resultado[0] <= 1){
-            element.color = "#F8F81D";
+          if(element.estadoRespuesta !== null){
+            if(element.estadoRespuesta.nombre.toLowerCase() === "respondido"){
+              element.color = "#70F81D";
+            }else{
+              if(resultado[0] <= 1){
+                element.color = "#F8F81D";
+              }
+              if(resultado[0] >= 2){
+                element.color = "#3364FF";
+              }
+              if(resultado[0] <= -1){
+                element.color = "#FF3C33";
+              }
+            }
+          }else{
+            if(resultado[0] <= 1){
+              element.color = "#F8F81D";
+            }
+            if(resultado[0] >= 2){
+              element.color = "#3364FF";
+            }
+            if(resultado[0] <= -1){
+              element.color = "#FF3C33";
+            }
           }
-          if(resultado[0] >= 2){
-            element.color = "#3364FF";
-          }
-          if(resultado[0] <= -1){
-            element.color = "#FF3C33";
-          }
+          
         }
-        this.folios = respuesta.body;
+        this.folios = respuesta.body
+        
       })
       this.folios.forEach((element) => {
         this.usuarioLibroService

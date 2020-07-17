@@ -75,8 +75,22 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
             this.folio.libro.fechaCreacion = moment(
               this.folio.libro.fechaCreacion
             );
-            
             this.folio.libro.fechaApertura = moment(Date.now());
+            console.log(this.folio.idFolioRelacionado);
+            if(this.folio.requiereRespuesta === true){
+              this.folio.estadoRespuesta = {id: 2151, nombre: "Pendiente", folios: null}
+            }else{
+              this.folio.estadoRespuesta =null;
+            }
+            // cuando venga un folio con respuesta, actualiza el folio origen
+            if(this.folio.idFolioRelacionado!==null){
+                this.folioService.find(this.folio.idFolioRelacionado).subscribe(
+                  respuesta=>{
+                    respuesta.body.estadoRespuesta = {id: 3401, nombre: "Respondido", folios: null};
+                    this.folioService.update(respuesta.body).subscribe();
+                  }
+                );
+            }
             this.folioService.update(this.folio).subscribe((respuesta) => {
               if (
                 this.folio.tipoFolio.nombre.toLowerCase() === "apertura libro"

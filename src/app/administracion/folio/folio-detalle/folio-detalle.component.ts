@@ -468,6 +468,7 @@ export class FolioDetalleComponent implements OnInit {
           this.folioService.find(this.Folio.idFolioRelacionado).subscribe(
             respuesta=>{
               respuesta.body.idFolioRespuesta = null;
+              respuesta.body.estadoRespuesta = null;
               this.folioService.update(respuesta.body).subscribe(
                 respuesta2=>{
                   this.folioService.delete(this.Folio.id).subscribe((respuesta) => {
