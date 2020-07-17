@@ -202,7 +202,7 @@
                   <div class="col-md-1"></div>
                   <div class="col-md-4">
                     <div class="row">
-                      <div class="togglebutton togglebutton-success col-md-7">
+                      <div class="togglebutton togglebutton-success col-md-2" style="margin-right: auto;">
                         <label>
                           <input
                             type="checkbox"
@@ -213,13 +213,15 @@
                           Solicitar respuesta
                         </label>
                       </div>
-                      <mat-form-field
+                      <!--
+                                            <mat-form-field
                         class="col-5"
                         *ngIf="muestraFechaRequerida"
                         
                       >
                         <input
                           matInput
+                          type="datetime-local"
                           formControlName="fechaRequeridaDatepicker"
                           [matDatepicker]="picker"
                           placeholder="Fecha Requerida"
@@ -231,6 +233,10 @@
                           [for]="picker"
                         ></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>   
+                      -->
+                      <mat-form-field   class="col-9" *ngIf="muestraFechaRequerida">
+                        <input formControlName="fechaRequeridaDatepicker" matInput type="datetime-local" placeholder="Fecha requerida">
                       </mat-form-field>
                     </div>
                   </div>

@@ -60,6 +60,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(ModalFirmaFolioComponent, {
       width: "40%",
       height: "35%",
+      data: { folio : this.folio  }
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === null || result === "" || result === undefined) {
@@ -74,6 +75,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
             this.folio.libro.fechaCreacion = moment(
               this.folio.libro.fechaCreacion
             );
+            
             this.folio.libro.fechaApertura = moment(Date.now());
             this.folioService.update(this.folio).subscribe((respuesta) => {
               if (
@@ -96,6 +98,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                 ]);
               });
             });
+            
           });
       }
     });

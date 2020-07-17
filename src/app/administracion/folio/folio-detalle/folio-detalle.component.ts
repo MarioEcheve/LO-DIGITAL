@@ -163,17 +163,21 @@ export class FolioDetalleComponent implements OnInit {
       this.folioForm.controls["requiereRespuesta"].setValue(respuesta.body.requiereRespuesta);
       if(this.folioForm.controls["requiereRespuesta"].value === false){
         this.muestraFechaRequerida = false;
-        this.folioService.find(respuesta.body.idFolioRelacionado).subscribe(
-          folioRelacionado => {
-            this.folioForm.controls["respuestaFolio"].setValue("Respuesta de : "+folioRelacionado.body.libro.nombre+" | " +
-              "Folio : " + folioRelacionado.body.numeroFolio 
-              )
-          }
-        );
+        if(respuesta.body.idFolioRelacionado !== null){
+          this.folioService.find(respuesta.body.idFolioRelacionado).subscribe(
+            folioRelacionado => {
+              this.folioForm.controls["respuestaFolio"].setValue("Respuesta de : "+folioRelacionado.body.libro.nombre+" | " +
+                "Folio : " + folioRelacionado.body.numeroFolio 
+                )
+            }
+          );
+        }
       }else{
         if(respuesta.body.fechaRequerida !== undefined){
           this.folioForm.get('fechaRequeridaDatepicker').setValidators([Validators.required])
-          this.folioForm.controls["fechaRequeridaDatepicker"].setValue(respuesta.body.fechaRequerida.toDate());
+          let fecha =this.Folio.fechaRequerida.local().toISOString().split(":00.000Z");
+          console.log(respuesta.body.fechaRequerida.local());
+          this.folioForm.controls["fechaRequeridaDatepicker"].setValue(fecha[0]);
         }
         this.muestraFechaRequerida = true;
       }
@@ -247,8 +251,14 @@ export class FolioDetalleComponent implements OnInit {
     this.Folio.asunto = this.folioForm.controls["asunto"].value;
     this.Folio.idUsuarioCreador = this.usuario.id;
     this.Folio.estadoFolio = false;
-    this.Folio.fechaRequerida = moment(this.folioForm.controls["fechaRequeridaDatepicker"].value);
-    console.log(this.Folio);
+    if(this.folioForm.controls["fechaRequeridaDatepicker"].value !== ""){
+      let fechaRequerida = moment(this.folioForm.controls["fechaRequeridaDatepicker"].value +":00Z");
+      this.Folio.fechaRequerida = fechaRequerida;
+      console.log(this.folioForm.controls["fechaRequeridaDatepicker"].value);
+    }
+    else{
+      this.Folio.fechaRequerida = undefined;
+    }
     if (this.tipoFolioSeleccionado !== "") {
       this.Folio.tipoFolio = this.tipoFolioSeleccionado;
     }
@@ -333,7 +343,7 @@ export class FolioDetalleComponent implements OnInit {
         if(res){
           this.muestraFechaRequerida = true;
           this.Folio.requiereRespuesta = true; 
-          this.folioForm.get('fechaRequeridaDatepicker').setValue(new Date());   
+          this.folioForm.get('fechaRequeridaDatepicker').setValue(new Date());  
           this.folioForm.get('fechaRequeridaDatepicker').setValidators([Validators.required])
         }
         else{
@@ -510,8 +520,6 @@ export class FolioDetalleComponent implements OnInit {
     let imagenLogo2 = getBase64Image(document.getElementById("imagenLogo2"));
     let anotacion = stripHtml(this.folioForm.controls["anotacion"].value);
     this.Folio.fechaRequerida = moment(this.folioForm.controls["fechaRequeridaDatepicker"].value);
-    console.log(anotacion);
-    //console.log(imagenLogo1);
     var docDefinition = {
       content: [
         {

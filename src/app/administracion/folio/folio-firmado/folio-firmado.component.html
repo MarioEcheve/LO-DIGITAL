@@ -211,10 +211,9 @@
                 </tr>
                 <tr>
                   <td>Respuesta de:</td>
-                  <td  *ngIf="Folio.idlibroRelacionado !== null">&nbsp;Libro : {{folioRelacionado.libro.nombre}} 
-                            | Folio : Libro : {{folioRelacionado.numeroFolio }} 
-                            | Asunto : | {{folioRelacionado.asunto }}
-                            | Fecha Firma : {{folioRelacionado.fechaFirma | date: "dd-MM-yyyy HH:mm" }}
+                  <td  *ngIf="Folio.idlibroRelacionado !== null">&nbsp; {{folioRelacionado.libro.nombre}} 
+                            | Folio : {{folioRelacionado.numeroFolio }} 
+                            
                   </td>
                   <td *ngIf="Folio.idlibroRelacionado === null">&nbsp;n/a</td>
                 </tr>
@@ -240,8 +239,8 @@
                 <tr>
                   <td>Fecha Requerida:</td>
                   <td>
-                    &nbsp;<span class="badge badge-primary">No</span
-                    >&nbsp;&nbsp;{{ Folio.fechaRequerida }}
+                    &nbsp;<span *ngIf="Folio.fechaRequerida === undefined || Folio.fechaRequerida === null" class="badge badge-primary">No</span
+                    >&nbsp;&nbsp;{{ Folio.fechaRequerida | date: "dd-MM-yyyy HH:mm" }}
                   </td>
                 </tr>
                 <tr>

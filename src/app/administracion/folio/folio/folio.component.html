@@ -197,9 +197,9 @@
                         }}</a>
                         - {{ row.asunto }}
                       </td>
-                      <td>
-                        <span class=" {{ row[4] }}">{{
-                          row.fechaRequerida | date: "dd-MM-yyyy HH:mm"
+                      <td >
+                        <span  [ngStyle]="{'background-color': row.color}" style="color: black;" class=" {{ row[4] }}">{{
+                          row.fechaRequerida  | date: "dd-MM-yyyy HH:mm"
                         }}</span>
                       </td>
                       <td>

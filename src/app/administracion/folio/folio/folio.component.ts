@@ -16,7 +16,7 @@ import { UsuarioLibro } from "../../TO/usuario-libro.model";
 import { MatDialog } from "@angular/material/dialog";
 import { ModalCrearFolioComponent } from "../modal-crear-folio/modal-crear-folio.component";
 import { element } from "protractor";
-
+import * as moment from "moment";
 const defaultConfig: DropzoneConfigInterface = {
   clickable: true,
   addRemoveLinks: true,
@@ -75,7 +75,8 @@ export class FolioComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private usuarioLibroService: UsuarioLibroService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private datePipe: DatePipe,
   ) {}
 
   ngOnInit(): void {
@@ -177,8 +178,30 @@ export class FolioComponent implements OnInit {
     this.idlibro = libro.id;
     let nombreEmisor = "";
     this.folioServie.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
-      this.folios = respuesta.body;
       this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
+      respuesta.body.forEach(element=>{
+        if(element.fechaRequerida!== undefined){
+          //console.log(element.fechaRequerida);
+          let diasFaltantes = calcDate(new Date(element.fechaRequerida.toDate()),new Date());
+          //console.log(diasFaltantes);
+          //element.fechaRequerida = element.fechaRequerida.toDate();
+          
+          element.fechaRequerida = element.fechaRequerida.local();
+          console.log(element.fechaRequerida.local());
+          let resultado = calcDate(element.fechaRequerida.toDate(),new Date());
+          console.log(resultado);
+          if(resultado[0] <= 1){
+            element.color = "#F8F81D";
+          }
+          if(resultado[0] >= 2){
+            element.color = "#3364FF";
+          }
+          if(resultado[0] <= -1){
+            element.color = "#FF3C33";
+          }
+        }
+        this.folios = respuesta.body;
+      })
       this.folios.forEach((element) => {
         this.usuarioLibroService
           .find(element.idUsuarioFirma)
@@ -261,3 +284,19 @@ export class FolioComponent implements OnInit {
     this.router.navigate(["/contrato/detalle-contrato/", this.contrato.id]);
   }
 }
+
+function calcDate(date1,date2) {
+  var diff = Math.floor(date1.getTime() - date2.getTime());
+  var day = 1000 * 60 * 60 * 24;
+
+  var days = Math.floor(diff/day);
+  var months = Math.floor(days/31);
+  var years = Math.floor(months/12);
+
+  var message = date2.toDateString();
+  message += " was "
+  message += days + " dias " 
+  message += months + " meses "
+  message += years + " año \n"
+  return [days,months,years]
+  }

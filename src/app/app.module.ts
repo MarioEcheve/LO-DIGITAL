@@ -126,7 +126,7 @@ export class MaterialModule {}
     Title,
     {
       provide: LOCALE_ID,
-      useValue: "es-Ar",
+      useValue: "es-cl",
     },
     DatePipe,
     {
