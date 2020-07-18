@@ -2,7 +2,7 @@ import { NgModule, LOCALE_ID } from "@angular/core";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule } from "@angular/router";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { APP_BASE_HREF, DatePipe } from "@angular/common";
+import { APP_BASE_HREF, DatePipe, registerLocaleData } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 
@@ -54,6 +54,17 @@ import { AuthGuard } from "./auth-guard.service";
 import { CrearUsuarioComponent } from "./administracion/componentes/crear-usuario/crear-usuario.component";
 import { VisorPdfComponent } from "./administracion/shared/visor-pdf/visor-pdf/visor-pdf.component";
 import { NgxExtendedPdfViewerModule } from "ngx-extended-pdf-viewer";
+
+ // importar locales
+ import localePy from '@angular/common/locales/es-PY';
+ import localePt from '@angular/common/locales/pt';
+ import localeEn from '@angular/common/locales/en';
+ import localeEsAr from '@angular/common/locales/es-AR';
+
+registerLocaleData(localePy, 'es');
+registerLocaleData(localePt, 'pt');
+registerLocaleData(localeEn, 'en');
+registerLocaleData(localeEsAr, 'es-Ar');
 
 @NgModule({
   exports: [
@@ -115,7 +126,7 @@ export class MaterialModule {}
     Title,
     {
       provide: LOCALE_ID,
-      useValue: "en",
+      useValue: "es-cl",
     },
     DatePipe,
     {

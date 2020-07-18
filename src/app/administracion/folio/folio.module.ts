@@ -20,6 +20,7 @@ import { FolioDetalleComponent } from "./folio-detalle/folio-detalle.component";
 import { VisorPdfComponent } from "../shared/visor-pdf/visor-pdf/visor-pdf.component";
 import { NgxExtendedPdfViewerModule } from "ngx-extended-pdf-viewer";
 import { ModalCrearFolioComponent } from "./modal-crear-folio/modal-crear-folio.component";
+import { MatDatepickerModule } from "@angular/material/datepicker";
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   // Change this to your upload POST address:

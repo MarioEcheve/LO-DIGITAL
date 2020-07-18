@@ -19,6 +19,9 @@ export interface IFolio {
   estadoFolio?: boolean;
   entidadCreacion?: boolean;
   fechaCreacion?: Moment;
+  idlibroRelacionado?: number;
+  idFolioRelacionado?: number;
+  idFolioRespuesta?: number;
   fechaModificacion?: Moment;
   fechaFirma?: Moment;
   fechaLectura?: Moment;
@@ -36,6 +39,7 @@ export interface IFolio {
   tipoFolio?: ITipoFolio;
   estadoRespuesta?: IEstadoRespuesta;
   emisor: string;
+  color : string;
 }
 
 export class Folio implements IFolio {
@@ -50,6 +54,9 @@ export class Folio implements IFolio {
     public estadoLectura?: boolean,
     public estadoFolio?: boolean,
     public entidadCreacion?: boolean,
+    public idlibroRelacionado?: number,
+    public idFolioRelacionado?: number,
+    public idFolioRespuesta?: number,
     public fechaCreacion?: Moment,
     public fechaModificacion?: Moment,
     public fechaFirma?: Moment,
@@ -67,12 +74,14 @@ export class Folio implements IFolio {
     public libro?: ILibro,
     public tipoFolio?: ITipoFolio,
     public estadoRespuesta?: IEstadoRespuesta,
-    public emisor = ""
+    public emisor = "",
+    public color = ""
   ) {
     this.requiereRespuesta = this.requiereRespuesta || false;
     this.estadoLectura = this.estadoLectura || false;
     this.estadoFolio = this.estadoFolio || false;
     this.entidadCreacion = this.entidadCreacion || false;
     this.emisor = this.emisor;
+    this.color = color;
   }
 }

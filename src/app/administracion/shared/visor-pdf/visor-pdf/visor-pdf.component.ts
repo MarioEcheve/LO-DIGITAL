@@ -34,25 +34,33 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
     private libroService: LibroService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.data.previsualisar);
+    //this.mostrar = t
+  }
   ngAfterViewInit() {
-    this.folio = this.data.folio;
-    this.usuario = this.data.usuario;
-    this.data.pdfArchivoCompleto.getBlob((blob) => {
-      blobToBase64(blob).then((res: string) => {
-        var documento = res.split(",");
-        var aux = documento[0].split("data:");
-        var tipoDocumento = aux[1].split(";");
-        this.folio.pdfFirmado = documento[1];
-        this.folio.pdfFirmadoContentType = tipoDocumento[0];
+    if(this.data.previsualisar === true){
+      this.folio = this.data.folio;
+      this.usuario = this.data.usuario;
+      this.data.pdfArchivoCompleto.getBlob((blob) => {
+        blobToBase64(blob).then((res: string) => {
+          var documento = res.split(",");
+          var aux = documento[0].split("data:");
+          var tipoDocumento = aux[1].split(";");
+          this.folio.pdfFirmado = documento[1];
+          this.folio.pdfFirmadoContentType = tipoDocumento[0];
+        });
       });
-    });
-    console.log(this.folio);
+    }else{
+
+    }
+    
   }
   modalFirmarFolio() {
     const dialogRef = this.dialog.open(ModalFirmaFolioComponent, {
       width: "40%",
       height: "35%",
+      data: { folio : this.folio  }
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === null || result === "" || result === undefined) {
@@ -68,6 +76,21 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               this.folio.libro.fechaCreacion
             );
             this.folio.libro.fechaApertura = moment(Date.now());
+            console.log(this.folio.idFolioRelacionado);
+            if(this.folio.requiereRespuesta === true){
+              this.folio.estadoRespuesta = {id: 2151, nombre: "Pendiente", folios: null}
+            }else{
+              this.folio.estadoRespuesta =null;
+            }
+            // cuando venga un folio con respuesta, actualiza el folio origen
+            if(this.folio.idFolioRelacionado!==null){
+                this.folioService.find(this.folio.idFolioRelacionado).subscribe(
+                  respuesta=>{
+                    respuesta.body.estadoRespuesta = {id: 3401, nombre: "Respondido", folios: null};
+                    this.folioService.update(respuesta.body).subscribe();
+                  }
+                );
+            }
             this.folioService.update(this.folio).subscribe((respuesta) => {
               if (
                 this.folio.tipoFolio.nombre.toLowerCase() === "apertura libro"
@@ -89,6 +112,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                 ]);
               });
             });
+            
           });
       }
     });

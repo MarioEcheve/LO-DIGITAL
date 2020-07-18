@@ -1,0 +1,10 @@
+.respuestaFolio{
+    width: 80%;
+}
+.iconoFolioOrigen{
+    font-weight: normal;
+    float: right;
+}
+.iconoFolioOrigen :hover{
+    cursor: pointer;
+}

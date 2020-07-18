@@ -1,4 +1,4 @@
-<h5 style="font-weight: bold;">Crear Folio Borrador</h5>
+<h5 style="font-weight: bold;">Crear Folio </h5>
 <br />
 <mat-dialog-content>
   <form [formGroup]="crearFolioFormGroup">
@@ -8,7 +8,7 @@
           <mat-select
             placeholder="Libro Seleccionado"
             name="city"
-            disabled
+            [disabled]="data.habilitar === false"
             formControlName="libro"
           >
             <mat-option

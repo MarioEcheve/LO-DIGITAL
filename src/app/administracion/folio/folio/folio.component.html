@@ -4,7 +4,7 @@
       <div class="card-body">
         <div>
           <form [formGroup]="folioFormGroup">
-            <div class="row">
+            <div class="row" >
               <div class="col-6 d-flex justify-content-start">
                 <table class="mb-1">
                   <tr>
@@ -27,7 +27,7 @@
                     <td style="font-size: 15px; font-weight: bold;">
                       Perfil Libro:
                     </td>
-                    <td style="font-size: 15px; font-weight: bold;">
+                    <td style="font-size: 15px; font-weight: bold;" *ngIf="usuarioLibro.perfilUsuarioLibro">
                       &nbsp;<strong>{{
                         usuarioLibro.perfilUsuarioLibro.nombre
                       }}</strong>
@@ -197,9 +197,9 @@
                         }}</a>
                         - {{ row.asunto }}
                       </td>
-                      <td>
-                        <span class="badge {{ row[4] }}">{{
-                          row.fechaCreacion
+                      <td >
+                        <span  [ngStyle]="{'background-color': row.color}" style="color: black;" class=" {{ row[4] }}">{{
+                          row.fechaRequerida  | date: "dd-MM-yyyy HH:mm"
                         }}</span>
                       </td>
                       <td>

@@ -48,6 +48,8 @@
                 <button
                   mat-raised-button
                   class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
+                  [disabled]="Folio.requiereRespuesta === false || idlibroRelacionado !== null"
+                  (click)="responderFolio()"
                 >
                   <i class="material-icons" style="color: #4e4e4e;">reply</i>
                 </button>
@@ -89,17 +91,17 @@
                       <td style="font-size: 15px; font-weight: bold;">
                         Contrato:
                       </td>
-                      <td style="font-size: 15px; font-weight: bold;">
+                      <td style="font-size: 15px; font-weight: bold;"  *ngIf="Folio.libro">
                         &nbsp;<strong>{{ Folio.libro.contrato.nombre }}</strong>
                       </td>
                     </tr>
                     <tr>
                       <td>Código:</td>
-                      <td>&nbsp;{{ Folio.libro.contrato.codigo }}</td>
+                      <td *ngIf="Folio.libro">&nbsp;{{ Folio.libro.contrato.codigo }}</td>
                     </tr>
                     <tr>
                       <td>Mandante:</td>
-                      <td>
+                      <td *ngIf="Folio.libro">
                         &nbsp;{{
                           Folio.libro.contrato.dependenciaMandante.entidad
                             .nombre
@@ -108,7 +110,7 @@
                     </tr>
                     <tr>
                       <td></td>
-                      <td>
+                      <td *ngIf="Folio.libro">
                         &nbsp;RUT:
                         {{
                           Folio.libro.contrato.dependenciaMandante.entidad.rut
@@ -118,11 +120,11 @@
                     </tr>
                     <tr>
                       <td>Contratista:</td>
-                      <td>&nbsp;{{ dependenciaMandante.entidad.nombre }}</td>
+                      <td  *ngIf="dependenciaMandante">&nbsp;{{ dependenciaMandante.entidad.nombre }}</td>
                     </tr>
                     <tr>
                       <td></td>
-                      <td>
+                      <td *ngIf="dependenciaMandante">
                         &nbsp;RUT: {{ dependenciaMandante.entidad.rut }},
                         Dirección {{ dependenciaMandante.direccion }}
                       </td>
@@ -135,23 +137,23 @@
                       <td style="font-size: 15px; font-weight: bold;">
                         <strong>Libro:</strong>
                       </td>
-                      <td style="font-size: 15px; font-weight: bold;">
+                      <td *ngIf="Folio.libro" style="font-size: 15px; font-weight: bold;">
                         &nbsp;<strong>{{ Folio.libro.nombre }}</strong>
                       </td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="Folio.libro">
                       <td>Código:</td>
                       <td>&nbsp;{{ Folio.libro.codigo }}</td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="Folio.libro">
                       <td>Clase Libro:</td>
                       <td>&nbsp;{{ Folio.libro.tipoLibro.descripcion }}</td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="Folio.libro">
                       <td>Tipo Firma:</td>
                       <td>&nbsp;{{ Folio.libro.tipoFirma.nombre }}</td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="Folio.libro">
                       <td>Fecha Apertura:</td>
                       <td>
                         &nbsp;{{
@@ -159,7 +161,7 @@
                         }}
                       </td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="Folio.libro">
                       <td>Fecha Cierre:</td>
                       <td>
                         &nbsp;{{
@@ -184,7 +186,7 @@
                 </tr>
                 <tr>
                   <td>Emisor:</td>
-                  <td>
+                  <td *ngIf="emisor">
                     &nbsp;{{ emisor.usuarioDependencia.usuario.firstName }}
                     {{ emisor.usuarioDependencia.usuario.lastName }}- RUT:{{
                       emisor.usuarioDependencia.usuario.lastName
@@ -203,13 +205,17 @@
                   <td></td>
                   <td>&nbsp;Administrador Mandante</td>
                 </tr>
-                <tr>
+                <tr *ngIf="Folio.libro">
                   <td>Tipo de Folio:</td>
                   <td>&nbsp;{{ Folio.tipoFolio.nombre }}</td>
                 </tr>
                 <tr>
                   <td>Respuesta de:</td>
-                  <td>&nbsp;n/a</td>
+                  <td  *ngIf="Folio.idlibroRelacionado !== null">&nbsp; {{folioRelacionado.libro.nombre}} 
+                            | Folio : {{folioRelacionado.numeroFolio }} 
+                            
+                  </td>
+                  <td *ngIf="Folio.idlibroRelacionado === null">&nbsp;n/a</td>
                 </tr>
                 <tr>
                   <td>Referencia de:</td>
@@ -233,8 +239,8 @@
                 <tr>
                   <td>Fecha Requerida:</td>
                   <td>
-                    &nbsp;<span class="badge badge-primary">No</span
-                    >&nbsp;&nbsp;{{ Folio.fechaRequerida }}
+                    &nbsp;<span *ngIf="Folio.fechaRequerida === undefined || Folio.fechaRequerida === null" class="badge badge-primary">No</span
+                    >&nbsp;&nbsp;{{ Folio.fechaRequerida | date: "dd-MM-yyyy HH:mm" }}
                   </td>
                 </tr>
                 <tr>
@@ -276,7 +282,7 @@
                 </li>
               </ul>
               <hr />
-              <strong
+              <strong *ngIf="emisor"
                 >{{ emisor.usuarioDependencia.usuario.firstName }}
                 {{ emisor.usuarioDependencia.usuario.lastName }}</strong
               >
