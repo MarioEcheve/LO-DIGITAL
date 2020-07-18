@@ -12,8 +12,7 @@
     "build": "node ./node_modules/@angular/cli/bin/ng build --aot --prod",
     "test": "node ./node_modules/@angular/cli/bin/ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "preinstall": "rm -rf node_modules/ && rm -rf package-lock.json"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
