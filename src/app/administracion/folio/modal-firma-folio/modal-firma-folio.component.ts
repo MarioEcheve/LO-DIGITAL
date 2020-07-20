@@ -27,15 +27,21 @@ export class ModalFirmaFolioComponent implements OnInit {
   }
   firmar() {
     let tipoFirma = this.firmaFormGroup.controls["tipoFirma"].value;
-    if(this.data.folio.fechaRequerida !== undefined){
-      if(this.data.folio.fechaRequerida.toDate() < new Date()){
-       this.notificacionError();
+    console.log(this.data.lectura);
+    if(this.data.lectura === true){
+      this.dialogRef.close(tipoFirma);
+    }else{
+      if(this.data.folio.fechaRequerida !== undefined ){
+        if(this.data.folio.fechaRequerida.toDate() < new Date()){
+         this.notificacionError();
+        }else{
+          this.dialogRef.close(tipoFirma);
+        }
       }else{
         this.dialogRef.close(tipoFirma);
       }
-    }else{
-      this.dialogRef.close(tipoFirma);
     }
+    
    
   }
   obtenerTipoFirma() {

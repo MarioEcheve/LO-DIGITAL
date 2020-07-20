@@ -10,6 +10,7 @@ import { ContratoService } from "../../services/contrato.service";
 import { Libro } from "../../TO/libro.model";
 import { Contrato } from "../../TO/contrato.model";
 import { LibroService } from "../../services/libro.service";
+import { VisorPdfComponent } from "../../shared/visor-pdf/visor-pdf/visor-pdf.component";
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -29,6 +30,7 @@ export class FolioFirmadoComponent implements OnInit {
   idlibroRelacionado =null;;
   folioRelacionado=  new Folio();
   emisor;
+  usuario;
   cities = [
     { value: "paris-0", viewValue: "Paris" },
     { value: "miami-1", viewValue: "Miami" },
@@ -66,8 +68,10 @@ export class FolioFirmadoComponent implements OnInit {
   obtenerFolio(idFolio) {
     this.folioService.find(idFolio).subscribe((respuesta) => {
       this.Folio = respuesta.body;
+      console.log(this.Folio);
+      let usuarioActual = JSON.parse(localStorage.getItem("user"));
+      this.obtenerPerfilLibroUsuario(this.Folio.libro.id, usuarioActual.id);
       this.idlibroRelacionado = respuesta.body.idFolioRespuesta;
-
       this.folioService.find(respuesta.body.idFolioRelacionado).subscribe(
         folioRelacionado=>{
           this.folioRelacionado = folioRelacionado.body;
@@ -89,6 +93,7 @@ export class FolioFirmadoComponent implements OnInit {
             });
         });
     });
+
   }
   obtenerEmisorFolio(idEmisor) {
     this.usuarioLibroService.find(idEmisor).subscribe((respuesta) => {
@@ -122,5 +127,48 @@ export class FolioFirmadoComponent implements OnInit {
     this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
     this.router.navigate(["/folio/folio-borrador/", this.idlibro, usuario.id]);
     */
+  }
+  lecturaFolio(){
+    this.folioService.find(this.Folio.id).subscribe(
+      folioOrigen => {
+        console.log(folioOrigen);
+        let pdf = folioOrigen.body.pdfFirmado;
+        let contentType = folioOrigen.body.pdfFirmadoContentType;
+        let url = "data:"+contentType+";base64,"+pdf;
+        let promise = new Promise(function (resolve, reject) {
+          fetch(url)
+          .then(res => {
+            return res.blob();
+          })
+          .then(blob => {
+            console.log(blob);
+            resolve(URL.createObjectURL(blob));
+          });
+        });
+        promise.then((resultado) => {
+          console.log(resultado);
+          const dialogRef = this.dialog.open(VisorPdfComponent, {
+            width: "100%",
+            height: "90%",
+            data: {
+              pdf: resultado,
+              folio: this.Folio,
+              usuario: this.usuario,
+              pdfArchivoCompleto: null,
+              previsualisar : true,
+              lectura : true
+            },
+          });
+        });
+      });
+  }
+  obtenerPerfilLibroUsuario(idLibro, idUsuario) {
+    this.usuarioLibroService
+      .buscarlibroPorContrato(idLibro, idUsuario)
+      .subscribe((respuesta) => {
+        console.log(respuesta.body);
+        this.usuario = respuesta.body[0];
+        
+      });
   }
 }

@@ -159,7 +159,7 @@
                   </mat-form-field>
                 </div>
                 <div class="row"> 
-                  <mat-form-field class="example-full-width" class="example-full-width col-md-11">
+                  <mat-form-field  class="example-full-width col-md-11">
                     <input
                       matInput
                       formControlName="respuestaFolio"
@@ -175,14 +175,19 @@
                 <!-- <div class="">          
                     Folios de referencia: <tag-input [(ngModel)]='regularItems' theme='filled-theme'></tag-input>
                   </div> -->
-                <mat-form-field class="example-full-width disabled">
-                  <input
-                    matInput
-                    placeholder="Referecia de:"
-                    type="text"
-                    disabled
-                  />
-                </mat-form-field>
+                <div class="row"> 
+                  <mat-form-field class="example-full-width col-md-11">
+                    <input
+                      matInput
+                      placeholder="Referecia de:"
+                      type="text"
+                      disabled
+                    />
+                  </mat-form-field>
+                  <button (click)="buscaFolioReferencia()" class="col-md-1" mat-icon-button aria-label="Example icon-button with a heart icon">
+                    <i   class="material-icons ">search</i>
+                  </button>
+                </div>
                 <div class="row">
                   <mat-form-field class="col-md-7">
                     <mat-select

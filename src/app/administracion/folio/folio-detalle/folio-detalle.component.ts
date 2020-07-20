@@ -19,6 +19,7 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
 import { VisorPdfComponent } from "../../shared/visor-pdf/visor-pdf/visor-pdf.component";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { ModalBuscarFolioComponent } from "../modal-buscar-folio/modal-buscar-folio.component";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 declare var $: any;
 declare interface TableData {
@@ -1004,7 +1005,8 @@ export class FolioDetalleComponent implements OnInit {
           folio: this.Folio,
           usuario: this.usuario,
           pdfArchivoCompleto: pdfDocGenerator,
-          previsualisar : true
+          previsualisar : true,
+          lectura : false
         },
       });
     });
@@ -1015,7 +1017,6 @@ export class FolioDetalleComponent implements OnInit {
         let pdf = folioOrigen.body.pdfFirmado;
         let contentType = folioOrigen.body.pdfFirmadoContentType;
         let url = "data:"+contentType+";base64,"+pdf;
-        let valor ;
         let promise = new Promise(function (resolve, reject) {
           fetch(url)
           .then(res => {
@@ -1036,14 +1037,20 @@ export class FolioDetalleComponent implements OnInit {
               folio: this.Folio,
               usuario: null,
               pdfArchivoCompleto: null,
-              previsualisar : false
+              previsualisar : false,
+              lectura : false
             },
           });
         });
       }
     );
   }
-  
+  buscaFolioReferencia(){
+    const dialogRef = this.dialog.open(ModalBuscarFolioComponent,{
+      width : "100%",
+      data : {idContrato : this.libro.contrato.id}
+    });
+  }
 
   _handleReaderLoaded(readerEvt) {
     var binaryString = readerEvt.target.result;

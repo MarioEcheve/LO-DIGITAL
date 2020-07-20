@@ -79,6 +79,14 @@
                   <a class="dropdown-item" href="">Imprimir Folio</a>
                   <a class="dropdown-item" href="">Imprimir Folio Respuesta</a>
                 </div>
+                <button
+                  mat-raised-button
+                  class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
+                  [disabled]="Folio.idUsuarioLectura !== null"
+                  (click)="lecturaFolio()"
+                >
+                  <i class="material-icons" style="color: #4e4e4e;">visibility</i>
+                </button>
               </div>
               <hr />
               <img class="mr-1" src="/assets/img/logo42_.png" />
