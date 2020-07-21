@@ -180,7 +180,9 @@ export class FolioComponent implements OnInit {
     this.folioServie.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
       this.folios = respuesta.body;
       this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
+      console.log('entrando al buscar folio');
       respuesta.body.forEach(element=>{
+        console.log('fecha requerida: ' + element.fechaRequerida);
         if(element.fechaRequerida!== undefined){
           //console.log(element.fechaRequerida);
           let diasFaltantes = calcDate(new Date(element.fechaRequerida.toDate()),new Date());

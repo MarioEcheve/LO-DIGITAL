@@ -78,7 +78,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
             this.folio.libro.fechaApertura = moment(Date.now());
             console.log(this.folio.idFolioRelacionado);
             if(this.folio.requiereRespuesta === true){
-              this.folio.estadoRespuesta = {id: 2151, nombre: "Pendiente", folios: null}
+              this.folio.estadoRespuesta = {id: 1903, nombre: "Pendiente", folios: null}
             }else{
               this.folio.estadoRespuesta =null;
             }
@@ -86,7 +86,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
             if(this.folio.idFolioRelacionado!==null){
                 this.folioService.find(this.folio.idFolioRelacionado).subscribe(
                   respuesta=>{
-                    respuesta.body.estadoRespuesta = {id: 3401, nombre: "Respondido", folios: null};
+                    respuesta.body.estadoRespuesta = {id: 1904, nombre: "Respondido", folios: null};
                     this.folioService.update(respuesta.body).subscribe();
                   }
                 );
