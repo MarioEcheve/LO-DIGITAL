@@ -1,0 +1,94 @@
+<h5 style="font-weight: bold;">Buscar Folios </h5>
+<mat-dialog-content>
+    <div class="row">
+        <div class="col-md-12">
+            <mat-form-field>
+                <mat-select
+                placeholder="Seleccione libro"
+                name="city"
+                >
+                <mat-option 
+                  *ngFor="let libro of libros"
+                  [value]="libro.nombre"
+                  (click)="buscaFolios(libro)"
+                  >
+                  {{ libro.nombre }} | Cod.: {{ libro.codigo }} | Clase
+                  Libro: {{ libro.tipoLibro.descripcion }} | Tipo Firma:
+                  {{ libro.tipoFirma.nombre }} | Estado :
+                  {{ libro.estadoLibro.nombre }}
+                </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-md-12">
+            <mat-form-field>
+                <input
+                    matInput
+                    placeholder="Filtro de Busqueda"
+                    type="text"
+                    value=""
+                />
+            </mat-form-field>
+        </div>
+        <div class="col-md-12">
+            <table class="table table-striped mt-2">
+                <thead class="text-muted">
+                  <tr>
+                    <th>{{ tableData1.headerRow[0] }}</th>
+                    <th>{{ tableData1.headerRow[1] }}</th>
+                    <th>{{ tableData1.headerRow[2] }}</th>
+                    <th>{{ tableData1.headerRow[3] }}</th>
+                    <th>{{ tableData1.headerRow[4] }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of folios">
+                    <td>
+                      {{ row.numeroFolio }}
+                    </td>
+                    <td style="font-weight: bold;">
+                      {{ row.emisor }}
+                    </td>
+                    <td>
+                      <a style="font-weight: bold;" class="text-muted">{{
+                        row.tipoFolio.nombre
+                      }}</a>
+                      - {{ row.asunto }}
+                    </td>
+                    <td>
+                      {{ row.fechaCreacion | date: "dd-MM-yyyy HH:mm" }}
+                    </td>
+                    <td class="td-actions text-right">
+                      <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[4] }}"
+                          (click)="visorPdf(row)"
+                        >
+                          <i class="material-icons">visibility</i>
+                        </button>
+                        <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[4] }}"
+                          (click)="agregarFolioReferencia(row)"
+                        >
+                          <i class="material-icons">add</i>
+                        </button>
+                    </td>
+                  </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Salir</button>
+    <button
+      mat-button
+      cdkFocusInitial
+      (click)="agregar()"
+    >
+      Agregar
+    </button>
+  </mat-dialog-actions>

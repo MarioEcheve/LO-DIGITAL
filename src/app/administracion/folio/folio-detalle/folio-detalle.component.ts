@@ -19,11 +19,17 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
 import { VisorPdfComponent } from "../../shared/visor-pdf/visor-pdf/visor-pdf.component";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { ModalBuscarFolioComponent } from "../modal-buscar-folio/modal-buscar-folio.component";
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from "@angular/material/chips";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
   dataRows: string[][];
+}
+export interface FolioReferencia {
+  name: string;
 }
 @Component({
   selector: "app-folio-detalle",
@@ -88,6 +94,16 @@ export class FolioDetalleComponent implements OnInit {
     toolbarPosition: "top",
     toolbarHiddenButtons: [["bold", "italic"], ["fontSize"]],
   };
+
+  // implementacion de chips
+  visible = true;
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  folios: FolioReferencia[] = [
+   
+  ];
   cities = [
     { value: "paris-0", viewValue: "Paris" },
     { value: "miami-1", viewValue: "Miami" },
@@ -136,7 +152,8 @@ export class FolioDetalleComponent implements OnInit {
       usuarioNombre: [],
       perfilUsuario: [],
       respuestaFolio : ["respuesta de "],
-      fechaRequeridaDatepicker : ["",this.fechaRequeridaValidators]
+      fechaRequeridaDatepicker : ["",this.fechaRequeridaValidators],
+      folioReferencia : []
     });
     this.tableData1 = {
       headerRow: ["#", "Name", "Job Position", "Since", "Salary", "Actions"],
@@ -238,6 +255,8 @@ export class FolioDetalleComponent implements OnInit {
     this.folioForm.controls["emisor"].disable();
     this.folioForm.controls["usuarioPerfilLibro"].disable();
     this.folioForm.controls["respuestaFolio"].disable();
+    this.folioForm.controls["folioReferencia"].disable();
+    
   }
   obtenerTipoFolio() {
     this.tipoFolioService.query().subscribe((respuesta) => {
@@ -1004,7 +1023,8 @@ export class FolioDetalleComponent implements OnInit {
           folio: this.Folio,
           usuario: this.usuario,
           pdfArchivoCompleto: pdfDocGenerator,
-          previsualisar : true
+          previsualisar : true,
+          lectura : false
         },
       });
     });
@@ -1015,7 +1035,6 @@ export class FolioDetalleComponent implements OnInit {
         let pdf = folioOrigen.body.pdfFirmado;
         let contentType = folioOrigen.body.pdfFirmadoContentType;
         let url = "data:"+contentType+";base64,"+pdf;
-        let valor ;
         let promise = new Promise(function (resolve, reject) {
           fetch(url)
           .then(res => {
@@ -1036,15 +1055,50 @@ export class FolioDetalleComponent implements OnInit {
               folio: this.Folio,
               usuario: null,
               pdfArchivoCompleto: null,
-              previsualisar : false
+              previsualisar : false,
+              lectura : false
             },
           });
         });
       }
     );
   }
-  
+  buscaFolioReferencia(){
+    const dialogRef = this.dialog.open(ModalBuscarFolioComponent,{
+      width : "100%",
+      data : {idContrato : this.libro.contrato.id , folios : this.folios }
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === null) {
+      } else {
+        this.folios = result;
+      }
+    }
+    );
+  }
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
 
+    // Add our fruit
+    if ((value || '').trim()) {
+      this.folios.push({name: value.trim()});
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  remove(folio: any): void {
+    console.log(folio);
+    const index = this.folios.indexOf(folio);
+
+    if (index >= 0) {
+      this.folios.splice(index, 1);
+    }
+  }
   _handleReaderLoaded(readerEvt) {
     var binaryString = readerEvt.target.result;
     this.base64textString = btoa(binaryString);
