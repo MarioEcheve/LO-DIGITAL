@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpResponse } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, BehaviorSubject } from "rxjs";
 import { map } from "rxjs/operators";
 import * as moment from "moment";
 
@@ -20,8 +20,24 @@ export class FolioService {
   public resourceUrlCorrelativoFolio =
     this.SERVER_API_URL + "api/correlativoFolio";
 
-  constructor(protected http: HttpClient) {}
+  //private folioReferencia = new BehaviorSubject<any>({});
+  //folioReferenciaActuales = this.folioReferencia.asObservable();
 
+
+  private folioReferencia: any[];
+  private observableFolioReferencia: BehaviorSubject<any[]>;
+  constructor(protected http: HttpClient) {
+    this.folioReferencia = new Array()  
+    this.observableFolioReferencia = <BehaviorSubject<any[]>>new BehaviorSubject([]);
+  }
+  get foliosRelacionados() {
+    return this.observableFolioReferencia.asObservable();
+  }
+  
+  addFolioReferencia(comment: any) {
+    this.folioReferencia.push(comment);
+    this.observableFolioReferencia.next(Object.assign([], this.folioReferencia));
+  }
   create(folio: IFolio): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(folio);
     return this.http
@@ -77,7 +93,6 @@ export class FolioService {
       })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
-
   protected convertDateFromClient(folio: IFolio): IFolio {
     const copy: IFolio = Object.assign({}, folio, {
       fechaRequerida:

@@ -38,6 +38,7 @@
                     <th>{{ tableData1.headerRow[1] }}</th>
                     <th>{{ tableData1.headerRow[2] }}</th>
                     <th>{{ tableData1.headerRow[3] }}</th>
+                    <th>{{ tableData1.headerRow[4] }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -57,7 +58,24 @@
                     <td>
                       {{ row.fechaCreacion | date: "dd-MM-yyyy HH:mm" }}
                     </td>
-                    
+                    <td class="td-actions text-right">
+                      <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[4] }}"
+                          (click)="visorPdf(row)"
+                        >
+                          <i class="material-icons">visibility</i>
+                        </button>
+                        <button
+                          mat-raised-button
+                          type="button"
+                          class="btn btn-default {{ row[4] }}"
+                          (click)="agregarFolioReferencia(row)"
+                        >
+                          <i class="material-icons">add</i>
+                        </button>
+                    </td>
                   </tr>
                 </tbody>
             </table>
@@ -69,6 +87,7 @@
     <button
       mat-button
       cdkFocusInitial
+      (click)="agregar()"
     >
       Agregar
     </button>

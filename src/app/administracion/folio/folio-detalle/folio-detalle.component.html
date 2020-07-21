@@ -176,13 +176,21 @@
                     Folios de referencia: <tag-input [(ngModel)]='regularItems' theme='filled-theme'></tag-input>
                   </div> -->
                 <div class="row"> 
-                  <mat-form-field class="example-full-width col-md-11">
-                    <input
-                      matInput
-                      placeholder="Referecia de:"
-                      type="text"
-                      disabled
-                    />
+                  <mat-form-field class="example-chip-list col-md-11">
+                    <mat-chip-list #chipList aria-label="Fruit selection">
+                      <mat-chip  *ngFor="let folio of folios" [selectable]="selectable"
+                               [removable]="removable" (removed)="remove(folio)">
+                        {{folio.libro.nombre}} | Folio nº:{{ folio.numeroFolio}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                      </mat-chip>
+                      <input placeholder="Folios Referencia"
+                              disabled
+                              formControlName="folioReferencia"
+                             [matChipInputFor]="chipList"
+                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                             [matChipInputAddOnBlur]="addOnBlur"
+                             (matChipInputTokenEnd)="add($event)">
+                    </mat-chip-list>
                   </mat-form-field>
                   <button (click)="buscaFolioReferencia()" class="col-md-1" mat-icon-button aria-label="Example icon-button with a heart icon">
                     <i   class="material-icons ">search</i>
