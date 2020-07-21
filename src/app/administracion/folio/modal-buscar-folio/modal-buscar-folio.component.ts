@@ -52,7 +52,7 @@ export class ModalBuscarFolioComponent implements OnInit {
       let nombreEmisor = "";
       //this.folios = respuesta.body;
       let valor = respuesta.body.filter( folio => folio.idUsuarioFirma !== null);
-      
+      this.folios = valor;
       console.log(valor);
       if(this.data.folios.length > 0){
         for(let i =0; i< this.data.folios.length;i++){
