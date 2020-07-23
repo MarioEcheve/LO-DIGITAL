@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { LibroService } from "../../services/libro.service";
 import { ILibro, Libro } from "../../TO/libro.model";
@@ -101,7 +101,7 @@ export class FolioDetalleComponent implements OnInit {
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  folios: FolioReferencia[] = [
+  folios: any[] = [
    
   ];
   cities = [
@@ -126,7 +126,9 @@ export class FolioDetalleComponent implements OnInit {
     private dialog: MatDialog,
     private datePipe: DatePipe,
     private usuarioLibroService: UsuarioLibroService
-  ) {}
+  ) {
+    this.folioService.clear();
+  }
 
   ngOnInit() {
     this.obtenerTipoFolio();
@@ -166,8 +168,14 @@ export class FolioDetalleComponent implements OnInit {
       ],
     };
     let idFolio = this.route.snapshot.paramMap.get("id");
-    this.buscarFolio(idFolio);
-    //this.buscarFolioPorLibro(idLibro);
+    this.buscarFolio(idFolio);  
+
+    this.folioService.getListaFolioRelacionadoSubject().subscribe(
+      respuesta => {
+        console.log(respuesta);
+        this.folios = respuesta;
+      }
+    );
   }
   buscarFolio(id) {
     this.folioService.find(id).subscribe((respuesta) => {
@@ -1064,14 +1072,21 @@ export class FolioDetalleComponent implements OnInit {
     );
   }
   buscaFolioReferencia(){
+    this.folioService.getListaFolioRelacionadoSubject().subscribe(
+      respuesta => {
+        
+      }
+    );
     const dialogRef = this.dialog.open(ModalBuscarFolioComponent,{
       width : "100%",
-      data : {idContrato : this.libro.contrato.id , folios : this.folios }
+      data : {idContrato : this.libro.contrato.id , folios : this.folios, libro : this.libro}
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === null) {
+      //console.log(result);
+      if (result === null || result === "" || result === undefined) {
       } else {
-        this.folios = result;
+          //this.folios = [...this.folios,result]; 
+          //this.folios = result;
       }
     }
     );
@@ -1092,11 +1107,11 @@ export class FolioDetalleComponent implements OnInit {
   }
 
   remove(folio: any): void {
-    console.log(folio);
     const index = this.folios.indexOf(folio);
 
     if (index >= 0) {
       this.folios.splice(index, 1);
+      this.folioService.removeFolioReferencia(folio);
     }
   }
   _handleReaderLoaded(readerEvt) {
