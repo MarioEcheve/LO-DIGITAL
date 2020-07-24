@@ -97,7 +97,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
             this.folio.libro.fechaApertura = moment(Date.now());
             console.log(this.folio.idFolioRelacionado);
             if(this.folio.requiereRespuesta === true){
-              this.folio.estadoRespuesta = {id: 2151, nombre: "Pendiente", folios: null}
+              this.folio.estadoRespuesta = {id: 1301, nombre: "Pendiente", folios: null}
             }else{
               this.folio.estadoRespuesta =null;
             }
@@ -105,7 +105,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
             if(this.folio.idFolioRelacionado!==null){
                 this.folioService.find(this.folio.idFolioRelacionado).subscribe(
                   respuesta=>{
-                    respuesta.body.estadoRespuesta = {id: 3401, nombre: "Respondido", folios: null};
+                    respuesta.body.estadoRespuesta = {id: 1302, nombre: "Respondido", folios: null};
                     this.folioService.update(respuesta.body).subscribe();
                   }
                 );
@@ -115,12 +115,12 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                 this.folio.tipoFolio.nombre.toLowerCase() === "apertura libro"
               ) {
                 this.folio.libro.estadoLibro = {
-                  id:  1402,
+                  id:  1652,
                   nombre: "Abierto",
                   libros: null,
                 };
                 this.libroService.update(this.folio.libro).subscribe();
-              }
+                }
               this.dialogRef.close();
               this.dialogRef.beforeClosed().subscribe((respuesta) => {
                 if(this.data.lectura === true){
@@ -134,6 +134,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                   ]);
                 }
               });
+              
             });
             
           });

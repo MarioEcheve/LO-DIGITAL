@@ -19,7 +19,10 @@ export class FolioService {
     this.SERVER_API_URL + "api/buscarFolioPorLibro";
   public resourceUrlCorrelativoFolio =
     this.SERVER_API_URL + "api/correlativoFolio";
+  public resourceUrlFolioReferencias =
+    this.SERVER_API_URL + "api/folioReferencias";
 
+    folioReferencias
   //private folioReferencia = new BehaviorSubject<any>({});
   //folioReferenciaActuales = this.folioReferencia.asObservable();
   private folioRelacionadoSubject = new BehaviorSubject([]);
@@ -138,6 +141,14 @@ export class FolioService {
       })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
+
+  foliosReferencias(id?: any): Observable<any> {
+    const options = createRequestOption(id);
+    return this.http
+      .get<any>(`${this.resourceUrlFolioReferencias}/${id}`, { params: options, observe: "response" });
+  }
+
+
   protected convertDateFromClient(folio: IFolio): IFolio {
     const copy: IFolio = Object.assign({}, folio, {
       fechaRequerida:
