@@ -59,20 +59,39 @@ export class NavbarComponent implements OnInit {
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;
   }
-  minimizeSidebar() {
+  minimizeSidebar(valor? : any) {
     const body = document.getElementsByTagName("body")[0];
-
-    if (misc.sidebar_mini_active === true) {
-      body.classList.remove("sidebar-mini");
-      misc.sidebar_mini_active = false;
-    } else {
-      setTimeout(function () {
-        body.classList.add("sidebar-mini");
-
-        misc.sidebar_mini_active = true;
-      }, 300);
+    if(valor === 1){
+      if (misc.sidebar_mini_active === true) {
+        body.classList.remove("sidebar-mini");
+        misc.sidebar_mini_active = false;
+      } else {
+        setTimeout(function () {
+          body.classList.add("sidebar-mini");
+  
+          misc.sidebar_mini_active = true;
+        }, 300);
+      }
+    }else{
+      if(valor === 2){
+        console.log(valor);
+        setTimeout(function () {
+          body.classList.remove("sidebar-mini");
+          misc.sidebar_mini_active = false;
+        }, 300);
+      }if(valor === 3 ){
+        if (misc.sidebar_mini_active === true) {
+          body.classList.remove("sidebar-mini");
+          misc.sidebar_mini_active = false;
+        } else {
+          setTimeout(function () {
+            body.classList.add("sidebar-mini");
+    
+            misc.sidebar_mini_active = true;
+          }, 300);
+        }
+      }
     }
-
     // we simulate the window Resize so the charts will get updated in realtime.
     const simulateWindowResize = setInterval(function () {
       window.dispatchEvent(new Event("resize"));
@@ -121,9 +140,7 @@ export class NavbarComponent implements OnInit {
     this.folioService.ChangeNavBarSubject().subscribe(
       respuesta=>{
         console.log('estoy en e nav bar ');
-        if(respuesta === 1){
-          this.minimizeSidebar();
-        }
+          this.minimizeSidebar(respuesta);
       }
     );
 

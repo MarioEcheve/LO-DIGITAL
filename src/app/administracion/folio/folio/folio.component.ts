@@ -32,6 +32,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
   libros: Libro[] = [];
   folios: Folio[] = [];
   foliosOrigen = [];
+  foliosSinBorradores = [];
   listaFolios: Folio[] = [];
   idlibro: number;
   folioFormGroup: FormGroup;
@@ -108,12 +109,11 @@ export class FolioComponent implements OnInit, AfterViewInit {
     private usuarioLibroService: UsuarioLibroService,
     private dialog: MatDialog,
     private datePipe: DatePipe,
-  ) {}
+  ) {
+    
+  }
 
   ngOnInit(): void {
-
-    this.folioServie.navBarChange(1);
-
 
     this.folioFormGroup = this.fb.group({
       libro: [],
@@ -212,7 +212,12 @@ export class FolioComponent implements OnInit, AfterViewInit {
       console.log('after view init');
       console.log(this.folios);
       this.foliosOrigen = this.folios;
-    }, 1000);
+      this.folios = this.folios.filter(folio=> 
+          folio.idUsuarioFirma !== null
+    )
+    this.foliosSinBorradores = this.folios;
+  }, 800);
+  this.folioServie.navBarChange(1);
   }
   buscaFolios(libro) {
     this.libroSeleccionado = libro;
@@ -224,11 +229,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
       this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
       respuesta.body.forEach(element=>{
         if(element.fechaRequerida!== undefined){
-          //console.log(element.fechaRequerida);
-          let diasFaltantes = calcDate(new Date(element.fechaRequerida.toDate()),new Date());
-          //console.log(diasFaltantes);
-          //element.fechaRequerida = element.fechaRequerida.toDate();
-          
           element.fechaRequerida = element.fechaRequerida.local();
           console.log(element.fechaRequerida.local());
           let resultado = calcDate(element.fechaRequerida.toDate(),new Date());
@@ -260,7 +260,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
           }
           
         }
-        this.folios = respuesta.body
+        this.folios = respuesta.body;
         
       })
       this.folios.forEach((element) => {
@@ -349,7 +349,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
    this.folios = this.foliosOrigen;
    switch(accion.id){
      case 1 : 
-          this.folios = this.foliosOrigen;
+          this.folios = this.foliosSinBorradores;
       break;
     case 2 :
       this.folios =[];

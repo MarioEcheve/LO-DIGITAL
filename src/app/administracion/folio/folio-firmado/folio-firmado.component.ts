@@ -51,6 +51,7 @@ export class FolioFirmadoComponent implements OnInit {
     private libroService : LibroService
   ) {}
   ngOnInit() {
+    this.folioService.navBarChange(2);
     let idFolio = this.route.snapshot.paramMap.get("id");
     this.obtenerFolio(idFolio);
     this.tableData1 = {

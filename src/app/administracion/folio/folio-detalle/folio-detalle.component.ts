@@ -49,6 +49,7 @@ export class FolioDetalleComponent implements OnInit {
   usuario;
   muestraImagenes = false;
   folioSiguiente;
+  receptor = [];
   private fechaRequeridaValidators = [
     Validators.maxLength(250),
   ]
@@ -131,6 +132,7 @@ export class FolioDetalleComponent implements OnInit {
   ) {
     this.folioService.clear();
     this.folios = [];
+    this.folioService.navBarChange(2);
   }
 
   ngOnInit() {
@@ -159,7 +161,8 @@ export class FolioDetalleComponent implements OnInit {
       perfilUsuario: [],
       respuestaFolio : ["respuesta de "],
       fechaRequeridaDatepicker : ["",this.fechaRequeridaValidators],
-      folioReferencia : []
+      folioReferencia : [],
+      receptor : []
     });
     this.tableData1 = {
       headerRow: ["#", "Name", "Job Position", "Since", "Salary", "Actions"],
@@ -186,16 +189,13 @@ export class FolioDetalleComponent implements OnInit {
             this.folios = this.folios.filter(o => hash[o.id] ? false : hash[o.id] = true);
           }else{
               if(respuesta.length === 1){
-                //this.folios = respuesta;
                 console.log(this.folios);
                 console.log(respuesta);
                 this.folios = respuesta;
               }else{
                 let hash = {};
-                //this.folios = respuesta.filter(o => hash[o.id] ? false : hash[o.id] = true);
                 console.log(this.folios);
                 console.log(respuesta.filter(o => hash[o.id] ? false : hash[o.id] = true));
-                //this.folios = this.folios.filter(o => hash[o.id] ? false : hash[o.id] = true);
                 this.folios = respuesta.filter(o => hash[o.id] ? false : hash[o.id] = true);
               }
           }
@@ -204,8 +204,17 @@ export class FolioDetalleComponent implements OnInit {
     );
   }
   buscarFolio(id) {
+    let usuarioActual = JSON.parse(localStorage.getItem("user"));
     this.folioService.find(id).subscribe((respuesta) => {
       this.Folio = respuesta.body;
+      this.usuarioLibroService.ListaUsuariosLibros(respuesta.body.libro.id,usuarioActual.id).subscribe(
+        respuesta=>{
+          console.log('AQUI ESTA LA RESPUESTA DE LOS USUARIOS');
+          console.log(respuesta.body);
+          this.receptor = respuesta.body;
+        }
+      );
+
       this.folioService.foliosReferencias(respuesta.body.id).subscribe(
         respuesta=>{
           this.Folio.folioReferencias = respuesta.body.folioReferencias;
@@ -217,9 +226,6 @@ export class FolioDetalleComponent implements OnInit {
                     this.folios = [...this.folios,folioReferencia.body];
                     let hash = {};
                     this.folios = this.folios.filter(o => hash[o.id] ? false : hash[o.id] = true);
-                    console.log(this.folios);
-                    
-                    //this.folios = this.folios.filter(folio => folio === folioReferencia.body);
                   }else{
                     this.folios = [];
                   }
@@ -227,7 +233,6 @@ export class FolioDetalleComponent implements OnInit {
                   let hash = {};
                   this.folios = [...this.folios,folioReferencia.body];
                   this.folios = this.folios.filter(o => hash[o.id] ? false : hash[o.id] = true);
-                  //this.folios = this.folios.filter(folio => folio === folioReferencia.body);
                 }
               }
             );
@@ -235,7 +240,7 @@ export class FolioDetalleComponent implements OnInit {
         }
       );
       this.buscaCorrelativoFolio();
-      let usuarioActual = JSON.parse(localStorage.getItem("user"));
+
       this.obtenerPerfilLibroUsuario(this.Folio.libro.id, usuarioActual.id);
       this.folioForm.controls["asunto"].setValue(respuesta.body.asunto);
       this.folioForm.controls["anotacion"].setValue(respuesta.body.anotacion);
@@ -637,6 +642,7 @@ export class FolioDetalleComponent implements OnInit {
     let imagenLogo1 = getBase64Image(document.getElementById("imagenLogo1"));
     let imagenLogo2 = getBase64Image(document.getElementById("imagenLogo2"));
     let anotacion = stripHtml(this.folioForm.controls["anotacion"].value);
+    this.Folio.idReceptor = this.folioForm.controls["receptor"].value;
     this.Folio.fechaRequerida = moment(this.folioForm.controls["fechaRequeridaDatepicker"].value);
     var docDefinition = {
       content: [

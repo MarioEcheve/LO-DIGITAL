@@ -31,7 +31,7 @@ export class FolioService {
   private listafolioRelacionadoSubject = new BehaviorSubject([]);
   private listafolioRelacionado: IFolio[] = [];
 
-  private navBarSubject = new BehaviorSubject([]);
+  private navBarSubject = new BehaviorSubject(0);
   private valorNavBar: any="";
 
   constructor(protected http: HttpClient) {
