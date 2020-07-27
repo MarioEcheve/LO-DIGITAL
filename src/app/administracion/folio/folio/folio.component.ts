@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, AfterViewInit } from "@angular/core";
 import { DropzoneConfigInterface } from "ngx-dropzone-wrapper";
 import { TableData } from "src/app/md/md-table/md-table.component";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -26,11 +26,12 @@ const defaultConfig: DropzoneConfigInterface = {
   templateUrl: "./folio.component.html",
   styleUrls: ["./folio.component.css"],
 })
-export class FolioComponent implements OnInit {
+export class FolioComponent implements OnInit, AfterViewInit {
   public tableData1: TableData;
   contrato = new Contrato();
   libros: Libro[] = [];
   folios: Folio[] = [];
+  foliosOrigen = [];
   listaFolios: Folio[] = [];
   idlibro: number;
   folioFormGroup: FormGroup;
@@ -42,14 +43,12 @@ export class FolioComponent implements OnInit {
       maxFiles: 1,
     },
   };
-
   multipleConfig: DropzoneConfigInterface = {
     ...defaultConfig,
     ...{
       maxFiles: 10,
     },
   };
-
   cities = [
     {
       value: "paris-0",
@@ -67,6 +66,38 @@ export class FolioComponent implements OnInit {
         "Libro Prevención de Riesgos | Cod.: LA02 | Clase Libro: Auxiliar | Tipo Firma: Por Sistema | Estado: Abierto",
     },
   ];
+
+  typesOfActions= [
+      {
+        id :1,
+        accion : 'Bandeja de Folio'
+      },
+      {
+        id :2,
+        accion : 'Folio Mandante'
+      },
+      {
+        id :3,
+        accion : 'Folio Contratista'
+      },
+      {
+        id :4,
+        accion : 'Sin respuesta'
+      },
+      {
+        id :5,
+        accion : 'Sin Leer'
+      },
+      {
+        id :6,
+        accion : 'Destacados'
+      },
+      {
+        id :7,
+        accion : 'Borradores'
+      }
+  ];
+
   constructor(
     private route: ActivatedRoute,
     private contratoService: ContratoService,
@@ -80,6 +111,10 @@ export class FolioComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+    this.folioServie.navBarChange(1);
+
+
     this.folioFormGroup = this.fb.group({
       libro: [],
     });
@@ -171,6 +206,13 @@ export class FolioComponent implements OnInit {
         ],
       ],
     };
+  }
+  ngAfterViewInit(){
+    setTimeout(() => {
+      console.log('after view init');
+      console.log(this.folios);
+      this.foliosOrigen = this.folios;
+    }, 1000);
   }
   buscaFolios(libro) {
     this.libroSeleccionado = libro;
@@ -301,6 +343,33 @@ export class FolioComponent implements OnInit {
   }
   volverContrato() {
     this.router.navigate(["/contrato/detalle-contrato/", this.contrato.id]);
+  }
+
+  filtrarFolios(accion : any){
+   this.folios = this.foliosOrigen;
+   switch(accion.id){
+     case 1 : 
+          this.folios = this.foliosOrigen;
+      break;
+    case 2 :
+      this.folios =[];
+      break;
+    case 3 : 
+      this.folios =[];
+      break;
+    case 4 : 
+      this.folios = this.folios.filter(folio=>folio.estadoRespuesta?.nombre==='Pendiente')
+      break;
+    case 5 :
+      this.folios = this.folios.filter(folio=>folio.idUsuarioLectura === null && folio.idUsuarioFirma !== null);
+      break;
+    case 6 : 
+      this.folios =[];
+      break;
+    case 7 :
+      this.folios = this.folios.filter(folio=>folio.idUsuarioFirma === null );
+      break;
+   }
   }
 }
 

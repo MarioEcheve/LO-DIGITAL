@@ -82,16 +82,16 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
           setTimeout(() => {
             this.folioService.createNewColeccionFolioReferencia(valor2);
           }, 200);
+
+          //----------------------------------------------------------------------------------------------
           if(this.data.folios.length > 0){
             for(var i=0;i < this.data.folios.length;i++){
               if(valor2.length > 0 ){
                 if(valor2[i] !== undefined){
                   if(this.data.folios[i].id === valor2[i].id){
-                    valor2 = valor2.filter(folio => {
-                    return folio.id !== this.data.folios[i].id
-                  })
-                  }else{
-
+                      valor2 = valor2.filter(folio => {
+                      return folio.id !== this.data.folios[i].id;
+                    })
                   }
                 }else{  
                   valor2 = []
@@ -100,11 +100,11 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
             }
             setTimeout(() => {
               resolve(valor2);
-            }, 200);
+            }, 400);
           }else{
             setTimeout(() => {
               resolve(valor2);
-            }, 200);
+            }, 400);
           }
         }); 
       });

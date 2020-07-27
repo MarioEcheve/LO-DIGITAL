@@ -31,9 +31,25 @@ export class FolioService {
   private listafolioRelacionadoSubject = new BehaviorSubject([]);
   private listafolioRelacionado: IFolio[] = [];
 
+  private navBarSubject = new BehaviorSubject([]);
+  private valorNavBar: any="";
+
   constructor(protected http: HttpClient) {
     
   }
+  navBarChange(valor: any) {
+    /**
+    * Evitar hacer this.folio.push() pues estaríamos modificando los valores directamente,
+    * se debe generar un nuevo array !!!!.
+    */
+    this.valorNavBar = valor;
+    this.refreshNavBar();
+  }
+
+  ChangeNavBarSubject(): Observable<any> {
+    return this.navBarSubject.asObservable();
+  }
+
 
   getFolioRelacionadoSubject(): Observable<IFolio[]> {
     return this.folioRelacionadoSubject.asObservable();
@@ -48,9 +64,15 @@ export class FolioService {
     this.folioRelacionadoSubject.next(this.folioRelacionado);
   }
 
+  private refreshNavBar() {
+    // Emitir los nuevos valores para que todos los que dependan se actualicen.
+    this.navBarSubject.next(this.valorNavBar);
+  }
+
    clear() {
     // Emitir los nuevos valores para que todos los que dependan se actualicen.
     this.listafolioRelacionadoSubject.next([]);
+    this.refresh();
   }
 
 
@@ -68,23 +90,32 @@ export class FolioService {
     this.refresh();
   }
 
-  createNewListaColeccionFolioReferencia(folio: IFolio) {
+  createNewListaColeccionFolioReferencia(folio: IFolio, setValue?:Boolean, listaFolio?:any) {
     /**
     * Evitar hacer this.folio.push() pues estaríamos modificando los valores directamente,
     * se debe generar un nuevo array !!!!.
     */
+   if(setValue){
+    this.listafolioRelacionado = listaFolio;
+    this.refreshLista();
+   }else{
     this.listafolioRelacionado = [...this.listafolioRelacionado,folio];
     this.refreshLista();
+   }
   }
-  removeFolioReferencia(folio : IFolio){
+  removeFolioReferencia(folio : IFolio, contador? : Boolean){
     const index = this.listafolioRelacionado.indexOf(folio);
-    if (index >= 0) {
-      this.listafolioRelacionado.splice(index, 1);
+    if(contador===false){
+      this.listafolioRelacionado = [];
       this.refresh();
+    }else{
+      if (index >= 0) {
+        this.listafolioRelacionado.splice(index, 1);
+        this.refresh();
+      }
     }
+    
   }
-
-
 
   create(folio: IFolio): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(folio);

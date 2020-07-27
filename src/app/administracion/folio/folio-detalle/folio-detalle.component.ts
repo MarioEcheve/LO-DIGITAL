@@ -24,6 +24,7 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from "@angular/material/chips";
 import { FolioReferenciaService } from "../../services/folio-referencia.service";
 import { FolioReferencia } from "../../TO/folio-referencia.model";
+import { element } from "protractor";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 declare var $: any;
 declare interface TableData {
@@ -129,9 +130,11 @@ export class FolioDetalleComponent implements OnInit {
     private folioReferenciaService : FolioReferenciaService
   ) {
     this.folioService.clear();
+    this.folios = [];
   }
 
   ngOnInit() {
+    
     this.obtenerTipoFolio();
     this.folioForm = this.fb.group({
       id: [],
@@ -171,11 +174,32 @@ export class FolioDetalleComponent implements OnInit {
     let idFolio = this.route.snapshot.paramMap.get("id");
   
     this.buscarFolio(idFolio);  
-
+    
     this.folioService.getListaFolioRelacionadoSubject().subscribe(
       respuesta => {
-        console.log(respuesta);
-        this.folios = respuesta;
+        if(respuesta.length === 0){
+        }else{
+          console.log(this.folios.length);
+          if(this.folios.length > 0){
+            let hash = {};
+            this.folios = respuesta;
+            this.folios = this.folios.filter(o => hash[o.id] ? false : hash[o.id] = true);
+          }else{
+              if(respuesta.length === 1){
+                //this.folios = respuesta;
+                console.log(this.folios);
+                console.log(respuesta);
+                this.folios = respuesta;
+              }else{
+                let hash = {};
+                //this.folios = respuesta.filter(o => hash[o.id] ? false : hash[o.id] = true);
+                console.log(this.folios);
+                console.log(respuesta.filter(o => hash[o.id] ? false : hash[o.id] = true));
+                //this.folios = this.folios.filter(o => hash[o.id] ? false : hash[o.id] = true);
+                this.folios = respuesta.filter(o => hash[o.id] ? false : hash[o.id] = true);
+              }
+          }
+        }
       }
     );
   }
@@ -188,7 +212,23 @@ export class FolioDetalleComponent implements OnInit {
           this.Folio.folioReferencias.forEach(element=>{
             this.folioService.find(element.idFolioReferencia).subscribe(
               folioReferencia=>{
-                this.folios.push(folioReferencia.body);
+                if(this.folios.length > 0){
+                  if(!this.folios.includes(folioReferencia.body)){
+                    this.folios = [...this.folios,folioReferencia.body];
+                    let hash = {};
+                    this.folios = this.folios.filter(o => hash[o.id] ? false : hash[o.id] = true);
+                    console.log(this.folios);
+                    
+                    //this.folios = this.folios.filter(folio => folio === folioReferencia.body);
+                  }else{
+                    this.folios = [];
+                  }
+                }else{
+                  let hash = {};
+                  this.folios = [...this.folios,folioReferencia.body];
+                  this.folios = this.folios.filter(o => hash[o.id] ? false : hash[o.id] = true);
+                  //this.folios = this.folios.filter(folio => folio === folioReferencia.body);
+                }
               }
             );
            })
@@ -215,7 +255,6 @@ export class FolioDetalleComponent implements OnInit {
         if(respuesta.body.fechaRequerida !== undefined){
           this.folioForm.get('fechaRequeridaDatepicker').setValidators([Validators.required])
           let fecha =this.Folio.fechaRequerida.local().toISOString().split(":00.000Z");
-          console.log(respuesta.body.fechaRequerida.local());
           this.folioForm.controls["fechaRequeridaDatepicker"].setValue(fecha[0]);
         }
         this.muestraFechaRequerida = true;
@@ -319,13 +358,17 @@ export class FolioDetalleComponent implements OnInit {
                 respuesta.body.folioReferencias =[];
                 respuesta.body.folioReferencias.push(respuesta2.body);
                 this.folioService.update(respuesta.body).subscribe();
+                
               }
             );
           }
           this.buscarFolio(respuesta.body.id);
           this.showNotificationSuccess("top", "right");
           //this.folioRelacionadoService.create().subscribe();
-        }else{
+        }else{ 
+          respuesta.body.folioReferencias = [];
+          this.folioService.createNewColeccionFolioReferencia([]);
+          this.folioService.update(respuesta.body).subscribe(); 
           this.buscarFolio(respuesta.body.id);
           this.showNotificationSuccess("top", "right");
         }
@@ -1157,8 +1200,17 @@ export class FolioDetalleComponent implements OnInit {
     const index = this.folios.indexOf(folio);
 
     if (index >= 0) {
-      this.folios.splice(index, 1);
-      this.folioService.removeFolioReferencia(folio);
+      if(this.folios.length <= 1){
+        this.folios = [];
+        this.folioService.removeFolioReferencia(folio,false);
+        this.folioService.createNewColeccionFolioReferencia([]);
+        this.folioService.clear();
+        console.log(this.folios);
+      }else{
+        this.folios.splice(index, 1);
+        this.folioService.removeFolioReferencia(folio);
+      }
+      
     }
   }
   _handleReaderLoaded(readerEvt) {
