@@ -275,9 +275,10 @@ export class FolioComponent implements OnInit, AfterViewInit {
     });
     setTimeout(() => {
       this.folios = folios;
-      this.foliosOrigen = this.folios;
+      this.foliosOrigen = folios;
       this.folios = this.folios.filter(folio=> 
           folio.idUsuarioFirma !== null);
+      this.foliosSinBorradores = this.folios;
     }, 1000);
 
   }
@@ -395,3 +396,5 @@ function calcDate(date1,date2) {
   message += years + " año \n"
   return [days,months,years]
   }
+
+  
