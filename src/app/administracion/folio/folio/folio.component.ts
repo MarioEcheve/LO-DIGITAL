@@ -114,7 +114,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-
+    this.folioServie.navBarChange(1);
     this.folioFormGroup = this.fb.group({
       libro: [],
     });
@@ -213,19 +213,18 @@ export class FolioComponent implements OnInit, AfterViewInit {
       console.log(this.folios);
       this.foliosOrigen = this.folios;
       this.folios = this.folios.filter(folio=> 
-          folio.idUsuarioFirma !== null
-    )
+          folio.idUsuarioFirma !== null);
     this.foliosSinBorradores = this.folios;
-  }, 800);
-  this.folioServie.navBarChange(1);
+    },1000);
   }
-  buscaFolios(libro) {
+  buscaFolios(libro, filtra?: boolean) {
+    let folios=[];
     this.libroSeleccionado = libro;
     let usuario = JSON.parse(localStorage.getItem("user"));
     this.idlibro = libro.id;
     let nombreEmisor = "";
     this.folioServie.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
-      this.folios = respuesta.body;
+      folios = respuesta.body;
       this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
       respuesta.body.forEach(element=>{
         if(element.fechaRequerida!== undefined){
@@ -260,10 +259,10 @@ export class FolioComponent implements OnInit, AfterViewInit {
           }
           
         }
-        this.folios = respuesta.body;
+        //this.folios = respuesta.body;
         
       })
-      this.folios.forEach((element) => {
+      folios.forEach((element) => {
         this.usuarioLibroService
           .find(element.idUsuarioFirma)
           .subscribe((respuesta2) => {
@@ -273,6 +272,16 @@ export class FolioComponent implements OnInit, AfterViewInit {
           });
       });
     });
+    setTimeout(() => {
+      console.log('after view init');
+      console.log(this.folios);
+      this.folios = folios;
+      this.foliosOrigen = this.folios;
+      this.folios = this.folios.filter(folio=> 
+          folio.idUsuarioFirma !== null);
+          this.foliosSinBorradores = this.folios;
+    }, 500);
+    //this.ngAfterViewInit();
   }
   nuevoFolio() {
     const dialogRef = this.dialog.open(ModalCrearFolioComponent, {

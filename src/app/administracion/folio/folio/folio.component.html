@@ -51,7 +51,7 @@
                     <mat-option
                       *ngFor="let libro of libros"
                       [value]="libro.nombre"
-                      (click)="buscaFolios(libro)"
+                      (click)="buscaFolios(libro, true)"
                     >
                       {{ libro.nombre }} | Cod.: {{ libro.codigo }} | Clase
                       Libro: {{ libro.tipoLibro.descripcion }} | Tipo Firma:
