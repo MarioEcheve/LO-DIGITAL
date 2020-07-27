@@ -644,6 +644,14 @@ export class FolioDetalleComponent implements OnInit {
     let anotacion = stripHtml(this.folioForm.controls["anotacion"].value);
     this.Folio.idReceptor = this.folioForm.controls["receptor"].value;
     this.Folio.fechaRequerida = moment(this.folioForm.controls["fechaRequeridaDatepicker"].value);
+    let nombreReceptor ="";
+    this.usuarioLibroService.find(this.Folio.idReceptor).subscribe(
+      respuesta=>{
+        nombreReceptor = respuesta.body.usuarioDependencia.usuario.firstName +  respuesta.body.usuarioDependencia.usuario.lastName 
+      }
+    );
+      setTimeout(() => {
+
     var docDefinition = {
       content: [
         {
@@ -778,6 +786,11 @@ export class FolioDetalleComponent implements OnInit {
                     {
                       text:
                         "Emisor: " + this.folioForm.controls["emisor"].value,
+                      italics: true,
+                    },
+                    {
+                      text:
+                        "Receptor: " + nombreReceptor,
                       italics: true,
                     },
                     {
@@ -1132,6 +1145,7 @@ export class FolioDetalleComponent implements OnInit {
         },
       });
     });
+      }, 800);
   }
   visualizarPdfOrigen(){
     this.folioService.find(this.Folio.idFolioRelacionado).subscribe(

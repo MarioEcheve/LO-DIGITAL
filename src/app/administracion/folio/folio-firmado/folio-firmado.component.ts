@@ -30,6 +30,7 @@ export class FolioFirmadoComponent implements OnInit {
   idlibroRelacionado =null;;
   folioRelacionado=  new Folio();
   emisor;
+  receptor;
   usuario;
   cities = [
     { value: "paris-0", viewValue: "Paris" },
@@ -80,6 +81,7 @@ export class FolioFirmadoComponent implements OnInit {
       );
 
       this.obtenerEmisorFolio(respuesta.body.idUsuarioCreador);
+      this.obtenerReceptorFolio(respuesta.body.idReceptor);
       this.dependenciaService
         .find(respuesta.body.libro.contrato.idDependenciaContratista)
         .subscribe((respuesta) => {
@@ -100,6 +102,12 @@ export class FolioFirmadoComponent implements OnInit {
     this.usuarioLibroService.find(idEmisor).subscribe((respuesta) => {
       console.log(respuesta.body);
       this.emisor = respuesta.body;
+    });
+  }
+  obtenerReceptorFolio(idReceptor) {
+    this.usuarioLibroService.find(idReceptor).subscribe((respuesta) => {
+      console.log(respuesta.body);
+      this.receptor = respuesta.body;
     });
   }
   volverListaFolios() {
