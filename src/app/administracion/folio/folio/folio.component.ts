@@ -207,17 +207,18 @@ export class FolioComponent implements OnInit, AfterViewInit {
       ],
     };
   }
-  ngAfterViewInit(){
+  ngAfterViewInit(folios?:any){
     setTimeout(() => {
       console.log('after view init');
       console.log(this.folios);
       this.foliosOrigen = this.folios;
       this.folios = this.folios.filter(folio=> 
           folio.idUsuarioFirma !== null);
-    this.foliosSinBorradores = this.folios;
+      this.foliosSinBorradores = this.folios;
     },1000);
   }
   buscaFolios(libro, filtra?: boolean) {
+    this.folios = [];
     let folios=[];
     this.libroSeleccionado = libro;
     let usuario = JSON.parse(localStorage.getItem("user"));
@@ -273,15 +274,12 @@ export class FolioComponent implements OnInit, AfterViewInit {
       });
     });
     setTimeout(() => {
-      console.log('after view init');
-      console.log(this.folios);
       this.folios = folios;
       this.foliosOrigen = this.folios;
       this.folios = this.folios.filter(folio=> 
           folio.idUsuarioFirma !== null);
-          this.foliosSinBorradores = this.folios;
-    }, 500);
-    //this.ngAfterViewInit();
+    }, 1000);
+
   }
   nuevoFolio() {
     const dialogRef = this.dialog.open(ModalCrearFolioComponent, {
