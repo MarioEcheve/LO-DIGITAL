@@ -20,7 +20,7 @@ export class AuthLayoutComponent implements OnInit {
 
     this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
     this._router = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((event: NavigationEnd) => {
-      this.sidebarClose();
+      //this.sidebarClose();
       const $layer = document.getElementsByClassName('close-layer')[0];
       if ($layer) {
         $layer.remove();
@@ -69,6 +69,7 @@ export class AuthLayoutComponent implements OnInit {
       this.mobile_menu_visible = 1;
       this.sidebarVisible = true;
   };
+  /*
   sidebarClose() {
     var $toggle = document.getElementsByClassName('navbar-toggler')[0];
       const body = document.getElementsByTagName('body')[0];
@@ -78,7 +79,7 @@ export class AuthLayoutComponent implements OnInit {
 
       this.sidebarVisible = false;
       body.classList.remove('nav-open');
-      // $('html').removeClass('nav-open');
+      
       body.classList.remove('nav-open');
       if ($layer) {
           $layer.remove();
@@ -89,12 +90,13 @@ export class AuthLayoutComponent implements OnInit {
       }, 400);
 
       this.mobile_menu_visible = 0;
-  };
+  };*/
+  
   sidebarToggle() {
       if (this.sidebarVisible === false) {
           this.sidebarOpen();
       } else {
-          this.sidebarClose();
+          //this.sidebarClose();
       }
   }
 }

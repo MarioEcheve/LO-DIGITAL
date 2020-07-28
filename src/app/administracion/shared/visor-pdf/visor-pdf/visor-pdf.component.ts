@@ -94,7 +94,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
             this.folio.libro.fechaCreacion = moment(
               this.folio.libro.fechaCreacion
             );
-            this.folio.libro.fechaApertura = moment(Date.now());
+            
             console.log(this.folio.idFolioRelacionado);
             if(this.folio.requiereRespuesta === true){
               this.folio.estadoRespuesta = {id: 1401, nombre: "Pendiente", folios: null}
@@ -119,6 +119,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                   nombre: "Abierto",
                   libros: null,
                 };
+                this.folio.libro.fechaApertura = moment(Date.now());
                 this.libroService.update(this.folio.libro).subscribe();
               }
               if (
@@ -129,6 +130,10 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                   nombre: "Cerrado",
                   libros: null,
                 };
+                
+                this.folio.libro.fechaCierre = moment(Date.now());
+                this.folio.libro.fechaApertura = moment(this.folio.libro.fechaApertura);
+                console.log(this.folio);
                 this.libroService.update(this.folio.libro).subscribe();
               }
               this.dialogRef.close();
