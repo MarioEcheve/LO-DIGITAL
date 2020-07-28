@@ -1,0 +1,49 @@
+<table class="table table-striped mt-2">
+    <thead class="text-muted">
+      <tr>
+        <th>{{ tableData1.headerRow[0] }}</th>
+        <th>{{ tableData1.headerRow[1] }}</th>
+        <th>{{ tableData1.headerRow[2] }}</th>
+        <th>{{ tableData1.headerRow[3] }}</th>
+        <th>{{ tableData1.headerRow[4] }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of folios">
+        <td>
+          {{ row.numeroFolio }}
+        </td>
+        <td style="font-weight: bold;">
+          {{ row.emisor }}
+        </td>
+        <td>
+          <a style="font-weight: bold;" class="text-muted">{{
+            row.tipoFolio.nombre
+          }}</a>
+          - {{ row.asunto }}
+        </td>
+        <td>
+          {{ row.fechaCreacion | date: "dd-MM-yyyy HH:mm" }}
+        </td>
+        <td class="td-actions text-right">
+          <button
+              mat-raised-button
+              type="button"
+              class="btn btn-default {{ row[4] }}"
+              (click)="visorPdf(row)"
+            >
+              <i class="material-icons">visibility</i>
+            </button>
+            <button
+              mat-raised-button
+              type="button"
+              class="btn btn-default {{ row[4] }}"
+              (click)="agregarFolioReferencia(row)"
+            >
+              <i class="material-icons">add</i>
+            </button>
+        </td>
+      </tr>
+    </tbody>
+</table>
+<mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>

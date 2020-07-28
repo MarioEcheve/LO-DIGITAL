@@ -15,6 +15,7 @@ type EntityArrayResponseType = HttpResponse<IUsuarioLibro[]>;
 export class UsuarioLibroService {
   SERVER_API_URL = "http://localhost:8080/";
   public resourceUrl = this.SERVER_API_URL + "api/usuario-libros";
+  public resourceUrlListaUsuariosLibros = this.SERVER_API_URL + "api/ListaUsuariosLibros";
   public resourceUrlBuscarlibroPorContrato =
     this.SERVER_API_URL + "api/ListaUsuariosLibrosFolio";
 
@@ -38,6 +39,20 @@ export class UsuarioLibroService {
     return this.http
       .get<IUsuarioLibro>(`${this.resourceUrl}/${id}`, { observe: "response" })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  ListaUsuariosLibros(idlibro?: any,idUsuario? : any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(idlibro);
+    return this.http
+      .get<IUsuarioLibro[]>(`${this.resourceUrlListaUsuariosLibros}/${idlibro}/${idUsuario}`, {
+        params: options,
+        observe: "response",
+      })
+      .pipe(
+        map((res: EntityArrayResponseType) =>
+          this.convertDateArrayFromServer(res)
+        )
+      );
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

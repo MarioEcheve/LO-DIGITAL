@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { LibroService } from "../../services/libro.service";
 import { ILibro, Libro } from "../../TO/libro.model";
@@ -22,15 +22,16 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 import { ModalBuscarFolioComponent } from "../modal-buscar-folio/modal-buscar-folio.component";
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from "@angular/material/chips";
+import { FolioReferenciaService } from "../../services/folio-referencia.service";
+import { FolioReferencia } from "../../TO/folio-referencia.model";
+import { element } from "protractor";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
   dataRows: string[][];
 }
-export interface FolioReferencia {
-  name: string;
-}
+
 @Component({
   selector: "app-folio-detalle",
   templateUrl: "./folio-detalle.component.html",
@@ -48,6 +49,7 @@ export class FolioDetalleComponent implements OnInit {
   usuario;
   muestraImagenes = false;
   folioSiguiente;
+  receptor = [];
   private fechaRequeridaValidators = [
     Validators.maxLength(250),
   ]
@@ -101,7 +103,7 @@ export class FolioDetalleComponent implements OnInit {
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  folios: FolioReferencia[] = [
+  folios: any[] = [
    
   ];
   cities = [
@@ -125,10 +127,16 @@ export class FolioDetalleComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private datePipe: DatePipe,
-    private usuarioLibroService: UsuarioLibroService
-  ) {}
+    private usuarioLibroService: UsuarioLibroService,
+    private folioReferenciaService : FolioReferenciaService
+  ) {
+    this.folioService.clear();
+    this.folios = [];
+    this.folioService.navBarChange(2);
+  }
 
   ngOnInit() {
+    
     this.obtenerTipoFolio();
     this.folioForm = this.fb.group({
       id: [],
@@ -153,7 +161,8 @@ export class FolioDetalleComponent implements OnInit {
       perfilUsuario: [],
       respuestaFolio : ["respuesta de "],
       fechaRequeridaDatepicker : ["",this.fechaRequeridaValidators],
-      folioReferencia : []
+      folioReferencia : [],
+      receptor : []
     });
     this.tableData1 = {
       headerRow: ["#", "Name", "Job Position", "Since", "Salary", "Actions"],
@@ -166,18 +175,78 @@ export class FolioDetalleComponent implements OnInit {
       ],
     };
     let idFolio = this.route.snapshot.paramMap.get("id");
-    this.buscarFolio(idFolio);
-    //this.buscarFolioPorLibro(idLibro);
+  
+    this.buscarFolio(idFolio);  
+    
+    this.folioService.getListaFolioRelacionadoSubject().subscribe(
+      respuesta => {
+        if(respuesta.length === 0){
+        }else{
+          console.log(this.folios.length);
+          if(this.folios.length > 0){
+            let hash = {};
+            this.folios = respuesta;
+            this.folios = this.folios.filter(o => hash[o.id] ? false : hash[o.id] = true);
+          }else{
+              if(respuesta.length === 1){
+                console.log(this.folios);
+                console.log(respuesta);
+                this.folios = respuesta;
+              }else{
+                let hash = {};
+                console.log(this.folios);
+                console.log(respuesta.filter(o => hash[o.id] ? false : hash[o.id] = true));
+                this.folios = respuesta.filter(o => hash[o.id] ? false : hash[o.id] = true);
+              }
+          }
+        }
+      }
+    );
   }
   buscarFolio(id) {
+    let usuarioActual = JSON.parse(localStorage.getItem("user"));
     this.folioService.find(id).subscribe((respuesta) => {
       this.Folio = respuesta.body;
+      this.usuarioLibroService.ListaUsuariosLibros(respuesta.body.libro.id,usuarioActual.id).subscribe(
+        respuesta=>{
+          console.log('AQUI ESTA LA RESPUESTA DE LOS USUARIOS');
+          console.log(respuesta.body);
+          this.receptor = respuesta.body;
+        }
+      );
+
+      this.folioService.foliosReferencias(respuesta.body.id).subscribe(
+        respuesta=>{
+          this.Folio.folioReferencias = respuesta.body.folioReferencias;
+          this.Folio.folioReferencias.forEach(element=>{
+            this.folioService.find(element.idFolioReferencia).subscribe(
+              folioReferencia=>{
+                if(this.folios.length > 0){
+                  if(!this.folios.includes(folioReferencia.body)){
+                    this.folios = [...this.folios,folioReferencia.body];
+                    let hash = {};
+                    this.folios = this.folios.filter(o => hash[o.id] ? false : hash[o.id] = true);
+                  }else{
+                    this.folios = [];
+                  }
+                }else{
+                  let hash = {};
+                  this.folios = [...this.folios,folioReferencia.body];
+                  this.folios = this.folios.filter(o => hash[o.id] ? false : hash[o.id] = true);
+                }
+              }
+            );
+           })
+        }
+      );
       this.buscaCorrelativoFolio();
-      let usuarioActual = JSON.parse(localStorage.getItem("user"));
+
       this.obtenerPerfilLibroUsuario(this.Folio.libro.id, usuarioActual.id);
       this.folioForm.controls["asunto"].setValue(respuesta.body.asunto);
       this.folioForm.controls["anotacion"].setValue(respuesta.body.anotacion);
       this.folioForm.controls["requiereRespuesta"].setValue(respuesta.body.requiereRespuesta);
+      this.folioForm.controls["receptor"].setValue(respuesta.body.idReceptor);
+      console.log(this.folioForm.controls["receptor"].value);
       if(this.folioForm.controls["requiereRespuesta"].value === false){
         this.muestraFechaRequerida = false;
         if(respuesta.body.idFolioRelacionado !== null){
@@ -193,7 +262,6 @@ export class FolioDetalleComponent implements OnInit {
         if(respuesta.body.fechaRequerida !== undefined){
           this.folioForm.get('fechaRequeridaDatepicker').setValidators([Validators.required])
           let fecha =this.Folio.fechaRequerida.local().toISOString().split(":00.000Z");
-          console.log(respuesta.body.fechaRequerida.local());
           this.folioForm.controls["fechaRequeridaDatepicker"].setValue(fecha[0]);
         }
         this.muestraFechaRequerida = true;
@@ -269,6 +337,7 @@ export class FolioDetalleComponent implements OnInit {
     this.Folio.anotacion = this.folioForm.controls["anotacion"].value;
     this.Folio.asunto = this.folioForm.controls["asunto"].value;
     this.Folio.idUsuarioCreador = this.usuario.id;
+    this.Folio.idReceptor = this.folioForm.controls["receptor"].value;
     this.Folio.estadoFolio = false;
     if(this.folioForm.controls["fechaRequeridaDatepicker"].value !== ""){
       let fechaRequerida = moment(this.folioForm.controls["fechaRequeridaDatepicker"].value +":00Z");
@@ -278,13 +347,39 @@ export class FolioDetalleComponent implements OnInit {
     else{
       this.Folio.fechaRequerida = undefined;
     }
+    console.log(this.folios);
+    
+    
     if (this.tipoFolioSeleccionado !== "") {
       this.Folio.tipoFolio = this.tipoFolioSeleccionado;
     }
     this.folioService.update(this.Folio).subscribe(
       (respuesta) => {
-        this.buscarFolio(respuesta.body.id);
-        this.showNotificationSuccess("top", "right");
+        if(this.folios.length > 0){
+          for(let i =0; i< this.folios.length; i++){
+            let folioReferencia = new FolioReferencia;
+            folioReferencia.idFolioReferencia = this.folios[i].id;
+            folioReferencia.idFolioOrigen = respuesta.body.id;
+            folioReferencia.asunto=`Folio Relacionado | asunto : ${this.folios[i].asunto}`
+            this.folioReferenciaService.create(folioReferencia).subscribe(
+              respuesta2 => {
+                respuesta.body.folioReferencias =[];
+                respuesta.body.folioReferencias.push(respuesta2.body);
+                this.folioService.update(respuesta.body).subscribe();
+                
+              }
+            );
+          }
+          this.buscarFolio(respuesta.body.id);
+          this.showNotificationSuccess("top", "right");
+          //this.folioRelacionadoService.create().subscribe();
+        }else{ 
+          respuesta.body.folioReferencias = [];
+          this.folioService.createNewColeccionFolioReferencia([]);
+          this.folioService.update(respuesta.body).subscribe(); 
+          this.buscarFolio(respuesta.body.id);
+          this.showNotificationSuccess("top", "right");
+        }
       },
       (error) => {
         this.showNotificationDanger("top", "right");
@@ -303,6 +398,7 @@ export class FolioDetalleComponent implements OnInit {
         );
       }
     });
+    
   }
   firmarFolio() {
     const dialogRef = this.dialog.open(ModalFirmaFolioComponent, {
@@ -320,7 +416,7 @@ export class FolioDetalleComponent implements OnInit {
         this.Folio.idUsuarioFirma = this.usuario.id;
         this.Folio.fechaRequerida = this.Folio.fechaRequerida = moment(this.folioForm.controls["fechaRequeridaDatepicker"].value);
         this.Folio.estadoFolio = true;
-       console.log(this.Folio);
+
        /*
         this.folioService
           .correlativoFolio(this.Folio.libro.id)
@@ -483,7 +579,17 @@ export class FolioDetalleComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         if(this.Folio.idFolioRelacionado !== null){
-          console.log("si");
+          // valida si el folio es referenciado
+          if(this.folios.length > 0){
+            for(let i =0; i< this.folios.length;i++){
+              this.folioService.find(this.folios[i].folioReferencias.idFolioOrigen).subscribe(
+                folioOrigen=>{
+                  folioOrigen.body.folioReferencias = [];
+                  this.folioService.update(folioOrigen.body).subscribe();
+                }
+              );
+            }
+          }
           this.folioService.find(this.Folio.idFolioRelacionado).subscribe(
             respuesta=>{
               respuesta.body.idFolioRespuesta = null;
@@ -539,7 +645,16 @@ export class FolioDetalleComponent implements OnInit {
     let imagenLogo1 = getBase64Image(document.getElementById("imagenLogo1"));
     let imagenLogo2 = getBase64Image(document.getElementById("imagenLogo2"));
     let anotacion = stripHtml(this.folioForm.controls["anotacion"].value);
+    this.Folio.idReceptor = this.folioForm.controls["receptor"].value;
     this.Folio.fechaRequerida = moment(this.folioForm.controls["fechaRequeridaDatepicker"].value);
+    let nombreReceptor ="";
+    this.usuarioLibroService.find(this.Folio.idReceptor).subscribe(
+      respuesta=>{
+        nombreReceptor = respuesta.body.usuarioDependencia.usuario.firstName +  respuesta.body.usuarioDependencia.usuario.lastName 
+      }
+    );
+      setTimeout(() => {
+
     var docDefinition = {
       content: [
         {
@@ -674,6 +789,11 @@ export class FolioDetalleComponent implements OnInit {
                     {
                       text:
                         "Emisor: " + this.folioForm.controls["emisor"].value,
+                      italics: true,
+                    },
+                    {
+                      text:
+                        "Receptor: " + nombreReceptor,
                       italics: true,
                     },
                     {
@@ -1028,6 +1148,7 @@ export class FolioDetalleComponent implements OnInit {
         },
       });
     });
+      }, 800);
   }
   visualizarPdfOrigen(){
     this.folioService.find(this.Folio.idFolioRelacionado).subscribe(
@@ -1064,14 +1185,21 @@ export class FolioDetalleComponent implements OnInit {
     );
   }
   buscaFolioReferencia(){
+    this.folioService.getListaFolioRelacionadoSubject().subscribe(
+      respuesta => {
+        
+      }
+    );
     const dialogRef = this.dialog.open(ModalBuscarFolioComponent,{
       width : "100%",
-      data : {idContrato : this.libro.contrato.id , folios : this.folios }
+      data : {idContrato : this.libro.contrato.id , folios : this.folios, libro : this.libro}
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === null) {
+      //console.log(result);
+      if (result === null || result === "" || result === undefined) {
       } else {
-        this.folios = result;
+          //this.folios = [...this.folios,result]; 
+          //this.folios = result;
       }
     }
     );
@@ -1092,11 +1220,20 @@ export class FolioDetalleComponent implements OnInit {
   }
 
   remove(folio: any): void {
-    console.log(folio);
     const index = this.folios.indexOf(folio);
 
     if (index >= 0) {
-      this.folios.splice(index, 1);
+      if(this.folios.length <= 1){
+        this.folios = [];
+        this.folioService.removeFolioReferencia(folio,false);
+        this.folioService.createNewColeccionFolioReferencia([]);
+        this.folioService.clear();
+        console.log(this.folios);
+      }else{
+        this.folios.splice(index, 1);
+        this.folioService.removeFolioReferencia(folio);
+      }
+      
     }
   }
   _handleReaderLoaded(readerEvt) {

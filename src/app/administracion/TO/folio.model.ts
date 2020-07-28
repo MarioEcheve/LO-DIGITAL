@@ -6,6 +6,7 @@ import { IGesFavorito } from "../TO/ges-favorito.model";
 import { ILibro } from "../TO/libro.model";
 import { ITipoFolio } from "../TO/tipo-folio.model";
 import { IEstadoRespuesta } from "../TO/estado-respuesta.model";
+import { IFolioReferencia } from "./folio-referencia.model";
 
 export interface IFolio {
   id?: number;
@@ -40,6 +41,8 @@ export interface IFolio {
   estadoRespuesta?: IEstadoRespuesta;
   emisor: string;
   color : string;
+  idReceptor?: number;
+  folioReferencias?: IFolioReferencia[];
 }
 
 export class Folio implements IFolio {
@@ -75,7 +78,9 @@ export class Folio implements IFolio {
     public tipoFolio?: ITipoFolio,
     public estadoRespuesta?: IEstadoRespuesta,
     public emisor = "",
-    public color = ""
+    public color = "",
+    public idReceptor?: number,
+    public folioReferencias?: IFolioReferencia[],
   ) {
     this.requiereRespuesta = this.requiereRespuesta || false;
     this.estadoLectura = this.estadoLectura || false;

@@ -22,6 +22,7 @@ import {
 import { LoginService } from "src/app/core/login/login.service";
 import { UsuarioService } from "src/app/core/user/usuario.service";
 import { IUser } from "src/app/core/user/user.model";
+import { FolioService } from "src/app/administracion/services/folio.service";
 const misc: any = {
   navbar_menu_visible: 0,
   active_collapse: true,
@@ -51,26 +52,46 @@ export class NavbarComponent implements OnInit {
     private element: ElementRef,
     private router: Router,
     private loginService: LoginService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private folioService : FolioService
   ) {
     this.location = location;
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;
   }
-  minimizeSidebar() {
+  minimizeSidebar(valor? : any) {
     const body = document.getElementsByTagName("body")[0];
-
-    if (misc.sidebar_mini_active === true) {
-      body.classList.remove("sidebar-mini");
-      misc.sidebar_mini_active = false;
-    } else {
-      setTimeout(function () {
-        body.classList.add("sidebar-mini");
-
-        misc.sidebar_mini_active = true;
-      }, 300);
+    if(valor === 1){
+      if (misc.sidebar_mini_active === true) {
+        body.classList.remove("sidebar-mini");
+        misc.sidebar_mini_active = false;
+      } else {
+        setTimeout(function () {
+          body.classList.add("sidebar-mini");
+  
+          misc.sidebar_mini_active = true;
+        }, 300);
+      }
+    }else{
+      if(valor === 2){
+        console.log(valor);
+        setTimeout(function () {
+          body.classList.remove("sidebar-mini");
+          misc.sidebar_mini_active = false;
+        }, 300);
+      }if(valor === 3 ){
+        if (misc.sidebar_mini_active === true) {
+          body.classList.remove("sidebar-mini");
+          misc.sidebar_mini_active = false;
+        } else {
+          setTimeout(function () {
+            body.classList.add("sidebar-mini");
+    
+            misc.sidebar_mini_active = true;
+          }, 300);
+        }
+      }
     }
-
     // we simulate the window Resize so the charts will get updated in realtime.
     const simulateWindowResize = setInterval(function () {
       window.dispatchEvent(new Event("resize"));
@@ -116,6 +137,13 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.listTitles = ROUTES.filter((listTitle) => listTitle);
 
+    this.folioService.ChangeNavBarSubject().subscribe(
+      respuesta=>{
+        console.log('estoy en e nav bar ');
+          this.minimizeSidebar(respuesta);
+      }
+    );
+
     const navbar: HTMLElement = this.element.nativeElement;
     const body = document.getElementsByTagName("body")[0];
     this.toggleButton = navbar.getElementsByClassName("navbar-toggler")[0];
@@ -138,6 +166,8 @@ export class NavbarComponent implements OnInit {
     // implementacion de metodo para obtener el usuario actual
     this.usuario = JSON.parse(localStorage.getItem("user"));
     console.log(this.usuario);
+
+    
   }
   onResize(event) {
     if ($(window).width() > 991) {

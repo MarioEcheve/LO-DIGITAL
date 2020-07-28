@@ -148,12 +148,12 @@
                 </div>
                 <div class="row"> 
                   <mat-form-field class="example-full-width col-md-12">
-                    <mat-select placeholder="Receptor" name="city">
+                    <mat-select placeholder="Receptor" name="city" formControlName="receptor">
                       <mat-option
-                        *ngFor="let city of cities"
-                        [value]="city.value"
+                        *ngFor="let recep of receptor"
+                        [value]="recep.id"
                       >
-                        {{ city.viewValue }}
+                        Cargo : {{ recep?.cargoFuncion }}  |  nombre : {{ recep?.usuarioDependencia?.usuario?.firstName }} {{ recep?.usuarioDependencia?.usuario?.lastName }}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
@@ -185,7 +185,7 @@
                       </mat-chip>
                       <input placeholder="Folios Referencia"
                               disabled
-                              formControlName="folioReferencia"
+                             formControlName="folioReferencia"
                              [matChipInputFor]="chipList"
                              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                              [matChipInputAddOnBlur]="addOnBlur"

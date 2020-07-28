@@ -73,7 +73,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(ModalFirmaFolioComponent, {
       width: "40%",
       height: "35%",
-      data: { folio : this.folio , lectura : true }
+      data: { folio : this.folio , lectura : this.data.lectura }
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === null || result === "" || result === undefined) {
@@ -120,7 +120,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                   libros: null,
                 };
                 this.libroService.update(this.folio.libro).subscribe();
-              }
+                }
               this.dialogRef.close();
               this.dialogRef.beforeClosed().subscribe((respuesta) => {
                 if(this.data.lectura === true){
@@ -134,6 +134,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                   ]);
                 }
               });
+              
             });
             
           });

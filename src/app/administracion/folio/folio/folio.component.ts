@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, AfterViewInit } from "@angular/core";
 import { DropzoneConfigInterface } from "ngx-dropzone-wrapper";
 import { TableData } from "src/app/md/md-table/md-table.component";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -26,11 +26,13 @@ const defaultConfig: DropzoneConfigInterface = {
   templateUrl: "./folio.component.html",
   styleUrls: ["./folio.component.css"],
 })
-export class FolioComponent implements OnInit {
+export class FolioComponent implements OnInit, AfterViewInit {
   public tableData1: TableData;
   contrato = new Contrato();
   libros: Libro[] = [];
   folios: Folio[] = [];
+  foliosOrigen = [];
+  foliosSinBorradores = [];
   listaFolios: Folio[] = [];
   idlibro: number;
   folioFormGroup: FormGroup;
@@ -42,14 +44,12 @@ export class FolioComponent implements OnInit {
       maxFiles: 1,
     },
   };
-
   multipleConfig: DropzoneConfigInterface = {
     ...defaultConfig,
     ...{
       maxFiles: 10,
     },
   };
-
   cities = [
     {
       value: "paris-0",
@@ -67,6 +67,38 @@ export class FolioComponent implements OnInit {
         "Libro Prevención de Riesgos | Cod.: LA02 | Clase Libro: Auxiliar | Tipo Firma: Por Sistema | Estado: Abierto",
     },
   ];
+
+  typesOfActions= [
+      {
+        id :1,
+        accion : 'Bandeja de Folio'
+      },
+      {
+        id :2,
+        accion : 'Folio Mandante'
+      },
+      {
+        id :3,
+        accion : 'Folio Contratista'
+      },
+      {
+        id :4,
+        accion : 'Sin respuesta'
+      },
+      {
+        id :5,
+        accion : 'Sin Leer'
+      },
+      {
+        id :6,
+        accion : 'Destacados'
+      },
+      {
+        id :7,
+        accion : 'Borradores'
+      }
+  ];
+
   constructor(
     private route: ActivatedRoute,
     private contratoService: ContratoService,
@@ -77,9 +109,12 @@ export class FolioComponent implements OnInit {
     private usuarioLibroService: UsuarioLibroService,
     private dialog: MatDialog,
     private datePipe: DatePipe,
-  ) {}
+  ) {
+    
+  }
 
   ngOnInit(): void {
+    this.folioServie.navBarChange(1);
     this.folioFormGroup = this.fb.group({
       libro: [],
     });
@@ -172,23 +207,30 @@ export class FolioComponent implements OnInit {
       ],
     };
   }
-  buscaFolios(libro) {
+  ngAfterViewInit(folios?:any){
+    setTimeout(() => {
+      console.log('after view init');
+      console.log(this.folios);
+      this.foliosOrigen = this.folios;
+      this.folios = this.folios.filter(folio=> 
+          folio.idUsuarioFirma !== null);
+      this.foliosSinBorradores = this.folios;
+    },1000);
+  }
+  buscaFolios(libro, filtra?: boolean) {
+    this.folios = [];
+    let folios=[];
     this.libroSeleccionado = libro;
     let usuario = JSON.parse(localStorage.getItem("user"));
     this.idlibro = libro.id;
     let nombreEmisor = "";
     this.folioServie.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
-      this.folios = respuesta.body;
+      folios = respuesta.body;
       this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
       console.log('entrando al buscar folio');
       respuesta.body.forEach(element=>{
         console.log('fecha requerida: ' + element.fechaRequerida);
         if(element.fechaRequerida!== undefined){
-          //console.log(element.fechaRequerida);
-          let diasFaltantes = calcDate(new Date(element.fechaRequerida.toDate()),new Date());
-          //console.log(diasFaltantes);
-          //element.fechaRequerida = element.fechaRequerida.toDate();
-          
           element.fechaRequerida = element.fechaRequerida.local();
           console.log(element.fechaRequerida.local());
           let resultado = calcDate(element.fechaRequerida.toDate(),new Date());
@@ -220,10 +262,10 @@ export class FolioComponent implements OnInit {
           }
           
         }
-        this.folios = respuesta.body
+        //this.folios = respuesta.body;
         
       })
-      this.folios.forEach((element) => {
+      folios.forEach((element) => {
         this.usuarioLibroService
           .find(element.idUsuarioFirma)
           .subscribe((respuesta2) => {
@@ -233,6 +275,14 @@ export class FolioComponent implements OnInit {
           });
       });
     });
+    setTimeout(() => {
+      this.folios = folios;
+      this.foliosOrigen = folios;
+      this.folios = this.folios.filter(folio=> 
+          folio.idUsuarioFirma !== null);
+      this.foliosSinBorradores = this.folios;
+    }, 1000);
+
   }
   nuevoFolio() {
     const dialogRef = this.dialog.open(ModalCrearFolioComponent, {
@@ -304,6 +354,33 @@ export class FolioComponent implements OnInit {
   volverContrato() {
     this.router.navigate(["/contrato/detalle-contrato/", this.contrato.id]);
   }
+
+  filtrarFolios(accion : any){
+   this.folios = this.foliosOrigen;
+   switch(accion.id){
+     case 1 : 
+          this.folios = this.foliosSinBorradores;
+      break;
+    case 2 :
+      this.folios =[];
+      break;
+    case 3 : 
+      this.folios =[];
+      break;
+    case 4 : 
+      this.folios = this.folios.filter(folio=>folio.estadoRespuesta?.nombre==='Pendiente')
+      break;
+    case 5 :
+      this.folios = this.folios.filter(folio=>folio.idUsuarioLectura === null && folio.idUsuarioFirma !== null);
+      break;
+    case 6 : 
+      this.folios =[];
+      break;
+    case 7 :
+      this.folios = this.folios.filter(folio=>folio.idUsuarioFirma === null );
+      break;
+   }
+  }
 }
 
 function calcDate(date1,date2) {
@@ -321,3 +398,5 @@ function calcDate(date1,date2) {
   message += years + " año \n"
   return [days,months,years]
   }
+
+  

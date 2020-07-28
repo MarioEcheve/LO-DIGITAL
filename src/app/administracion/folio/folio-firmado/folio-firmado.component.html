@@ -207,7 +207,11 @@
                 </tr>
                 <tr>
                   <td>Receptor:</td>
-                  <td>&nbsp;Alex Rojas Carmona - RUT:10.455.563-0</td>
+                  <td  *ngIf="receptor">
+                    &nbsp;{{ receptor.usuarioDependencia.usuario.firstName }}
+                    {{ receptor.usuarioDependencia.usuario.lastName }}- RUT:{{
+                      receptor.usuarioDependencia.usuario.lastName
+                    }}</td>
                 </tr>
                 <tr>
                   <td></td>

@@ -1,23 +1,29 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
 import { TableData } from 'src/app/md/md-table/md-table.component';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { LibroService } from '../../services/libro.service';
 import { Libro } from '../../TO/libro.model';
 import { FolioService } from '../../services/folio.service';
-import { Folio } from '../../TO/folio.model';
+import { Folio, IFolio } from '../../TO/folio.model';
 import { UsuarioLibroService } from '../../services/usuario-libro.service';
 import { VisorPdfComponent } from '../../shared/visor-pdf/visor-pdf/visor-pdf.component';
+import { Observable } from 'rxjs';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { resolve } from 'path';
 
 @Component({
   selector: 'app-modal-buscar-folio',
   templateUrl: './modal-buscar-folio.component.html',
   styleUrls: ['./modal-buscar-folio.component.css']
 })
-export class ModalBuscarFolioComponent implements OnInit {
+export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
   public tableData1: TableData;
   libros : Libro[] = [];
   folios: Folio[] = [];
+  folios$: Observable<IFolio[]>;
+  libroSeleccionado$: Observable<Libro>;
   foliosRelacionados = [];
+  buscaFolioForm : FormGroup;
   constructor(
     public dialogRef: MatDialogRef<ModalBuscarFolioComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -25,15 +31,17 @@ export class ModalBuscarFolioComponent implements OnInit {
     private folioService : FolioService,
     private usuarioLibroService : UsuarioLibroService,
     private dialog: MatDialog,
-  ) { }
+    private fb : FormBuilder
+  ) { 
+  }
 
   ngOnInit(): void {
-    console.log(this.data.idContrato);
+    this.folios$ = this.folioService.getFolioRelacionadoSubject();
     this.libroService
         .buscarlibroPorContrato(this.data.idContrato)
         .subscribe((respuesta) => {
           this.libros = respuesta.body;
-          console.log(this.libros);
+          
         });
     this.tableData1 = {
       headerRow: [
@@ -45,32 +53,65 @@ export class ModalBuscarFolioComponent implements OnInit {
       ],
       dataRows: [],
     };
+    this.buscaFolioForm  = this.fb.group({
+      libro : []
+    })
   }
-  buscaFolios(libro){
-    this.folioService.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
-      console.log(respuesta.body);
-      let nombreEmisor = "";
-      //this.folios = respuesta.body;
-      let valor = respuesta.body.filter( folio => folio.idUsuarioFirma !== null);
-      this.folios = valor;
-      console.log(valor);
-      if(this.data.folios.length > 0){
-        for(let i =0; i< this.data.folios.length;i++){
-          console.log(this.data.folios[i]);
-          this.folios= this.folios.filter(folio => folio !== this.data.folios[i])
-        }
-      }
+  ngAfterViewInit(){
+    this.buscaFolioForm.controls['libro'].setValue(this.data.libro.nombre);
+    this.buscaFolios(this.data.libro);
+  }
+  buscaFolios(libro, eventoCick? : boolean){
+    
+    let  promesa = new Promise((resolve,reject)=>{
+      setTimeout(() => {
+        this.folioService.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
+          let valor2 = [];
+          let valor= [];
+          valor = respuesta.body.filter( folio => folio.idUsuarioFirma !== null);
+          valor2 = respuesta.body.filter( folio => folio.idUsuarioFirma !== null);
+          valor2.forEach(element=>{
+            this.usuarioLibroService
+            .find(element.idUsuarioFirma)
+            .subscribe((respuesta) => {
+              element.emisor = respuesta.body.usuarioDependencia.usuario.firstName +
+              " " + respuesta.body.usuarioDependencia.usuario.lastName;
 
-      this.folios.forEach((element) => {
-        this.usuarioLibroService
-          .find(element.idUsuarioFirma)
-          .subscribe((respuesta2) => {
-            nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
-            element.emisor = nombreEmisor;
-            console.log(element.emisor);
+            });
           });
+          setTimeout(() => {
+            this.folioService.createNewColeccionFolioReferencia(valor2);
+          }, 200);
+
+          //----------------------------------------------------------------------------------------------
+          if(this.data.folios.length > 0){
+            for(var i=0;i < this.data.folios.length;i++){
+              if(valor2.length > 0 ){
+                if(valor2[i] !== undefined){
+                  if(this.data.folios[i].id === valor2[i].id){
+                      valor2 = valor2.filter(folio => {
+                      return folio.id !== this.data.folios[i].id;
+                    })
+                  }
+                }else{  
+                  valor2 = []
+                }
+              }
+            }
+            setTimeout(() => {
+              resolve(valor2);
+            }, 400);
+          }else{
+            setTimeout(() => {
+              resolve(valor2);
+            }, 400);
+          }
+        }); 
       });
-    }); 
+    });
+    promesa.then((folios : [])=>{
+      this.folioService.createNewColeccionFolioReferencia(folios);
+    });
   }
   visorPdf(row){
       let pdf = row.pdfFirmado;
@@ -82,7 +123,6 @@ export class ModalBuscarFolioComponent implements OnInit {
           return res.blob();
         })
         .then(blob => {
-          console.log(blob);
           resolve(URL.createObjectURL(blob));
         });
       });
@@ -100,16 +140,24 @@ export class ModalBuscarFolioComponent implements OnInit {
           },
         });
       });
-    }
-  agregarFolioReferencia(row){
-    this.folios = this.folios.filter(folio => folio !== row);
-    this.foliosRelacionados.push(row);
-    //this.folioService.changeFoliosReferenciaActuales(row);;
-    //this.dialogRef.close(row);
   }
-
+  agregarFolioReferencia(row){
+    this.folioService.createNewColeccionFolioReferencia(row);
+    /*
+    this.folios = this.folios.filter(folio => folio !== row);
+    this.dialogRef.close(row);
+    */
+  }
   agregar(){
-    this.dialogRef.close(this.foliosRelacionados);
+    //this.dialogRef.close(this.foliosRelacionados);
   }
 }
 
+function removeItemFromArr ( arr, item ) {
+  var i = arr.indexOf( item );
+
+  if ( i !== -1 ) {
+      arr.splice( i, 1 );
+  }
+  return arr;
+}

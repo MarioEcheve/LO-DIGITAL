@@ -22,6 +22,7 @@ import { NgxExtendedPdfViewerModule } from "ngx-extended-pdf-viewer";
 import { ModalCrearFolioComponent } from "./modal-crear-folio/modal-crear-folio.component";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { ModalBuscarFolioComponent } from './modal-buscar-folio/modal-buscar-folio.component';
+import { TablaBuscarFoliosComponent } from './componentes/tabla-buscar-folios/tabla-buscar-folios.component';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   // Change this to your upload POST address:
@@ -40,6 +41,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     FolioDetalleComponent,
     ModalCrearFolioComponent,
     ModalBuscarFolioComponent,
+    TablaBuscarFoliosComponent,
   ],
   imports: [
     CommonModule,

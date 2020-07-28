@@ -29,6 +29,7 @@ import { TipoContratoService } from "../../services/tipo-contrato.service";
 import { ITipoContrato } from "../../TO/tipo-contrato.model";
 import { IModalidad } from "../../TO/modalidad.model";
 import { ModalidadService } from "../../services/modalidad.service";
+import { FolioService } from "../../services/folio.service";
 
 declare const $: any;
 interface FileReaderEventTarget extends EventTarget {
@@ -106,8 +107,12 @@ export class DetalleContratoComponent
     private router: Router,
     private libroService: LibroService,
     private tipoContratoService: TipoContratoService,
-    private modalidadService: ModalidadService
-  ) {}
+    private modalidadService: ModalidadService,
+    private folioService : FolioService,
+    
+  ) {
+
+  }
 
   isFieldValid(form: FormGroup, field: string) {
     return !form.get(field).valid && form.get(field).touched;
@@ -120,6 +125,7 @@ export class DetalleContratoComponent
     };
   }
   ngOnInit() {
+    this.folioService.navBarChange(2);
     this.type = this.formBuilder.group({
       // To add a validator, we must first convert the string value into an array. The first item in the array is the default value if any, then the next item in the array is the validator. Here we are adding a required validator meaning that the firstName attribute must have a value in it.
       firstName: [null, Validators.required],

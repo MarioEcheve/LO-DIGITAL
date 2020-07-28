@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpResponse } from "@angular/common/http";
-import { Observable, BehaviorSubject } from "rxjs";
+import { Observable, BehaviorSubject, EMPTY } from "rxjs";
 import { map } from "rxjs/operators";
 import * as moment from "moment";
 
@@ -19,25 +19,104 @@ export class FolioService {
     this.SERVER_API_URL + "api/buscarFolioPorLibro";
   public resourceUrlCorrelativoFolio =
     this.SERVER_API_URL + "api/correlativoFolio";
+  public resourceUrlFolioReferencias =
+    this.SERVER_API_URL + "api/folioReferencias";
 
+    folioReferencias
   //private folioReferencia = new BehaviorSubject<any>({});
   //folioReferenciaActuales = this.folioReferencia.asObservable();
+  private folioRelacionadoSubject = new BehaviorSubject([]);
+  private folioRelacionado: IFolio[];
 
+  private listafolioRelacionadoSubject = new BehaviorSubject([]);
+  private listafolioRelacionado: IFolio[] = [];
 
-  private folioReferencia: any[];
-  private observableFolioReferencia: BehaviorSubject<any[]>;
+  private navBarSubject = new BehaviorSubject(0);
+  private valorNavBar: any="";
+
   constructor(protected http: HttpClient) {
-    this.folioReferencia = new Array()  
-    this.observableFolioReferencia = <BehaviorSubject<any[]>>new BehaviorSubject([]);
+    
   }
-  get foliosRelacionados() {
-    return this.observableFolioReferencia.asObservable();
+  navBarChange(valor: any) {
+    /**
+    * Evitar hacer this.folio.push() pues estaríamos modificando los valores directamente,
+    * se debe generar un nuevo array !!!!.
+    */
+    this.valorNavBar = valor;
+    this.refreshNavBar();
   }
-  
-  addFolioReferencia(comment: any) {
-    this.folioReferencia.push(comment);
-    this.observableFolioReferencia.next(Object.assign([], this.folioReferencia));
+
+  ChangeNavBarSubject(): Observable<any> {
+    return this.navBarSubject.asObservable();
   }
+
+
+  getFolioRelacionadoSubject(): Observable<IFolio[]> {
+    return this.folioRelacionadoSubject.asObservable();
+  }
+
+  getListaFolioRelacionadoSubject(): Observable<IFolio[]> {
+    return this.listafolioRelacionadoSubject.asObservable();
+  }
+
+  private refresh() {
+    // Emitir los nuevos valores para que todos los que dependan se actualicen.
+    this.folioRelacionadoSubject.next(this.folioRelacionado);
+  }
+
+  private refreshNavBar() {
+    // Emitir los nuevos valores para que todos los que dependan se actualicen.
+    this.navBarSubject.next(this.valorNavBar);
+  }
+
+   clear() {
+    // Emitir los nuevos valores para que todos los que dependan se actualicen.
+    this.listafolioRelacionadoSubject.next([]);
+    this.refresh();
+  }
+
+
+  private refreshLista() {
+    // Emitir los nuevos valores para que todos los que dependan se actualicen.
+    this.listafolioRelacionadoSubject.next(this.listafolioRelacionado);
+  }
+
+  createNewColeccionFolioReferencia(folio: IFolio[]) {
+    /**
+    * Evitar hacer this.folio.push() pues estaríamos modificando los valores directamente,
+    * se debe generar un nuevo array !!!!.
+    */
+    this.folioRelacionado = folio;
+    this.refresh();
+  }
+
+  createNewListaColeccionFolioReferencia(folio: IFolio, setValue?:Boolean, listaFolio?:any) {
+    /**
+    * Evitar hacer this.folio.push() pues estaríamos modificando los valores directamente,
+    * se debe generar un nuevo array !!!!.
+    */
+   if(setValue){
+    this.listafolioRelacionado = listaFolio;
+    this.refreshLista();
+   }else{
+    this.listafolioRelacionado = [...this.listafolioRelacionado,folio];
+    this.refreshLista();
+   }
+  }
+  removeFolioReferencia(folio : IFolio, contador? : Boolean){
+    const index = this.listafolioRelacionado.indexOf(folio);
+    if(contador===false){
+      this.listafolioRelacionado = [];
+      this.refresh();
+    }else{
+      if (index >= 0) {
+        this.listafolioRelacionado.splice(index, 1);
+        this.refresh();
+      }
+    }
+    
+  }
+
   create(folio: IFolio): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(folio);
     return this.http
@@ -93,6 +172,14 @@ export class FolioService {
       })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
+
+  foliosReferencias(id?: any): Observable<any> {
+    const options = createRequestOption(id);
+    return this.http
+      .get<any>(`${this.resourceUrlFolioReferencias}/${id}`, { params: options, observe: "response" });
+  }
+
+
   protected convertDateFromClient(folio: IFolio): IFolio {
     const copy: IFolio = Object.assign({}, folio, {
       fechaRequerida:

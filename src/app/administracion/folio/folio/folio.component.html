@@ -51,7 +51,7 @@
                     <mat-option
                       *ngFor="let libro of libros"
                       [value]="libro.nombre"
-                      (click)="buscaFolios(libro)"
+                      (click)="buscaFolios(libro, true)"
                     >
                       {{ libro.nombre }} | Cod.: {{ libro.codigo }} | Clase
                       Libro: {{ libro.tipoLibro.descripcion }} | Tipo Firma:
@@ -93,50 +93,10 @@
             </div>
             <div>
               <mat-list role="list">
-                <hr />
-                <mat-list-item role="listitem">
-                  <i class="material-icons material-icons-lista"
-                    >forward_to_inbox</i
-                  >
-                  Bandeja de Folio</mat-list-item
-                >
-                <mat-list-item role="listitem">
-                  <i class="material-icons material-icons-lista"
-                    >forward_to_inbox</i
-                  >
-                  Folio Mandante</mat-list-item
-                >
-                <mat-list-item role="listitem">
-                  <i class="material-icons material-icons-lista"
-                    >forward_to_inbox</i
-                  >
-                  Folio Contratista</mat-list-item
-                >
-                <mat-list-item role="listitem">
-                  <i class="material-icons material-icons-lista"
-                    >forward_to_inbox</i
-                  >
-                  Sin respuesta</mat-list-item
-                >
-                <mat-list-item role="listitem">
-                  <i class="material-icons material-icons-lista"
-                    >forward_to_inbox</i
-                  >
-                  Sin Leer</mat-list-item
-                >
-                <mat-list-item role="listitem">
-                  <i class="material-icons material-icons-lista"
-                    >forward_to_inbox</i
-                  >
-                  Destacados</mat-list-item
-                >
-                <mat-list-item role="listitem">
-                  <i class="material-icons material-icons-lista"
-                    >forward_to_inbox</i
-                  >
-                  Borradores</mat-list-item
-                >
-              </mat-list>
+                <mat-list-item *ngFor="let accion of typesOfActions" (click)="filtrarFolios(accion)">
+                  {{accion.accion }}
+                </mat-list-item>
+              </mat-list>          
             </div>
           </div>
           <div class="row col-md-10">
@@ -191,7 +151,7 @@
                       <td style="font-weight: bold;">
                         {{ row.emisor }}
                       </td>
-                      <td>
+                      <td class="ellipsis">
                         <a style="font-weight: bold;" class="text-muted">{{
                           row.tipoFolio.nombre
                         }}</a>
