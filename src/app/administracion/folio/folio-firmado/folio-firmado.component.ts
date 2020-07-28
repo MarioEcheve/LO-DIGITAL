@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, AfterViewInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FolioService } from "../../services/folio.service";
 import { Folio } from "../../TO/folio.model";
@@ -74,19 +74,22 @@ export class FolioFirmadoComponent implements OnInit {
       let usuarioActual = JSON.parse(localStorage.getItem("user"));
       this.obtenerPerfilLibroUsuario(this.Folio.libro.id, usuarioActual.id);
       this.idlibroRelacionado = respuesta.body.idFolioRespuesta;
-      this.folioService.find(respuesta.body.idFolioRelacionado).subscribe(
-        folioRelacionado=>{
-          this.folioRelacionado = folioRelacionado.body;
-        }
-      );
-
-      this.obtenerEmisorFolio(respuesta.body.idUsuarioCreador);
+      
+      if(respuesta.body.idFolioRelacionado !== null){
+        this.folioService.find(respuesta.body.idFolioRelacionado).subscribe(
+          folioRelacionado=>{
+            this.folioRelacionado = folioRelacionado.body;
+          }
+        );
+      }
+      this.obtenerEmisorFolio(respuesta.body.idUsuarioFirma);
       this.obtenerReceptorFolio(respuesta.body.idReceptor);
       this.dependenciaService
         .find(respuesta.body.libro.contrato.idDependenciaContratista)
         .subscribe((respuesta) => {
           this.dependenciaMandante = respuesta.body;
         });
+        
         this.contratoService.find(this.Folio.libro.contrato.id).subscribe((respuesta) => {
           this.contrato = respuesta.body;
           this.libroService

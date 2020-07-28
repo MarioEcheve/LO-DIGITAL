@@ -262,18 +262,31 @@ export class FolioComponent implements OnInit, AfterViewInit {
         }
         //this.folios = respuesta.body;
         
-      })
+      });
       folios.forEach((element) => {
-        this.usuarioLibroService
-          .find(element.idUsuarioFirma)
+        if(element.idUsuarioFirma === null){
+          this.usuarioLibroService
+          .find(element.idUsuarioCreador)
           .subscribe((respuesta2) => {
             nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
             element.emisor = nombreEmisor;
             console.log(element.emisor);
           });
+        }else{
+          this.usuarioLibroService
+          .find(element.idUsuarioFirma )
+          .subscribe((respuesta2) => {
+            nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
+            element.emisor = nombreEmisor;
+            console.log(element.emisor);
+          });
+        }
+        
       });
     });
     setTimeout(() => {
+
+
       this.folios = folios;
       this.foliosOrigen = folios;
       this.folios = this.folios.filter(folio=> 

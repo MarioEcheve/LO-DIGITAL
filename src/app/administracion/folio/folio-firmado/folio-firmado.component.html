@@ -223,7 +223,7 @@
                 </tr>
                 <tr>
                   <td>Respuesta de:</td>
-                  <td  *ngIf="Folio.idlibroRelacionado !== null">&nbsp; {{folioRelacionado.libro.nombre}} 
+                  <td  *ngIf="Folio.idlibroRelacionado !== null">&nbsp; {{folioRelacionado.libro?.nombre}} 
                             | Folio : {{folioRelacionado.numeroFolio }} 
                             
                   </td>

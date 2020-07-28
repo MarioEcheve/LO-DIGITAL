@@ -55,46 +55,32 @@ export class FolioDetalleComponent implements OnInit {
   ]
   // IMPLEMENTACION CONFIG ANGULAR-EDITOR
   editorConfig: AngularEditorConfig = {
-    editable: true,
+ editable: true,
     spellcheck: true,
-    height: "auto",
-    minHeight: "300px",
-    maxHeight: "auto",
-    width: "auto",
-    minWidth: "0",
-    translate: "yes",
-    enableToolbar: true,
-    showToolbar: true,
-    placeholder: "Enter text here...",
-    defaultParagraphSeparator: "",
-    defaultFontName: "",
-    defaultFontSize: "",
-    fonts: [
-      { class: "arial", name: "Arial" },
-      { class: "times-new-roman", name: "Times New Roman" },
-      { class: "calibri", name: "Calibri" },
-      { class: "comic-sans-ms", name: "Comic Sans MS" },
-    ],
+    height: '15rem',
+    minHeight: '5rem',
+    placeholder: 'Enter text here...',
+    translate: 'no',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    toolbarHiddenButtons: [
+      ['bold']
+      ],
     customClasses: [
       {
         name: "quote",
         class: "quote",
       },
       {
-        name: "redText",
-        class: "redText",
+        name: 'redText',
+        class: 'redText'
       },
       {
         name: "titleText",
         class: "titleText",
         tag: "h1",
       },
-    ],
-    uploadUrl: "v1/image",
-    uploadWithCredentials: false,
-    sanitize: true,
-    toolbarPosition: "top",
-    toolbarHiddenButtons: [["bold", "italic"], ["fontSize"]],
+    ]
   };
 
   // implementacion de chips
@@ -162,7 +148,7 @@ export class FolioDetalleComponent implements OnInit {
       respuestaFolio : ["respuesta de "],
       fechaRequeridaDatepicker : ["",this.fechaRequeridaValidators],
       folioReferencia : [],
-      receptor : []
+      receptor : [ null,Validators.required]
     });
     this.tableData1 = {
       headerRow: ["#", "Name", "Job Position", "Since", "Salary", "Actions"],
@@ -209,8 +195,6 @@ export class FolioDetalleComponent implements OnInit {
       this.Folio = respuesta.body;
       this.usuarioLibroService.ListaUsuariosLibros(respuesta.body.libro.id,usuarioActual.id).subscribe(
         respuesta=>{
-          console.log('AQUI ESTA LA RESPUESTA DE LOS USUARIOS');
-          console.log(respuesta.body);
           this.receptor = respuesta.body;
         }
       );
