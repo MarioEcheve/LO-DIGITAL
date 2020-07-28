@@ -110,48 +110,49 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                   }
                 );
             }
-            this.folioService.update(this.folio).subscribe((respuesta) => {
-              if (
-                this.folio.tipoFolio.nombre.toLowerCase() === "apertura libro"
-              ) {
-                this.folio.libro.estadoLibro = {
-                  id:  1301,
-                  nombre: "Abierto",
-                  libros: null,
-                };
-                this.folio.libro.fechaApertura = moment(Date.now());
-                this.libroService.update(this.folio.libro).subscribe();
-              }
-              if (
-                this.folio.tipoFolio.nombre.toLowerCase() === "cierre libro"
-              ) {
-                this.folio.libro.estadoLibro = {
-                  id:  1302,
-                  nombre: "Cerrado",
-                  libros: null,
-                };
+            if(this.data.lectura === false){
+              this.folioService.update(this.folio).subscribe((respuesta) => {
+                if(this.folio.tipoFolio.nombre.toLowerCase() === "apertura libro") {
+                    this.folio.libro.estadoLibro = {
+                    id:  1301,
+                    nombre: "Abierto",
+                    libros: null,
+                  };
+                  this.folio.libro.fechaApertura = moment(Date.now());
+                  this.libroService.update(this.folio.libro).subscribe();
+                }
+                if(this.folio.tipoFolio.nombre.toLowerCase() === "cierre libro") {
+                    this.folio.libro.estadoLibro = {
+                      id:  1302,
+                      nombre: "Cerrado",
+                      libros: null,
+                    };
+                  this.folio.libro.fechaCierre = moment(Date.now());
+                  this.folio.libro.fechaApertura = moment(this.folio.libro.fechaApertura);
+                  this.libroService.update(this.folio.libro).subscribe();
+                }
+                this.dialogRef.close();
+                this.dialogRef.beforeClosed().subscribe((respuesta) => {
+                  if(this.data.lectura === true){
+                    this.showNotificationSuccessLectura("top", "right");
+                  }else{
+                    this.showNotificationSuccess("top", "right");
+                    this.router.navigate([
+                      "/folio/folio/",
+                      this.folio.libro.contrato.id,
+                      this.folio.libro.id,
+                    ]);
+                  }
+                });
                 
-                this.folio.libro.fechaCierre = moment(Date.now());
-                this.folio.libro.fechaApertura = moment(this.folio.libro.fechaApertura);
-                console.log(this.folio);
-                this.libroService.update(this.folio.libro).subscribe();
-              }
+              });
+            }else{
               this.dialogRef.close();
               this.dialogRef.beforeClosed().subscribe((respuesta) => {
-                if(this.data.lectura === true){
-                  this.showNotificationSuccessLectura("top", "right");
-                }else{
-                  this.showNotificationSuccess("top", "right");
-                  this.router.navigate([
-                    "/folio/folio/",
-                    this.folio.libro.contrato.id,
-                    this.folio.libro.id,
-                  ]);
-                }
+                this.folioService.update(this.folio).subscribe();
+                this.showNotificationSuccessLectura("top", "right");
               });
-              
-            });
-            
+            }
           });
       }
     });

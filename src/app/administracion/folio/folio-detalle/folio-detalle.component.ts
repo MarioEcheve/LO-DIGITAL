@@ -198,7 +198,6 @@ export class FolioDetalleComponent implements OnInit {
           this.receptor = respuesta.body;
         }
       );
-
       this.folioService.foliosReferencias(respuesta.body.id).subscribe(
         respuesta=>{
           this.Folio.folioReferencias = respuesta.body.folioReferencias;
