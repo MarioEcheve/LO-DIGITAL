@@ -245,6 +245,8 @@ export class FolioDetalleComponent implements OnInit {
       this.folioForm.controls["asunto"].setValue(respuesta.body.asunto);
       this.folioForm.controls["anotacion"].setValue(respuesta.body.anotacion);
       this.folioForm.controls["requiereRespuesta"].setValue(respuesta.body.requiereRespuesta);
+      this.folioForm.controls["receptor"].setValue(respuesta.body.idReceptor);
+      console.log(this.folioForm.controls["receptor"].value);
       if(this.folioForm.controls["requiereRespuesta"].value === false){
         this.muestraFechaRequerida = false;
         if(respuesta.body.idFolioRelacionado !== null){
@@ -335,6 +337,7 @@ export class FolioDetalleComponent implements OnInit {
     this.Folio.anotacion = this.folioForm.controls["anotacion"].value;
     this.Folio.asunto = this.folioForm.controls["asunto"].value;
     this.Folio.idUsuarioCreador = this.usuario.id;
+    this.Folio.idReceptor = this.folioForm.controls["receptor"].value;
     this.Folio.estadoFolio = false;
     if(this.folioForm.controls["fechaRequeridaDatepicker"].value !== ""){
       let fechaRequerida = moment(this.folioForm.controls["fechaRequeridaDatepicker"].value +":00Z");

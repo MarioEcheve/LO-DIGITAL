@@ -31,7 +31,7 @@ export class ModalFirmaFolioComponent implements OnInit {
     if(this.data.lectura === true){
       this.dialogRef.close(tipoFirma);
     }else{
-      if(this.data.folio.fechaRequerida !== undefined ){
+      if(this.data.folio.fechaRequerida !== undefined || this.data.folio.fechaRequerida !== null){
         if(this.data.folio.fechaRequerida.toDate() < new Date()){
          this.notificacionError();
         }else{
