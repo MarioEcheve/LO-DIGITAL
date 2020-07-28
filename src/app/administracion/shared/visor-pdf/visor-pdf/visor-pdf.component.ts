@@ -120,7 +120,17 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                   libros: null,
                 };
                 this.libroService.update(this.folio.libro).subscribe();
-                }
+              }
+              if (
+                this.folio.tipoFolio.nombre.toLowerCase() === "cierre libro"
+              ) {
+                this.folio.libro.estadoLibro = {
+                  id:  1302,
+                  nombre: "Cerrado",
+                  libros: null,
+                };
+                this.libroService.update(this.folio.libro).subscribe();
+              }
               this.dialogRef.close();
               this.dialogRef.beforeClosed().subscribe((respuesta) => {
                 if(this.data.lectura === true){

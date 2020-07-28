@@ -296,6 +296,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
 
   }
   nuevoFolio() {
+    console.log(this.libroSeleccionado);
     const dialogRef = this.dialog.open(ModalCrearFolioComponent, {
       width: "40%",
       height: "50%%",

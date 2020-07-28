@@ -84,6 +84,7 @@
                 mat-raised-button
                 class="btn btn-primary"
                 (click)="nuevoFolio()"
+                [disabled]="libroSeleccionado.estadoLibro.nombre === 'Cerrado'"
               >
                 <span class="btn-label">
                   <i class="material-icons">add</i>

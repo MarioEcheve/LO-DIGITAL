@@ -332,8 +332,6 @@ export class FolioDetalleComponent implements OnInit {
       this.Folio.fechaRequerida = undefined;
     }
     console.log(this.folios);
-    
-    
     if (this.tipoFolioSeleccionado !== "") {
       this.Folio.tipoFolio = this.tipoFolioSeleccionado;
     }
