@@ -16,6 +16,7 @@ import { Router } from "@angular/router";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import * as moment from "moment";
 import { LibroService } from "src/app/administracion/services/libro.service";
+import { UsuarioLibroService } from "src/app/administracion/services/usuario-libro.service";
 declare var $: any;
 @Component({
   selector: "app-visor-pdf",
@@ -31,11 +32,12 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private folioService: FolioService,
     private router: Router,
-    private libroService: LibroService
+    private libroService: LibroService,
+    private usuarioLibroService : UsuarioLibroService
   ) {}
 
   ngOnInit(): void {
-    console.log(this.data.lectura);
+    //console.log(this.data.lectura);
     //this.mostrar = t
   }
   ngAfterViewInit() {
@@ -81,6 +83,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
         this.folioService
           .correlativoFolio(this.folio.libro.id)
           .subscribe((respuesta) => {
+            
             this.folio.estadoFolio = true;
             
             this.folio.fechaFirma = moment(Date.now());
@@ -94,15 +97,27 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
             this.folio.libro.fechaCreacion = moment(
               this.folio.libro.fechaCreacion
             );
-            
-            console.log(this.folio.idFolioRelacionado);
+            this.folio.idUsuarioFirma = this.usuario.id;
+            this.usuarioLibroService.query().subscribe(
+              usuario => {
+                let usuariosMandante = usuario.body.filter(usuariosMandante => usuariosMandante.usuarioDependencia.dependencia.id === this.folio.libro.contrato.dependenciaMandante.id );
+                //let usuariosContratista = usuario.body.filter(usuariosMandante => usuariosMandante.usuarioDependencia.dependencia.id === this.folio.libro.contrato.idDependenciaContratista);
+                usuariosMandante = usuariosMandante.filter(usuarioMandante => usuarioMandante.id === this.folio.idUsuarioFirma);
+                if(usuariosMandante.length > 0){
+                  this.folio.entidadCreacion = true;
+                }else{
+                  this.folio.entidadCreacion = false;
+                }
+              }
+            );
             if(this.folio.requiereRespuesta === true){
               this.folio.estadoRespuesta = {id: 1401, nombre: "Pendiente", folios: null}
             }else{
               this.folio.estadoRespuesta =null;
             }
             // cuando venga un folio con respuesta, actualiza el folio origen
-            if(this.folio.idFolioRelacionado!==null){
+            setTimeout(() => {
+              if(this.folio.idFolioRelacionado!==null){
                 this.folioService.find(this.folio.idFolioRelacionado).subscribe(
                   respuesta=>{
                     respuesta.body.estadoRespuesta = {id: 1402, nombre: "Respondido", folios: null};
@@ -153,6 +168,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                 this.showNotificationSuccessLectura("top", "right");
               });
             }
+            }, 700);
           });
       }
     });

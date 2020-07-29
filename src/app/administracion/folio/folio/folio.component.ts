@@ -128,11 +128,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
           this.libros = respuesta.body;
         });
     });
-
-    console.log(
-      "idLibro" + parseInt(this.route.snapshot.paramMap.get("idLibro"))
-    );
-
     this.libroService
       .find(parseInt(this.route.snapshot.paramMap.get("idLibro")))
       .subscribe((respuesta) => {
@@ -209,8 +204,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(folios?:any){
     setTimeout(() => {
-      console.log('after view init');
-      console.log(this.folios);
       this.foliosOrigen = this.folios;
       this.folios = this.folios.filter(folio=> 
           folio.idUsuarioFirma !== null);
@@ -230,9 +223,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
       respuesta.body.forEach(element=>{
         if(element.fechaRequerida!== undefined){
           element.fechaRequerida = element.fechaRequerida.local();
-          console.log(element.fechaRequerida.local());
           let resultado = calcDate(element.fechaRequerida.toDate(),new Date());
-          console.log(resultado);
           if(element.estadoRespuesta !== null){
             if(element.estadoRespuesta.nombre.toLowerCase() === "respondido"){
               element.color = "#70F81D";
@@ -270,7 +261,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
           .subscribe((respuesta2) => {
             nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
             element.emisor = nombreEmisor;
-            console.log(element.emisor);
           });
         }else{
           this.usuarioLibroService
@@ -278,7 +268,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
           .subscribe((respuesta2) => {
             nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
             element.emisor = nombreEmisor;
-            console.log(element.emisor);
           });
         }
         
@@ -296,7 +285,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
 
   }
   nuevoFolio() {
-    console.log(this.libroSeleccionado);
     const dialogRef = this.dialog.open(ModalCrearFolioComponent, {
       width: "40%",
       height: "50%%",
@@ -314,7 +302,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
     */
   }
   eliminarFolio(row) {
-    console.log(row);
     Swal.fire({
       title: "Esta Seguro ?",
       text: "Los cambios no podran ser revertidos!",
