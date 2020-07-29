@@ -101,7 +101,6 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
             this.usuarioLibroService.query().subscribe(
               usuario => {
                 let usuariosMandante = usuario.body.filter(usuariosMandante => usuariosMandante.usuarioDependencia.dependencia.id === this.folio.libro.contrato.dependenciaMandante.id );
-                //let usuariosContratista = usuario.body.filter(usuariosMandante => usuariosMandante.usuarioDependencia.dependencia.id === this.folio.libro.contrato.idDependenciaContratista);
                 usuariosMandante = usuariosMandante.filter(usuarioMandante => usuarioMandante.id === this.folio.idUsuarioFirma);
                 if(usuariosMandante.length > 0){
                   this.folio.entidadCreacion = true;
