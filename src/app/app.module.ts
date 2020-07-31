@@ -60,6 +60,7 @@ import { NgxExtendedPdfViewerModule } from "ngx-extended-pdf-viewer";
  import localePt from '@angular/common/locales/pt';
  import localeEn from '@angular/common/locales/en';
  import localeEsAr from '@angular/common/locales/es-AR';
+import { FiltroFolioPersonalizadoComponent } from './administracion/shared/filtro-folio-personalizado/filtro-folio-personalizado.component';
 
 registerLocaleData(localePy, 'es');
 registerLocaleData(localePt, 'pt');
@@ -100,7 +101,7 @@ registerLocaleData(localeEsAr, 'es-Ar');
     MatNativeDateModule,
     NgxExtendedPdfViewerModule,
   ],
-  declarations: [VisorPdfComponent],
+  declarations: [VisorPdfComponent, FiltroFolioPersonalizadoComponent],
 })
 export class MaterialModule {}
 

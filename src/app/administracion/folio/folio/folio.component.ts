@@ -19,6 +19,7 @@ import { element } from "protractor";
 import * as moment from "moment";
 import { GesFavoritoService } from "../../services/ges-favorito.service";
 import { GesFavorito } from "../../TO/ges-favorito.model";
+import { FiltroFolioPersonalizadoComponent } from "../../shared/filtro-folio-personalizado/filtro-folio-personalizado.component";
 const defaultConfig: DropzoneConfigInterface = {
   clickable: true,
   addRemoveLinks: true,
@@ -295,7 +296,8 @@ export class FolioComponent implements OnInit, AfterViewInit {
         libros: this.libros,
         libroSeleccionado: this.libroSeleccionado,
         habilitar : false,
-        folio : null
+        folio : null,
+
       },
     });
     /*
@@ -364,10 +366,10 @@ export class FolioComponent implements OnInit, AfterViewInit {
           this.folios = this.foliosSinBorradores;
       break;
     case 2 :
-      this.folios =[];
+      this.folios = this.folios.filter(folio=>folio.entidadCreacion === true);  
       break;
     case 3 : 
-      this.folios =[];
+    this.folios = this.folios.filter(folio=>folio.entidadCreacion === false);  
       break;
     case 4 : 
       this.folios = this.folios.filter(folio=>folio.estadoRespuesta?.nombre==='Pendiente')
@@ -437,6 +439,14 @@ export class FolioComponent implements OnInit, AfterViewInit {
         this.favoritoService.delete(idFolioExiste).subscribe();
       }
     }, 300);
+  }
+  modalFiltroFolioPersonalizado(){
+    const dialogRef = this.dialog.open(FiltroFolioPersonalizadoComponent, {
+      width: "70%",
+      height: "50%%",
+      data: {},
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+    });
   }
 }
 
