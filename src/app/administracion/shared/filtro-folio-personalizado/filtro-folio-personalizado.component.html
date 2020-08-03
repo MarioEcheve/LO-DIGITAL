@@ -1,27 +1,33 @@
-<div class="row">
-    <div class="col-md-12">
-        <mat-form-field class="col-md-4">
-          <mat-label>De</mat-label>
-          <input matInput placeholder="Buscar" />
-        </mat-form-field>
+<h2 mat-dialog-title> Buscador</h2>
+<mat-dialog-content >
+    <div class="row">
+        <div class="col-md-12">
+            <mat-form-field class="col-md-4" >
+                <mat-label>De</mat-label>
+                <input matInput placeholder="Buscar" [(ngModel)]="criteriosBusqueda.emisor"/>
+            </mat-form-field>
+        </div>
+        <div class="col-md-12">
+            <mat-form-field class="col-md-4" >
+                <mat-label>Para</mat-label>
+                <input matInput placeholder="Buscar" [(ngModel)]="criteriosBusqueda.receptor"/>
+            </mat-form-field>
+        </div>
+        <div class="col-md-12" >
+            <mat-form-field class="col-md-8">
+                <mat-label>Asunto</mat-label>
+                <input matInput placeholder="Buscar" [(ngModel)]="criteriosBusqueda.asunto"/>
+            </mat-form-field>
+        </div>
     </div>
-    <div class="col-md-12">
-        <mat-form-field class="col-md-4">
-          <mat-label>Para</mat-label>
-          <input matInput placeholder="Buscar" />
-        </mat-form-field>
-    </div>
-    <div class="col-md-12" >
-        <mat-form-field class="col-md-8">
-          <mat-label>Asunto</mat-label>
-          <input matInput placeholder="Buscar" />
-        </mat-form-field>
-    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
     <div class="col-md-12">
         <button
             mat-raised-button
             class="btn btn-primary"
             style="float: right;"
+            (click)="FiltroFolioPersonalizado()"
             >
             <span class="btn-label">
                 <i class="material-icons">search</i>
@@ -29,4 +35,4 @@
             Buscar
         </button>
     </div>
-</div>
+</mat-dialog-actions>

@@ -21,8 +21,9 @@ export class FolioService {
     this.SERVER_API_URL + "api/correlativoFolio";
   public resourceUrlFolioReferencias =
     this.SERVER_API_URL + "api/folioReferencias";
-
-    folioReferencias
+  public resourceUrlFiltroFolioPersonalizado=
+    this.SERVER_API_URL + "api/filtroFolioPersonalizado";
+    
   //private folioReferencia = new BehaviorSubject<any>({});
   //folioReferenciaActuales = this.folioReferencia.asObservable();
   private folioRelacionadoSubject = new BehaviorSubject([]);
@@ -135,8 +136,27 @@ export class FolioService {
     return this.http
       .get<IFolio>(`${this.resourceUrl}/${id}`, { observe: "response" })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
-  }
+  }s
 
+  FiltroFolioPersonalizado(idlibro :number , emisor : string , receptor : string , asunto: string,): Observable<EntityArrayResponseType> {
+    if(emisor === ""){
+      emisor = "null"
+    }
+    if(receptor ===""){
+      receptor = "null";
+    }
+    if(asunto === ""){
+      asunto = "null"
+    }
+    const options = createRequestOption();
+    return this.http
+      .get<IFolio[]>(`${this.resourceUrlFiltroFolioPersonalizado}/${idlibro}/${emisor}/${receptor}/${asunto}`, { params: options, observe: "response" })
+      .pipe(
+        map((res: EntityArrayResponseType) =>
+          this.convertDateArrayFromServer(res)
+        )
+      );
+  }
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
@@ -147,7 +167,6 @@ export class FolioService {
         )
       );
   }
-
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, {
       observe: "response",

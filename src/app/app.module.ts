@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule } from "@angular/router";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { APP_BASE_HREF, DatePipe, registerLocaleData } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 
 import { MatNativeDateModule } from "@angular/material/core";
@@ -101,7 +101,7 @@ registerLocaleData(localeEsAr, 'es-Ar');
     MatNativeDateModule,
     NgxExtendedPdfViewerModule,
   ],
-  declarations: [VisorPdfComponent, FiltroFolioPersonalizadoComponent],
+  declarations: [VisorPdfComponent],
 })
 export class MaterialModule {}
 
@@ -120,8 +120,9 @@ export class MaterialModule {}
     NavbarModule,
     FooterModule,
     FixedpluginModule,
+    
   ],
-  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent],
+  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent,FiltroFolioPersonalizadoComponent],
   providers: [
     MatNativeDateModule,
     Title,

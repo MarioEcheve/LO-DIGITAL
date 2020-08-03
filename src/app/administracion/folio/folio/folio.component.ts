@@ -444,8 +444,28 @@ export class FolioComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(FiltroFolioPersonalizadoComponent, {
       width: "70%",
       height: "50%%",
-      data: {},
+      data: { libro : this.libroSeleccionado},
       backdropClass: 'cdk-overlay-transparent-backdrop',
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+      let foliosBuscados = [];
+      this.folios = this.foliosOrigen;
+      if(result !== undefined){
+        result.forEach(element => {
+          console.log(element);
+          foliosBuscados = [...foliosBuscados,this.folios.filter(folio => folio.id === element.id)[0]];
+        });
+        setTimeout(() => {
+          console.log(foliosBuscados);
+          this.folios = foliosBuscados;
+        }, 500);
+      }else{
+        setTimeout(() => {
+          //this.folios = this.foliosOrigen;
+        }, 500);
+        
+      }
     });
   }
 }
