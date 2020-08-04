@@ -1,9 +1,10 @@
-import { Component, OnInit, Input ,ChangeDetectionStrategy, Inject, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input ,ChangeDetectionStrategy, Inject, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { TableData } from 'src/app/md/md-table/md-table.component';
 import { Folio } from 'src/app/administracion/TO/folio.model';
 import { FolioService } from 'src/app/administracion/services/folio.service';
 import { MatDialog } from '@angular/material/dialog';
 import { VisorPdfComponent } from 'src/app/administracion/shared/visor-pdf/visor-pdf/visor-pdf.component';
+import { element } from 'protractor';
 
 
 
@@ -12,11 +13,12 @@ import { VisorPdfComponent } from 'src/app/administracion/shared/visor-pdf/visor
   selector: 'app-tabla-buscar-folios',
   templateUrl: './tabla-buscar-folios.component.html',
   styleUrls: ['./tabla-buscar-folios.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  //changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TablaBuscarFoliosComponent implements OnInit {
+export class TablaBuscarFoliosComponent implements OnInit,AfterViewInit {
   public tableData1: TableData;
   @Input() folios;
+  ListaFolios = [];
   @Output() onAddFolioRelacionado: EventEmitter<any> = new EventEmitter();
   constructor(
     private folioService : FolioService,
@@ -34,6 +36,35 @@ export class TablaBuscarFoliosComponent implements OnInit {
       ],
       dataRows: [],
     };
+    
+
+  }
+  ngAfterViewInit(){
+    setTimeout(() => {
+      if(this.folios !== undefined){
+        this.folios.forEach(element => {
+          element.existTableSearchFolio = false;
+        });
+        this.ListaFolios = this.folios;
+        this.folioService.getListaFolioRelacionadoSubject().subscribe(
+          folios => {
+           if(folios.length > 0){
+              console.log('imprimiendo lista de folio relacionados agregados');
+              console.log(folios);
+              this.ListaFolios.forEach(element =>{
+                folios.forEach(element2=>{
+                  if(element.id === element2.id){
+                    element.existTableSearchFolio=true;
+                  }
+                });
+              });
+           }else{
+            //this.folioService.clear();
+           }
+          }
+        );
+      }
+    }, 1500);
   }
   visorPdf(row){
     let pdf = row.pdfFirmado;
@@ -64,8 +95,16 @@ export class TablaBuscarFoliosComponent implements OnInit {
       });
     });
   }
+  deleteFolioReferencia(row){
+    this.folioService.removeFolioReferencia(row);
+    this.folioService.refreshLista();
+    this.ngAfterViewInit();
+    
+    //this.ngAfterViewInit();
+    
+  }
   agregarFolioReferencia(row){
-    this.folios = this.folios.filter(folio => folio !== row);
+    //this.folios = this.folios.filter(folio => folio !== row);
     this.folioService.createNewListaColeccionFolioReferencia(row);
   }
 }

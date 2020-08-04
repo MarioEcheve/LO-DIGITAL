@@ -77,7 +77,7 @@ export class FolioService {
   }
 
 
-  private refreshLista() {
+  public refreshLista() {
     // Emitir los nuevos valores para que todos los que dependan se actualicen.
     this.listafolioRelacionadoSubject.next(this.listafolioRelacionado);
   }
@@ -108,12 +108,19 @@ export class FolioService {
     const index = this.listafolioRelacionado.indexOf(folio);
     if(contador===false){
       this.listafolioRelacionado = [];
-      this.refresh();
+      this.refreshLista();
     }else{
-      if (index >= 0) {
         this.listafolioRelacionado.splice(index, 1);
-        this.refresh();
-      }
+        if(this.listafolioRelacionado.length === 0){
+          this.listafolioRelacionado = [];
+        
+        }
+        setTimeout(() => {
+          this.refreshLista();
+          this.refresh();
+        }, 1000);
+       
+      
     }
     
   }

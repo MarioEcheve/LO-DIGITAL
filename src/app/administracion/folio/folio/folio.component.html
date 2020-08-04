@@ -102,24 +102,42 @@
           </div>
           <div class="row col-md-10">
             <div class="table-responsive" style="margin-right: 1.5%;">
-              <div class="d-flex" >
-                <div class="flex-grow-1">
-                  <mat-form-field >
-                    <mat-label>Filtro de busqueda</mat-label>
-                    <input matInput placeholder="Buscar" />
-                  </mat-form-field>
+              <form [formGroup]="formFiltrosGroup">
+                <div class="d-flex" >
+                  <div class="flex-grow-1">
+                    <mat-form-field class="example-full-width col-md-12">
+                      <mat-label>Filtro de busqueda</mat-label>
+                      <input matInput placeholder="Buscar" formControlName="inputBusqueda" />
+                    </mat-form-field>
+                  </div>
+                  <div class="flex-grow-1">
+                    <mat-form-field class="col-md-12">
+                      <mat-select 
+                         
+                          placeholder="Busqueda" 
+                          formControlName="criterioBusqueda" 
+                         >
+                        <mat-option  *ngFor="let filtros of filtroFolios"  [value]="filtros.id">{{filtros.name}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-2">
+                    <button mat-mini-fab color="primary" (click)="filtraFolios()" [disabled]="!formFiltrosGroup.valid">
+                      <i class="material-icons">search</i>
+                    </button>
+                  </div>
+                  <div class="ml-2">
+                    <button
+                        mat-raised-button
+                        type="button"
+                        class="btn btn-default btn-sm btn-fab"
+                        (click)="modalFiltroFolioPersonalizado()"
+                    >
+                    <i class="material-icons">keyboard_arrow_right</i>
+                  </button>
+                  </div>
                 </div>
-                <div class="ml-2">
-                  <button
-                      mat-raised-button
-                      type="button"
-                      class="btn btn-default btn-sm btn-fab"
-                      (click)="modalFiltroFolioPersonalizado()"
-                  >
-                  <i class="material-icons">keyboard_arrow_right</i>
-                </button>
-                </div>
-              </div>
+              </form>
               <div class="col-md-12">
                 <table class="table table-striped mt-2">
                   <thead class="text-muted">

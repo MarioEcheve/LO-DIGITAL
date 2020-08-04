@@ -79,6 +79,7 @@ export class ModalCrearFolioComponent implements OnInit {
     folio.idUsuarioCreador = this.usuario.id;
     folio.libro = this.libroSeleccionado;
     folio.fechaCreacion = moment(Date.now());
+    
     if(this.data.habilitar === true){
       let folioOrigen = this.data.folio.id;
       folio.idFolioRelacionado = folioOrigen;
