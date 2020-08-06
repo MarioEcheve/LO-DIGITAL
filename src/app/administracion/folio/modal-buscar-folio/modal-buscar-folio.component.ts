@@ -79,7 +79,7 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
       setTimeout(() => {
         console.log(valor2);
         this.folioService.createNewColeccionFolioReferencia(valor2);
-      }, 500);
+      }, 1000);
     }); 
   }
   visorPdf(row){

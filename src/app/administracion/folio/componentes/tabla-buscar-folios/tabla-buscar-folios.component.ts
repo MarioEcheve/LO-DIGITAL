@@ -58,13 +58,11 @@ export class TablaBuscarFoliosComponent implements OnInit,AfterViewInit {
                   }
                 });
               });
-           }else{
-            //this.folioService.clear();
            }
           }
         );
       }
-    }, 1500);
+    }, 2000);
   }
   visorPdf(row){
     let pdf = row.pdfFirmado;
@@ -97,11 +95,9 @@ export class TablaBuscarFoliosComponent implements OnInit,AfterViewInit {
   }
   deleteFolioReferencia(row){
     this.folioService.removeFolioReferencia(row);
+    let index = this.ListaFolios.indexOf(row);
+    this.ListaFolios[index].existTableSearchFolio = false;
     this.folioService.refreshLista();
-    this.ngAfterViewInit();
-    
-    //this.ngAfterViewInit();
-    
   }
   agregarFolioReferencia(row){
     //this.folios = this.folios.filter(folio => folio !== row);

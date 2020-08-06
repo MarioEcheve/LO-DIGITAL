@@ -396,10 +396,10 @@ export class FolioComponent implements OnInit, AfterViewInit {
           this.folios = this.foliosSinBorradores;
       break;
     case 2 :
-      this.folios = this.folios.filter(folio=>folio.entidadCreacion === true);  
+      this.folios = this.folios.filter(folio=>folio.entidadCreacion === true && folio.idUsuarioFirma !== null);  
       break;
     case 3 : 
-    this.folios = this.folios.filter(folio=>folio.entidadCreacion === false);  
+    this.folios = this.folios.filter(folio=>folio.entidadCreacion === false && folio.idUsuarioFirma !== null);  
       break;
     case 4 : 
       this.folios = this.folios.filter(folio=>folio.estadoRespuesta?.nombre==='Pendiente')

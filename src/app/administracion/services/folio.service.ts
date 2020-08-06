@@ -96,8 +96,10 @@ export class FolioService {
     * Evitar hacer this.folio.push() pues estaríamos modificando los valores directamente,
     * se debe generar un nuevo array !!!!.
     */
+   let valor = [];
+   valor = listaFolio;
    if(setValue){
-    this.listafolioRelacionado = listaFolio;
+    this.listafolioRelacionado = valor;
     this.refreshLista();
    }else{
     this.listafolioRelacionado = [...this.listafolioRelacionado,folio];
@@ -113,14 +115,8 @@ export class FolioService {
         this.listafolioRelacionado.splice(index, 1);
         if(this.listafolioRelacionado.length === 0){
           this.listafolioRelacionado = [];
-        
-        }
-        setTimeout(() => {
-          this.refreshLista();
-          this.refresh();
-        }, 1000);
-       
-      
+        }  
+        this.refreshLista();
     }
     
   }

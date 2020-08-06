@@ -15,6 +15,9 @@ type EntityArrayResponseType = HttpResponse<IUsuarioDependencia[]>;
 export class UsuarioDependenciaService {
   SERVER_API_URL = "http://localhost:8080/";
   public resourceUrl = this.SERVER_API_URL + "api/usuario-dependencias";
+  public resourceUrlFindUserByUsuarioDependencia = this.SERVER_API_URL + "api/findUserByUsuarioDependencia";
+  public resourceUrlFindUserByUsuarioDependenciaRolUser = this.SERVER_API_URL + "api/findUserByUsuarioDependenciaRolUser";
+  public resourceUrlFindContratosByDependencia= this.SERVER_API_URL + "api/findContratosByDependencia";
 
   constructor(protected http: HttpClient) {}
 
@@ -38,6 +41,33 @@ export class UsuarioDependenciaService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
+  findUserByUsuarioDependencia(idUsuario: number): Observable<EntityResponseType> {
+    return this.http
+      .get<IUsuarioDependencia>(`${this.resourceUrlFindUserByUsuarioDependencia}/${idUsuario}`, {
+        observe: "response",
+      })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+  findUserByUsuarioDependenciaRolUser(idUsuario: number): Observable<EntityResponseType> {
+    return this.http
+      .get<IUsuarioDependencia>(`${this.resourceUrlFindUserByUsuarioDependenciaRolUser}/${idUsuario}`, {
+        observe: "response",
+      })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+  findContratosByDependencia(idDependencia?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption();
+    return this.http
+      .get<IUsuarioDependencia[]>(`${this.resourceUrlFindContratosByDependencia}/${idDependencia}`, {
+        params: options,
+        observe: "response",
+      })
+      .pipe(
+        map((res: EntityArrayResponseType) =>
+          this.convertDateArrayFromServer(res)
+        )
+      );
+  }
   find(id: number): Observable<EntityResponseType> {
     return this.http
       .get<IUsuarioDependencia>(`${this.resourceUrl}/${id}`, {
@@ -59,7 +89,7 @@ export class UsuarioDependenciaService {
         )
       );
   }
-
+  
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, {
       observe: "response",
