@@ -187,7 +187,7 @@ export class ContratoComponent implements OnInit {
     console.log(this.contratoForm.value);
   }
   // metodo para abrir un pop up que permite buscar entidades
-  openDialogBuscaEntidad(usuario?: string) {
+  openDialogBuscaEntidad(usuario?: any) {
     const dialogRef = this.dialog.open(ModalBuscarEntidadComponent, {
       width: "80%",
       height: "90%",

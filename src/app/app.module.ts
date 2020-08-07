@@ -101,7 +101,7 @@ registerLocaleData(localeEsAr, 'es-Ar');
     MatNativeDateModule,
     NgxExtendedPdfViewerModule,
   ],
-  declarations: [VisorPdfComponent],
+  declarations: [],
 })
 export class MaterialModule {}
 
@@ -120,9 +120,9 @@ export class MaterialModule {}
     NavbarModule,
     FooterModule,
     FixedpluginModule,
-    
+    MatDialogModule
   ],
-  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent,FiltroFolioPersonalizadoComponent],
+  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent,FiltroFolioPersonalizadoComponent,VisorPdfComponent],
   providers: [
     MatNativeDateModule,
     Title,

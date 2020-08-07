@@ -225,7 +225,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(folios?:any){
     setTimeout(() => {
-      this.foliosOrigen = this.folios;
+      //this.foliosOrigen = this.folios;
       this.folios = this.folios.filter(folio=> 
           folio.idUsuarioFirma !== null);
       this.foliosSinBorradores = this.folios;
@@ -390,6 +390,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
   }
 
   filtrarFolios(accion : any){
+    this.folios = [];
    this.folios = this.foliosOrigen;
    switch(accion.id){
      case 1 : 
@@ -436,6 +437,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
       );
       break;
     case 7 :
+        //console.log(this.fo);
       this.folios = this.folios.filter(folio=>folio.idUsuarioFirma === null );
       break;
    }

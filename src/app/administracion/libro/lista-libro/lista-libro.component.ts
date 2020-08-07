@@ -32,6 +32,7 @@ import { ContratoService } from "../../services/contrato.service";
 export class ListaLibroComponent implements OnInit {
   public tableData1: TableData;
   libros : ILibro[]  = [];
+  mostrar ="";
   constructor(
     private libroService :LibroService,
     private router : Router,
@@ -103,6 +104,9 @@ export class ListaLibroComponent implements OnInit {
   }
   folios(row) {
     this.router.navigate(["/folio/folio", row.contrato.id, row.id]);
+  }
+  applyFilter(event){
+
   }
 }
 export interface PeriodicElement {

@@ -50,6 +50,7 @@ export class FolioDetalleComponent implements OnInit {
   muestraImagenes = false;
   folioSiguiente;
   receptor = [];
+  multipleConfig="";
   private fechaRequeridaValidators = [
     Validators.maxLength(250),
   ]
@@ -539,7 +540,7 @@ export class FolioDetalleComponent implements OnInit {
         );
       });
   }
-  eliminarFolio(row) {
+  eliminarFolio() {
     Swal.fire({
       title: "Esta Seguro ?",
       text: "Los cambios no podran ser revertidos!",
@@ -1205,6 +1206,12 @@ export class FolioDetalleComponent implements OnInit {
       .subscribe((respuesta) => {
         this.folioSiguiente = respuesta.body[0].numero_folio;
       });
+  }
+  onUploadError(event){
+
+  }
+  onUploadSuccess(event){
+
   }
 }
 function getBase64Image(img) {

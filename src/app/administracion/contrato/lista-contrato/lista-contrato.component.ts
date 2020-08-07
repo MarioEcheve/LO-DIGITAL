@@ -69,7 +69,7 @@ export class ListaContratoComponent implements OnInit {
           
         });
       }
-    }, 900);
+    }, 400);
   }
   editarContrato(idContrato) {
     this.router.navigate(["/contrato/detalle-contrato/", idContrato]);
