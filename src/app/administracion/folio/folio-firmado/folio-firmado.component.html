@@ -1,4 +1,4 @@
-<div class="main-content">
+<div class="main-content animate__animated animate__fadeIn" >
   <div class="container-fluid">
     <div class="card">
       <div class="card-body">
@@ -223,7 +223,7 @@
                 </tr>
                 <tr>
                   <td>Respuesta de:</td>
-                  <td  *ngIf="Folio.idlibroRelacionado !== null">&nbsp; {{folioRelacionado.libro.nombre}} 
+                  <td  *ngIf="Folio.idlibroRelacionado !== null">&nbsp; {{folioRelacionado.libro?.nombre}} 
                             | Folio : {{folioRelacionado.numeroFolio }} 
                             
                   </td>

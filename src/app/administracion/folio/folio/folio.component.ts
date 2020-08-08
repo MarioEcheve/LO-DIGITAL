@@ -17,6 +17,8 @@ import { MatDialog } from "@angular/material/dialog";
 import { ModalCrearFolioComponent } from "../modal-crear-folio/modal-crear-folio.component";
 import { element } from "protractor";
 import * as moment from "moment";
+import { GesFavoritoService } from "../../services/ges-favorito.service";
+import { GesFavorito } from "../../TO/ges-favorito.model";
 const defaultConfig: DropzoneConfigInterface = {
   clickable: true,
   addRemoveLinks: true,
@@ -109,6 +111,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
     private usuarioLibroService: UsuarioLibroService,
     private dialog: MatDialog,
     private datePipe: DatePipe,
+    private favoritoService : GesFavoritoService
   ) {
     
   }
@@ -128,11 +131,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
           this.libros = respuesta.body;
         });
     });
-
-    console.log(
-      "idLibro" + parseInt(this.route.snapshot.paramMap.get("idLibro"))
-    );
-
     this.libroService
       .find(parseInt(this.route.snapshot.paramMap.get("idLibro")))
       .subscribe((respuesta) => {
@@ -209,8 +207,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(folios?:any){
     setTimeout(() => {
-      console.log('after view init');
-      console.log(this.folios);
       this.foliosOrigen = this.folios;
       this.folios = this.folios.filter(folio=> 
           folio.idUsuarioFirma !== null);
@@ -232,9 +228,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
         console.log('fecha requerida: ' + element.fechaRequerida);
         if(element.fechaRequerida!== undefined){
           element.fechaRequerida = element.fechaRequerida.local();
-          console.log(element.fechaRequerida.local());
           let resultado = calcDate(element.fechaRequerida.toDate(),new Date());
-          console.log(resultado);
           if(element.estadoRespuesta !== null){
             if(element.estadoRespuesta.nombre.toLowerCase() === "respondido"){
               element.color = "#70F81D";
@@ -264,18 +258,29 @@ export class FolioComponent implements OnInit, AfterViewInit {
         }
         //this.folios = respuesta.body;
         
-      })
+      });
       folios.forEach((element) => {
-        this.usuarioLibroService
-          .find(element.idUsuarioFirma)
+        if(element.idUsuarioFirma === null){
+          this.usuarioLibroService
+          .find(element.idUsuarioCreador)
           .subscribe((respuesta2) => {
             nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
             element.emisor = nombreEmisor;
-            console.log(element.emisor);
           });
+        }else{
+          this.usuarioLibroService
+          .find(element.idUsuarioFirma )
+          .subscribe((respuesta2) => {
+            nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
+            element.emisor = nombreEmisor;
+          });
+        }
+        
       });
     });
     setTimeout(() => {
+
+
       this.folios = folios;
       this.foliosOrigen = folios;
       this.folios = this.folios.filter(folio=> 
@@ -302,7 +307,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
     */
   }
   eliminarFolio(row) {
-    console.log(row);
     Swal.fire({
       title: "Esta Seguro ?",
       text: "Los cambios no podran ser revertidos!",
@@ -373,13 +377,68 @@ export class FolioComponent implements OnInit, AfterViewInit {
     case 5 :
       this.folios = this.folios.filter(folio=>folio.idUsuarioLectura === null && folio.idUsuarioFirma !== null);
       break;
-    case 6 : 
-      this.folios =[];
+    case 6 :
+      this.folios = [];
+      let nombreEmisor = "";
+      let foliosGuardados= [];
+      this.favoritoService.BuscarFavoritoByUsuario(this.usuarioLibro.id).subscribe(
+        folioFavoritos =>{
+          console.log(folioFavoritos.body);
+          if(folioFavoritos.body.length > 0){
+            folioFavoritos.body.forEach(
+              element=>{
+                this.usuarioLibroService
+                .find(element.folio.idUsuarioCreador)
+                .subscribe((respuesta2) => {
+                  nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
+                  element.folio.emisor = nombreEmisor;
+                  foliosGuardados = [...foliosGuardados, element.folio];
+                });
+              }
+            );
+          }
+          setTimeout(() => {
+            this.folios = foliosGuardados;
+            console.log(foliosGuardados);
+          }, 500);
+          
+        }
+      );
       break;
     case 7 :
       this.folios = this.folios.filter(folio=>folio.idUsuarioFirma === null );
       break;
    }
+  }
+  favorito(row){
+    let existe = false;
+    let idFolioExiste= null;
+    let folioFavorito = new GesFavorito();
+    folioFavorito.usuarioLibro = this.usuarioLibro;
+    folioFavorito.folio = row;
+    folioFavorito.fechaCreacion = moment(Date.now());
+    folioFavorito.nota = "";
+    this.favoritoService.BuscarFavoritoByFolio(row.id).subscribe(
+      folioFavorito => {
+        console.log(folioFavorito);
+        if(folioFavorito.body.length > 0 ){
+          existe = true;
+          idFolioExiste = folioFavorito.body[0].id;
+        }else{
+          existe = false;
+        }
+      }
+    );
+    setTimeout(() => {
+      if(existe === false){
+        this.favoritoService.create(folioFavorito).subscribe(
+          folioFavorito =>{
+    
+          });
+      }else{
+        this.favoritoService.delete(idFolioExiste).subscribe();
+      }
+    }, 300);
   }
 }
 

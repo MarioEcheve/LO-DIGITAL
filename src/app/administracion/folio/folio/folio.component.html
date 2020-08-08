@@ -84,6 +84,7 @@
                 mat-raised-button
                 class="btn btn-primary"
                 (click)="nuevoFolio()"
+                [disabled]="libroSeleccionado?.estadoLibro?.nombre === 'Cerrado'"
               >
                 <span class="btn-label">
                   <i class="material-icons">add</i>
@@ -120,7 +121,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let row of folios">
+                    <tr *ngFor="let row of folios" class="animate__animated animate__fadeIn">
                       <td>
                         <!-- <a href=""><i style="font-size: 22px;" class="material-icons align-middle text-gray">check_box_outline_blank</i></a> -->
                         <!--
@@ -139,7 +140,7 @@
                           ></a
                         >
                         -->
-                        <a href=""
+                        <a (click)="favorito(row)"
                           ><i
                             style="font-size: 22px;"
                             class="material-icons align-middle text-gray"

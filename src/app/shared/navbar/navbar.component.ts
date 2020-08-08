@@ -74,7 +74,6 @@ export class NavbarComponent implements OnInit {
       }
     }else{
       if(valor === 2){
-        console.log(valor);
         setTimeout(function () {
           body.classList.remove("sidebar-mini");
           misc.sidebar_mini_active = false;
@@ -139,7 +138,6 @@ export class NavbarComponent implements OnInit {
 
     this.folioService.ChangeNavBarSubject().subscribe(
       respuesta=>{
-        console.log('estoy en e nav bar ');
           this.minimizeSidebar(respuesta);
       }
     );
@@ -165,7 +163,6 @@ export class NavbarComponent implements OnInit {
       });
     // implementacion de metodo para obtener el usuario actual
     this.usuario = JSON.parse(localStorage.getItem("user"));
-    console.log(this.usuario);
 
     
   }

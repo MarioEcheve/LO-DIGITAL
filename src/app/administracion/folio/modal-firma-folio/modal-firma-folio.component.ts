@@ -19,7 +19,6 @@ export class ModalFirmaFolioComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.data.folio);
     this.firmaFormGroup = this.fb.group({
       tipoFirma: [],
     });

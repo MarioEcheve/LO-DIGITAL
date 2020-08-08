@@ -16,6 +16,7 @@ import { Router } from "@angular/router";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import * as moment from "moment";
 import { LibroService } from "src/app/administracion/services/libro.service";
+import { UsuarioLibroService } from "src/app/administracion/services/usuario-libro.service";
 declare var $: any;
 @Component({
   selector: "app-visor-pdf",
@@ -31,11 +32,12 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private folioService: FolioService,
     private router: Router,
-    private libroService: LibroService
+    private libroService: LibroService,
+    private usuarioLibroService : UsuarioLibroService
   ) {}
 
   ngOnInit(): void {
-    console.log(this.data.lectura);
+    //console.log(this.data.lectura);
     //this.mostrar = t
   }
   ngAfterViewInit() {
@@ -81,6 +83,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
         this.folioService
           .correlativoFolio(this.folio.libro.id)
           .subscribe((respuesta) => {
+            
             this.folio.estadoFolio = true;
             
             this.folio.fechaFirma = moment(Date.now());
@@ -94,15 +97,26 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
             this.folio.libro.fechaCreacion = moment(
               this.folio.libro.fechaCreacion
             );
-            this.folio.libro.fechaApertura = moment(Date.now());
-            console.log(this.folio.idFolioRelacionado);
+            this.folio.idUsuarioFirma = this.usuario.id;
+            this.usuarioLibroService.query().subscribe(
+              usuario => {
+                let usuariosMandante = usuario.body.filter(usuariosMandante => usuariosMandante.usuarioDependencia.dependencia.id === this.folio.libro.contrato.dependenciaMandante.id );
+                usuariosMandante = usuariosMandante.filter(usuarioMandante => usuarioMandante.id === this.folio.idUsuarioFirma);
+                if(usuariosMandante.length > 0){
+                  this.folio.entidadCreacion = true;
+                }else{
+                  this.folio.entidadCreacion = false;
+                }
+              }
+            );
             if(this.folio.requiereRespuesta === true){
               this.folio.estadoRespuesta = {id: 1903, nombre: "Pendiente", folios: null}
             }else{
               this.folio.estadoRespuesta =null;
             }
             // cuando venga un folio con respuesta, actualiza el folio origen
-            if(this.folio.idFolioRelacionado!==null){
+            setTimeout(() => {
+              if(this.folio.idFolioRelacionado!==null){
                 this.folioService.find(this.folio.idFolioRelacionado).subscribe(
                   respuesta=>{
                     respuesta.body.estadoRespuesta = {id: 1904, nombre: "Respondido", folios: null};
@@ -110,33 +124,50 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                   }
                 );
             }
-            this.folioService.update(this.folio).subscribe((respuesta) => {
-              if (
-                this.folio.tipoFolio.nombre.toLowerCase() === "apertura libro"
-              ) {
-                this.folio.libro.estadoLibro = {
-                  id: 3051,
-                  nombre: "Abierto",
-                  libros: null,
-                };
-                this.libroService.update(this.folio.libro).subscribe();
+            if(this.data.lectura === false){
+              this.folioService.update(this.folio).subscribe((respuesta) => {
+                if(this.folio.tipoFolio.nombre.toLowerCase() === "apertura libro") {
+                    this.folio.libro.estadoLibro = {
+                    id:  3001,
+                    nombre: "Abierto",
+                    libros: null,
+                  };
+                  this.folio.libro.fechaApertura = moment(Date.now());
+                  this.libroService.update(this.folio.libro).subscribe();
                 }
+                if(this.folio.tipoFolio.nombre.toLowerCase() === "cierre libro") {
+                    this.folio.libro.estadoLibro = {
+                      id:  3052,
+                      nombre: "Cerrado",
+                      libros: null,
+                    };
+                  this.folio.libro.fechaCierre = moment(Date.now());
+                  this.folio.libro.fechaApertura = moment(this.folio.libro.fechaApertura);
+                  this.libroService.update(this.folio.libro).subscribe();
+                }
+                this.dialogRef.close();
+                this.dialogRef.beforeClosed().subscribe((respuesta) => {
+                  if(this.data.lectura === true){
+                    this.showNotificationSuccessLectura("top", "right");
+                  }else{
+                    this.showNotificationSuccess("top", "right");
+                    this.router.navigate([
+                      "/folio/folio/",
+                      this.folio.libro.contrato.id,
+                      this.folio.libro.id,
+                    ]);
+                  }
+                });
+                
+              });
+            }else{
               this.dialogRef.close();
               this.dialogRef.beforeClosed().subscribe((respuesta) => {
-                if(this.data.lectura === true){
-                  this.showNotificationSuccessLectura("top", "right");
-                }else{
-                  this.showNotificationSuccess("top", "right");
-                  this.router.navigate([
-                    "/folio/folio/",
-                    this.folio.libro.contrato.id,
-                    this.folio.libro.id,
-                  ]);
-                }
+                this.folioService.update(this.folio).subscribe();
+                this.showNotificationSuccessLectura("top", "right");
               });
-              
-            });
-            
+            }
+            }, 700);
           });
       }
     });

@@ -369,7 +369,6 @@ export class DetalleContratoComponent
       this.dependenciaService
         .find(respuesta.body.idDependenciaContratista)
         .subscribe((respuesta) => {
-          console.log(respuesta.body);
           this.infoGeneralForm.controls["rutContratista"].setValue(
             respuesta.body.entidad.rut
           );
@@ -429,7 +428,6 @@ export class DetalleContratoComponent
               respuesta.body[i].estadoLibro.nombre = "";
             }
           }
-          console.log(this.libros);
         });
     });
   }
@@ -442,12 +440,10 @@ export class DetalleContratoComponent
   buscaComuna(idRegion: number) {
     this.comunaService.buscaComunaPorRegion(idRegion).subscribe((respuesta) => {
       this.listaComunas = respuesta.body;
-      console.log(respuesta.body);
     });
   }
   nuevoLibro() {
     let id = this.route.snapshot.paramMap.get("id");
-    console.log(id);
     this.router.navigate(["/libro/nuevo-libro/", id]);
   }
   editarLibro(row) {
@@ -467,7 +463,6 @@ export class DetalleContratoComponent
     });
   }
   onChangeRegion(idRegion) {
-    console.log("onchange");
     this.comunaService.buscaComunaPorRegion(idRegion).subscribe((respuesta) => {
       this.listaComunas = respuesta.body;
     });
