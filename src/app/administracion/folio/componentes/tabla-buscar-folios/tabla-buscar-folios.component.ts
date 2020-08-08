@@ -97,7 +97,6 @@ export class TablaBuscarFoliosComponent implements OnInit,AfterViewInit {
     this.folioService.removeFolioReferencia(row);
     let index = this.ListaFolios.indexOf(row);
     this.ListaFolios[index].existTableSearchFolio = false;
-    this.folioService.refreshLista();
   }
   agregarFolioReferencia(row){
     //this.folios = this.folios.filter(folio => folio !== row);

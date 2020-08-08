@@ -79,6 +79,7 @@ export class FolioService {
 
   public refreshLista() {
     // Emitir los nuevos valores para que todos los que dependan se actualicen.
+    console.log(this.listafolioRelacionado);
     this.listafolioRelacionadoSubject.next(this.listafolioRelacionado);
   }
 
@@ -91,7 +92,7 @@ export class FolioService {
     this.refresh();
   }
 
-  createNewListaColeccionFolioReferencia(folio: IFolio, setValue?:Boolean, listaFolio?:any) {
+  createNewListaColeccionFolioReferencia(folio: any, setValue?:Boolean, listaFolio?:any) {
     /**
     * Evitar hacer this.folio.push() pues estaríamos modificando los valores directamente,
     * se debe generar un nuevo array !!!!.
@@ -102,21 +103,30 @@ export class FolioService {
     this.listafolioRelacionado = valor;
     this.refreshLista();
    }else{
-    this.listafolioRelacionado = [...this.listafolioRelacionado,folio];
+    this.listafolioRelacionado.push(folio);
     this.refreshLista();
    }
   }
   removeFolioReferencia(folio : IFolio, contador? : Boolean){
     const index = this.listafolioRelacionado.indexOf(folio);
+    //console.log('imprimiendo en el servicio');
+    //console.log(this.listafolioRelacionado);
     if(contador===false){
       this.listafolioRelacionado = [];
       this.refreshLista();
     }else{
-        this.listafolioRelacionado.splice(index, 1);
-        if(this.listafolioRelacionado.length === 0){
+        if(this.listafolioRelacionado.length === 1){
+          this.listafolioRelacionado.splice(index, 1);
           this.listafolioRelacionado = [];
-        }  
-        this.refreshLista();
+          //this.listafolioRelacionado.splice(index, 1);
+          this.refreshLista();
+          this.clear();
+          console.log(this.listafolioRelacionado);
+        } else{
+          this.listafolioRelacionado.splice(index, 1);
+          this.refreshLista();
+        }
+        
     }
     
   }

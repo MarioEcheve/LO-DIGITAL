@@ -54,6 +54,10 @@ export class FolioComponent implements OnInit, AfterViewInit {
     {
       id : 2,
       name : 'Receptor'
+    },
+    {
+      id : 3,
+      name : 'Asunto'
     }
   ]
   singleConfig: DropzoneConfigInterface = {
@@ -523,6 +527,9 @@ export class FolioComponent implements OnInit, AfterViewInit {
     if(criterioBusqueda === 2){
       this.filter(valorBusqueda, criterioBusqueda);
     }
+    if(criterioBusqueda === 3){
+      this.filter(valorBusqueda, criterioBusqueda);
+    }
   }
   inicializarFormFiltros(){
     this.formFiltrosGroup = this.fb.group({
@@ -546,6 +553,14 @@ export class FolioComponent implements OnInit, AfterViewInit {
         if(folio.receptor !== undefined){
           return folio.receptor.toLowerCase().indexOf(valorBusqueda) > -1
         }
+      });
+      this.folios = foliosFiltrados;
+      console.log(foliosFiltrados);
+    }
+    if(criterio === 3){
+      console.log(this.foliosOrigen);
+      foliosFiltrados = this.foliosOrigen.filter(folio=> {
+          return folio.asunto.toLowerCase().indexOf(valorBusqueda) > -1
       });
       this.folios = foliosFiltrados;
       console.log(foliosFiltrados);
