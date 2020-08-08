@@ -43,6 +43,8 @@ export interface IFolio {
   color : string;
   idReceptor?: number;
   folioReferencias?: IFolioReferencia[];
+  existTableSearchFolio? : Boolean;
+  receptor: string;
 }
 
 export class Folio implements IFolio {
@@ -81,6 +83,8 @@ export class Folio implements IFolio {
     public color = "",
     public idReceptor?: number,
     public folioReferencias?: IFolioReferencia[],
+    public existTableSearchFolio? : Boolean,
+    public receptor = "",
   ) {
     this.requiereRespuesta = this.requiereRespuesta || false;
     this.estadoLectura = this.estadoLectura || false;

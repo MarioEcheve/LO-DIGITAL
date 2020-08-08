@@ -62,56 +62,25 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
     this.buscaFolios(this.data.libro);
   }
   buscaFolios(libro, eventoCick? : boolean){
-    
-    let  promesa = new Promise((resolve,reject)=>{
-      setTimeout(() => {
-        this.folioService.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
-          let valor2 = [];
-          let valor= [];
-          valor = respuesta.body.filter( folio => folio.idUsuarioFirma !== null);
-          valor2 = respuesta.body.filter( folio => folio.idUsuarioFirma !== null);
-          valor2.forEach(element=>{
-            this.usuarioLibroService
-            .find(element.idUsuarioFirma)
-            .subscribe((respuesta) => {
-              element.emisor = respuesta.body.usuarioDependencia.usuario.firstName +
-              " " + respuesta.body.usuarioDependencia.usuario.lastName;
+    this.folioService.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
+      let valor2 = [];
+      let valor= [];
+      valor = respuesta.body.filter( folio => folio.idUsuarioFirma !== null);
+      valor2 = respuesta.body.filter( folio => folio.idUsuarioFirma !== null);
+      valor2.forEach(element=>{
+        this.usuarioLibroService
+        .find(element.idUsuarioFirma)
+        .subscribe((respuesta) => {
+          element.emisor = respuesta.body.usuarioDependencia.usuario.firstName +
+          " " + respuesta.body.usuarioDependencia.usuario.lastName;
 
-            });
-          });
-          setTimeout(() => {
-            this.folioService.createNewColeccionFolioReferencia(valor2);
-          }, 200);
-
-          //----------------------------------------------------------------------------------------------
-          if(this.data.folios.length > 0){
-            for(var i=0;i < this.data.folios.length;i++){
-              if(valor2.length > 0 ){
-                if(valor2[i] !== undefined){
-                  if(this.data.folios[i].id === valor2[i].id){
-                      valor2 = valor2.filter(folio => {
-                      return folio.id !== this.data.folios[i].id;
-                    })
-                  }
-                }else{  
-                  valor2 = []
-                }
-              }
-            }
-            setTimeout(() => {
-              resolve(valor2);
-            }, 400);
-          }else{
-            setTimeout(() => {
-              resolve(valor2);
-            }, 400);
-          }
-        }); 
+        });
       });
-    });
-    promesa.then((folios : [])=>{
-      this.folioService.createNewColeccionFolioReferencia(folios);
-    });
+      setTimeout(() => {
+        console.log(valor2);
+        this.folioService.createNewColeccionFolioReferencia(valor2);
+      }, 1000);
+    }); 
   }
   visorPdf(row){
       let pdf = row.pdfFirmado;

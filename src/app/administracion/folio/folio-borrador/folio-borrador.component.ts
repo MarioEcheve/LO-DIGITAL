@@ -77,6 +77,7 @@ export class FolioBorradorComponent implements OnInit {
     toolbarPosition: "top",
     toolbarHiddenButtons: [["bold", "italic"], ["fontSize"]],
   };
+  multipleConfig ="";
   cities = [
     { value: "paris-0", viewValue: "Paris" },
     { value: "miami-1", viewValue: "Miami" },
@@ -361,5 +362,11 @@ export class FolioBorradorComponent implements OnInit {
       this.libro.contrato.id,
       this.libro.id,
     ]);
+  }
+  onUploadError(event){
+
+  }
+  onUploadSuccess(event){
+
   }
 }

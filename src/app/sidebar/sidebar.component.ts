@@ -64,6 +64,7 @@ export const ROUTES: RouteInfo[] = [
       //{ path: "detalle-contrato", title: "Detalle Contrato", ab: "B" },
     ],
   },
+  /*
   {
     path: "/folio",
     title: "Folio",
@@ -77,6 +78,7 @@ export const ROUTES: RouteInfo[] = [
       //{ path: "folio-archivo", title: "Folio Archivo", ab: "B" },
     ],
   },
+  */
   /*
   {
     path: "/contrato",
@@ -98,8 +100,8 @@ export const ROUTES: RouteInfo[] = [
     icontype: "apps",
     collapse: "libro",
     children: [
-      { path: "nuevo-libro", title: "Crear Libro", ab: "B" },
-      { path: "detalle-libro", title: "Detalle Libro", ab: "B" },
+      //{ path: "nuevo-libro", title: "Crear Libro", ab: "B" },
+      //{ path: "detalle-libro", title: "Detalle Libro", ab: "B" },
       { path: "lista-libro", title: "Lista de Libros", ab: "B" },
     ],
   },

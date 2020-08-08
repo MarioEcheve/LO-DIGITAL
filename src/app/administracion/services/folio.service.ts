@@ -21,8 +21,9 @@ export class FolioService {
     this.SERVER_API_URL + "api/correlativoFolio";
   public resourceUrlFolioReferencias =
     this.SERVER_API_URL + "api/folioReferencias";
-
-    folioReferencias
+  public resourceUrlFiltroFolioPersonalizado=
+    this.SERVER_API_URL + "api/filtroFolioPersonalizado";
+    
   //private folioReferencia = new BehaviorSubject<any>({});
   //folioReferenciaActuales = this.folioReferencia.asObservable();
   private folioRelacionadoSubject = new BehaviorSubject([]);
@@ -76,8 +77,9 @@ export class FolioService {
   }
 
 
-  private refreshLista() {
+  public refreshLista() {
     // Emitir los nuevos valores para que todos los que dependan se actualicen.
+    console.log(this.listafolioRelacionado);
     this.listafolioRelacionadoSubject.next(this.listafolioRelacionado);
   }
 
@@ -90,29 +92,41 @@ export class FolioService {
     this.refresh();
   }
 
-  createNewListaColeccionFolioReferencia(folio: IFolio, setValue?:Boolean, listaFolio?:any) {
+  createNewListaColeccionFolioReferencia(folio: any, setValue?:Boolean, listaFolio?:any) {
     /**
     * Evitar hacer this.folio.push() pues estaríamos modificando los valores directamente,
     * se debe generar un nuevo array !!!!.
     */
+   let valor = [];
+   valor = listaFolio;
    if(setValue){
-    this.listafolioRelacionado = listaFolio;
+    this.listafolioRelacionado = valor;
     this.refreshLista();
    }else{
-    this.listafolioRelacionado = [...this.listafolioRelacionado,folio];
+    this.listafolioRelacionado.push(folio);
     this.refreshLista();
    }
   }
   removeFolioReferencia(folio : IFolio, contador? : Boolean){
     const index = this.listafolioRelacionado.indexOf(folio);
+    //console.log('imprimiendo en el servicio');
+    //console.log(this.listafolioRelacionado);
     if(contador===false){
       this.listafolioRelacionado = [];
-      this.refresh();
+      this.refreshLista();
     }else{
-      if (index >= 0) {
-        this.listafolioRelacionado.splice(index, 1);
-        this.refresh();
-      }
+        if(this.listafolioRelacionado.length === 1){
+          this.listafolioRelacionado.splice(index, 1);
+          this.listafolioRelacionado = [];
+          //this.listafolioRelacionado.splice(index, 1);
+          this.refreshLista();
+          this.clear();
+          console.log(this.listafolioRelacionado);
+        } else{
+          this.listafolioRelacionado.splice(index, 1);
+          this.refreshLista();
+        }
+        
     }
     
   }
@@ -135,8 +149,27 @@ export class FolioService {
     return this.http
       .get<IFolio>(`${this.resourceUrl}/${id}`, { observe: "response" })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
-  }
+  }s
 
+  FiltroFolioPersonalizado(idlibro :number , emisor : string , receptor : string , asunto: string,): Observable<EntityArrayResponseType> {
+    if(emisor === ""){
+      emisor = "null"
+    }
+    if(receptor ===""){
+      receptor = "null";
+    }
+    if(asunto === ""){
+      asunto = "null"
+    }
+    const options = createRequestOption();
+    return this.http
+      .get<IFolio[]>(`${this.resourceUrlFiltroFolioPersonalizado}/${idlibro}/${emisor}/${receptor}/${asunto}`, { params: options, observe: "response" })
+      .pipe(
+        map((res: EntityArrayResponseType) =>
+          this.convertDateArrayFromServer(res)
+        )
+      );
+  }
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
@@ -147,7 +180,6 @@ export class FolioService {
         )
       );
   }
-
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, {
       observe: "response",

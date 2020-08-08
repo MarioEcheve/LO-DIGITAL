@@ -10,7 +10,7 @@ import { Folio } from "../../TO/folio.model";
 import { FolioService } from "../../services/folio.service";
 import { DatePipe } from "@angular/common";
 import Swal from "sweetalert2/dist/sweetalert2.js";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { UsuarioLibroService } from "../../services/usuario-libro.service";
 import { UsuarioLibro } from "../../TO/usuario-libro.model";
 import { MatDialog } from "@angular/material/dialog";
@@ -19,6 +19,8 @@ import { element } from "protractor";
 import * as moment from "moment";
 import { GesFavoritoService } from "../../services/ges-favorito.service";
 import { GesFavorito } from "../../TO/ges-favorito.model";
+import { FiltroFolioPersonalizadoComponent } from "../../shared/filtro-folio-personalizado/filtro-folio-personalizado.component";
+import { type } from "jquery";
 const defaultConfig: DropzoneConfigInterface = {
   clickable: true,
   addRemoveLinks: true,
@@ -40,6 +42,24 @@ export class FolioComponent implements OnInit, AfterViewInit {
   folioFormGroup: FormGroup;
   libroSeleccionado: Libro;
   usuarioLibro = new UsuarioLibro();
+  filtroFolios = [
+    {
+      id : 0,
+      name : 'Numero Folio'
+    },
+    {
+      id : 1,
+      name : 'Emisor'
+    },
+    {
+      id : 2,
+      name : 'Receptor'
+    },
+    {
+      id : 3,
+      name : 'Asunto'
+    }
+  ]
   singleConfig: DropzoneConfigInterface = {
     ...defaultConfig,
     ...{
@@ -100,7 +120,8 @@ export class FolioComponent implements OnInit, AfterViewInit {
         accion : 'Borradores'
       }
   ];
-
+  // definicion del form de los filtros
+  formFiltrosGroup : FormGroup;
   constructor(
     private route: ActivatedRoute,
     private contratoService: ContratoService,
@@ -117,6 +138,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.inicializarFormFiltros();
     this.folioServie.navBarChange(1);
     this.folioFormGroup = this.fb.group({
       libro: [],
@@ -207,11 +229,11 @@ export class FolioComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(folios?:any){
     setTimeout(() => {
-      this.foliosOrigen = this.folios;
+      //this.foliosOrigen = this.folios;
       this.folios = this.folios.filter(folio=> 
           folio.idUsuarioFirma !== null);
       this.foliosSinBorradores = this.folios;
-    },1000);
+    },1500);
   }
   buscaFolios(libro, filtra?: boolean) {
     this.folios = [];
@@ -220,6 +242,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
     let usuario = JSON.parse(localStorage.getItem("user"));
     this.idlibro = libro.id;
     let nombreEmisor = "";
+    let nombreReceptor = "";
     this.folioServie.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
       folios = respuesta.body;
       this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
@@ -267,6 +290,14 @@ export class FolioComponent implements OnInit, AfterViewInit {
             nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
             element.emisor = nombreEmisor;
           });
+          if(element.idReceptor !== null ){
+            this.usuarioLibroService
+              .find(element.idReceptor )
+              .subscribe((respuesta2) => {
+                nombreReceptor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
+                element.receptor = nombreReceptor;
+              });
+          }
         }else{
           this.usuarioLibroService
           .find(element.idUsuarioFirma )
@@ -274,13 +305,17 @@ export class FolioComponent implements OnInit, AfterViewInit {
             nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
             element.emisor = nombreEmisor;
           });
+          this.usuarioLibroService
+          .find(element.idReceptor )
+          .subscribe((respuesta2) => {
+            nombreReceptor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
+            element.receptor = nombreReceptor;
+          });
         }
         
       });
     });
     setTimeout(() => {
-
-
       this.folios = folios;
       this.foliosOrigen = folios;
       this.folios = this.folios.filter(folio=> 
@@ -297,7 +332,8 @@ export class FolioComponent implements OnInit, AfterViewInit {
         libros: this.libros,
         libroSeleccionado: this.libroSeleccionado,
         habilitar : false,
-        folio : null
+        folio : null,
+
       },
     });
     /*
@@ -360,16 +396,17 @@ export class FolioComponent implements OnInit, AfterViewInit {
   }
 
   filtrarFolios(accion : any){
+    this.folios = [];
    this.folios = this.foliosOrigen;
    switch(accion.id){
      case 1 : 
           this.folios = this.foliosSinBorradores;
       break;
     case 2 :
-      this.folios =[];
+      this.folios = this.folios.filter(folio=>folio.entidadCreacion === true && folio.idUsuarioFirma !== null);  
       break;
     case 3 : 
-      this.folios =[];
+    this.folios = this.folios.filter(folio=>folio.entidadCreacion === false && folio.idUsuarioFirma !== null);  
       break;
     case 4 : 
       this.folios = this.folios.filter(folio=>folio.estadoRespuesta?.nombre==='Pendiente')
@@ -406,6 +443,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
       );
       break;
     case 7 :
+        //console.log(this.fo);
       this.folios = this.folios.filter(folio=>folio.idUsuarioFirma === null );
       break;
    }
@@ -440,8 +478,98 @@ export class FolioComponent implements OnInit, AfterViewInit {
       }
     }, 300);
   }
-}
+  modalFiltroFolioPersonalizado(){
+   
+    const dialogRef = this.dialog.open(FiltroFolioPersonalizadoComponent, {
+      width: "70%",
+      height: "50%%",
+      data: { libro : this.libroSeleccionado},
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      //this.folios = this.foliosOrigen;
+      console.log(result);
+      let foliosBuscados = [];
+      if(result !== undefined){
+        result.forEach(element => {
+          console.log(element);
+          foliosBuscados = [...foliosBuscados,this.foliosOrigen.filter(folio => folio.id === element.id)[0]];
+        });
+        setTimeout(() => {
+          console.log(foliosBuscados);
+          this.folios = foliosBuscados;
+        }, 500);
+      }else{
+        setTimeout(() => {
+          //this.folios = this.foliosOrigen;
+        }, 500);
+        
+      }
+    });
+  }
+  filtraFolios(){
 
+    let valorBusqueda = this.formFiltrosGroup.controls['inputBusqueda'].value;
+    let criterioBusqueda = this.formFiltrosGroup.controls['criterioBusqueda'].value;
+    console.log(this.formFiltrosGroup.value);
+    if(criterioBusqueda === 0){
+      this.folios = this.foliosOrigen.filter(
+        folio => {
+          if(folio.numeroFolio !== null){
+            return folio.numeroFolio.toString() === valorBusqueda
+          }else{
+          }
+        }
+      );
+    console.log(this.folios);
+    }
+    if(criterioBusqueda === 1){
+      this.filter(valorBusqueda, criterioBusqueda);
+    }
+    if(criterioBusqueda === 2){
+      this.filter(valorBusqueda, criterioBusqueda);
+    }
+    if(criterioBusqueda === 3){
+      this.filter(valorBusqueda, criterioBusqueda);
+    }
+  }
+  inicializarFormFiltros(){
+    this.formFiltrosGroup = this.fb.group({
+      inputBusqueda : ['', Validators.required],
+      criterioBusqueda : ['', Validators.required]
+    });
+  }
+  filter(typ:  string, criterio : any) {
+    let valorBusqueda = "";
+    valorBusqueda = typ;
+    valorBusqueda = valorBusqueda.toLowerCase();
+    let foliosFiltrados = [];
+    if(criterio === 1){
+      foliosFiltrados = this.foliosOrigen.filter(folio=> folio.emisor.toLowerCase().indexOf(valorBusqueda) > -1);
+      this.folios = foliosFiltrados;
+      console.log(foliosFiltrados);
+    }
+    if(criterio === 2){
+      console.log(this.foliosOrigen);
+      foliosFiltrados = this.foliosOrigen.filter(folio=> {
+        if(folio.receptor !== undefined){
+          return folio.receptor.toLowerCase().indexOf(valorBusqueda) > -1
+        }
+      });
+      this.folios = foliosFiltrados;
+      console.log(foliosFiltrados);
+    }
+    if(criterio === 3){
+      console.log(this.foliosOrigen);
+      foliosFiltrados = this.foliosOrigen.filter(folio=> {
+          return folio.asunto.toLowerCase().indexOf(valorBusqueda) > -1
+      });
+      this.folios = foliosFiltrados;
+      console.log(foliosFiltrados);
+    }
+  }
+}
+ 
 function calcDate(date1,date2) {
   var diff = Math.floor(date1.getTime() - date2.getTime());
   var day = 1000 * 60 * 60 * 24;

@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule } from "@angular/router";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { APP_BASE_HREF, DatePipe, registerLocaleData } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 
 import { MatNativeDateModule } from "@angular/material/core";
@@ -60,6 +60,7 @@ import { NgxExtendedPdfViewerModule } from "ngx-extended-pdf-viewer";
  import localePt from '@angular/common/locales/pt';
  import localeEn from '@angular/common/locales/en';
  import localeEsAr from '@angular/common/locales/es-AR';
+import { FiltroFolioPersonalizadoComponent } from './administracion/shared/filtro-folio-personalizado/filtro-folio-personalizado.component';
 
 registerLocaleData(localePy, 'es');
 registerLocaleData(localePt, 'pt');
@@ -100,7 +101,7 @@ registerLocaleData(localeEsAr, 'es-Ar');
     MatNativeDateModule,
     NgxExtendedPdfViewerModule,
   ],
-  declarations: [VisorPdfComponent],
+  declarations: [],
 })
 export class MaterialModule {}
 
@@ -119,8 +120,9 @@ export class MaterialModule {}
     NavbarModule,
     FooterModule,
     FixedpluginModule,
+    MatDialogModule
   ],
-  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent],
+  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent,FiltroFolioPersonalizadoComponent,VisorPdfComponent],
   providers: [
     MatNativeDateModule,
     Title,

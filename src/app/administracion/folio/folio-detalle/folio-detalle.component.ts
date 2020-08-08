@@ -50,6 +50,7 @@ export class FolioDetalleComponent implements OnInit {
   muestraImagenes = false;
   folioSiguiente;
   receptor = [];
+  multipleConfig="";
   private fechaRequeridaValidators = [
     Validators.maxLength(250),
   ]
@@ -116,7 +117,7 @@ export class FolioDetalleComponent implements OnInit {
     private usuarioLibroService: UsuarioLibroService,
     private folioReferenciaService : FolioReferenciaService
   ) {
-    this.folioService.clear();
+    this.folioService.removeFolioReferencia(new Folio, false);
     this.folios = [];
     this.folioService.navBarChange(2);
   }
@@ -167,6 +168,11 @@ export class FolioDetalleComponent implements OnInit {
     this.folioService.getListaFolioRelacionadoSubject().subscribe(
       respuesta => {
         if(respuesta.length === 0){
+          //this.folioService.removeFolioReferencia(new Folio, false);
+          this.folioService.createNewColeccionFolioReferencia([]);
+          setTimeout(() => {
+            this.folios = [];
+          }, 300);
         }else{
           if(this.folios.length > 0){
             let hash = {};
@@ -195,23 +201,14 @@ export class FolioDetalleComponent implements OnInit {
       );
       this.folioService.foliosReferencias(respuesta.body.id).subscribe(
         respuesta=>{
+          this.folios = [];
           this.Folio.folioReferencias = respuesta.body.folioReferencias;
           this.Folio.folioReferencias.forEach(element=>{
             this.folioService.find(element.idFolioReferencia).subscribe(
               folioReferencia=>{
-                if(this.folios.length > 0){
-                  if(!this.folios.includes(folioReferencia.body)){
-                    this.folios = [...this.folios,folioReferencia.body];
-                    let hash = {};
-                    this.folios = this.folios.filter(o => hash[o.id] ? false : hash[o.id] = true);
-                  }else{
-                    this.folios = [];
-                  }
-                }else{
-                  let hash = {};
-                  this.folios = [...this.folios,folioReferencia.body];
-                  this.folios = this.folios.filter(o => hash[o.id] ? false : hash[o.id] = true);
-                }
+                console.log(folioReferencia.body);
+                this.folios = [...this.folios, folioReferencia.body];
+                console.log(this.folios);
               }
             );
            })
@@ -339,19 +336,23 @@ export class FolioDetalleComponent implements OnInit {
                 respuesta.body.folioReferencias =[];
                 respuesta.body.folioReferencias.push(respuesta2.body);
                 this.folioService.update(respuesta.body).subscribe();
-                
               }
             );
           }
-          this.buscarFolio(respuesta.body.id);
-          this.showNotificationSuccess("top", "right");
+          
+          setTimeout(() => {
+            this.buscarFolio(respuesta.body.id);
+            this.showNotificationSuccess("top", "right");
+          }, 500);
           //this.folioRelacionadoService.create().subscribe();
         }else{ 
-          respuesta.body.folioReferencias = [];
-          this.folioService.createNewColeccionFolioReferencia([]);
-          this.folioService.update(respuesta.body).subscribe(); 
-          this.buscarFolio(respuesta.body.id);
-          this.showNotificationSuccess("top", "right");
+          setTimeout(() => {
+            respuesta.body.folioReferencias = [];
+            this.folioService.createNewColeccionFolioReferencia([]);
+            this.folioService.update(respuesta.body).subscribe(); 
+            this.buscarFolio(respuesta.body.id);
+            this.showNotificationSuccess("top", "right");
+          }, 300);
         }
       },
       (error) => {
@@ -539,7 +540,7 @@ export class FolioDetalleComponent implements OnInit {
         );
       });
   }
-  eliminarFolio(row) {
+  eliminarFolio() {
     Swal.fire({
       title: "Esta Seguro ?",
       text: "Los cambios no podran ser revertidos!",
@@ -1181,7 +1182,6 @@ export class FolioDetalleComponent implements OnInit {
 
   remove(folio: any): void {
     const index = this.folios.indexOf(folio);
-
     if (index >= 0) {
       if(this.folios.length <= 1){
         this.folios = [];
@@ -1205,6 +1205,12 @@ export class FolioDetalleComponent implements OnInit {
       .subscribe((respuesta) => {
         this.folioSiguiente = respuesta.body[0].numero_folio;
       });
+  }
+  onUploadError(event){
+
+  }
+  onUploadSuccess(event){
+
   }
 }
 function getBase64Image(img) {
