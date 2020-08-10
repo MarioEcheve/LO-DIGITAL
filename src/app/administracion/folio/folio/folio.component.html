@@ -77,12 +77,12 @@
         <div class="row">
           <div
             class="col-md-2"
-            style="margin-left: initial; margin-right: auto;"
+            style="margin-left: initial; margin-right: auto;padding: inherit; margin: auto; margin-top: initial;"
           >
             <div>
               <button
                 mat-raised-button
-                class="btn btn-primary"
+                class="btn btn-primary col-md-12"
                 (click)="nuevoFolio()"
                 [disabled]="libroSeleccionado?.estadoLibro?.nombre === 'Cerrado'"
               >
@@ -93,9 +93,12 @@
               </button>
             </div>
             <div>
-              <mat-list role="list">
-                <mat-list-item *ngFor="let accion of typesOfActions" (click)="filtrarFolios(accion)">
-                  {{accion.accion }}
+              <mat-list role="list" >
+                <mat-list-item  class="content-menu-list" style="width: auto; height: auto; float: left;" *ngFor="let accion of typesOfActions" (click)="filtrarFolios(accion)">
+                  <button style="font-size:medium; padding: initial;text-align: left; width: -webkit-fill-available;"   mat-button aria-label="Example icon button with a vertical three dot icon">
+                    <mat-icon style="color: gray;">{{accion.icon }}</mat-icon>
+                    {{accion.accion }}
+                  </button>
                 </mat-list-item>
               </mat-list>          
             </div>

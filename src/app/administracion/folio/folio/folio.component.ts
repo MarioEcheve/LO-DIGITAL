@@ -93,31 +93,38 @@ export class FolioComponent implements OnInit, AfterViewInit {
   typesOfActions= [
       {
         id :1,
-        accion : 'Bandeja de Folio'
+        accion : 'Bandeja de Folio',
+        icon :'mail'
       },
       {
         id :2,
-        accion : 'Folio Mandante'
+        accion : 'Folio Mandante',
+        icon :'mark_email_read'
       },
       {
         id :3,
-        accion : 'Folio Contratista'
+        accion : 'Folio Contratista',
+        icon :'mark_email_read'
       },
       {
         id :4,
-        accion : 'Sin respuesta'
+        accion : 'Sin respuesta',
+        icon :'unsubscribe'
       },
       {
         id :5,
-        accion : 'Sin Leer'
+        accion : 'Sin Leer',
+        icon :'mark_email_unread'
       },
       {
         id :6,
-        accion : 'Destacados'
+        accion : 'Destacados',
+        icon :'favorite'
       },
       {
         id :7,
-        accion : 'Borradores'
+        accion : 'Borradores',
+        icon :'note'
       }
   ];
   // definicion del form de los filtros

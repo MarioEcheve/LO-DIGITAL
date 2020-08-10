@@ -10,3 +10,15 @@
     overflow: hidden;
     white-space: nowrap;
 }
+.content-menu-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+  padding-top: 0px;
+  padding-right: 8px;
+  padding-bottom: 0px;
+  padding-left: 8px;
+  position: relative;
+  height: inherit;
+}
