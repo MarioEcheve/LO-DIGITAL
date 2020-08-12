@@ -18,7 +18,7 @@ export class UsuarioDependenciaService {
   public resourceUrlFindUserByUsuarioDependencia = this.SERVER_API_URL + "api/findUserByUsuarioDependencia";
   public resourceUrlFindUserByUsuarioDependenciaRolUser = this.SERVER_API_URL + "api/findUserByUsuarioDependenciaRolUser";
   public resourceUrlFindContratosByDependencia= this.SERVER_API_URL + "api/findContratosByDependencia";
-
+  public resourceUrlFindContratosByUsuarioNormal= this.SERVER_API_URL + "api/findContratosByUsuarioNormal";
   constructor(protected http: HttpClient) {}
 
   create(
@@ -59,6 +59,19 @@ export class UsuarioDependenciaService {
     const options = createRequestOption();
     return this.http
       .get<IUsuarioDependencia[]>(`${this.resourceUrlFindContratosByDependencia}/${idDependencia}`, {
+        params: options,
+        observe: "response",
+      })
+      .pipe(
+        map((res: EntityArrayResponseType) =>
+          this.convertDateArrayFromServer(res)
+        )
+      );
+  }
+  findContratosByUsuarioNormal(idUsuario? : number): Observable<EntityArrayResponseType> {
+    const options = createRequestOption();
+    return this.http
+      .get<IUsuarioDependencia[]>(`${this.resourceUrlFindContratosByUsuarioNormal}/${idUsuario}`, {
         params: options,
         observe: "response",
       })

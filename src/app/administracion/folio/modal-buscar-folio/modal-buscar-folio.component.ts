@@ -31,18 +31,15 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
     private folioService : FolioService,
     private usuarioLibroService : UsuarioLibroService,
     private dialog: MatDialog,
-    private fb : FormBuilder
-  ) { 
-  }
-
+    private fb : FormBuilder) {}
+    
   ngOnInit(): void {
     this.folios$ = this.folioService.getFolioRelacionadoSubject();
     this.libroService
         .buscarlibroPorContrato(this.data.idContrato)
         .subscribe((respuesta) => {
           this.libros = respuesta.body;
-          
-        });
+    });
     this.tableData1 = {
       headerRow: [
         "# Folio",
@@ -61,11 +58,9 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
     this.buscaFolioForm.controls['libro'].setValue(this.data.libro.nombre);
     this.buscaFolios(this.data.libro);
   }
-  buscaFolios(libro, eventoCick? : boolean){
+   buscaFolios(libro){
+    let valor2 = [];
     this.folioService.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
-      let valor2 = [];
-      let valor= [];
-      valor = respuesta.body.filter( folio => folio.idUsuarioFirma !== null);
       valor2 = respuesta.body.filter( folio => folio.idUsuarioFirma !== null);
       valor2.forEach(element=>{
         this.usuarioLibroService
@@ -73,14 +68,12 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
         .subscribe((respuesta) => {
           element.emisor = respuesta.body.usuarioDependencia.usuario.firstName +
           " " + respuesta.body.usuarioDependencia.usuario.lastName;
-
         });
       });
-      setTimeout(() => {
-        console.log(valor2);
-        this.folioService.createNewColeccionFolioReferencia(valor2);
-      }, 1000);
+      console.log(valor2);
+      this.folioService.ListaFoliosDeFolios(valor2);
     }); 
+
   }
   visorPdf(row){
       let pdf = row.pdfFirmado;
@@ -111,20 +104,13 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
       });
   }
   agregarFolioReferencia(row){
-    this.folioService.createNewColeccionFolioReferencia(row);
-    /*
-    this.folios = this.folios.filter(folio => folio !== row);
-    this.dialogRef.close(row);
-    */
+    this.folioService.AgregarFolioReferenciaAlista(row);
   }
   agregar(){
-    //this.dialogRef.close(this.foliosRelacionados);
   }
 }
-
 function removeItemFromArr ( arr, item ) {
   var i = arr.indexOf( item );
-
   if ( i !== -1 ) {
       arr.splice( i, 1 );
   }

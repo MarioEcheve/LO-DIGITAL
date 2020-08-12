@@ -42,6 +42,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
   folioFormGroup: FormGroup;
   libroSeleccionado: Libro;
   usuarioLibro = new UsuarioLibro();
+  type="number";
   filtroFolios = [
     {
       id : 0,
@@ -58,6 +59,10 @@ export class FolioComponent implements OnInit, AfterViewInit {
     {
       id : 3,
       name : 'Asunto'
+    },
+    {
+      id : 4,
+      name : 'Todos'
     }
   ]
   singleConfig: DropzoneConfigInterface = {
@@ -532,9 +537,13 @@ export class FolioComponent implements OnInit, AfterViewInit {
       this.filter(valorBusqueda, criterioBusqueda);
     }
     if(criterioBusqueda === 2){
+
       this.filter(valorBusqueda, criterioBusqueda);
     }
     if(criterioBusqueda === 3){
+      this.filter(valorBusqueda, criterioBusqueda);
+    }
+    if(criterioBusqueda === 4){
       this.filter(valorBusqueda, criterioBusqueda);
     }
   }
@@ -572,6 +581,30 @@ export class FolioComponent implements OnInit, AfterViewInit {
       this.folios = foliosFiltrados;
       console.log(foliosFiltrados);
     }
+    if(criterio === 4){
+      //this.formFiltrosGroup.controls['inputBusqueda'].setValue('');
+      this.folios = this.foliosOrigen;
+    }
+  }
+  setForm(filtros:any){
+    let criterioBusqueda = filtros.id;
+    if(criterioBusqueda === 0){
+      this.formFiltrosGroup.controls['inputBusqueda'].setValidators([Validators.required]);
+      this.formFiltrosGroup.updateValueAndValidity();
+      this.type="number";
+    }
+    if(criterioBusqueda === 1 || criterioBusqueda === 2 || criterioBusqueda === 3){
+      this.formFiltrosGroup.controls['inputBusqueda'].setValidators([Validators.required,Validators.minLength(3)]);
+      this.formFiltrosGroup.updateValueAndValidity();
+      this.type="text";
+    }
+    if(criterioBusqueda === 4){
+      this.formFiltrosGroup.controls['inputBusqueda'].setValue('');
+      this.formFiltrosGroup.controls['inputBusqueda'].setValidators([Validators.maxLength(40)]);
+      this.formFiltrosGroup.updateValueAndValidity();
+      this.type="text";
+    }
+    console.log(this.formFiltrosGroup.get('inputBusqueda'));
   }
 }
  

@@ -18,6 +18,8 @@ export class UsuarioLibroService {
   public resourceUrlListaUsuariosLibros = this.SERVER_API_URL + "api/ListaUsuariosLibros";
   public resourceUrlBuscarlibroPorContrato =
     this.SERVER_API_URL + "api/ListaUsuariosLibrosFolio";
+  public resourceUrlUsuariosPorLibro =
+    this.SERVER_API_URL + "api/UsuariosPorLibro";
 
   constructor(protected http: HttpClient) {}
 
@@ -87,6 +89,20 @@ export class UsuarioLibroService {
       )
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
+  usuariosPorLibro(idLibro : number): Observable<EntityArrayResponseType>{
+    const options = createRequestOption();
+    return this.http
+      .get<IUsuarioLibro[]>(`${this.resourceUrlUsuariosPorLibro}/${idLibro}`, {
+        params: options,
+        observe: "response",
+      })
+      .pipe(
+        map((res: EntityArrayResponseType) =>
+          this.convertDateArrayFromServer(res)
+        )
+      );
+  }
+
   protected convertDateFromClient(usuarioLibro: IUsuarioLibro): IUsuarioLibro {
     const copy: IUsuarioLibro = Object.assign({}, usuarioLibro, {
       fechaCreacion:

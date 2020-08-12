@@ -110,17 +110,17 @@
                   <div class="flex-grow-1">
                     <mat-form-field class="example-full-width col-md-12">
                       <mat-label>Filtro de busqueda</mat-label>
-                      <input matInput placeholder="Buscar" formControlName="inputBusqueda" />
+                      <input type="{{type}}" matInput placeholder="Buscar" formControlName="inputBusqueda" />
                     </mat-form-field>
                   </div>
                   <div class="flex-grow-1">
                     <mat-form-field class="col-md-12">
                       <mat-select 
-                         
+                          
                           placeholder="Busqueda" 
                           formControlName="criterioBusqueda" 
                          >
-                        <mat-option  *ngFor="let filtros of filtroFolios"  [value]="filtros.id">{{filtros.name}}</mat-option>
+                        <mat-option  *ngFor="let filtros of filtroFolios"  [value]="filtros.id" (click)="setForm(filtros)">{{filtros.name}}</mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>

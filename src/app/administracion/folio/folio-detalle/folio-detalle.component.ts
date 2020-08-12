@@ -165,14 +165,14 @@ export class FolioDetalleComponent implements OnInit {
   
     this.buscarFolio(idFolio);  
     
-    this.folioService.getListaFolioRelacionadoSubject().subscribe(
+    this.folioService.getListaFoliosRelacionadosAgregadosSubject().subscribe(
       respuesta => {
+        console.log('se ejecuta la respuesta');
+        console.log(respuesta);
         if(respuesta.length === 0){
           //this.folioService.removeFolioReferencia(new Folio, false);
-          this.folioService.createNewColeccionFolioReferencia([]);
-          setTimeout(() => {
+          //this.folioService.AgregarFolioReferenciaAlista(new Folio, true , []);
             this.folios = [];
-          }, 300);
         }else{
           if(this.folios.length > 0){
             let hash = {};
@@ -213,7 +213,11 @@ export class FolioDetalleComponent implements OnInit {
             );
            })
         }
+        
       );
+      setTimeout(() => {
+        this.folioService.AgregarFolioReferenciaAlista(new Folio ,true ,this.folios);
+      }, 800);
       this.buscaCorrelativoFolio();
 
       this.obtenerPerfilLibroUsuario(this.Folio.libro.id, usuarioActual.id);
@@ -348,9 +352,11 @@ export class FolioDetalleComponent implements OnInit {
         }else{ 
           setTimeout(() => {
             respuesta.body.folioReferencias = [];
-            this.folioService.createNewColeccionFolioReferencia([]);
+            this.folioService.ListaFoliosDeFolios([]);
             this.folioService.update(respuesta.body).subscribe(); 
-            this.buscarFolio(respuesta.body.id);
+            setTimeout(() => {
+              this.buscarFolio(respuesta.body.id);
+            }, 1000);
             this.showNotificationSuccess("top", "right");
           }, 300);
         }
@@ -1185,12 +1191,11 @@ export class FolioDetalleComponent implements OnInit {
     if (index >= 0) {
       if(this.folios.length <= 1){
         this.folios = [];
-        this.folioService.removeFolioReferencia(folio,false);
-        this.folioService.createNewColeccionFolioReferencia([]);
-        this.folioService.clear();
+        this.folioService.removerListaFoliosAgregados(folio);
+        this.folioService.clearListaFoliosAgregados();
       }else{
         this.folios.splice(index, 1);
-        this.folioService.removeFolioReferencia(folio);
+        this.folioService.removerListaFoliosAgregados(folio);
       }
       
     }

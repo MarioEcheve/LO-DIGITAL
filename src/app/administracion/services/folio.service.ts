@@ -23,94 +23,102 @@ export class FolioService {
     this.SERVER_API_URL + "api/folioReferencias";
   public resourceUrlFiltroFolioPersonalizado=
     this.SERVER_API_URL + "api/filtroFolioPersonalizado";
-    
-  //private folioReferencia = new BehaviorSubject<any>({});
-  //folioReferenciaActuales = this.folioReferencia.asObservable();
+
   private folioRelacionadoSubject = new BehaviorSubject([]);
   private folioRelacionado: IFolio[];
-
   private listafolioRelacionadoSubject = new BehaviorSubject([]);
   private listafolioRelacionado: IFolio[] = [];
-
   private navBarSubject = new BehaviorSubject(0);
   private valorNavBar: any="";
 
-  constructor(protected http: HttpClient) {
+  private listaFoliosRelacionadosAgregadosSubject = new BehaviorSubject([]);
+  private listaFolioRelacionadosAgregados : IFolio[] = [];
+
+
+  constructor(protected http: HttpClient) {}
+
+  getListaFoliosRelacionadosAgregadosSubject(): Observable<IFolio[]> {
+    return this.listaFoliosRelacionadosAgregadosSubject.asObservable();
+  }
+  AgregarFolioReferenciaAlista(folio: any,setValue? : Boolean, folios?: any[]){
+    let existe = this.listaFolioRelacionadosAgregados.includes(folio);
+    if(setValue === true){
+        this.listaFolioRelacionadosAgregados = folios;
+    }else{
+      if(!existe){
+        this.listaFolioRelacionadosAgregados = [...this.listaFolioRelacionadosAgregados, folio];
+      }
+    }
+    this.refreshListaListaFoliosAgregados();
+  }
+  refreshListaListaFoliosAgregados(){
+    this.listaFoliosRelacionadosAgregadosSubject.next(this.listaFolioRelacionadosAgregados);
+  }
+  removerListaFoliosAgregados(folio : IFolio){
+    const index = this.listaFolioRelacionadosAgregados.indexOf(folio);
+    if(this.listaFolioRelacionadosAgregados.length === 1 ){
+      this.listaFolioRelacionadosAgregados.splice(index, 1);
+      this.clearListaFoliosAgregados();
+    }else{
+      this.listaFolioRelacionadosAgregados.splice(index, 1);
+    }
+    setTimeout(() => {
+      this.refreshListaListaFoliosAgregados();
+    }, 500);
+    
     
   }
+  clearListaFoliosAgregados(){
+    this.listaFoliosRelacionadosAgregadosSubject.next([]);
+    this.refreshListaListaFoliosAgregados();
+  }
+
   navBarChange(valor: any) {
-    /**
-    * Evitar hacer this.folio.push() pues estaríamos modificando los valores directamente,
-    * se debe generar un nuevo array !!!!.
-    */
     this.valorNavBar = valor;
     this.refreshNavBar();
   }
-
   ChangeNavBarSubject(): Observable<any> {
     return this.navBarSubject.asObservable();
   }
-
-
   getFolioRelacionadoSubject(): Observable<IFolio[]> {
     return this.folioRelacionadoSubject.asObservable();
   }
-
   getListaFolioRelacionadoSubject(): Observable<IFolio[]> {
     return this.listafolioRelacionadoSubject.asObservable();
   }
-
   private refresh() {
-    // Emitir los nuevos valores para que todos los que dependan se actualicen.
     this.folioRelacionadoSubject.next(this.folioRelacionado);
   }
-
   private refreshNavBar() {
-    // Emitir los nuevos valores para que todos los que dependan se actualicen.
     this.navBarSubject.next(this.valorNavBar);
   }
-
-   clear() {
-    // Emitir los nuevos valores para que todos los que dependan se actualicen.
+  clear() {
     this.listafolioRelacionadoSubject.next([]);
     this.refresh();
   }
-
-
   public refreshLista() {
-    // Emitir los nuevos valores para que todos los que dependan se actualicen.
-    console.log(this.listafolioRelacionado);
     this.listafolioRelacionadoSubject.next(this.listafolioRelacionado);
   }
-
-  createNewColeccionFolioReferencia(folio: IFolio[]) {
-    /**
-    * Evitar hacer this.folio.push() pues estaríamos modificando los valores directamente,
-    * se debe generar un nuevo array !!!!.
-    */
+  ListaFoliosDeFolios(folio: IFolio[]) {
+    this.folioRelacionado = [];
     this.folioRelacionado = folio;
-    this.refresh();
+    setTimeout(() => {
+      this.refresh();
+    }, 100);
   }
-
   createNewListaColeccionFolioReferencia(folio: any, setValue?:Boolean, listaFolio?:any) {
-    /**
-    * Evitar hacer this.folio.push() pues estaríamos modificando los valores directamente,
-    * se debe generar un nuevo array !!!!.
-    */
-   let valor = [];
-   valor = listaFolio;
-   if(setValue){
-    this.listafolioRelacionado = valor;
-    this.refreshLista();
-   }else{
-    this.listafolioRelacionado.push(folio);
-    this.refreshLista();
-   }
+    let valor = [];
+    valor = listaFolio;
+    if(setValue){
+      this.listafolioRelacionado = valor;
+      this.refreshLista();
+    }else{
+      this.listafolioRelacionado.push(folio);
+      this.refreshLista();
+    }
   }
   removeFolioReferencia(folio : IFolio, contador? : Boolean){
     const index = this.listafolioRelacionado.indexOf(folio);
-    //console.log('imprimiendo en el servicio');
-    //console.log(this.listafolioRelacionado);
     if(contador===false){
       this.listafolioRelacionado = [];
       this.refreshLista();
@@ -118,39 +126,35 @@ export class FolioService {
         if(this.listafolioRelacionado.length === 1){
           this.listafolioRelacionado.splice(index, 1);
           this.listafolioRelacionado = [];
-          //this.listafolioRelacionado.splice(index, 1);
           this.refreshLista();
           this.clear();
-          console.log(this.listafolioRelacionado);
         } else{
           this.listafolioRelacionado.splice(index, 1);
           this.refreshLista();
         }
-        
     }
-    
   }
-
+  removeFolioReferenciaFolioDetalle(folio : IFolio){
+    const index = this.listafolioRelacionado.indexOf(folio);
+    this.listafolioRelacionado.splice(index, 1);
+  }
   create(folio: IFolio): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(folio);
     return this.http
       .post<IFolio>(this.resourceUrl, copy, { observe: "response" })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
-
   update(folio: IFolio): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(folio);
     return this.http
       .put<IFolio>(this.resourceUrl, copy, { observe: "response" })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
-
   find(id: number): Observable<EntityResponseType> {
     return this.http
       .get<IFolio>(`${this.resourceUrl}/${id}`, { observe: "response" })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
-  }s
-
+  }
   FiltroFolioPersonalizado(idlibro :number , emisor : string , receptor : string , asunto: string,): Observable<EntityArrayResponseType> {
     if(emisor === ""){
       emisor = "null"
@@ -185,7 +189,6 @@ export class FolioService {
       observe: "response",
     });
   }
-
   buscarFolioPorLibro(id: number): Observable<EntityArrayResponseType> {
     return this.http
       .get<IFolio[]>(`${this.resourceUrlBuscarFolioPorLibro}/${id}`, {
@@ -204,14 +207,11 @@ export class FolioService {
       })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
-
   foliosReferencias(id?: any): Observable<any> {
     const options = createRequestOption(id);
     return this.http
       .get<any>(`${this.resourceUrlFolioReferencias}/${id}`, { params: options, observe: "response" });
   }
-
-
   protected convertDateFromClient(folio: IFolio): IFolio {
     const copy: IFolio = Object.assign({}, folio, {
       fechaRequerida:
@@ -237,7 +237,6 @@ export class FolioService {
     });
     return copy;
   }
-
   protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
     if (res.body) {
       res.body.fechaRequerida = res.body.fechaRequerida
@@ -258,7 +257,6 @@ export class FolioService {
     }
     return res;
   }
-
   protected convertDateArrayFromServer(
     res: EntityArrayResponseType
   ): EntityArrayResponseType {

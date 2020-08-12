@@ -9,6 +9,15 @@ import { TipoFirmaService } from "../../services/tipo-firma.service";
 import { ITipoLibro } from "../../TO/tipo-libro.model";
 import { TipoFirma } from "../../TO/tipo-firma.model";
 import { DatePipe } from "@angular/common";
+import { UsuarioLibroService } from "../../services/usuario-libro.service";
+import { UsuarioLibro, IUsuarioLibro } from "../../TO/usuario-libro.model";
+import { MatDialog } from "@angular/material/dialog";
+import { CrearUsuarioComponent } from "../../componentes/crear-usuario/crear-usuario.component";
+import { ContratoService } from "../../services/contrato.service";
+import { Contrato } from "../../TO/contrato.model";
+import { DependenciaService } from "../../services/dependencia.service";
+import { User } from "src/app/core/user/user.model";
+import { UsuarioLibroPerfilService } from "../../services/usuario-libro-perfil.service";
 
 declare interface TableData {
   headerRow: string[];
@@ -27,6 +36,14 @@ export class DetalleLibroComponent implements OnInit {
   permisosFormGroup: FormGroup;
   tipoLibro: ITipoLibro[];
   tipoFirma: TipoFirma[];
+  usuariosLibros : UsuarioLibro[];
+  listaUsuarioMandante = [];
+  contrato :  Contrato;
+  listaUsuarioContratista = [];
+  muestraListaUsuarios = false;
+  listaUsuarios : User[] = [];
+  listaUsuariosContratista: User[] = [];
+  usuarioLibroPerfil: IUsuarioLibro[];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -35,10 +52,16 @@ export class DetalleLibroComponent implements OnInit {
     private fb: FormBuilder,
     private tipoLibroService: TipoLibroService,
     private tipoFirmaService: TipoFirmaService,
-    public datepipe: DatePipe
+    public datepipe: DatePipe,
+    private usuarioLibroService : UsuarioLibroService,
+    private dialog: MatDialog,
+    private contratoService : ContratoService,
+    private dependenciaService : DependenciaService,
+    private perfilUsuarioLibro : UsuarioLibroPerfilService
   ) {}
 
   ngOnInit(): void {
+    let idLibro = this.route.snapshot.paramMap.get("id");
     this.inicializadorForms();
     this.tableData2 = {
       headerRow: ["RUT", "Nombre", "Cargo", "Perfil", "Estado", "Acción"],
@@ -88,6 +111,19 @@ export class DetalleLibroComponent implements OnInit {
     this.obtenerLibro(parseInt(this.route.snapshot.paramMap.get("id")));
     this.obtenerTipoLibro();
     this.obtenerTipoFirma();
+    this.obtenerPerfilUsuariolibro();
+    this.usuarioLibroService.usuariosPorLibro(parseInt(idLibro)).subscribe(
+      usuariosLibros=>{
+        this.usuariosLibros = usuariosLibros.body;
+        this.usuariosLibros.forEach(element=>{
+          if(element.usuarioDependencia.dependencia.id === this.libro.contrato.dependenciaMandante.id){
+            this.listaUsuarioMandante = [...this.listaUsuarioMandante, element];
+          }else{
+            this.listaUsuarioContratista = [...this.listaUsuarioContratista, element];
+          }
+        });
+      }
+    );
   }
   abrirLibro() {
     let usuarioActual = JSON.parse(localStorage.getItem("user"));
@@ -100,6 +136,8 @@ export class DetalleLibroComponent implements OnInit {
   obtenerLibro(idLibro) {
     this.libroService.find(idLibro).subscribe((respuesta) => {
       this.libro = respuesta.body;
+      this.obtenerContrato(this.libro.contrato.id);
+
       this.folio.buscarFolioPorLibro(this.libro.id).subscribe((respuesta) => {
         if (respuesta.body.length <= 0) {
           this.abrirLibroMostrar = true;
@@ -115,6 +153,14 @@ export class DetalleLibroComponent implements OnInit {
         estadoLibro: respuesta.body.estadoLibro.nombre,
         fechaCreacion: this.datepipe.transform(
           respuesta.body.fechaCreacion,
+          "dd-MM-yyyy "
+        ),
+        fechaApertura: this.datepipe.transform(
+          respuesta.body.fechaApertura,
+          "dd-MM-yyyy"
+        ),
+        fechaCierre: this.datepipe.transform(
+          respuesta.body.fechaCierre,
           "dd-MM-yyyy"
         ),
         tipoLibro: respuesta.body.tipoLibro.descripcion,
@@ -183,6 +229,8 @@ export class DetalleLibroComponent implements OnInit {
     this.libroInfoGeneralFormGroup.controls["descripcion"].disable();
     this.libroInfoGeneralFormGroup.controls["estadoLibro"].disable();
     this.libroInfoGeneralFormGroup.controls["fechaCreacion"].disable();
+    this.libroInfoGeneralFormGroup.controls["fechaApertura"].disable();
+    this.libroInfoGeneralFormGroup.controls["fechaCierre"].disable();
 
     this.permisosFormGroup = this.fb.group({
       aperturaMandante: [false],
@@ -203,6 +251,133 @@ export class DetalleLibroComponent implements OnInit {
   obtenerTipoFirma() {
     this.tipoFirmaService.query().subscribe((respuesta) => {
       this.tipoFirma = respuesta.body;
+    });
+  }
+  guardarCambios(){
+    //console.log(this.libroInfoGeneralFormGroup.value);
+    //console.log(this.permisosFormGroup.value);
+    //console.log(this.listaUsuarioMandante);
+    //console.log(this.listaUsuarioContratista);
+    this.actualizaUsuariosMandante();
+    this.actualizaUsuariosContratista();
+  }
+  actualizaUsuariosMandante(){
+    this.listaUsuarioMandante.forEach(element=>{
+      if(element.id !== undefined){
+        this.usuarioLibroService.find(element.id).subscribe(
+          usuarioBuscado=>{
+            let usuarioLibro = new UsuarioLibro();
+            usuarioLibro = usuarioBuscado.body;
+            console.log(usuarioLibro);
+            this.usuarioLibroService.update(usuarioLibro).subscribe(
+              usuario=>{
+                console.log('Usuario Actualizado')
+              }
+            );
+          }
+        );
+      }
+      else{
+        element.libro = this.libro;
+        this.usuarioLibroService.create(element).subscribe(
+          usuario=>{
+            console.log(usuario.body);
+          }
+        );
+      }
+    })
+  }
+  actualizaUsuariosContratista(){
+    this.listaUsuarioContratista.forEach(element=>{
+      if(element.id !== undefined){
+        this.usuarioLibroService.find(element?.id).subscribe(
+          usuarioBuscado=>{
+            let usuarioLibro = new UsuarioLibro();
+            usuarioLibro = usuarioBuscado.body;
+            console.log(usuarioLibro);
+            this.usuarioLibroService.update(usuarioLibro).subscribe(
+              usuario=>{
+                console.log('Usuario Actualizado')
+              }
+            );
+          }
+        );
+      }else{
+        element.libro = this.libro;
+        this.usuarioLibroService.create(element).subscribe(
+          usuario=>{
+            console.log(usuario.body);
+          }
+        );
+      }
+    })
+  }
+  modalCrearUsuario() {
+    const dialogRef = this.dialog.open(CrearUsuarioComponent, {
+      width: "500px",
+      data: {
+        usuarioLibroPerfil: this.usuarioLibroPerfil,
+        usuariosDependenciaMandante: this.listaUsuarios
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === undefined || result === false) {
+      } else {
+        let existe = false;
+        existe = this.listaUsuarioMandante.find(usuario => usuario.usuarioDependencia.id === result.usuarioDependencia?.id);
+        if(!existe){
+          this.listaUsuarioMandante = [...this.listaUsuarioMandante, result];
+        } else{
+
+        }
+      }
+    });
+  }
+  modalCrearUsuarioContratista() {
+    const dialogRef = this.dialog.open(CrearUsuarioComponent, {
+      width: "500px",
+      data: {
+        usuarioLibroPerfil: this.usuarioLibroPerfil,
+        usuariosDependenciaMandante: this.listaUsuariosContratista
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === undefined || result === false) {
+      } else {
+        let existe = false;
+        existe = this.listaUsuarioContratista.find(usuario => usuario.usuarioDependencia.id === result.usuarioDependencia?.id);
+        if(!existe){
+          this.listaUsuarioContratista = [...this.listaUsuarioContratista, result];
+        } else{
+
+        }
+      }
+    });
+  }
+  obtenerContrato(idContrato) {
+    this.contratoService.find(idContrato).subscribe((respuesta) => {
+      this.contrato = respuesta.body;
+      // obtener los usuarios para el mandante y el contratista
+      // mandante
+      this.dependenciaService
+        .buscaUsuariosDependencia(this.contrato.dependenciaMandante.id)
+        .subscribe((respuesta) => {
+          //console.log(respuesta);
+          this.listaUsuarios = respuesta.body;
+          this.muestraListaUsuarios = true;
+        });
+      this.dependenciaService
+        .buscaUsuariosDependencia(this.contrato.idDependenciaContratista)
+        .subscribe((respuesta) => {
+          //console.log(respuesta);
+          this.listaUsuariosContratista = respuesta.body;
+          this.muestraListaUsuarios = true;
+        });
+    });
+  }
+  obtenerPerfilUsuariolibro() {
+    this.perfilUsuarioLibro.query().subscribe((respuesta) => {
+      this.usuarioLibroPerfil = respuesta.body;
     });
   }
 }

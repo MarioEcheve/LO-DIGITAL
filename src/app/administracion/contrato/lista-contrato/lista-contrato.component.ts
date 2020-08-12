@@ -64,9 +64,9 @@ export class ListaContratoComponent implements OnInit {
             this.listaDeContratos = usuarioDependencia.body;
           });
       }else{
-        this.usuarioDependenciaService.findUserByUsuarioDependenciaRolUser(usuario.id).subscribe((respuesta) => {
+        this.usuarioDependenciaService.findContratosByUsuarioNormal(usuario.id).subscribe((respuesta) => {
           console.log(respuesta.body);
-          
+          this.listaDeContratos = respuesta.body;
         });
       }
     }, 400);
