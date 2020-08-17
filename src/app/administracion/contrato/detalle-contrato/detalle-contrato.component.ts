@@ -467,4 +467,5 @@ export class DetalleContratoComponent
       this.listaComunas = respuesta.body;
     });
   }
+  
 }

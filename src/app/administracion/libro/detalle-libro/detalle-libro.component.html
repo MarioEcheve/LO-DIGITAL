@@ -381,8 +381,9 @@
                           mat-raised-button
                           type="button"
                           class="btn btn-default {{ row[5] }}"
+                          (click)="eliminarUsuarioRowMandante(row)"
                         >
-                          <i class="material-icons">keyboard_arrow_right</i>
+                          <i class="material-icons">delete</i>
                         </button>
                       </td>
                     </tr>
@@ -445,9 +446,10 @@
                         <button
                           mat-raised-button
                           type="button"
+                          (click)="eliminarUsuarioRowContratista(row)"
                           class="btn btn-default {{ row[5] }}"
                         >
-                          <i class="material-icons">keyboard_arrow_right</i>
+                          <i class="material-icons">delete</i>
                         </button>
                       </td>
                     </tr>

@@ -18,7 +18,8 @@ import { Contrato } from "../../TO/contrato.model";
 import { DependenciaService } from "../../services/dependencia.service";
 import { User } from "src/app/core/user/user.model";
 import { UsuarioLibroPerfilService } from "../../services/usuario-libro-perfil.service";
-
+import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
+declare const $: any;
 declare interface TableData {
   headerRow: string[];
   dataRows: string[][];
@@ -44,6 +45,8 @@ export class DetalleLibroComponent implements OnInit {
   listaUsuarios : User[] = [];
   listaUsuariosContratista: User[] = [];
   usuarioLibroPerfil: IUsuarioLibro[];
+  usuarioEliminadosSersionMandante = [];
+  usuarioEliminadosContratista = [];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -260,6 +263,20 @@ export class DetalleLibroComponent implements OnInit {
     //console.log(this.listaUsuarioContratista);
     this.actualizaUsuariosMandante();
     this.actualizaUsuariosContratista();
+    this.showNotificationSuccess("top", "right");
+
+    if(this.usuarioEliminadosSersionMandante.length > 0){
+      this.usuarioEliminadosSersionMandante.forEach(element=>{
+        this.usuarioLibroService.delete(element.id).subscribe();
+      })
+      this.usuarioEliminadosSersionMandante=[];
+    }
+    if(this.usuarioEliminadosContratista.length > 0){
+      this.usuarioEliminadosContratista.forEach(element=>{
+        this.usuarioLibroService.delete(element.id).subscribe();
+      })
+    }
+    this.usuarioEliminadosContratista=[];
   }
   actualizaUsuariosMandante(){
     this.listaUsuarioMandante.forEach(element=>{
@@ -379,5 +396,54 @@ export class DetalleLibroComponent implements OnInit {
     this.perfilUsuarioLibro.query().subscribe((respuesta) => {
       this.usuarioLibroPerfil = respuesta.body;
     });
+  }
+  showNotificationSuccess(from: any, align: any) {
+    const type = [
+      "",
+      "info",
+      "success",
+      "warning",
+      "danger",
+      "rose",
+      "primary",
+    ];
+
+    const color = 2;
+
+    $.notify(
+      {
+        icon: "notifications",
+        message: "Cambios guardados Correctamente ",
+      },
+      {
+        type: type[color],
+        timer: 3000,
+        placement: {
+          from: from,
+          align: align,
+        },
+        template:
+          '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0} alert-with-icon" role="alert">' +
+          '<button mat-raised-button type="button" aria-hidden="true" class="close" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
+          '<i class="material-icons" data-notify="icon">notifications</i> ' +
+          '<span data-notify="title">{1}</span> ' +
+          '<span data-notify="message">{2}</span>' +
+          '<div class="progress" data-notify="progressbar">' +
+          '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+          "</div>" +
+          '<a href="{3}" target="{4}" data-notify="url"></a>' +
+          "</div>",
+      }
+    );
+  }
+  eliminarUsuarioRowMandante(row){
+    const index = this.listaUsuarioMandante.indexOf(row);
+    this.usuarioEliminadosSersionMandante = [...this.usuarioEliminadosSersionMandante,row];
+    this.listaUsuarioMandante.splice(index , 1 );
+  }
+  eliminarUsuarioRowContratista(row){
+    const index = this.listaUsuarioContratista.indexOf(row);
+    this.usuarioEliminadosContratista = [...this.usuarioEliminadosContratista,row];
+    this.listaUsuarioContratista.splice(index , 1 );
   }
 }
