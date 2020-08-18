@@ -150,6 +150,7 @@ export class DetalleLibroComponent implements OnInit {
   obtenerLibro(idLibro) {
     this.libroService.find(idLibro).subscribe((respuesta) => {
       this.libro = respuesta.body;
+
       this.obtenerContrato(this.libro.contrato.id);
 
       this.folio.buscarFolioPorLibro(this.libro.id).subscribe((respuesta) => {
@@ -203,10 +204,24 @@ export class DetalleLibroComponent implements OnInit {
       this.permisosFormGroup.controls["lecturaContratista"].setValue(
         respuesta.body.lecturaContratista
       );
-    });
+
+      console.log(this.libro);
+      if(this.libro.estadoLibro.nombre.toLowerCase() === "abierto" || this.libro.estadoLibro.nombre.toLowerCase() === "cerrado"){
+        this.permisosFormGroup.controls["aperturaMandante"].disable();
+        this.permisosFormGroup.controls["aperturaContratista"].disable();
+        this.permisosFormGroup.controls["escrituraMandante"].disable();
+        this.permisosFormGroup.controls["escrituraContratista"].disable();
+        this.permisosFormGroup.controls["cierreMandante"].disable();
+        this.permisosFormGroup.controls["cierreContratista"].disable();
+        this.permisosFormGroup.controls["lecturaMandante"].disable();
+        this.permisosFormGroup.controls["lecturaContratista"].disable();
+      }
+    }); 
+    
+    
+
   }
   inicializadorForms() {
-    // form para informacion general
     this.libroInfoGeneralFormGroup = this.fb.group({
       codigo: ["", [Validators.required]],
       nombre: [],
@@ -268,12 +283,19 @@ export class DetalleLibroComponent implements OnInit {
     });
   }
   guardarCambios(){
-    //console.log(this.libroInfoGeneralFormGroup.value);
-    //console.log(this.permisosFormGroup.value);
-    //console.log(this.listaUsuarioMandante);
-    //console.log(this.listaUsuarioContratista);
+    this.libro.aperturaContratista = this.permisosFormGroup.controls['aperturaContratista'].value;
+    this.libro.aperturaMandante = this.permisosFormGroup.controls['aperturaMandante'].value;
+    this.libro.cierreContratista = this.permisosFormGroup.controls['cierreContratista'].value;
+    this.libro.cierreMandante = this.permisosFormGroup.controls['cierreMandante'].value;
+    this.libro.escrituraContratista = this.permisosFormGroup.controls['escrituraContratista'].value;
+    this.libro.escrituraMandante = this.permisosFormGroup.controls['escrituraMandante'].value;
+    this.libro.lecturaContratista = this.permisosFormGroup.controls['lecturaContratista'].value;
+    this.libro.lecturaMandante = this.permisosFormGroup.controls['lecturaMandante'].value;
+    
+    this.libroService.update(this.libro).subscribe();
     this.actualizaUsuariosMandante();
     this.actualizaUsuariosContratista();
+    
     this.showNotificationSuccess("top", "right");
 
     if(this.usuarioEliminadosSersionMandante.length > 0){

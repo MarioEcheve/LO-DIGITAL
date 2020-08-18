@@ -18,7 +18,7 @@ import { element } from 'protractor';
 export class TablaBuscarFoliosComponent implements OnInit,AfterViewInit {
   public tableData1: TableData;
   @Input() folios;
-  ListaFolios = [];
+  ListaFolios : Folio[] = [];
   @Output() onAddFolioRelacionado: EventEmitter<any> = new EventEmitter();
   constructor(
     private folioService : FolioService,
@@ -38,7 +38,6 @@ export class TablaBuscarFoliosComponent implements OnInit,AfterViewInit {
     };
     this.folioService.getListaFoliosRelacionadosAgregadosSubject().subscribe(
       respuesta=>{
-        setTimeout(() => {
           this.folios.forEach(element => {
             element.existTableSearchFolio = false;
           });
@@ -52,9 +51,10 @@ export class TablaBuscarFoliosComponent implements OnInit,AfterViewInit {
                   }
                 })
             });
+          }else{
+            console.log('entra al else');
+            this.ListaFolios = this.folios;
           }
-        this.ListaFolios = this.folios;
-        }, 400);
       }
     );
   }

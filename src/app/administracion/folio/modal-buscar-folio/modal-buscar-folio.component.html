@@ -33,7 +33,65 @@
                 </mat-form-field>
             </div>
             <div class="col-md-12">
-               <app-tabla-buscar-folios [folios]="folios$ | async"  (onAddFolioRelacionado)="agregarFolioReferencia($event)" ></app-tabla-buscar-folios>
+                <table class="table table-striped mt-2">
+                    <thead class="text-muted">
+                      <tr>
+                        <th>{{ tableData1.headerRow[0] }}</th>
+                        <th>{{ tableData1.headerRow[1] }}</th>
+                        <th>{{ tableData1.headerRow[2] }}</th>
+                        <th>{{ tableData1.headerRow[3] }}</th>
+                        <th>{{ tableData1.headerRow[4] }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of ListaFolios">
+                        <td>
+                          {{ row.numeroFolio }}
+                        </td>
+                        <td style="font-weight: bold;">
+                          {{ row.emisor }}
+                        </td>
+                        <td>
+                          <a style="font-weight: bold;" class="text-muted">{{
+                            row.tipoFolio.nombre
+                          }}</a>
+                          - {{ row.asunto }}
+                        </td>
+                        <td>
+                          {{ row.fechaCreacion | date: "dd-MM-yyyy HH:mm" }}
+                        </td>
+                        <td class="td-actions text-right">
+                          <button
+                              mat-raised-button
+                              type="button"
+                              class="btn btn-default {{ row[4] }}"
+                              (click)="visorPdf(row)"
+                            >
+                              <i class="material-icons">visibility</i>
+                            </button>
+                            <button
+                              mat-raised-button
+                              type="button"
+                              class="btn btn-default {{ row[4] }}"
+                              (click)="agregarFolioReferencia(row)"
+                              *ngIf="row.existTableSearchFolio === false"
+                            >
+                              <i class="material-icons">add</i>
+                            </button>
+                            <button
+                              mat-raised-button
+                              type="button"
+                              class="btn btn-default {{ row[4] }}"
+                              (click)="deleteFolioReferencia(row)"
+                              *ngIf="row.existTableSearchFolio === true"
+                            >
+                              <i class="material-icons">check</i>
+                            </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
             </div>
         </form>
     </div>

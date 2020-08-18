@@ -23,6 +23,7 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
   folios$: Observable<IFolio[]>;
   libroSeleccionado$: Observable<Libro>;
   foliosRelacionados = [];
+  ListaFolios : Folio[] = [];
   buscaFolioForm : FormGroup;
   constructor(
     public dialogRef: MatDialogRef<ModalBuscarFolioComponent>,
@@ -34,7 +35,12 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
     private fb : FormBuilder) {}
     
   ngOnInit(): void {
-    this.folios$ = this.folioService.getFolioRelacionadoSubject();
+    this.folios$ = this.folioService.getListaFoliosRelacionadosAgregadosSubject();
+    this.folios$.subscribe(
+      folios=>{
+        this.folios = folios;
+      }
+    );
     this.libroService
         .buscarlibroPorContrato(this.data.idContrato)
         .subscribe((respuesta) => {
@@ -58,7 +64,7 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
     this.buscaFolioForm.controls['libro'].setValue(this.data.libro.nombre);
     this.buscaFolios(this.data.libro);
   }
-   buscaFolios(libro){
+  buscaFolios(libro){
     let valor2 = [];
     this.folioService.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
       valor2 = respuesta.body.filter( folio => folio.idUsuarioFirma !== null);
@@ -70,43 +76,68 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
           " " + respuesta.body.usuarioDependencia.usuario.lastName;
         });
       });
-      console.log(valor2);
-      this.folioService.ListaFoliosDeFolios(valor2);
+      if(this.folios.length > 0){
+        valor2.forEach(valor2=>{
+          valor2.existTableSearchFolio = false;
+          console.log(this.folios);
+          this.folios.forEach(folios=>{
+            if(valor2.id === folios.id){
+              valor2.existTableSearchFolio = true;
+            }
+          })
+        })
+      }else{
+        valor2.forEach(valor2=>{
+          valor2.existTableSearchFolio = false;
+        });
+      }
+      setTimeout(() => {
+        this.ListaFolios = valor2;
+      }, 100);
     }); 
 
   }
+  agregar(){
+  }
   visorPdf(row){
-      let pdf = row.pdfFirmado;
-      let contentType = row.pdfFirmadoContentType;
-      let url = "data:"+contentType+";base64,"+pdf;
-      let promise = new Promise(function (resolve, reject) {
-        fetch(url)
-        .then(res => {
-          return res.blob();
-        })
-        .then(blob => {
-          resolve(URL.createObjectURL(blob));
-        });
+    let pdf = row.pdfFirmado;
+    let contentType = row.pdfFirmadoContentType;
+    let url = "data:"+contentType+";base64,"+pdf;
+    let promise = new Promise(function (resolve, reject) {
+      fetch(url)
+      .then(res => {
+        return res.blob();
+      })
+      .then(blob => {
+        console.log(blob);
+        resolve(URL.createObjectURL(blob));
       });
-      promise.then((resultado) => {
-        const dialogRef = this.dialog.open(VisorPdfComponent, {
-          width: "100%",
-          height: "90%",
-          data: {
-            pdf: resultado,
-            folio: null,
-            usuario: null,
-            pdfArchivoCompleto: null,
-            previsualisar : false,
-            lectura : false
-          },
-        });
+    });
+    promise.then((resultado) => {
+      const dialogRef = this.dialog.open(VisorPdfComponent, {
+        width: "100%",
+        height: "90%",
+        data: {
+          pdf: resultado,
+          folio: null,
+          usuario: null,
+          pdfArchivoCompleto: null,
+          previsualisar : false,
+          lectura : false
+        },
       });
+    });
+  }
+  deleteFolioReferencia(row){
+    this.folioService.removerListaFoliosAgregados(row);
+    let index = this.ListaFolios.indexOf(row);
+    this.ListaFolios[index].existTableSearchFolio = false;
+  
   }
   agregarFolioReferencia(row){
+    let index = this.ListaFolios.indexOf(row);
+    this.ListaFolios[index].existTableSearchFolio = true;
     this.folioService.AgregarFolioReferenciaAlista(row);
-  }
-  agregar(){
   }
 }
 function removeItemFromArr ( arr, item ) {
