@@ -30,6 +30,11 @@ import { ITipoContrato } from "../../TO/tipo-contrato.model";
 import { IModalidad } from "../../TO/modalidad.model";
 import { ModalidadService } from "../../services/modalidad.service";
 import { FolioService } from "../../services/folio.service";
+import { element } from "protractor";
+import { UsuarioDependenciaService } from "../../services/usuario-dependencia.service";
+import { UsuarioDependencia } from "../../TO/usuario-dependencia.model";
+import { NgxPermissionsService } from "ngx-permissions";
+
 
 declare const $: any;
 interface FileReaderEventTarget extends EventTarget {
@@ -76,6 +81,7 @@ export class DetalleContratoComponent
   contrato: IContrato;
   tipoContrato: ITipoContrato[];
   modalidadContrato: IModalidad[];
+  librosUsuario = [];
   cities = [
     { value: "paris-0", viewValue: "Paris" },
     { value: "miami-1", viewValue: "Miami" },
@@ -109,6 +115,8 @@ export class DetalleContratoComponent
     private tipoContratoService: TipoContratoService,
     private modalidadService: ModalidadService,
     private folioService : FolioService,
+    private UsuarioDependenciaService : UsuarioDependenciaService,
+    private permissionsService: NgxPermissionsService
     
   ) {
 
@@ -125,6 +133,7 @@ export class DetalleContratoComponent
     };
   }
   ngOnInit() {
+
     this.folioService.navBarChange(2);
     this.type = this.formBuilder.group({
       // To add a validator, we must first convert the string value into an array. The first item in the array is the default value if any, then the next item in the array is the validator. Here we are adding a required validator meaning that the firstName attribute must have a value in it.
@@ -276,7 +285,7 @@ export class DetalleContratoComponent
       $(".card-wizard").each(function () {
         setTimeout(() => {
           const $wizard = $(this);
-          const index = $wizard.bootstrapWizard("currentIndex");
+          const index = $wizard?.bootstrapWizard("currentIndex");
           let $total = $wizard.find(".nav li").length;
           let $li_width = 100 / $total;
 
@@ -419,16 +428,7 @@ export class DetalleContratoComponent
         tipoContrato: respuesta.body.tipoContrato.nombre,
         modalidad: respuesta.body.modalidad.nombre,
       });
-      this.libroService
-        .buscarlibroPorContrato(respuesta.body.id)
-        .subscribe((respuesta) => {
-          this.libros = respuesta.body;
-          for (var i = 0; i < respuesta.body.length; i++) {
-            if (respuesta.body[i].estadoLibro.nombre === null) {
-              respuesta.body[i].estadoLibro.nombre = "";
-            }
-          }
-        });
+      this.getMisLibros();        
     });
   }
   // metodo para listar regiones
@@ -466,6 +466,40 @@ export class DetalleContratoComponent
     this.comunaService.buscaComunaPorRegion(idRegion).subscribe((respuesta) => {
       this.listaComunas = respuesta.body;
     });
+  }
+  getMisLibros(){
+    this.folioService.navBarChange(2);
+    let usuario = JSON.parse(localStorage.getItem("user"));
+    let perfilUsuario = new UsuarioDependencia();
+    this.UsuarioDependenciaService.findUserByUsuarioDependencia(usuario.id).subscribe(
+      usuarioDependencia=>{
+        perfilUsuario = usuarioDependencia.body[0].perfilUsuarioDependencia;
+        console.log(perfilUsuario);
+
+          let permisos = [perfilUsuario.nombre.toLowerCase()]
+          this.permissionsService.loadPermissions(permisos);
+          
+          if(perfilUsuario.nombre?.toLowerCase() === "administrador"){
+            this.libroService.getMisLibros(usuario.id).subscribe(
+              respuesta => {
+                console.log(respuesta.body);
+                this.libros = respuesta.body;
+              }
+            );
+          }else{
+            this.libroService.getMisLibrosContratoDetalle(usuario.id, this.contrato.id).subscribe(
+              libros=>{
+                console.log(libros.body);
+                this.libros = libros.body;
+              }
+            );
+          }
+      }
+    );
+    // valido si el usuario logeado es admin o usuario normal
+
+    
+    
   }
   
 }

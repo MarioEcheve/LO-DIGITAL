@@ -21,6 +21,9 @@ import { GesFavoritoService } from "../../services/ges-favorito.service";
 import { GesFavorito } from "../../TO/ges-favorito.model";
 import { FiltroFolioPersonalizadoComponent } from "../../shared/filtro-folio-personalizado/filtro-folio-personalizado.component";
 import { type } from "jquery";
+import { NgxPermissionsService } from "ngx-permissions";
+import { UsuarioDependenciaService } from "../../services/usuario-dependencia.service";
+import { UsuarioDependencia } from "../../TO/usuario-dependencia.model";
 const defaultConfig: DropzoneConfigInterface = {
   clickable: true,
   addRemoveLinks: true,
@@ -99,37 +102,44 @@ export class FolioComponent implements OnInit, AfterViewInit {
       {
         id :1,
         accion : 'Bandeja de Folio',
-        icon :'mail'
+        icon :'mail',
+        isClicked: true
       },
       {
         id :2,
         accion : 'Folio Mandante',
-        icon :'mark_email_read'
+        icon :'mark_email_read',
+        isClicked: false
       },
       {
         id :3,
         accion : 'Folio Contratista',
-        icon :'mark_email_read'
+        icon :'mark_email_read',
+        isClicked: false
       },
       {
         id :4,
         accion : 'Sin respuesta',
-        icon :'unsubscribe'
+        icon :'unsubscribe',
+        isClicked: false
       },
       {
         id :5,
         accion : 'Sin Leer',
-        icon :'mark_email_unread'
+        icon :'mark_email_unread',
+        isClicked: false
       },
       {
         id :6,
         accion : 'Destacados',
-        icon :'favorite'
+        icon :'favorite',
+        isClicked: false
       },
       {
         id :7,
         accion : 'Borradores',
-        icon :'note'
+        icon :'note',
+        isClicked: false
       }
   ];
   // definicion del form de los filtros
@@ -144,12 +154,16 @@ export class FolioComponent implements OnInit, AfterViewInit {
     private usuarioLibroService: UsuarioLibroService,
     private dialog: MatDialog,
     private datePipe: DatePipe,
-    private favoritoService : GesFavoritoService
+    private favoritoService : GesFavoritoService,
+    private permissionsService : NgxPermissionsService,
+    private UsuarioDependenciaService: UsuarioDependenciaService
   ) {
     
   }
 
   ngOnInit(): void {
+
+    this.getPermisos();
     this.inicializarFormFiltros();
     this.folioServie.navBarChange(1);
     this.folioFormGroup = this.fb.group({
@@ -174,6 +188,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
         this.folioFormGroup.patchValue({
           libro: respuesta.body.nombre,
         });
+       
       });
 
     this.tableData1 = {
@@ -399,6 +414,11 @@ export class FolioComponent implements OnInit, AfterViewInit {
       .buscarlibroPorContrato(idLibro, idUsuario)
       .subscribe((respuesta) => {
         this.usuarioLibro = respuesta.body[0];
+        console.log(this.usuarioLibro);
+        /*
+        let permisos = [this.usuarioLibro.nombre.toLowerCase()]
+        this.permissionsService.loadPermissions(permisos);
+        */
       });
   }
   volverContrato() {
@@ -408,21 +428,30 @@ export class FolioComponent implements OnInit, AfterViewInit {
   filtrarFolios(accion : any){
     this.folios = [];
    this.folios = this.foliosOrigen;
+   let index = this.typesOfActions.indexOf(accion);
+   this.typesOfActions.forEach(acciones=>{
+     acciones.isClicked = false;
+   })
    switch(accion.id){
      case 1 : 
           this.folios = this.foliosSinBorradores;
+          this.typesOfActions[index].isClicked = true;
       break;
     case 2 :
-      this.folios = this.folios.filter(folio=>folio.entidadCreacion === true && folio.idUsuarioFirma !== null);  
+      this.folios = this.folios.filter(folio=>folio.entidadCreacion === true && folio.idUsuarioFirma !== null); 
+      this.typesOfActions[index].isClicked = true;
       break;
     case 3 : 
-    this.folios = this.folios.filter(folio=>folio.entidadCreacion === false && folio.idUsuarioFirma !== null);  
+      this.folios = this.folios.filter(folio=>folio.entidadCreacion === false && folio.idUsuarioFirma !== null);  
+      this.typesOfActions[index].isClicked = true;
       break;
     case 4 : 
       this.folios = this.folios.filter(folio=>folio.estadoRespuesta?.nombre==='Pendiente')
+      this.typesOfActions[index].isClicked = true;
       break;
     case 5 :
       this.folios = this.folios.filter(folio=>folio.idUsuarioLectura === null && folio.idUsuarioFirma !== null);
+      this.typesOfActions[index].isClicked = true;
       break;
     case 6 :
       this.folios = [];
@@ -451,10 +480,12 @@ export class FolioComponent implements OnInit, AfterViewInit {
           
         }
       );
+      this.typesOfActions[index].isClicked = true;
       break;
     case 7 :
         //console.log(this.fo);
       this.folios = this.folios.filter(folio=>folio.idUsuarioFirma === null );
+      this.typesOfActions[index].isClicked = true;
       break;
    }
   }
@@ -606,6 +637,26 @@ export class FolioComponent implements OnInit, AfterViewInit {
     }
     console.log(this.formFiltrosGroup.get('inputBusqueda'));
   }
+  getPermisos(){
+    let usuario = JSON.parse(localStorage.getItem("user"));
+    let perfilUsuario = new UsuarioDependencia();
+    this.UsuarioDependenciaService.findUserByUsuarioDependencia(usuario.id).subscribe(
+      usuarioDependencia=>{
+        perfilUsuario = usuarioDependencia.body[0].perfilUsuarioDependencia;
+        let permisos = [perfilUsuario.nombre.toLowerCase()]
+        this.permissionsService.loadPermissions(permisos);
+      });
+  }
+
+  setActive(button: any): void {
+    for(let but of this.typesOfActions) {
+      but.isClicked = false;
+    }
+
+    button.isClicked = true;
+    console.log(button);
+  }
+  
 }
  
 function calcDate(date1,date2) {

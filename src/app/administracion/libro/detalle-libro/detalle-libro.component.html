@@ -367,7 +367,18 @@
                       <td>{{ row.cargoFuncion }}</td>
                       <td>{{ row.perfilUsuarioLibro.nombre }}</td>
                       <td>
-                        <span class="badge badge-primary">{{ row.estado }}</span>
+                        <span
+                          *ngIf="row.usuarioDependencia.nombreEstado === 'Activo'"
+                          class="badge badge-primary"
+                          style="background-color: green;"
+                          > {{ row.usuarioDependencia.nombreEstado }}</span
+                        >
+                        <span
+                          *ngIf="row.usuarioDependencia.nombreEstado === 'Inactivo'"
+                          class="badge badge-primary"
+                          style="background-color: red  ;"
+                          > {{ row.usuarioDependencia.nombreEstado }}</span
+                        >
                       </td>
                       <td class="td-actions text-right">
                         <button
@@ -433,7 +444,18 @@
                       <td>{{ row.cargoFuncion }}</td>
                       <td>{{ row.perfilUsuarioLibro.nombre }}</td>
                       <td>
-                        <span class="badge badge-primary">{{ row.estado }}</span>
+                        <span
+                          *ngIf="row.usuarioDependencia.nombreEstado === 'Activo'"
+                          class="badge badge-primary"
+                          style="background-color: green;"
+                          > {{ row.usuarioDependencia.nombreEstado }}</span
+                        >
+                        <span
+                          *ngIf="row.usuarioDependencia.nombreEstado === 'Inactivo'"
+                          class="badge badge-primary"
+                          style="background-color: red  ;"
+                          > {{ row.usuarioDependencia.nombreEstado }}</span
+                        >
                       </td>
                       <td class="td-actions text-right">
                         <button

@@ -120,8 +120,19 @@ export class DetalleLibroComponent implements OnInit {
         this.usuariosLibros = usuariosLibros.body;
         this.usuariosLibros.forEach(element=>{
           if(element.usuarioDependencia.dependencia.id === this.libro.contrato.dependenciaMandante.id){
+            if(element.usuarioDependencia.estado === true){
+              element.usuarioDependencia.nombreEstado = "Activo";
+            }else{
+              element.usuarioDependencia.nombreEstado = "Inactivo";
+            }
             this.listaUsuarioMandante = [...this.listaUsuarioMandante, element];
+            console.log(this.listaUsuarioMandante);
           }else{
+            if(element.usuarioDependencia.estado === true){
+              element.usuarioDependencia.nombreEstado = "Activo";
+            }else{
+              element.usuarioDependencia.nombreEstado = "Inactivo";
+            }
             this.listaUsuarioContratista = [...this.listaUsuarioContratista, element];
           }
         });
@@ -364,9 +375,9 @@ export class DetalleLibroComponent implements OnInit {
         let existe = false;
         existe = this.listaUsuarioContratista.find(usuario => usuario.usuarioDependencia.id === result.usuarioDependencia?.id);
         if(!existe){
+          console.log('IMPRIMIENDO RESULTADO');
+          console.log(result);
           this.listaUsuarioContratista = [...this.listaUsuarioContratista, result];
-        } else{
-
         }
       }
     });

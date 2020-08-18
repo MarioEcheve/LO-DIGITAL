@@ -27,15 +27,15 @@
                     <td style="font-size: 15px; font-weight: bold;">
                       Perfil Libro:
                     </td>
-                    <td style="font-size: 15px; font-weight: bold;" *ngIf="usuarioLibro.perfilUsuarioLibro">
+                    <td style="font-size: 15px; font-weight: bold;" *ngIf="usuarioLibro?.perfilUsuarioLibro">
                       &nbsp;<strong>{{
-                        usuarioLibro.perfilUsuarioLibro.nombre
+                        usuarioLibro?.perfilUsuarioLibro.nombre
                       }}</strong>
                     </td>
                   </tr>
                   <tr>
                     <td>Cargo:</td>
-                    <td>&nbsp;{{ usuarioLibro.cargoFuncion }}</td>
+                    <td>&nbsp;{{ usuarioLibro?.cargoFuncion }}</td>
                   </tr>
                 </table>
               </div>
@@ -85,6 +85,7 @@
                 class="btn btn-primary col-md-12"
                 (click)="nuevoFolio()"
                 [disabled]="libroSeleccionado?.estadoLibro?.nombre === 'Cerrado'"
+                *ngxPermissionsOnly="['administrador']"
               >
                 <span class="btn-label">
                   <i class="material-icons">add</i>
@@ -94,8 +95,12 @@
             </div>
             <div>
               <mat-list role="list" >
-                <mat-list-item  class="content-menu-list" style="width: auto; height: auto; float: left;" *ngFor="let accion of typesOfActions" (click)="filtrarFolios(accion)">
-                  <button style="font-size:medium; padding: initial;text-align: left; width: -webkit-fill-available;"   mat-button aria-label="Example icon button with a vertical three dot icon">
+                <mat-list-item  [ngClass]="{'active': accion.isClicked}"
+                class=" content-menu-list" style="width: auto; height: auto; float: left;" *ngFor="let accion of typesOfActions" 
+                (click)="filtrarFolios(accion)">
+                  <button 
+                    
+                    style="font-size:medium; padding: initial;text-align: left; width: -webkit-fill-available;"   mat-button aria-label="Example icon button with a vertical three dot icon">
                     <mat-icon style="color: gray;">{{accion.icon }}</mat-icon>
                     {{accion.accion }}
                   </button>

@@ -14,12 +14,14 @@ export interface IUsuarioDependencia {
   usuario?: IUser;
   dependencia?: IDependencia;
   perfilUsuarioDependencia?: IPerfilUsuarioDependencia;
+  nombreEstado? : string;
 }
 
 export class UsuarioDependencia implements IUsuarioDependencia {
   constructor(
     public id?: number,
     public nombre?: string,
+    public nombreEstado?: string,
     public fechaCreacion?: Moment,
     public fechaModificacion?: Moment,
     public estado?: boolean,

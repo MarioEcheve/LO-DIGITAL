@@ -10,6 +10,7 @@ import { MaterialModule } from "src/app/app.module";
 import { ListaContratoComponent } from "./lista-contrato/lista-contrato.component";
 import { DetalleContratoComponent } from "./detalle-contrato/detalle-contrato.component";
 import { ModalBuscarEntidadComponent } from "./modal-buscar-entidad/modal-buscar-entidad.component";
+import { NgxPermissionsModule } from "ngx-permissions";
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ModalBuscarEntidadComponent } from "./modal-buscar-entidad/modal-buscar
     NouisliderModule,
     TagInputModule,
     MaterialModule,
+    NgxPermissionsModule.forRoot(),
   ],
   entryComponents: [ModalBuscarEntidadComponent],
 })
