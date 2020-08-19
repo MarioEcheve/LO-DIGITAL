@@ -35,6 +35,7 @@ export class CrearUsuarioComponent implements AfterViewInit {
   filteredOptions: Observable<string[]>;
   listaPerfilesLibro: IUsuarioLibroPerfil;
   idUsuarioDependenciaAutoComplete: number;
+  perfilUsuario;
   constructor(
     private perfilUsuarioDependenciaService: PerfilUsuarioDependenciaService,
     public dialogRef: MatDialogRef<CrearUsuarioComponent>,
@@ -46,8 +47,11 @@ export class CrearUsuarioComponent implements AfterViewInit {
   ) {}
 
   ngOnInit() {
+   
+    this.data.usuariosDependenciaMandante.forEach(element => {
+        element.nombre = element.nombre +' ' + element.apellidos
+    });
     this.options = this.data.usuariosDependenciaMandante;
-    console.log(this.options);
     this.listaPerfilesLibro = this.data.usuarioLibroPerfil;
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(""),
@@ -58,6 +62,15 @@ export class CrearUsuarioComponent implements AfterViewInit {
       perfil: ["", [Validators.required]],
       cargo: ["", [Validators.required]],
     });
+    if(this.data.editar === true){
+      console.log(this.data.usuarioEditar);
+      this.myControl.setValue(this.data.usuarioEditar.usuarioDependencia.usuario.firstName + ' '+ this.data.usuarioEditar.usuarioDependencia.usuario.lastName);
+      this.usuarioFormGroup.controls['cargo'].setValue(this.data.usuarioEditar.cargoFuncion)
+      this.usuarioFormGroup.controls['perfil'].setValue(this.data.usuarioEditar.perfilUsuarioLibro.nombre)
+      this.perfilUsuario = this.data.usuarioEditar.perfilUsuarioLibro;
+      this.myControl.disable();
+      
+    }
     //this.obtenerPerfilUsuarioDependencia();
   }
   ngAfterViewInit() {
@@ -73,48 +86,56 @@ export class CrearUsuarioComponent implements AfterViewInit {
   }
   asignarUsuario() {
     let usuarioLibro = new UsuarioLibro();
-    usuarioLibro.estado = true;
-    usuarioLibro.cargoFuncion = this.usuarioFormGroup.controls["cargo"].value;
-    usuarioLibro.nombre = this.myControl.value;
-    usuarioLibro.perfilUsuarioLibro = this.usuarioFormGroup.controls[
-      "perfil"
-    ].value;
-    usuarioLibro.usuarioDependencia = null;
-    usuarioLibro.fechaCreacion = null;
-    usuarioLibro.fechaModificacion = null;
-    usuarioLibro.libro = null;
-    usuarioLibro.idUsuarioDependencia = this.idUsuarioDependenciaAutoComplete;
-
-    let json_usuario_dep = {
-      cargoFuncion: this.usuarioFormGroup.controls["cargo"].value,
-      estado: true,
-      fechaCreacion: null,
-      fechaModificacion: null,
-      gesAlertas: undefined,
-      gesFavoritos: undefined,
-      gesNotas: undefined,
-      id: undefined,
-      idUsuarioDependencia: this.idUsuarioDependenciaAutoComplete,
-      libro: null,
-      nombre: this.myControl.value,
-      perfilUsuarioLibro: this.usuarioFormGroup.controls["perfil"].value,
-      usuarioDependencia: null,
-    };
-    //console.log(json_usuario_dep);
-
-    this.usuarioDependenciaService
-      .find(json_usuario_dep.idUsuarioDependencia)
-      .subscribe((respuesta) => {
-        json_usuario_dep.usuarioDependencia = respuesta.body;
-      });
-
-    console.log(json_usuario_dep);
-    this.dialogRef.close(json_usuario_dep);
+    if(this.data.editar === true){
+      this.data.usuarioEditar.usuarioDependencia.perfilUsuarioLibro = this.perfilUsuario;
+      this.data.usuarioEditar.usuarioDependencia.cargoFuncion = this.usuarioFormGroup.controls['cargo'].value;
+      this.dialogRef.close(this.data.usuarioEditar);
+    }else{
+      usuarioLibro.estado = true;
+      usuarioLibro.cargoFuncion = this.usuarioFormGroup.controls["cargo"].value;
+      usuarioLibro.nombre = this.myControl.value;
+      
+      usuarioLibro.perfilUsuarioLibro = this.perfilUsuario;
+      usuarioLibro.usuarioDependencia = null;
+      usuarioLibro.fechaCreacion = null;
+      usuarioLibro.fechaModificacion = null;
+      usuarioLibro.libro = null;
+      usuarioLibro.idUsuarioDependencia = this.idUsuarioDependenciaAutoComplete;
+  
+      let json_usuario_dep = {
+        cargoFuncion: this.usuarioFormGroup.controls["cargo"].value,
+        estado: true,
+        fechaCreacion: null,
+        fechaModificacion: null,
+        gesAlertas: undefined,
+        gesFavoritos: undefined,
+        gesNotas: undefined,
+        id: undefined,
+        idUsuarioDependencia: this.idUsuarioDependenciaAutoComplete,
+        libro: null,
+        nombre: this.myControl.value,
+        perfilUsuarioLibro: this.perfilUsuario,
+        usuarioDependencia: null,
+      };
+      //console.log(json_usuario_dep);
+  
+      this.usuarioDependenciaService
+        .find(json_usuario_dep.idUsuarioDependencia)
+        .subscribe((respuesta) => {
+          json_usuario_dep.usuarioDependencia = respuesta.body;
+        });
+  
+      console.log(json_usuario_dep);
+      this.dialogRef.close(json_usuario_dep);
+    }
   }
 
   valorAutoComplete(option) {
     console.log(option);
     this.idUsuarioDependenciaAutoComplete = option.id_usuario_dependencia;
+  }
+  valorPerfulUsuarioLibro(perfil){
+    this.perfilUsuario = perfil;
   }
   /*
   guardarUsuario() {
