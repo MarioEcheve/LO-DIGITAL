@@ -25,6 +25,7 @@ import { MatChipInputEvent } from "@angular/material/chips";
 import { FolioReferenciaService } from "../../services/folio-referencia.service";
 import { FolioReferencia } from "../../TO/folio-referencia.model";
 import { element } from "protractor";
+import { NgxPermissionsService } from "ngx-permissions";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 declare var $: any;
 declare interface TableData {
@@ -115,7 +116,8 @@ export class FolioDetalleComponent implements OnInit {
     private dialog: MatDialog,
     private datePipe: DatePipe,
     private usuarioLibroService: UsuarioLibroService,
-    private folioReferenciaService : FolioReferenciaService
+    private folioReferenciaService : FolioReferenciaService,
+    private permissionsService : NgxPermissionsService,
   ) {
     this.folioService.removeFolioReferencia(new Folio, false);
     this.folios = [];
@@ -536,6 +538,9 @@ export class FolioDetalleComponent implements OnInit {
       .buscarlibroPorContrato(idLibro, idUsuario)
       .subscribe((respuesta) => {
         this.usuario = respuesta.body[0];
+        let permisos = [respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase()];
+        this.permissionsService.loadPermissions(permisos);
+
         this.folioForm.controls["usuarioNombre"].setValue(
           respuesta.body[0].usuarioDependencia.usuario.firstName +
             " " +

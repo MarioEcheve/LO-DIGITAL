@@ -188,8 +188,8 @@ export class FolioComponent implements OnInit, AfterViewInit {
         }
       }
     );
-
-    this.getPermisos();
+    let usuario = JSON.parse(localStorage.getItem("user"));
+    this.getPermisos(this.route.snapshot.paramMap.get("idLibro"),usuario.id);
     this.inicializarFormFiltros();
     this.folioServie.navBarChange(1);
     this.folioFormGroup = this.fb.group({
@@ -201,7 +201,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
       .find(parseInt(this.route.snapshot.paramMap.get("idLibro")))
       .subscribe((respuesta) => {
         this.buscaFolios(respuesta.body);
-        let usuario = JSON.parse(localStorage.getItem("user"));
         this.obtenerPerfilLibroUsuario(respuesta.body.id, usuario.id);
         this.folioFormGroup.patchValue({
           libro: respuesta.body.nombre,
@@ -657,13 +656,20 @@ export class FolioComponent implements OnInit, AfterViewInit {
     }
     console.log(this.formFiltrosGroup.get('inputBusqueda'));
   }
-  getPermisos(){
+  getPermisos(idLibro?:any,idUsuario?:any){
     let usuario = JSON.parse(localStorage.getItem("user"));
     let perfilUsuario = new UsuarioDependencia();
     this.UsuarioDependenciaService.findUserByUsuarioDependencia(usuario.id).subscribe(
       usuarioDependencia=>{
         perfilUsuario = usuarioDependencia.body[0].perfilUsuarioDependencia;
         let permisos = [perfilUsuario.nombre.toLowerCase()]
+        
+      });
+    this.usuarioLibroService
+      .buscarlibroPorContrato(idLibro, idUsuario)
+      .subscribe((respuesta) => {
+        console.log(respuesta.body);
+        let permisos = [respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase()];
         this.permissionsService.loadPermissions(permisos);
       });
   }

@@ -206,7 +206,7 @@ export class FolioFirmadoComponent implements OnInit {
       });
   }
   // este metodo permite buscar el usuario usuario libro por el idusuario y el id del libro
-  // luego setea los permisos para ejecutar acciones en el sistema.
+  // luego setea los permisos para ejecutar acciones
   obtenerPerfilLibroUsuario(idLibro, idUsuario) {
     this.usuarioLibroService
       .buscarlibroPorContrato(idLibro, idUsuario)
