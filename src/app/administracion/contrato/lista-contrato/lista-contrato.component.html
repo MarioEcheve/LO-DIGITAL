@@ -37,7 +37,14 @@
                 <td>{{ row.direccion }}</td>
                 <td>{{ row.tipo_contrato }}</td>
                 <td class="text-right">{{ row.modalidad }}</td>
-                <td class="text-right">{{ row.estado_servicio }}</td>
+                <td class="text-right">
+                    <span
+                    *ngIf="row.estado_servicio=== 'Pendiente'"
+                    class="badge badge-primary"
+                    style="background-color: orange;"
+                    >{{ row.estado_servicio }}</span
+                  >
+                  </td>
                 <td class="text-right">{{ row.estado_servicio }}</td>
                 <td class="td-actions text-right">
                   <!--

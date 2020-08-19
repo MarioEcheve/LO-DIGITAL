@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-
+import { NgxPermissionsService } from 'ngx-permissions';
+import { HttpClient } from '@angular/common/http';
 @Component({
     selector: 'app-my-app',
     templateUrl: './app.component.html'
@@ -9,8 +10,13 @@ import { Subscription } from 'rxjs/Subscription';
 
 export class AppComponent implements OnInit {
   private _router: Subscription;
+  
+  constructor( private router: Router ,private permissionsService: NgxPermissionsService,
+    private http: HttpClient) {
+    const perm = ["ADMIN", "EDITOR"];
+ 
+    this.permissionsService.loadPermissions(perm);
 
-  constructor( private router: Router ) {
   }
 
     ngOnInit() {

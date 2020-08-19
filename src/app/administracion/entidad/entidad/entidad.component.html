@@ -1,23 +1,23 @@
 <div class="main-content">
   <div class="container-fluid">
        
-    <div class="card mt-5">
+    <div class="card mt-5" *ngFor="let entidades of listaEntidades">
       <div class="card-header card-header-info card-header-tabs">                
-        <h6 class="card-title">Municipalidad de La Serena</h6>                        
+        <h6 class="card-title">{{ entidades.dependencia.entidad.nombre }}</h6>                        
       </div>
       <div class="card-body">
-        <div class="row">          
+        <div class="row" >          
           <div class="col-5">                                   
-            <a>RUT: 78.245.455-K</a>
-            <br><a>Dependencia: Dirección de Obras Muncipales</a>
+            <a>RUT: {{ entidades.dependencia.entidad.rut }}</a>
+            <br><a>Dependencia: {{ entidades.dependencia.nombre }}</a>
           </div>
           <div class="col-1">
             <div class="d-flex justify-content-center">Estado</div>
-            <div class="d-flex justify-content-center"><span class="badge badge-success">Activo</span></div>
+            <div class="d-flex justify-content-center"><span class="badge badge-success">{{ entidades.estado }}</span></div>
           </div>
           <div class="col-2">
             <div class="d-flex justify-content-center">Activación</div>
-            <div class="d-flex justify-content-center">12/05/2020 12:30</div>
+            <div class="d-flex justify-content-center">{{ entidades.fechaCreacion | date: "dd-MM-yyyy HH:mm" }}</div>
           </div>
           <div class="col-2">
             <div class="d-flex justify-content-center">Desactivación</div>
@@ -25,12 +25,13 @@
           </div>
           <div class="col-2">
             <i class="d-flex justify-content-center material-icons text-info">settings</i>
-            <div class="d-flex justify-content-center">Super Usuario</div>           
+            <div class="d-flex justify-content-center">{{ entidades.perfilUsuarioDependencia.nombre }}</div>           
           </div>         
         </div>
       </div>
     </div>
-    <div class="card mt-5">
+    <!--
+      <div class="card mt-5">
       <div class="card-header card-header-info card-header-tabs">                
         <h6 class="card-title">Constructora Elqui Limitada</h6>                        
       </div>
@@ -59,5 +60,7 @@
         </div>
       </div>
     </div>
+    -->
+    
   </div>
 </div>

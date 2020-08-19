@@ -23,8 +23,6 @@ export class ModalBuscarEntidadComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    //this.dataSource.paginator = this.paginator;
-    //this.dataSource.sort = this.sort;
     console.log(this.data);
     if (this.data.entidadPerfil === "1" && this.data.usuario === undefined) {
       this.obtenerEntidadesUsuario();
@@ -49,16 +47,20 @@ export class ModalBuscarEntidadComponent implements OnInit {
   }
   obtenerEntidades() {
     this.entidadService.query().subscribe((respuesta) => {
-      this.dataSource = new MatTableDataSource(respuesta.body);
+      console.log(respuesta.body);
+      console.log(this.data.entidadSeleccionada);
+      let datos = [];
+      datos= respuesta.body.filter(entidad=> entidad.id !== this.data.entidadSeleccionada.entidad.id);
+      this.dataSource = new MatTableDataSource(datos);
     });
   }
   obtenerEntidadesUsuario() {
-    //console.log(JSON.parse(localStorage.getItem("user")));
     let usuario = JSON.parse(localStorage.getItem("user"));
     this.entidadService
       .buscarEntidadPorUsuario(usuario.id)
       .subscribe((respuesta) => {
         this.dataSource = new MatTableDataSource(respuesta.body);
+        
       });
   }
   columnaSeleccionada(row) {

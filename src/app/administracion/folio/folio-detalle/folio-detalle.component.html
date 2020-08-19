@@ -153,7 +153,7 @@
                         *ngFor="let recep of receptor"
                         [value]="recep.id"
                       >
-                        Cargo : {{ recep?.cargoFuncion }}  |  nombre : {{ recep?.usuarioDependencia?.usuario?.firstName }} {{ recep?.usuarioDependencia?.usuario?.lastName }}
+                      {{ recep?.usuarioDependencia?.usuario?.firstName }} {{ recep?.usuarioDependencia?.usuario?.lastName }}   |  Cargo : {{ recep?.cargoFuncion }}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>

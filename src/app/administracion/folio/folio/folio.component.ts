@@ -21,6 +21,9 @@ import { GesFavoritoService } from "../../services/ges-favorito.service";
 import { GesFavorito } from "../../TO/ges-favorito.model";
 import { FiltroFolioPersonalizadoComponent } from "../../shared/filtro-folio-personalizado/filtro-folio-personalizado.component";
 import { type } from "jquery";
+import { NgxPermissionsService } from "ngx-permissions";
+import { UsuarioDependenciaService } from "../../services/usuario-dependencia.service";
+import { UsuarioDependencia } from "../../TO/usuario-dependencia.model";
 const defaultConfig: DropzoneConfigInterface = {
   clickable: true,
   addRemoveLinks: true,
@@ -42,6 +45,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
   folioFormGroup: FormGroup;
   libroSeleccionado: Libro;
   usuarioLibro = new UsuarioLibro();
+  type="number";
   filtroFolios = [
     {
       id : 0,
@@ -58,6 +62,10 @@ export class FolioComponent implements OnInit, AfterViewInit {
     {
       id : 3,
       name : 'Asunto'
+    },
+    {
+      id : 4,
+      name : 'Todos'
     }
   ]
   singleConfig: DropzoneConfigInterface = {
@@ -93,31 +101,45 @@ export class FolioComponent implements OnInit, AfterViewInit {
   typesOfActions= [
       {
         id :1,
-        accion : 'Bandeja de Folio'
+        accion : 'Bandeja de Folio',
+        icon :'mail',
+        isClicked: true
       },
       {
         id :2,
-        accion : 'Folio Mandante'
+        accion : 'Folio Mandante',
+        icon :'mark_email_read',
+        isClicked: false
       },
       {
         id :3,
-        accion : 'Folio Contratista'
+        accion : 'Folio Contratista',
+        icon :'mark_email_read',
+        isClicked: false
       },
       {
         id :4,
-        accion : 'Sin respuesta'
+        accion : 'Sin respuesta',
+        icon :'unsubscribe',
+        isClicked: false
       },
       {
         id :5,
-        accion : 'Sin Leer'
+        accion : 'Sin Leer',
+        icon :'mark_email_unread',
+        isClicked: false
       },
       {
         id :6,
-        accion : 'Destacados'
+        accion : 'Destacados',
+        icon :'favorite',
+        isClicked: false
       },
       {
         id :7,
-        accion : 'Borradores'
+        accion : 'Borradores',
+        icon :'note',
+        isClicked: false
       }
   ];
   // definicion del form de los filtros
@@ -132,12 +154,16 @@ export class FolioComponent implements OnInit, AfterViewInit {
     private usuarioLibroService: UsuarioLibroService,
     private dialog: MatDialog,
     private datePipe: DatePipe,
-    private favoritoService : GesFavoritoService
+    private favoritoService : GesFavoritoService,
+    private permissionsService : NgxPermissionsService,
+    private UsuarioDependenciaService: UsuarioDependenciaService
   ) {
     
   }
 
   ngOnInit(): void {
+
+    this.getPermisos();
     this.inicializarFormFiltros();
     this.folioServie.navBarChange(1);
     this.folioFormGroup = this.fb.group({
@@ -162,6 +188,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
         this.folioFormGroup.patchValue({
           libro: respuesta.body.nombre,
         });
+       
       });
 
     this.tableData1 = {
@@ -389,6 +416,11 @@ export class FolioComponent implements OnInit, AfterViewInit {
       .buscarlibroPorContrato(idLibro, idUsuario)
       .subscribe((respuesta) => {
         this.usuarioLibro = respuesta.body[0];
+        console.log(this.usuarioLibro);
+        /*
+        let permisos = [this.usuarioLibro.nombre.toLowerCase()]
+        this.permissionsService.loadPermissions(permisos);
+        */
       });
   }
   volverContrato() {
@@ -398,21 +430,30 @@ export class FolioComponent implements OnInit, AfterViewInit {
   filtrarFolios(accion : any){
     this.folios = [];
    this.folios = this.foliosOrigen;
+   let index = this.typesOfActions.indexOf(accion);
+   this.typesOfActions.forEach(acciones=>{
+     acciones.isClicked = false;
+   })
    switch(accion.id){
      case 1 : 
           this.folios = this.foliosSinBorradores;
+          this.typesOfActions[index].isClicked = true;
       break;
     case 2 :
-      this.folios = this.folios.filter(folio=>folio.entidadCreacion === true && folio.idUsuarioFirma !== null);  
+      this.folios = this.folios.filter(folio=>folio.entidadCreacion === true && folio.idUsuarioFirma !== null); 
+      this.typesOfActions[index].isClicked = true;
       break;
     case 3 : 
-    this.folios = this.folios.filter(folio=>folio.entidadCreacion === false && folio.idUsuarioFirma !== null);  
+      this.folios = this.folios.filter(folio=>folio.entidadCreacion === false && folio.idUsuarioFirma !== null);  
+      this.typesOfActions[index].isClicked = true;
       break;
     case 4 : 
       this.folios = this.folios.filter(folio=>folio.estadoRespuesta?.nombre==='Pendiente')
+      this.typesOfActions[index].isClicked = true;
       break;
     case 5 :
       this.folios = this.folios.filter(folio=>folio.idUsuarioLectura === null && folio.idUsuarioFirma !== null);
+      this.typesOfActions[index].isClicked = true;
       break;
     case 6 :
       this.folios = [];
@@ -441,10 +482,12 @@ export class FolioComponent implements OnInit, AfterViewInit {
           
         }
       );
+      this.typesOfActions[index].isClicked = true;
       break;
     case 7 :
         //console.log(this.fo);
       this.folios = this.folios.filter(folio=>folio.idUsuarioFirma === null );
+      this.typesOfActions[index].isClicked = true;
       break;
    }
   }
@@ -527,9 +570,13 @@ export class FolioComponent implements OnInit, AfterViewInit {
       this.filter(valorBusqueda, criterioBusqueda);
     }
     if(criterioBusqueda === 2){
+
       this.filter(valorBusqueda, criterioBusqueda);
     }
     if(criterioBusqueda === 3){
+      this.filter(valorBusqueda, criterioBusqueda);
+    }
+    if(criterioBusqueda === 4){
       this.filter(valorBusqueda, criterioBusqueda);
     }
   }
@@ -567,7 +614,51 @@ export class FolioComponent implements OnInit, AfterViewInit {
       this.folios = foliosFiltrados;
       console.log(foliosFiltrados);
     }
+    if(criterio === 4){
+      //this.formFiltrosGroup.controls['inputBusqueda'].setValue('');
+      this.folios = this.foliosOrigen;
+    }
   }
+  setForm(filtros:any){
+    let criterioBusqueda = filtros.id;
+    if(criterioBusqueda === 0){
+      this.formFiltrosGroup.controls['inputBusqueda'].setValidators([Validators.required]);
+      this.formFiltrosGroup.updateValueAndValidity();
+      this.type="number";
+    }
+    if(criterioBusqueda === 1 || criterioBusqueda === 2 || criterioBusqueda === 3){
+      this.formFiltrosGroup.controls['inputBusqueda'].setValidators([Validators.required,Validators.minLength(3)]);
+      this.formFiltrosGroup.updateValueAndValidity();
+      this.type="text";
+    }
+    if(criterioBusqueda === 4){
+      this.formFiltrosGroup.controls['inputBusqueda'].setValue('');
+      this.formFiltrosGroup.controls['inputBusqueda'].setValidators([Validators.maxLength(40)]);
+      this.formFiltrosGroup.updateValueAndValidity();
+      this.type="text";
+    }
+    console.log(this.formFiltrosGroup.get('inputBusqueda'));
+  }
+  getPermisos(){
+    let usuario = JSON.parse(localStorage.getItem("user"));
+    let perfilUsuario = new UsuarioDependencia();
+    this.UsuarioDependenciaService.findUserByUsuarioDependencia(usuario.id).subscribe(
+      usuarioDependencia=>{
+        perfilUsuario = usuarioDependencia.body[0].perfilUsuarioDependencia;
+        let permisos = [perfilUsuario.nombre.toLowerCase()]
+        this.permissionsService.loadPermissions(permisos);
+      });
+  }
+
+  setActive(button: any): void {
+    for(let but of this.typesOfActions) {
+      but.isClicked = false;
+    }
+
+    button.isClicked = true;
+    console.log(button);
+  }
+  
 }
  
 function calcDate(date1,date2) {

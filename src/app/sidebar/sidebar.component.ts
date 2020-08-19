@@ -28,6 +28,7 @@ export const ROUTES: RouteInfo[] = [
     type: "link",
     icontype: "dashboard",
   },
+  /*
   {
     path: "/usuario",
     title: "Usuario",
@@ -39,7 +40,7 @@ export const ROUTES: RouteInfo[] = [
       { path: "editar-usuario", title: "Editar Usuario", ab: "B" },
       { path: "setting-usuario", title: "Configuracion usuario", ab: "B" },
     ],
-  },
+  },*/
   {
     path: "/entidad",
     title: "Entidad",

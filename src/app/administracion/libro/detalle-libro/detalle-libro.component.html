@@ -50,6 +50,7 @@
                   </mat-form-field>
                   <mat-form-field class="example-full-width col-md-3">
                     <input
+                     formControlName="fechaApertura"
                       matInput
                       placeholder="Fecha apertura"
                       type="text"
@@ -58,6 +59,7 @@
                   </mat-form-field>
                   <mat-form-field class="example-full-width col-md-3">
                     <input
+                      formControlName="fechaCierre"
                       matInput
                       placeholder="Fecha cierre"
                       type="text"
@@ -337,7 +339,7 @@
                   </span>
                   Cambiar administrador
                 </button>
-                <button mat-raised-button type="submit" class="btn btn-primary">
+                <button mat-raised-button type="submit" class="btn btn-primary" (click)="modalCrearUsuario()">
                   <span class="btn-label">
                     <i class="material-icons">person_add</i>
                   </span>
@@ -358,14 +360,25 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let row of tableData2.dataRows">
+                    <tr *ngFor="let row of listaUsuarioMandante">
                       <td scope="row" style="width: auto;">{{ row[0] }}</td>
 
-                      <td>{{ row[1] }}</td>
-                      <td>{{ row[2] }}</td>
-                      <td>{{ row[3] }}</td>
+                      <td>{{ row.usuarioDependencia.usuario.firstName }}</td>
+                      <td>{{ row.cargoFuncion }}</td>
+                      <td>{{ row.perfilUsuarioLibro.nombre }}</td>
                       <td>
-                        <span class="badge badge-primary">{{ row[4] }}</span>
+                        <span
+                          *ngIf="row.usuarioDependencia.nombreEstado === 'Activo'"
+                          class="badge badge-primary"
+                          style="background-color: green;"
+                          > {{ row.usuarioDependencia.nombreEstado }}</span
+                        >
+                        <span
+                          *ngIf="row.usuarioDependencia.nombreEstado === 'Inactivo'"
+                          class="badge badge-primary"
+                          style="background-color: red  ;"
+                          > {{ row.usuarioDependencia.nombreEstado }}</span
+                        >
                       </td>
                       <td class="td-actions text-right">
                         <button
@@ -379,8 +392,9 @@
                           mat-raised-button
                           type="button"
                           class="btn btn-default {{ row[5] }}"
+                          (click)="eliminarUsuarioRowMandante(row)"
                         >
-                          <i class="material-icons">keyboard_arrow_right</i>
+                          <i class="material-icons">delete</i>
                         </button>
                       </td>
                     </tr>
@@ -402,7 +416,7 @@
                   </span>
                   Cambiar administrador
                 </button>
-                <button mat-raised-button type="submit" class="btn btn-primary">
+                <button mat-raised-button type="submit" class="btn btn-primary " (click)="modalCrearUsuarioContratista()">
                   <span class="btn-label">
                     <i class="material-icons">person_add</i>
                   </span>
@@ -423,14 +437,25 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let row of tableData2.dataRows">
+                    <tr *ngFor="let row of listaUsuarioContratista">
                       <td scope="row" style="width: auto;">{{ row[0] }}</td>
 
-                      <td>{{ row[1] }}</td>
-                      <td>{{ row[2] }}</td>
-                      <td>{{ row[3] }}</td>
+                      <td>{{ row.usuarioDependencia.usuario.firstName }}</td>
+                      <td>{{ row.cargoFuncion }}</td>
+                      <td>{{ row.perfilUsuarioLibro.nombre }}</td>
                       <td>
-                        <span class="badge badge-primary">{{ row[4] }}</span>
+                        <span
+                          *ngIf="row.usuarioDependencia.nombreEstado === 'Activo'"
+                          class="badge badge-primary"
+                          style="background-color: green;"
+                          > {{ row.usuarioDependencia.nombreEstado }}</span
+                        >
+                        <span
+                          *ngIf="row.usuarioDependencia.nombreEstado === 'Inactivo'"
+                          class="badge badge-primary"
+                          style="background-color: red  ;"
+                          > {{ row.usuarioDependencia.nombreEstado }}</span
+                        >
                       </td>
                       <td class="td-actions text-right">
                         <button
@@ -443,9 +468,10 @@
                         <button
                           mat-raised-button
                           type="button"
+                          (click)="eliminarUsuarioRowContratista(row)"
                           class="btn btn-default {{ row[5] }}"
                         >
-                          <i class="material-icons">keyboard_arrow_right</i>
+                          <i class="material-icons">delete</i>
                         </button>
                       </td>
                     </tr>
@@ -555,7 +581,7 @@
                 >
                   Cancelar
                 </button>
-                <button mat-raised-button type="submit" class="btn btn-behance">
+                <button   (click)="guardarCambios()" mat-raised-button type="submit" class="btn btn-behance">
                   Guardar Cambios
                 </button>
               </div>

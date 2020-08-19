@@ -11,6 +11,8 @@ import { Libro } from "../../TO/libro.model";
 import { Contrato } from "../../TO/contrato.model";
 import { LibroService } from "../../services/libro.service";
 import { VisorPdfComponent } from "../../shared/visor-pdf/visor-pdf/visor-pdf.component";
+import { UsuarioDependencia } from "../../TO/usuario-dependencia.model";
+import { UsuarioDependenciaService } from "../../services/usuario-dependencia.service";
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -49,7 +51,8 @@ export class FolioFirmadoComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private contratoService : ContratoService,
-    private libroService : LibroService
+    private libroService : LibroService,
+    private UsuarioDependenciaService : UsuarioDependenciaService
   ) {}
   ngOnInit() {
     this.folioService.navBarChange(2);
@@ -121,19 +124,42 @@ export class FolioFirmadoComponent implements OnInit {
     ]);
   }
   responderFolio(){
-
-   
-
-    const dialogRef = this.dialog.open(ModalCrearFolioComponent, {
-      width: "40%",
-      height: "50%%",
-      data: {
-        libros: this.libros,
-        libroSeleccionado: this.Folio.libro,
-        habilitar : true,
-        folio : this.Folio
-      },
-    });
+    let usuario = JSON.parse(localStorage.getItem("user"));
+    let perfilUsuario = new UsuarioDependencia();
+    this.UsuarioDependenciaService.findUserByUsuarioDependencia(usuario.id).subscribe(
+      usuarioDependencia=>{
+        perfilUsuario = usuarioDependencia.body[0];
+        if(perfilUsuario.nombre?.toLowerCase() === "administrador"){
+          this.libroService.getMisLibros(usuario.id).subscribe(
+            respuesta => {
+              console.log(respuesta.body);
+              this.libros = respuesta.body;
+            }
+          );
+        }else{
+          this.libroService.getMisLibrosContratoDetalle(usuario.id, this.contrato.id).subscribe(
+            libros=>{
+              console.log(libros.body);
+              this.libros = libros.body;
+            }
+          );
+        }
+      }
+    );
+    setTimeout(() => {
+      const dialogRef = this.dialog.open(ModalCrearFolioComponent, {
+      
+        width: "40%",
+        height: "50%%",
+        data: {
+          libros: this.libros,
+          libroSeleccionado: this.Folio.libro,
+          habilitar : true,
+          folio : this.Folio
+        },
+      });
+    }, 500);
+    
     /*
     let usuario = JSON.parse(localStorage.getItem("user"));
     this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);

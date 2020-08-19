@@ -3,6 +3,8 @@ import { ContratoService } from "../../services/contrato.service";
 import { IContrato } from "../../TO/contrato.model";
 import { Router } from "@angular/router";
 import { UsuarioDependenciaService } from "../../services/usuario-dependencia.service";
+import { NgxPermissionsService } from 'ngx-permissions';
+
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -20,9 +22,13 @@ export class ListaContratoComponent implements OnInit {
   constructor(
     private contratoService: ContratoService,
     private router: Router,
-    private usuarioDependenciaService : UsuarioDependenciaService
+    private usuarioDependenciaService : UsuarioDependenciaService,
+    private permissionsService: NgxPermissionsService
   ) {}
   ngOnInit() {
+
+    let permisos = this.permissionsService.getPermissions();
+    console.log(permisos);
     this.tableData1 = {
       headerRow: [
         "Codigo",
@@ -45,7 +51,7 @@ export class ListaContratoComponent implements OnInit {
     let usuarioDependen;
     this.usuarioDependenciaService.findUserByUsuarioDependencia(usuario.id).subscribe(
       usuarioDependencia=>{
-        if(usuarioDependencia.body[0]?.perfilUsuarioDependencia?.nombre.toLowerCase() === "administrador"){
+        if(usuarioDependencia.body[0]?.perfilUsuarioDependencia?.nombre.toLowerCase() === "super usuario"){
           administrador = true;
           usuarioDependen = usuarioDependencia.body[0];
         }else{
@@ -64,9 +70,9 @@ export class ListaContratoComponent implements OnInit {
             this.listaDeContratos = usuarioDependencia.body;
           });
       }else{
-        this.usuarioDependenciaService.findUserByUsuarioDependenciaRolUser(usuario.id).subscribe((respuesta) => {
+        this.usuarioDependenciaService.findContratosByUsuarioNormal(usuario.id).subscribe((respuesta) => {
           console.log(respuesta.body);
-          
+          this.listaDeContratos = respuesta.body;
         });
       }
     }, 400);

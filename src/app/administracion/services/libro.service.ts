@@ -18,6 +18,7 @@ export class LibroService {
   public resourceUrlBuscLibroPorContrato =
     this.SERVER_API_URL + "api/buscarlibroPorContrato";
   public resourceUrlGetMisLibros = this.SERVER_API_URL + "api/getMisLibros";
+  public resourceUrlGetMisLibrosContratoDetalle = this.SERVER_API_URL + "api/getMisLibrosContratoDetalle";
 
   constructor(protected http: HttpClient) {}
 
@@ -56,6 +57,17 @@ export class LibroService {
     const options = createRequestOption();
     return this.http
       .get<ILibro[]>(`${this.resourceUrlGetMisLibros}/${idUsuario}`, { params: options, observe: "response" })
+      .pipe(
+        map((res: EntityArrayResponseType) =>
+          this.convertDateArrayFromServer(res)
+        )
+      );
+  }
+
+  getMisLibrosContratoDetalle(idUsuario?: any, idContrato? : any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption();
+    return this.http
+      .get<ILibro[]>(`${this.resourceUrlGetMisLibrosContratoDetalle}/${idUsuario}/${idContrato}`, { params: options, observe: "response" })
       .pipe(
         map((res: EntityArrayResponseType) =>
           this.convertDateArrayFromServer(res)

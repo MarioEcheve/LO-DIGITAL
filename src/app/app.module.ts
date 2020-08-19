@@ -61,7 +61,7 @@ import { NgxExtendedPdfViewerModule } from "ngx-extended-pdf-viewer";
  import localeEn from '@angular/common/locales/en';
  import localeEsAr from '@angular/common/locales/es-AR';
 import { FiltroFolioPersonalizadoComponent } from './administracion/shared/filtro-folio-personalizado/filtro-folio-personalizado.component';
-
+import { NgxPermissionsModule } from 'ngx-permissions';
 registerLocaleData(localePy, 'es');
 registerLocaleData(localePt, 'pt');
 registerLocaleData(localeEn, 'en');
@@ -115,12 +115,13 @@ export class MaterialModule {}
     }),
     HttpClientModule,
     NgxWebstorageModule.forRoot(),
+    NgxPermissionsModule.forRoot(),
     MaterialModule,
     SidebarModule,
     NavbarModule,
     FooterModule,
     FixedpluginModule,
-    MatDialogModule
+    MatDialogModule,
   ],
   declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent,FiltroFolioPersonalizadoComponent,VisorPdfComponent],
   providers: [

@@ -18,7 +18,7 @@ import { element } from 'protractor';
 export class TablaBuscarFoliosComponent implements OnInit,AfterViewInit {
   public tableData1: TableData;
   @Input() folios;
-  ListaFolios = [];
+  ListaFolios : Folio[] = [];
   @Output() onAddFolioRelacionado: EventEmitter<any> = new EventEmitter();
   constructor(
     private folioService : FolioService,
@@ -36,21 +36,39 @@ export class TablaBuscarFoliosComponent implements OnInit,AfterViewInit {
       ],
       dataRows: [],
     };
-    
-
+    this.folioService.getListaFoliosRelacionadosAgregadosSubject().subscribe(
+      respuesta=>{
+          this.folios.forEach(element => {
+            element.existTableSearchFolio = false;
+          });
+          console.log('imprimiendo getListaFolioRelacionadoSubject en Folio Detalle');
+          console.log(respuesta);
+          if(respuesta.length > 0){
+            this.folios.forEach(element => {
+                respuesta.forEach(element2=>{
+                  if(element.id === element2.id){
+                    element.existTableSearchFolio=true;
+                  }
+                })
+            });
+          }else{
+            console.log('entra al else');
+            this.ListaFolios = this.folios;
+          }
+      }
+    );
   }
   ngAfterViewInit(){
+    /*
     setTimeout(() => {
       if(this.folios !== undefined){
         this.folios.forEach(element => {
           element.existTableSearchFolio = false;
         });
         this.ListaFolios = this.folios;
-        this.folioService.getListaFolioRelacionadoSubject().subscribe(
+        this.folioService.getListaFoliosRelacionadosAgregadosSubject().subscribe(
           folios => {
            if(folios.length > 0){
-              console.log('imprimiendo lista de folio relacionados agregados');
-              console.log(folios);
               this.ListaFolios.forEach(element =>{
                 folios.forEach(element2=>{
                   if(element.id === element2.id){
@@ -63,6 +81,7 @@ export class TablaBuscarFoliosComponent implements OnInit,AfterViewInit {
         );
       }
     }, 2000);
+    */
   }
   visorPdf(row){
     let pdf = row.pdfFirmado;
@@ -94,12 +113,12 @@ export class TablaBuscarFoliosComponent implements OnInit,AfterViewInit {
     });
   }
   deleteFolioReferencia(row){
-    this.folioService.removeFolioReferencia(row);
+    this.folioService.removerListaFoliosAgregados(row);
     let index = this.ListaFolios.indexOf(row);
     this.ListaFolios[index].existTableSearchFolio = false;
   }
   agregarFolioReferencia(row){
     //this.folios = this.folios.filter(folio => folio !== row);
-    this.folioService.createNewListaColeccionFolioReferencia(row);
+    this.folioService.AgregarFolioReferenciaAlista(row);
   }
 }

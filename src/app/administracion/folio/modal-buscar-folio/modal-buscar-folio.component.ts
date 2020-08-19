@@ -23,6 +23,7 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
   folios$: Observable<IFolio[]>;
   libroSeleccionado$: Observable<Libro>;
   foliosRelacionados = [];
+  ListaFolios : Folio[] = [];
   buscaFolioForm : FormGroup;
   constructor(
     public dialogRef: MatDialogRef<ModalBuscarFolioComponent>,
@@ -31,18 +32,20 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
     private folioService : FolioService,
     private usuarioLibroService : UsuarioLibroService,
     private dialog: MatDialog,
-    private fb : FormBuilder
-  ) { 
-  }
-
+    private fb : FormBuilder) {}
+    
   ngOnInit(): void {
-    this.folios$ = this.folioService.getFolioRelacionadoSubject();
+    this.folios$ = this.folioService.getListaFoliosRelacionadosAgregadosSubject();
+    this.folios$.subscribe(
+      folios=>{
+        this.folios = folios;
+      }
+    );
     this.libroService
         .buscarlibroPorContrato(this.data.idContrato)
         .subscribe((respuesta) => {
           this.libros = respuesta.body;
-          
-        });
+    });
     this.tableData1 = {
       headerRow: [
         "# Folio",
@@ -61,11 +64,9 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
     this.buscaFolioForm.controls['libro'].setValue(this.data.libro.nombre);
     this.buscaFolios(this.data.libro);
   }
-  buscaFolios(libro, eventoCick? : boolean){
+  buscaFolios(libro){
+    let valor2 = [];
     this.folioService.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
-      let valor2 = [];
-      let valor= [];
-      valor = respuesta.body.filter( folio => folio.idUsuarioFirma !== null);
       valor2 = respuesta.body.filter( folio => folio.idUsuarioFirma !== null);
       valor2.forEach(element=>{
         this.usuarioLibroService
@@ -73,58 +74,74 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
         .subscribe((respuesta) => {
           element.emisor = respuesta.body.usuarioDependencia.usuario.firstName +
           " " + respuesta.body.usuarioDependencia.usuario.lastName;
-
         });
       });
-      setTimeout(() => {
-        console.log(valor2);
-        this.folioService.createNewColeccionFolioReferencia(valor2);
-      }, 1000);
-    }); 
-  }
-  visorPdf(row){
-      let pdf = row.pdfFirmado;
-      let contentType = row.pdfFirmadoContentType;
-      let url = "data:"+contentType+";base64,"+pdf;
-      let promise = new Promise(function (resolve, reject) {
-        fetch(url)
-        .then(res => {
-          return res.blob();
+      if(this.folios.length > 0){
+        valor2.forEach(valor2=>{
+          valor2.existTableSearchFolio = false;
+          console.log(this.folios);
+          this.folios.forEach(folios=>{
+            if(valor2.id === folios.id){
+              valor2.existTableSearchFolio = true;
+            }
+          })
         })
-        .then(blob => {
-          resolve(URL.createObjectURL(blob));
+      }else{
+        valor2.forEach(valor2=>{
+          valor2.existTableSearchFolio = false;
         });
-      });
-      promise.then((resultado) => {
-        const dialogRef = this.dialog.open(VisorPdfComponent, {
-          width: "100%",
-          height: "90%",
-          data: {
-            pdf: resultado,
-            folio: null,
-            usuario: null,
-            pdfArchivoCompleto: null,
-            previsualisar : false,
-            lectura : false
-          },
-        });
-      });
-  }
-  agregarFolioReferencia(row){
-    this.folioService.createNewColeccionFolioReferencia(row);
-    /*
-    this.folios = this.folios.filter(folio => folio !== row);
-    this.dialogRef.close(row);
-    */
+      }
+      setTimeout(() => {
+        this.ListaFolios = valor2;
+      }, 100);
+    }); 
+
   }
   agregar(){
-    //this.dialogRef.close(this.foliosRelacionados);
+  }
+  visorPdf(row){
+    let pdf = row.pdfFirmado;
+    let contentType = row.pdfFirmadoContentType;
+    let url = "data:"+contentType+";base64,"+pdf;
+    let promise = new Promise(function (resolve, reject) {
+      fetch(url)
+      .then(res => {
+        return res.blob();
+      })
+      .then(blob => {
+        console.log(blob);
+        resolve(URL.createObjectURL(blob));
+      });
+    });
+    promise.then((resultado) => {
+      const dialogRef = this.dialog.open(VisorPdfComponent, {
+        width: "100%",
+        height: "90%",
+        data: {
+          pdf: resultado,
+          folio: null,
+          usuario: null,
+          pdfArchivoCompleto: null,
+          previsualisar : false,
+          lectura : false
+        },
+      });
+    });
+  }
+  deleteFolioReferencia(row){
+    this.folioService.removerListaFoliosAgregados(row);
+    let index = this.ListaFolios.indexOf(row);
+    this.ListaFolios[index].existTableSearchFolio = false;
+  
+  }
+  agregarFolioReferencia(row){
+    let index = this.ListaFolios.indexOf(row);
+    this.ListaFolios[index].existTableSearchFolio = true;
+    this.folioService.AgregarFolioReferenciaAlista(row);
   }
 }
-
 function removeItemFromArr ( arr, item ) {
   var i = arr.indexOf( item );
-
   if ( i !== -1 ) {
       arr.splice( i, 1 );
   }
