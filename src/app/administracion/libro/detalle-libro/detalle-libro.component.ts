@@ -367,7 +367,9 @@ export class DetalleLibroComponent implements OnInit {
       width: "500px",
       data: {
         usuarioLibroPerfil: this.usuarioLibroPerfil,
-        usuariosDependenciaMandante: this.listaUsuarios
+        usuariosDependenciaMandante: this.listaUsuarios,
+        editar : false,
+        usuarioEditar : {}
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -388,7 +390,9 @@ export class DetalleLibroComponent implements OnInit {
       width: "500px",
       data: {
         usuarioLibroPerfil: this.usuarioLibroPerfil,
-        usuariosDependenciaMandante: this.listaUsuariosContratista
+        usuariosDependenciaMandante: this.listaUsuariosContratista,
+        editar : false,
+        usuarioEditar : {}
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -478,5 +482,28 @@ export class DetalleLibroComponent implements OnInit {
     const index = this.listaUsuarioContratista.indexOf(row);
     this.usuarioEliminadosContratista = [...this.usuarioEliminadosContratista,row];
     this.listaUsuarioContratista.splice(index , 1 );
+  }
+  editarUsuario(row){
+    const dialogRef = this.dialog.open(CrearUsuarioComponent, {
+      width: "500px",
+      data: {
+        usuarioLibroPerfil: this.usuarioLibroPerfil,
+        usuariosDependenciaMandante: this.listaUsuarios,
+        editar : true,
+        usuarioEditar : row
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === undefined || result === false) {
+      } else {
+        let existe = false;
+        existe = this.listaUsuarioMandante.find(usuario => usuario.usuarioDependencia.id === result.usuarioDependencia?.id);
+        if(!existe){
+          this.listaUsuarioMandante = [...this.listaUsuarioMandante, result];
+        } else{
+
+        }
+      }
+    });
   }
 }
