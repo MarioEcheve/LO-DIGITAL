@@ -1,38 +1,114 @@
-<h2 mat-dialog-title> Buscador</h2>
+
+<div class="animate__animated animate__fadeIn">
+<h5 style="font-weight: bold;" class="mb-1">Busqueda Avanzada</h5>
 <mat-dialog-content >
-    <div class="row">
-        <div class="col-md-12">
-            <mat-form-field class="col-md-4" >
-                <mat-label>De</mat-label>
-                <input matInput placeholder="Buscar" [(ngModel)]="criteriosBusqueda.emisor"/>
-            </mat-form-field>
+    <div class="form-horizontal">
+        <div class="row">
+            <label class="col-md-2 col-form-label mt-2">De</label>
+            <div class="col-md-10">
+                <mat-form-field>                    
+                    <input matInput placeholder="" [(ngModel)]="criteriosBusqueda.emisor"/>
+                </mat-form-field>
+            </div>
         </div>
-        <div class="col-md-12">
-            <mat-form-field class="col-md-4" >
-                <mat-label>Para</mat-label>
-                <input matInput placeholder="Buscar" [(ngModel)]="criteriosBusqueda.receptor"/>
-            </mat-form-field>
+        <div class="row">
+            <label class="col-md-2 col-form-label mt-2">Para</label>
+            <div class="col-md-10">
+                <mat-form-field>                    
+                    <input matInput placeholder="" [(ngModel)]="criteriosBusqueda.receptor"/>
+                </mat-form-field>
+            </div>
         </div>
-        <div class="col-md-12" >
-            <mat-form-field class="col-md-8">
-                <mat-label>Asunto</mat-label>
-                <input matInput placeholder="Buscar" [(ngModel)]="criteriosBusqueda.asunto"/>
-            </mat-form-field>
+        <div class="row">
+            <label class="col-md-2 col-form-label mt-2">Asunto</label>
+            <div class="col-md-10">
+                <mat-form-field>                    
+                    <input matInput placeholder="" [(ngModel)]="criteriosBusqueda.asunto"/>
+                </mat-form-field>
+            </div>
         </div>
+        <div class="row">
+            <label class="col-md-3 col-form-label mt-2">Tipo de folio</label>
+            <div class="col-md-9">
+                <mat-form-field>
+                    <mat-select multiple placeholder="" [(ngModel)]="currentCity" name="Advertencia" ariaLabel="cities[0]">
+                        <mat-option *ngFor="let city of cities" [value]="city.value">
+                            {{ city.viewValue }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-4 col-form-label mt-2">Palabras en anotación</label>
+            <div class="col-md-8">
+                <mat-form-field>                    
+                    <input matInput placeholder=""/>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-3 col-form-label mt-2">Criterio Fechas</label>
+            <div class="col-md-3">
+                <mat-form-field>
+                    <mat-select placeholder="" name="city1">
+                        <mat-option *ngFor="let city1 of criterio_fechas" [value]="city1.value">
+                          {{ city1.viewValue }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3 mr-auto">                
+                <mat-form-field >
+                  <input matInput [matDatepicker]="picker" placeholder="Fecha Inicial" (click)="picker.open()">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3 mr-auto">                
+                <mat-form-field >
+                  <input matInput [matDatepicker]="picker" placeholder="Fecha Final" (click)="picker.open()">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-3 col-form-label mt-2">Estado Respuesta</label>
+            <div class="col-md-9">
+                <mat-form-field>
+                    <mat-select multiple placeholder="" [(ngModel)]="currentCity" name="Advertencia" ariaLabel="cities[0]">
+                        <mat-option *ngFor="let city of estado_respuesta" [value]="city.value">
+                            {{ city.viewValue }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-md-12 row">
+            <mat-checkbox class="mr-4">Con archivos adjuntos</mat-checkbox>
+            <mat-checkbox class="mr-4">Con folios referencia</mat-checkbox>
+            <mat-checkbox>Sin corfirmar lectura</mat-checkbox>            
+        </div>
+
+
+
+        
+
+
+
+
     </div>
 </mat-dialog-content>
-<mat-dialog-actions>
-    <div class="col-md-12">
-        <button
-            mat-raised-button
-            class="btn btn-primary"
-            style="float: right;"
-            (click)="FiltroFolioPersonalizado()"
-            >
-            <span class="btn-label">
-                <i class="material-icons">search</i>
-            </span>
-            Buscar
-        </button>
-    </div>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button
+        mat-raised-button
+        class="btn btn-primary"
+        style="float: right;"
+        (click)="FiltroFolioPersonalizado()"
+        >       
+        Buscar
+    </button>
 </mat-dialog-actions>
+</div>

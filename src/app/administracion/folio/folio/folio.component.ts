@@ -481,8 +481,8 @@ export class FolioComponent implements OnInit, AfterViewInit {
   modalFiltroFolioPersonalizado(){
    
     const dialogRef = this.dialog.open(FiltroFolioPersonalizadoComponent, {
-      width: "70%",
-      height: "50%%",
+      width: "600px",
+      height: "350px",
       data: { libro : this.libroSeleccionado},
       backdropClass: 'cdk-overlay-transparent-backdrop',
     });

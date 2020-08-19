@@ -129,7 +129,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               this.folioService.update(this.folio).subscribe((respuesta) => {
                 if(this.folio.tipoFolio.nombre.toLowerCase() === "apertura libro") {
                     this.folio.libro.estadoLibro = {
-                    id:  3001,
+                    id:  3051,
                     nombre: "Abierto",
                     libros: null,
                   };
