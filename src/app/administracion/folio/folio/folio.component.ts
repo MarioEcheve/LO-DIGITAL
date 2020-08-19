@@ -162,6 +162,32 @@ export class FolioComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    let id = parseInt(this.route.snapshot.paramMap.get("id"));
+    let usuario = JSON.parse(localStorage.getItem("user"));
+    this.UsuarioDependenciaService.findUserByUsuarioDependencia(usuario.id).subscribe(
+      usuarioDependencia=>{
+        if(usuarioDependencia.body[0]?.perfilUsuarioDependencia?.nombre.toLowerCase() === "super usuario"){
+          this.contratoService.find(id).subscribe((respuesta) => {
+            this.contrato = respuesta.body;
+            this.libroService
+              .buscarlibroPorContrato(respuesta.body.id)
+              .subscribe((respuesta) => {
+                this.libros = respuesta.body;
+              });
+          });
+        }else{
+          this.contratoService.find(id).subscribe((respuesta) => {
+            this.contrato = respuesta.body;
+            this.libroService.getMisLibros(usuario.id).subscribe(
+              libros=>{
+                this.libros = libros.body;
+              }
+            );
+          });
+          
+        }
+      }
+    );
 
     this.getPermisos();
     this.inicializarFormFiltros();
@@ -169,16 +195,8 @@ export class FolioComponent implements OnInit, AfterViewInit {
     this.folioFormGroup = this.fb.group({
       libro: [],
     });
-
-    let id = parseInt(this.route.snapshot.paramMap.get("id"));
-    this.contratoService.find(id).subscribe((respuesta) => {
-      this.contrato = respuesta.body;
-      this.libroService
-        .buscarlibroPorContrato(respuesta.body.id)
-        .subscribe((respuesta) => {
-          this.libros = respuesta.body;
-        });
-    });
+  
+    
     this.libroService
       .find(parseInt(this.route.snapshot.paramMap.get("idLibro")))
       .subscribe((respuesta) => {

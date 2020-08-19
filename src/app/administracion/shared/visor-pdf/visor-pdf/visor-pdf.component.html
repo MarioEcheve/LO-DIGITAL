@@ -16,6 +16,7 @@
     (click)="modalFirmarFolio()"
     cdkFocusInitial
     [disabled]="!data.previsualisar"
+     *ngxPermissionsOnly="['administrador']"
   >
     Firmar
   </button>

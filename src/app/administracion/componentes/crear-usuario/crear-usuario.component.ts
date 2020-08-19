@@ -22,6 +22,7 @@ import {
 import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 import { UsuarioLibro } from "../../TO/usuario-libro.model";
 import { UsuarioDependenciaService } from "../../services/usuario-dependencia.service";
+import { UsuarioDependencia } from "../../TO/usuario-dependencia.model";
 
 @Component({
   selector: "app-crear-usuario",
@@ -87,14 +88,14 @@ export class CrearUsuarioComponent implements AfterViewInit {
   asignarUsuario() {
     let usuarioLibro = new UsuarioLibro();
     if(this.data.editar === true){
-      this.data.usuarioEditar.usuarioDependencia.perfilUsuarioLibro = this.perfilUsuario;
-      this.data.usuarioEditar.usuarioDependencia.cargoFuncion = this.usuarioFormGroup.controls['cargo'].value;
-      this.dialogRef.close(this.data.usuarioEditar);
+      usuarioLibro = this.data.usuarioEditar;
+      usuarioLibro.cargoFuncion = this.usuarioFormGroup.controls['cargo'].value;
+      usuarioLibro.perfilUsuarioLibro = this.perfilUsuario;
+      this.dialogRef.close(usuarioLibro);
     }else{
       usuarioLibro.estado = true;
       usuarioLibro.cargoFuncion = this.usuarioFormGroup.controls["cargo"].value;
       usuarioLibro.nombre = this.myControl.value;
-      
       usuarioLibro.perfilUsuarioLibro = this.perfilUsuario;
       usuarioLibro.usuarioDependencia = null;
       usuarioLibro.fechaCreacion = null;
@@ -122,10 +123,17 @@ export class CrearUsuarioComponent implements AfterViewInit {
       this.usuarioDependenciaService
         .find(json_usuario_dep.idUsuarioDependencia)
         .subscribe((respuesta) => {
+          /*
+          respuesta.body.nombreEstado = 'Activo';
+          if(respuesta.body.estado === true){
+            respuesta.body.nombreEstado = "Activo";
+          }else{
+            respuesta.body.nombreEstado = "Inactivo";
+          }*/
           json_usuario_dep.usuarioDependencia = respuesta.body;
         });
   
-      console.log(json_usuario_dep);
+      //console.log(json_usuario_dep);
       this.dialogRef.close(json_usuario_dep);
     }
   }
@@ -134,7 +142,7 @@ export class CrearUsuarioComponent implements AfterViewInit {
     console.log(option);
     this.idUsuarioDependenciaAutoComplete = option.id_usuario_dependencia;
   }
-  valorPerfulUsuarioLibro(perfil){
+  valorPerfilUsuarioLibro(perfil){
     this.perfilUsuario = perfil;
   }
   /*

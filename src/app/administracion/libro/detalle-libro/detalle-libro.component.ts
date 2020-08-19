@@ -47,6 +47,7 @@ export class DetalleLibroComponent implements OnInit {
   usuarioLibroPerfil: IUsuarioLibro[];
   usuarioEliminadosSersionMandante = [];
   usuarioEliminadosContratista = [];
+  editar = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -120,18 +121,18 @@ export class DetalleLibroComponent implements OnInit {
         this.usuariosLibros = usuariosLibros.body;
         this.usuariosLibros.forEach(element=>{
           if(element.usuarioDependencia.dependencia.id === this.libro.contrato.dependenciaMandante.id){
-            if(element.usuarioDependencia.estado === true){
-              element.usuarioDependencia.nombreEstado = "Activo";
+            if(element.estado === true){
+              element.nombreEstado = "Activo";
             }else{
-              element.usuarioDependencia.nombreEstado = "Inactivo";
+              element.nombreEstado = "Inactivo";
             }
             this.listaUsuarioMandante = [...this.listaUsuarioMandante, element];
             console.log(this.listaUsuarioMandante);
           }else{
-            if(element.usuarioDependencia.estado === true){
-              element.usuarioDependencia.nombreEstado = "Activo";
+            if(element.estado === true){
+              element.nombreEstado = "Activo";
             }else{
-              element.usuarioDependencia.nombreEstado = "Inactivo";
+              element.nombreEstado = "Inactivo";
             }
             this.listaUsuarioContratista = [...this.listaUsuarioContratista, element];
           }
@@ -314,16 +315,9 @@ export class DetalleLibroComponent implements OnInit {
   actualizaUsuariosMandante(){
     this.listaUsuarioMandante.forEach(element=>{
       if(element.id !== undefined){
-        this.usuarioLibroService.find(element.id).subscribe(
-          usuarioBuscado=>{
-            let usuarioLibro = new UsuarioLibro();
-            usuarioLibro = usuarioBuscado.body;
-            console.log(usuarioLibro);
-            this.usuarioLibroService.update(usuarioLibro).subscribe(
-              usuario=>{
-                console.log('Usuario Actualizado')
-              }
-            );
+        this.usuarioLibroService.update(element).subscribe(
+          usuario=>{
+            console.log('Usuario Actualizado')
           }
         );
       }
@@ -340,16 +334,9 @@ export class DetalleLibroComponent implements OnInit {
   actualizaUsuariosContratista(){
     this.listaUsuarioContratista.forEach(element=>{
       if(element.id !== undefined){
-        this.usuarioLibroService.find(element?.id).subscribe(
-          usuarioBuscado=>{
-            let usuarioLibro = new UsuarioLibro();
-            usuarioLibro = usuarioBuscado.body;
-            console.log(usuarioLibro);
-            this.usuarioLibroService.update(usuarioLibro).subscribe(
-              usuario=>{
-                console.log('Usuario Actualizado')
-              }
-            );
+        this.usuarioLibroService.update(element).subscribe(
+          usuario=>{
+            console.log('Usuario Actualizado')
           }
         );
       }else{
@@ -363,12 +350,13 @@ export class DetalleLibroComponent implements OnInit {
     })
   }
   modalCrearUsuario() {
+    this.editar = false;
     const dialogRef = this.dialog.open(CrearUsuarioComponent, {
       width: "500px",
       data: {
         usuarioLibroPerfil: this.usuarioLibroPerfil,
         usuariosDependenciaMandante: this.listaUsuarios,
-        editar : false,
+        editar : this.editar,
         usuarioEditar : {}
       },
     });
@@ -386,12 +374,13 @@ export class DetalleLibroComponent implements OnInit {
     });
   }
   modalCrearUsuarioContratista() {
+    this.editar = false;
     const dialogRef = this.dialog.open(CrearUsuarioComponent, {
       width: "500px",
       data: {
         usuarioLibroPerfil: this.usuarioLibroPerfil,
         usuariosDependenciaMandante: this.listaUsuariosContratista,
-        editar : false,
+        editar : this.editar,
         usuarioEditar : {}
       },
     });
@@ -484,24 +473,51 @@ export class DetalleLibroComponent implements OnInit {
     this.listaUsuarioContratista.splice(index , 1 );
   }
   editarUsuario(row){
+    this.editar = true;
     const dialogRef = this.dialog.open(CrearUsuarioComponent, {
       width: "500px",
       data: {
         usuarioLibroPerfil: this.usuarioLibroPerfil,
         usuariosDependenciaMandante: this.listaUsuarios,
-        editar : true,
+        editar : this.editar,
         usuarioEditar : row
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === undefined || result === false) {
       } else {
+        //console.log(result);
         let existe = false;
         existe = this.listaUsuarioMandante.find(usuario => usuario.usuarioDependencia.id === result.usuarioDependencia?.id);
         if(!existe){
           this.listaUsuarioMandante = [...this.listaUsuarioMandante, result];
-        } else{
-
+        }else{
+          console.log(this.listaUsuarioMandante);
+        }
+      }
+    });
+  }
+  editarUsuarioContratista(row){
+    this.editar = true;
+    const dialogRef = this.dialog.open(CrearUsuarioComponent, {
+      width: "500px",
+      data: {
+        usuarioLibroPerfil: this.usuarioLibroPerfil,
+        usuariosDependenciaMandante: this.listaUsuarios,
+        editar : this.editar,
+        usuarioEditar : row
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === undefined || result === false) {
+      } else {
+        //console.log(result);
+        let existe = false;
+        existe = this.listaUsuarioContratista.find(usuario => usuario.usuarioDependencia.id === result.usuarioDependencia?.id);
+        if(!existe){
+          this.listaUsuarioContratista = [...this.listaUsuarioContratista, result];
+        }else{
+          console.log(this.listaUsuarioContratista);
         }
       }
     });

@@ -17,6 +17,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import * as moment from "moment";
 import { LibroService } from "src/app/administracion/services/libro.service";
 import { UsuarioLibroService } from "src/app/administracion/services/usuario-libro.service";
+import { NgxPermissionsService } from "ngx-permissions";
 declare var $: any;
 @Component({
   selector: "app-visor-pdf",
@@ -34,12 +35,17 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
     private folioService: FolioService,
     private router: Router,
     private libroService: LibroService,
-    private usuarioLibroService : UsuarioLibroService
+    private usuarioLibroService : UsuarioLibroService,
+    private permissionsService : NgxPermissionsService,
   ) {}
 
   ngOnInit(): void {
     //console.log(this.data.lectura);
     //this.mostrar = t
+    let usuarioActual = JSON.parse(localStorage.getItem("user"));
+    let idLibro = this.folio = this.data.folio.libro.id;
+    this.getPermisos(idLibro, usuarioActual.id);
+
   }
   ngAfterViewInit() {
     if(this.data.previsualisar === true){
@@ -251,6 +257,20 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
       }
     );
   }
+  getPermisos(idLibro, idUsuario){
+    this.usuarioLibroService
+      .buscarlibroPorContrato(idLibro, idUsuario)
+      .subscribe((respuesta) => {
+        console.log(respuesta.body);
+        this.usuario = respuesta.body[0];
+        console.log(respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase());
+        let permisos = [respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase()];
+        this.permissionsService.loadPermissions(permisos);
+      });
+  }
+
+
+
 }
 const blobToBase64 = (blob) => {
   const reader = new FileReader();

@@ -20,6 +20,7 @@ export interface IUsuarioLibro {
   usuarioDependencia?: IUsuarioDependencia;
   perfilUsuarioLibro?: IUsuarioLibroPerfil;
   idUsuarioDependencia?: number;
+  nombreEstado? : string;
 }
 
 export class UsuarioLibro implements IUsuarioLibro {
@@ -36,7 +37,8 @@ export class UsuarioLibro implements IUsuarioLibro {
     public libro?: ILibro,
     public usuarioDependencia?: IUsuarioDependencia,
     public perfilUsuarioLibro?: IUsuarioLibroPerfil,
-    public idUsuarioDependencia?: number
+    public idUsuarioDependencia?: number,
+    public nombreEstado?: string,
   ) {
     this.estado = this.estado || false;
   }
