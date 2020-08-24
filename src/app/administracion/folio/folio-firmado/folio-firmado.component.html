@@ -50,6 +50,7 @@
                   class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
                   [disabled]="Folio.requiereRespuesta === false || idlibroRelacionado !== null"
                   (click)="responderFolio()"
+                  *ngxPermissionsOnly="['administrador']"
                 >
                   <i class="material-icons" style="color: #4e4e4e;">reply</i>
                 </button>
@@ -84,6 +85,7 @@
                   class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
                   [disabled]="Folio.idUsuarioLectura !== null"
                   (click)="lecturaFolio()"
+                   *ngxPermissionsOnly="['administrador']"
                 >
                   <i class="material-icons" style="color: #4e4e4e;">visibility</i>
                 </button>

@@ -368,16 +368,16 @@
                       <td>{{ row.perfilUsuarioLibro.nombre }}</td>
                       <td>
                         <span
-                          *ngIf="row.usuarioDependencia.nombreEstado === 'Activo'"
+                          *ngIf="row.nombreEstado === 'Activo'"
                           class="badge badge-primary"
                           style="background-color: green;"
-                          > {{ row.usuarioDependencia.nombreEstado }}</span
+                          > {{ row.nombreEstado }}</span
                         >
                         <span
-                          *ngIf="row.usuarioDependencia.nombreEstado === 'Inactivo'"
+                          *ngIf="row.nombreEstado === 'Inactivo'"
                           class="badge badge-primary"
                           style="background-color: red  ;"
-                          > {{ row.usuarioDependencia.nombreEstado }}</span
+                          > {{ row.nombreEstado }}</span
                         >
                       </td>
                       <td class="td-actions text-right">
@@ -446,16 +446,16 @@
                       <td>{{ row.perfilUsuarioLibro.nombre }}</td>
                       <td>
                         <span
-                          *ngIf="row.usuarioDependencia.nombreEstado === 'Activo'"
+                          *ngIf="row.nombreEstado === 'Activo'"
                           class="badge badge-primary"
                           style="background-color: green;"
-                          > {{ row.usuarioDependencia.nombreEstado }}</span
+                          > {{ row.nombreEstado }}</span
                         >
                         <span
-                          *ngIf="row.usuarioDependencia.nombreEstado === 'Inactivo'"
+                          *ngIf="row.nombreEstado === 'Inactivo'"
                           class="badge badge-primary"
                           style="background-color: red  ;"
-                          > {{ row.usuarioDependencia.nombreEstado }}</span
+                          > {{ row.nombreEstado }}</span
                         >
                       </td>
                       <td class="td-actions text-right">
@@ -463,6 +463,7 @@
                           mat-raised-button
                           type="button"
                           class="btn btn-default {{ row[5] }}"
+                          (click)="editarUsuarioContratista(row)"
                         >
                           <i class="material-icons">edit</i>
                         </button>

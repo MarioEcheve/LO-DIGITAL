@@ -357,6 +357,7 @@
                     class="btn btn-primary"
                     (click)="guardarFolio()"
                     [disabled]="!folioForm.valid"
+                    *ngxPermissionsOnly="['administrador','asistente']"
                   >
                     <!-- <span class="btn-label">
                       <i class="material-icons">get_app</i>

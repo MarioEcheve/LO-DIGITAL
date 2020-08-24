@@ -13,6 +13,7 @@ import { LibroService } from "../../services/libro.service";
 import { VisorPdfComponent } from "../../shared/visor-pdf/visor-pdf/visor-pdf.component";
 import { UsuarioDependencia } from "../../TO/usuario-dependencia.model";
 import { UsuarioDependenciaService } from "../../services/usuario-dependencia.service";
+import { NgxPermissionsService } from "ngx-permissions";
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -52,12 +53,16 @@ export class FolioFirmadoComponent implements OnInit {
     private dialog: MatDialog,
     private contratoService : ContratoService,
     private libroService : LibroService,
-    private UsuarioDependenciaService : UsuarioDependenciaService
+    private UsuarioDependenciaService : UsuarioDependenciaService,
+     private permissionsService : NgxPermissionsService,
   ) {}
   ngOnInit() {
     this.folioService.navBarChange(2);
     let idFolio = this.route.snapshot.paramMap.get("id");
     this.obtenerFolio(idFolio);
+
+   
+
     this.tableData1 = {
       headerRow: ["#", "Name", "Job Position", "Since", "Salary", "Actions"],
       dataRows: [
@@ -200,13 +205,17 @@ export class FolioFirmadoComponent implements OnInit {
         });
       });
   }
+  // este metodo permite buscar el usuario usuario libro por el idusuario y el id del libro
+  // luego setea los permisos para ejecutar acciones
   obtenerPerfilLibroUsuario(idLibro, idUsuario) {
     this.usuarioLibroService
       .buscarlibroPorContrato(idLibro, idUsuario)
       .subscribe((respuesta) => {
         console.log(respuesta.body);
         this.usuario = respuesta.body[0];
-        
+        console.log(respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase());
+        let permisos = [respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase()];
+        this.permissionsService.loadPermissions(permisos);
       });
   }
 }
