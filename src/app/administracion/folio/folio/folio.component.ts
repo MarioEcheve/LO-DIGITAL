@@ -188,8 +188,8 @@ export class FolioComponent implements OnInit, AfterViewInit {
         }
       }
     );
-    let usuario = JSON.parse(localStorage.getItem("user"));
-    this.getPermisos(this.route.snapshot.paramMap.get("idLibro"),usuario.id);
+    let usuarioActual = JSON.parse(localStorage.getItem("user"));
+    this.getPermisos(this.route.snapshot.paramMap.get("idLibro"),usuarioActual.id);
     this.inicializarFormFiltros();
     this.folioServie.navBarChange(1);
     this.folioFormGroup = this.fb.group({
@@ -333,6 +333,8 @@ export class FolioComponent implements OnInit, AfterViewInit {
           .subscribe((respuesta2) => {
             nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
             element.emisor = nombreEmisor;
+          },error=>{
+            console.log('No existe', error);
           });
           if(element.idReceptor !== null ){
             this.usuarioLibroService
@@ -340,7 +342,9 @@ export class FolioComponent implements OnInit, AfterViewInit {
               .subscribe((respuesta2) => {
                 nombreReceptor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
                 element.receptor = nombreReceptor;
-              });
+              },error=>{
+                console.log('No existe', error);
+              })
           }
         }else{
           this.usuarioLibroService
@@ -348,13 +352,17 @@ export class FolioComponent implements OnInit, AfterViewInit {
           .subscribe((respuesta2) => {
             nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
             element.emisor = nombreEmisor;
-          });
+          },error=>{
+            console.log('No existe', error);
+          })
           this.usuarioLibroService
           .find(element.idReceptor )
           .subscribe((respuesta2) => {
             nombreReceptor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
             element.receptor = nombreReceptor;
-          });
+          },error=>{
+            console.log('No existe', error);
+          })
         }
         
       });

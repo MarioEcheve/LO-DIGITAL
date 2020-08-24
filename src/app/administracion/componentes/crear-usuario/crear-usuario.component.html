@@ -41,6 +41,16 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Estado Usuario" formControlName="estado">
+        <mat-option
+          *ngFor="let estado of estadosPerfil"
+          [value]="estado.nombre"
+        >
+          {{ estado.nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

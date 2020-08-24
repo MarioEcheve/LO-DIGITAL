@@ -37,6 +37,16 @@ export class CrearUsuarioComponent implements AfterViewInit {
   listaPerfilesLibro: IUsuarioLibroPerfil;
   idUsuarioDependenciaAutoComplete: number;
   perfilUsuario;
+  estadosPerfil = [
+    {
+      id: 1,
+      nombre : "Activo"
+    },
+    {
+      id:2,
+      nombre : "Inactivo"
+    }
+  ]
   constructor(
     private perfilUsuarioDependenciaService: PerfilUsuarioDependenciaService,
     public dialogRef: MatDialogRef<CrearUsuarioComponent>,
@@ -62,6 +72,7 @@ export class CrearUsuarioComponent implements AfterViewInit {
     this.usuarioFormGroup = this.fb.group({
       perfil: ["", [Validators.required]],
       cargo: ["", [Validators.required]],
+      estado : []
     });
     if(this.data.editar === true){
       console.log(this.data.usuarioEditar);
@@ -69,6 +80,12 @@ export class CrearUsuarioComponent implements AfterViewInit {
       this.usuarioFormGroup.controls['cargo'].setValue(this.data.usuarioEditar.cargoFuncion)
       this.usuarioFormGroup.controls['perfil'].setValue(this.data.usuarioEditar.perfilUsuarioLibro.nombre)
       this.perfilUsuario = this.data.usuarioEditar.perfilUsuarioLibro;
+      let estado =  this.data.usuarioEditar.estado;
+      if(estado){
+        this.usuarioFormGroup.controls['estado'].setValue('Activo')
+      }else{
+        this.usuarioFormGroup.controls['estado'].setValue('Inactivo')
+      }
       this.myControl.disable();
       
     }
@@ -87,13 +104,27 @@ export class CrearUsuarioComponent implements AfterViewInit {
   }
   asignarUsuario() {
     let usuarioLibro = new UsuarioLibro();
+    let estadoUsuarioLibro = this.usuarioFormGroup.controls['estado'].value;
+    let valorEstado;
+    if(estadoUsuarioLibro === "Activo"){
+      usuarioLibro.estado = true;
+      valorEstado =  usuarioLibro.estado;
+      usuarioLibro.nombreEstado = estadoUsuarioLibro;
+    }else{
+      usuarioLibro.estado = false;
+      usuarioLibro.nombreEstado = estadoUsuarioLibro;
+      valorEstado =  usuarioLibro.estado;
+    }
+
     if(this.data.editar === true){
       usuarioLibro = this.data.usuarioEditar;
       usuarioLibro.cargoFuncion = this.usuarioFormGroup.controls['cargo'].value;
       usuarioLibro.perfilUsuarioLibro = this.perfilUsuario;
+      usuarioLibro.estado = valorEstado;
+      usuarioLibro.nombreEstado = estadoUsuarioLibro;
       this.dialogRef.close(usuarioLibro);
+
     }else{
-      usuarioLibro.estado = true;
       usuarioLibro.cargoFuncion = this.usuarioFormGroup.controls["cargo"].value;
       usuarioLibro.nombre = this.myControl.value;
       usuarioLibro.perfilUsuarioLibro = this.perfilUsuario;
@@ -105,7 +136,8 @@ export class CrearUsuarioComponent implements AfterViewInit {
   
       let json_usuario_dep = {
         cargoFuncion: this.usuarioFormGroup.controls["cargo"].value,
-        estado: true,
+        estado: valorEstado,
+        nombreEstado :estadoUsuarioLibro,
         fechaCreacion: null,
         fechaModificacion: null,
         gesAlertas: undefined,
@@ -131,10 +163,15 @@ export class CrearUsuarioComponent implements AfterViewInit {
             respuesta.body.nombreEstado = "Inactivo";
           }*/
           json_usuario_dep.usuarioDependencia = respuesta.body;
+          json_usuario_dep.estado = valorEstado;
+          json_usuario_dep.nombreEstado = estadoUsuarioLibro;
         });
   
       //console.log(json_usuario_dep);
+     setTimeout(() => {
+      console.log(json_usuario_dep);
       this.dialogRef.close(json_usuario_dep);
+     },200);
     }
   }
 

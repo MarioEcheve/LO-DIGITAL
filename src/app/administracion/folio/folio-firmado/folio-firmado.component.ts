@@ -54,7 +54,7 @@ export class FolioFirmadoComponent implements OnInit {
     private contratoService : ContratoService,
     private libroService : LibroService,
     private UsuarioDependenciaService : UsuarioDependenciaService,
-     private permissionsService : NgxPermissionsService,
+    private permissionsService : NgxPermissionsService,
   ) {}
   ngOnInit() {
     this.folioService.navBarChange(2);
@@ -79,7 +79,7 @@ export class FolioFirmadoComponent implements OnInit {
     this.folioService.find(idFolio).subscribe((respuesta) => {
       this.Folio = respuesta.body;
       console.log(this.Folio);
-      let usuarioActual = JSON.parse(localStorage.getItem("user"));
+      let usuarioActual =JSON.parse(localStorage.getItem("user"));
       this.obtenerPerfilLibroUsuario(this.Folio.libro.id, usuarioActual.id);
       this.idlibroRelacionado = respuesta.body.idFolioRespuesta;
       

@@ -312,6 +312,7 @@
                   type="submit"
                   class="btn btn-danger pull-left"
                   (click)="eliminarFolio()"
+                  *ngxPermissionsOnly="['administrador','asistente']"
                 >
                   <!--  <span class="btn-label">
                       <i class="material-icons">close</i>

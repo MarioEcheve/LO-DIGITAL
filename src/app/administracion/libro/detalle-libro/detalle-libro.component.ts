@@ -39,11 +39,14 @@ export class DetalleLibroComponent implements OnInit {
   tipoFirma: TipoFirma[];
   usuariosLibros : UsuarioLibro[];
   listaUsuarioMandante = [];
+  listaUsuarioContratistaAgregados = [];
   contrato :  Contrato;
   listaUsuarioContratista = [];
   muestraListaUsuarios = false;
   listaUsuarios : User[] = [];
+  listaUsuariosOrigen : User[] = [];
   listaUsuariosContratista: User[] = [];
+  listaUsuariosContratistaOrigen: User[] = [];
   usuarioLibroPerfil: IUsuarioLibro[];
   usuarioEliminadosSersionMandante = [];
   usuarioEliminadosContratista = [];
@@ -134,7 +137,7 @@ export class DetalleLibroComponent implements OnInit {
             }else{
               element.nombreEstado = "Inactivo";
             }
-            this.listaUsuarioContratista = [...this.listaUsuarioContratista, element];
+            this.listaUsuarioContratistaAgregados = [...this.listaUsuarioContratistaAgregados, element];
           }
         });
       }
@@ -332,7 +335,7 @@ export class DetalleLibroComponent implements OnInit {
     })
   }
   actualizaUsuariosContratista(){
-    this.listaUsuarioContratista.forEach(element=>{
+    this.listaUsuarioContratistaAgregados.forEach(element=>{
       if(element.id !== undefined){
         this.usuarioLibroService.update(element).subscribe(
           usuario=>{
@@ -350,12 +353,20 @@ export class DetalleLibroComponent implements OnInit {
     })
   }
   modalCrearUsuario() {
+    this.listaUsuarios = this.listaUsuariosOrigen;
+
+    let listaUsuariosFiltrados = this.listaUsuarios.filter((usuarios:any)=>{
+      let res = this.listaUsuarioMandante.find((usuarioMandante)=>{
+       return usuarioMandante.usuarioDependencia.id == usuarios.id_usuario_dependencia;
+       });
+      return res == undefined;
+    });
     this.editar = false;
     const dialogRef = this.dialog.open(CrearUsuarioComponent, {
       width: "500px",
       data: {
         usuarioLibroPerfil: this.usuarioLibroPerfil,
-        usuariosDependenciaMandante: this.listaUsuarios,
+        usuariosDependenciaMandante: listaUsuariosFiltrados,
         editar : this.editar,
         usuarioEditar : {}
       },
@@ -367,19 +378,24 @@ export class DetalleLibroComponent implements OnInit {
         existe = this.listaUsuarioMandante.find(usuario => usuario.usuarioDependencia.id === result.usuarioDependencia?.id);
         if(!existe){
           this.listaUsuarioMandante = [...this.listaUsuarioMandante, result];
-        } else{
-
         }
       }
     });
   }
   modalCrearUsuarioContratista() {
+    this.listaUsuariosContratista = this.listaUsuariosContratistaOrigen;
+    let listaUsuariosFiltrados = this.listaUsuariosContratista.filter((usuarios:any)=>{
+      let res = this.listaUsuarioContratistaAgregados.find((usuarioContratista)=>{
+       return usuarioContratista.usuarioDependencia.id == usuarios.id_usuario_dependencia;
+       });
+      return res == undefined;
+    });
     this.editar = false;
     const dialogRef = this.dialog.open(CrearUsuarioComponent, {
       width: "500px",
       data: {
         usuarioLibroPerfil: this.usuarioLibroPerfil,
-        usuariosDependenciaMandante: this.listaUsuariosContratista,
+        usuariosDependenciaMandante: listaUsuariosFiltrados,
         editar : this.editar,
         usuarioEditar : {}
       },
@@ -388,11 +404,9 @@ export class DetalleLibroComponent implements OnInit {
       if (result === undefined || result === false) {
       } else {
         let existe = false;
-        existe = this.listaUsuarioContratista.find(usuario => usuario.usuarioDependencia.id === result.usuarioDependencia?.id);
+        existe = this.listaUsuarioContratistaAgregados.find(usuario => usuario.usuarioDependencia.id === result.usuarioDependencia?.id);
         if(!existe){
-          console.log('IMPRIMIENDO RESULTADO');
-          console.log(result);
-          this.listaUsuarioContratista = [...this.listaUsuarioContratista, result];
+          this.listaUsuarioContratistaAgregados = [...this.listaUsuarioContratistaAgregados, result];
         }
       }
     });
@@ -407,6 +421,7 @@ export class DetalleLibroComponent implements OnInit {
         .subscribe((respuesta) => {
           //console.log(respuesta);
           this.listaUsuarios = respuesta.body;
+          this.listaUsuariosOrigen = respuesta.body;
           this.muestraListaUsuarios = true;
         });
       this.dependenciaService
@@ -414,6 +429,7 @@ export class DetalleLibroComponent implements OnInit {
         .subscribe((respuesta) => {
           //console.log(respuesta);
           this.listaUsuariosContratista = respuesta.body;
+          this.listaUsuariosContratistaOrigen = respuesta.body;
           this.muestraListaUsuarios = true;
         });
     });
@@ -468,9 +484,9 @@ export class DetalleLibroComponent implements OnInit {
     this.listaUsuarioMandante.splice(index , 1 );
   }
   eliminarUsuarioRowContratista(row){
-    const index = this.listaUsuarioContratista.indexOf(row);
+    const index = this.listaUsuarioContratistaAgregados.indexOf(row);
     this.usuarioEliminadosContratista = [...this.usuarioEliminadosContratista,row];
-    this.listaUsuarioContratista.splice(index , 1 );
+    this.listaUsuarioContratistaAgregados.splice(index , 1 );
   }
   editarUsuario(row){
     this.editar = true;

@@ -13,7 +13,8 @@ import { ILibro } from "../../TO/libro.model";
 import { TableData } from "src/app/md/md-table/md-table.component";
 import { Router } from "@angular/router";
 import { ContratoService } from "../../services/contrato.service";
-
+import { NgxPermissionsService } from "ngx-permissions";
+import { UsuarioLibroService } from "../../services/usuario-libro.service";
 @Component({
   selector: "app-lista-libro",
   templateUrl: "./lista-libro.component.html",
@@ -33,11 +34,14 @@ export class ListaLibroComponent implements OnInit {
   public tableData1: TableData;
   libros : ILibro[]  = [];
   mostrar ="";
+  permisos=[];
   constructor(
     private libroService :LibroService,
     private router : Router,
     private contratoService : ContratoService,
-    private folioService : FolioService
+    private folioService : FolioService,
+    private permissionsService : NgxPermissionsService,
+    private usuarioLibroService: UsuarioLibroService,
   ) {}
 
   ngOnInit(): void {
@@ -96,6 +100,9 @@ export class ListaLibroComponent implements OnInit {
       respuesta => {
         console.log(respuesta.body);
         this.libros = respuesta.body;
+        respuesta.body.forEach(element => {
+           this.obtenerPerfilLibroUsuario(element.id,usuario.id);
+        });
       }
     );
   }
@@ -107,6 +114,16 @@ export class ListaLibroComponent implements OnInit {
   }
   applyFilter(event){
 
+  }
+  obtenerPerfilLibroUsuario(idLibro, idUsuario) {
+    this.usuarioLibroService
+      .buscarlibroPorContrato(idLibro, idUsuario)
+      .subscribe((respuesta) => {
+        console.log(respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase());
+        this.permisos = [...this.permisos,respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase()];
+        console.log(this.permisos);
+        this.permissionsService.loadPermissions(this.permisos);
+      });
   }
 }
 export interface PeriodicElement {
