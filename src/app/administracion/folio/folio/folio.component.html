@@ -40,7 +40,7 @@
                 </table>
               </div>
             </div>
-            <div class="d-flex">
+            <div class="d-flex mt-1">
               <div class="flex-grow-1">
                 <mat-form-field>
                   <mat-select
@@ -82,7 +82,7 @@
             <div>
               <button
                 mat-raised-button
-                class="btn btn-primary col-md-12"
+                class="btn btn-pinterest col-md-12 "                
                 (click)="nuevoFolio()"
                 [disabled]="libroSeleccionado?.estadoLibro?.nombre === 'Cerrado'"
                 *ngxPermissionsOnly="['super usuario']"
@@ -90,17 +90,16 @@
                 <span class="btn-label">
                   <i class="material-icons">add</i>
                 </span>
-                Nuevo Folio
+                Redactar Folio
               </button>
             </div>
             <div>
-              <mat-list role="list" >
+              <mat-list role="list">
                 <mat-list-item  [ngClass]="{'active': accion.isClicked}"
                 class=" content-menu-list" style="width: auto; height: auto; float: left;" *ngFor="let accion of typesOfActions" 
                 (click)="filtrarFolios(accion)">
-                  <button 
-                    
-                    style="font-size:medium; padding: initial;text-align: left; width: -webkit-fill-available;"   mat-button aria-label="Example icon button with a vertical three dot icon">
+                  <button                     
+                    style="font-size:13px; padding: initial;text-align: left; width: -webkit-fill-available;"   mat-button aria-label="Example icon button with a vertical three dot icon">
                     <mat-icon style="color: gray;">{{accion.icon }}</mat-icon>
                     {{accion.accion }}
                   </button>
@@ -114,7 +113,7 @@
                 <div class="d-flex" >
                   <div class="flex-grow-1">
                     <mat-form-field class="example-full-width col-md-12">
-                      <mat-label>Filtro de busqueda</mat-label>
+                      <mat-label>Contenido Busqueda</mat-label>
                       <input type="{{type}}" matInput placeholder="Buscar" formControlName="inputBusqueda" />
                     </mat-form-field>
                   </div>
@@ -122,7 +121,7 @@
                     <mat-form-field class="col-md-12">
                       <mat-select 
                           
-                          placeholder="Busqueda" 
+                          placeholder="Campo Busqueda" 
                           formControlName="criterioBusqueda" 
                          >
                         <mat-option  *ngFor="let filtros of filtroFolios"  [value]="filtros.id" (click)="setForm(filtros)">{{filtros.name}}</mat-option>
@@ -130,19 +129,16 @@
                     </mat-form-field>
                   </div>
                   <div class="ml-2">
-                    <button mat-mini-fab color="primary" (click)="filtraFolios()" [disabled]="!formFiltrosGroup.valid">
+                    <!-- <button mat-mini-fab color="primary" (click)="filtraFolios()" [disabled]="!formFiltrosGroup.valid"> -->                      
+                    <button mat-raised-button class="btn btn-sm btn-just-icon btn-primary btn-fab btn-round" (click)="filtraFolios()" [disabled]="!formFiltrosGroup.valid">
                       <i class="material-icons">search</i>
                     </button>
                   </div>
                   <div class="ml-2">
-                    <button
-                        mat-raised-button
-                        type="button"
-                        class="btn btn-default btn-sm btn-fab"
-                        (click)="modalFiltroFolioPersonalizado()"
-                    >
-                    <i class="material-icons">keyboard_arrow_right</i>
-                  </button>
+                    <button mat-raised-button type="button" class="btn btn-primary btn-sm" (click)="modalFiltroFolioPersonalizado()">
+                      <i class="material-icons">search</i>
+                      Avanzada
+                    </button>
                   </div>
                 </div>
               </form>

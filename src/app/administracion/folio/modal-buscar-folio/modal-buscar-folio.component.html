@@ -64,7 +64,7 @@
                           <button
                               mat-raised-button
                               type="button"
-                              class="btn btn-default {{ row[4] }}"
+                              class="btn mr-1 btn-default {{ row[4] }}"
                               (click)="visorPdf(row)"
                             >
                               <i class="material-icons">visibility</i>
@@ -81,7 +81,7 @@
                             <button
                               mat-raised-button
                               type="button"
-                              class="btn btn-default {{ row[4] }}"
+                              class="btn btn-success {{ row[4] }}"
                               (click)="deleteFolioReferencia(row)"
                               *ngIf="row.existTableSearchFolio === true"
                             >
@@ -97,5 +97,5 @@
     </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Salir</button>
+    <button mat-raised-button mat-dialog-close class="btn-primary">Salir</button>
   </mat-dialog-actions>

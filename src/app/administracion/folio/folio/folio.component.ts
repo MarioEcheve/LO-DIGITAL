@@ -102,19 +102,19 @@ export class FolioComponent implements OnInit, AfterViewInit {
       {
         id :1,
         accion : 'Bandeja de Folio',
-        icon :'mail',
+        icon :'inbox',
         isClicked: true
       },
       {
         id :2,
         accion : 'Folio Mandante',
-        icon :'mark_email_read',
+        icon :'apartment',
         isClicked: false
       },
       {
         id :3,
         accion : 'Folio Contratista',
-        icon :'mark_email_read',
+        icon :'engineering',
         isClicked: false
       },
       {
@@ -132,13 +132,13 @@ export class FolioComponent implements OnInit, AfterViewInit {
       {
         id :6,
         accion : 'Destacados',
-        icon :'favorite',
+        icon :'star',
         isClicked: false
       },
       {
         id :7,
         accion : 'Borradores',
-        icon :'note',
+        icon :'insert_drive_file',
         isClicked: false
       }
   ];
@@ -353,8 +353,8 @@ export class FolioComponent implements OnInit, AfterViewInit {
   }
   nuevoFolio() {
     const dialogRef = this.dialog.open(ModalCrearFolioComponent, {
-      width: "40%",
-      height: "50%%",
+      width: "500px",
+      height: "290px",
       data: {
         libros: this.libros,
         libroSeleccionado: this.libroSeleccionado,
@@ -525,7 +525,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
    
     const dialogRef = this.dialog.open(FiltroFolioPersonalizadoComponent, {
       width: "650px",
-      height: "500px",
+      height: "470px",
       data: { libro : this.libroSeleccionado},
       backdropClass: 'cdk-overlay-transparent-backdrop',
     });
