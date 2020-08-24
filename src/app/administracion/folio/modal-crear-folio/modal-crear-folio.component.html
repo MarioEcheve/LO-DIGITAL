@@ -1,8 +1,7 @@
 <div class="animate__animated animate__fadeIn">
-
-<h5 style="font-weight: bold;">Nuevo Folio</h5>
-<br />
 <mat-dialog-content>
+  <h5 style="font-weight: bold;">Nuevo Folio</h5>
+  <br />
   <form [formGroup]="crearFolioFormGroup">
     <div class="row">
       <div class="col-md-12">
@@ -49,22 +48,14 @@
             formControlName="asunto"
           />
         </mat-form-field>
-      </div>
-      <div></div>
-    </div>
+      </div>      
+    </div>    
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancelar</button>
-  <button
-    mat-button
-    cdkFocusInitial
-    (click)="guardarFolio()"
-    [disabled]="!crearFolioFormGroup.valid"
-    class="btn btn-primary"
-  >
+  <button mat-button cdkFocusInitial (click)="guardarFolio()" [disabled]="!crearFolioFormGroup.valid" class="btn btn-primary">
     Crear
   </button>
 </mat-dialog-actions>
-
 </div>

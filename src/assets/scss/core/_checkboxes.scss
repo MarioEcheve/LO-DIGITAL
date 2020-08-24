@@ -213,10 +213,12 @@
 .mat-checkbox{
   .mat-checkbox-layout{
     .mat-checkbox-inner-container{
-      height: $mdb-checkbox-size;;
-      width: $mdb-checkbox-size;;
+      /* FVS height: $mdb-checkbox-size;;
+      width: $mdb-checkbox-size;; */
+      height: 15px;;
+      width: 15px;;
       .mat-checkbox-frame{
-        border-width: 1px;
+        border-width: 2px;
         border-color: $mdb-checkbox-border-color;
       }
       .mat-checkbox-background{
