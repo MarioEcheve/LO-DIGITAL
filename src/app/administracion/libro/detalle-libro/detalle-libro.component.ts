@@ -19,6 +19,7 @@ import { DependenciaService } from "../../services/dependencia.service";
 import { User } from "src/app/core/user/user.model";
 import { UsuarioLibroPerfilService } from "../../services/usuario-libro-perfil.service";
 import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
+import { UsuarioDependenciaService } from "../../services/usuario-dependencia.service";
 declare const $: any;
 declare interface TableData {
   headerRow: string[];
@@ -64,7 +65,8 @@ export class DetalleLibroComponent implements OnInit {
     private dialog: MatDialog,
     private contratoService : ContratoService,
     private dependenciaService : DependenciaService,
-    private perfilUsuarioLibro : UsuarioLibroPerfilService
+    private perfilUsuarioLibro : UsuarioLibroPerfilService,
+    private usuarioDependenciaService: UsuarioDependenciaService
   ) {}
 
   ngOnInit(): void {
@@ -129,6 +131,15 @@ export class DetalleLibroComponent implements OnInit {
             }else{
               element.nombreEstado = "Inactivo";
             }
+            if(element.adminActivo === true){
+              this.libroInfoGeneralFormGroup.controls["nombreAdminMandante"].setValue(element.usuarioDependencia.usuario.firstName + '' + element.usuarioDependencia.usuario.lastName);
+              this.libroInfoGeneralFormGroup.controls["perfilUsuarioAdminMandante"].setValue(element.perfilUsuarioLibro.nombre);
+              this.libroInfoGeneralFormGroup.controls["cargoAdminMandante"].setValue(element.cargoFuncion);
+              this.libroInfoGeneralFormGroup.controls["entidadAdminMandante"].setValue(element.usuarioDependencia.dependencia.entidad.nombre);
+              this.libroInfoGeneralFormGroup.controls["rutEntidadAdminMandante"].setValue(element.usuarioDependencia.dependencia.entidad.rut);
+              this.libroInfoGeneralFormGroup.controls["dependenciaEntidadMandante"].setValue(element.usuarioDependencia.dependencia.nombre);
+              this.libroInfoGeneralFormGroup.controls["emailAdminMandante"].setValue(element.usuarioDependencia.usuario.email);
+            }
             this.listaUsuarioMandante = [...this.listaUsuarioMandante, element];
             console.log(this.listaUsuarioMandante);
           }else{
@@ -136,6 +147,15 @@ export class DetalleLibroComponent implements OnInit {
               element.nombreEstado = "Activo";
             }else{
               element.nombreEstado = "Inactivo";
+            }
+            if(element.adminActivo === true){
+              this.libroInfoGeneralFormGroup.controls["nombreAdminContratista"].setValue(element.usuarioDependencia.usuario.firstName + '' + element.usuarioDependencia.usuario.lastName);
+              this.libroInfoGeneralFormGroup.controls["perfilUsuarioAdminContratista"].setValue(element.perfilUsuarioLibro.nombre);
+              this.libroInfoGeneralFormGroup.controls["cargoAdminContratista"].setValue(element.cargoFuncion);
+              this.libroInfoGeneralFormGroup.controls["emailAdminContratista"].setValue(element.usuarioDependencia.usuario.email);
+              this.libroInfoGeneralFormGroup.controls["entidadAdminContratista"].setValue(element.usuarioDependencia.dependencia.entidad.nombre);
+              this.libroInfoGeneralFormGroup.controls["rutEntidadAdminContratista"].setValue(element.usuarioDependencia.dependencia.entidad.rut);
+              this.libroInfoGeneralFormGroup.controls["dependenciaEntidadContratista"].setValue(element.usuarioDependencia.dependencia.nombre);
             }
             this.listaUsuarioContratistaAgregados = [...this.listaUsuarioContratistaAgregados, element];
           }
@@ -264,6 +284,27 @@ export class DetalleLibroComponent implements OnInit {
     this.libroInfoGeneralFormGroup.controls["fechaCreacion"].disable();
     this.libroInfoGeneralFormGroup.controls["fechaApertura"].disable();
     this.libroInfoGeneralFormGroup.controls["fechaCierre"].disable();
+    this.libroInfoGeneralFormGroup.controls["rutAdminMandante"].disable();
+    this.libroInfoGeneralFormGroup.controls["nombreAdminMandante"].disable();
+    this.libroInfoGeneralFormGroup.controls["perfilUsuarioAdminMandante"].disable();
+    this.libroInfoGeneralFormGroup.controls["cargoAdminMandante"].disable();
+    this.libroInfoGeneralFormGroup.controls["entidadAdminMandante"].disable();
+    this.libroInfoGeneralFormGroup.controls["rutEntidadAdminMandante"].disable();
+    this.libroInfoGeneralFormGroup.controls["dependenciaEntidadMandante"].disable();
+    this.libroInfoGeneralFormGroup.controls["emailAdminMandante"].disable();
+    this.libroInfoGeneralFormGroup.controls["fechaAsignacionAdminMandante"].disable();
+    this.libroInfoGeneralFormGroup.controls["telefonoAdminMandante"].disable();
+
+    this.libroInfoGeneralFormGroup.controls["rutAdminContratista"].disable();
+    this.libroInfoGeneralFormGroup.controls["nombreAdminContratista"].disable();
+    this.libroInfoGeneralFormGroup.controls["perfilUsuarioAdminContratista"].disable();
+    this.libroInfoGeneralFormGroup.controls["fechaAsignacionAdminContratista"].disable();
+    this.libroInfoGeneralFormGroup.controls["cargoAdminContratista"].disable();
+    this.libroInfoGeneralFormGroup.controls["telefonoAdminContratista"].disable();
+    this.libroInfoGeneralFormGroup.controls["emailAdminContratista"].disable();
+    this.libroInfoGeneralFormGroup.controls["entidadAdminContratista"].disable();
+    this.libroInfoGeneralFormGroup.controls["rutEntidadAdminContratista"].disable();
+    this.libroInfoGeneralFormGroup.controls["dependenciaEntidadContratista"].disable();
 
     this.permisosFormGroup = this.fb.group({
       aperturaMandante: [false],
@@ -354,35 +395,76 @@ export class DetalleLibroComponent implements OnInit {
   }
   modalCrearUsuario() {
     this.listaUsuarios = this.listaUsuariosOrigen;
-
+    let usuarioEditar;
+    let existe = false;
+    if(this.listaUsuarioMandante.length > 0){
+      this.listaUsuarioMandante.forEach(
+        element=>{
+          if(element.adminActivo === true){
+            existe= true;
+            usuarioEditar = element;
+          }
+        }
+      );
+    }else{
+      existe=false;
+    }
     let listaUsuariosFiltrados = this.listaUsuarios.filter((usuarios:any)=>{
-      let res = this.listaUsuarioMandante.find((usuarioMandante)=>{
+    let res = this.listaUsuarioMandante.find((usuarioMandante)=>{
        return usuarioMandante.usuarioDependencia.id == usuarios.id_usuario_dependencia;
        });
       return res == undefined;
     });
     this.editar = false;
+    if(this.editar === false){
+      usuarioEditar = new UsuarioLibro();
+    }
     const dialogRef = this.dialog.open(CrearUsuarioComponent, {
       width: "500px",
       data: {
         usuarioLibroPerfil: this.usuarioLibroPerfil,
         usuariosDependenciaMandante: listaUsuariosFiltrados,
         editar : this.editar,
-        usuarioEditar : {}
+        usuarioEditar : usuarioEditar,
+        existe : existe
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
+       console.log(result);
       if (result === undefined || result === false) {
       } else {
         let existe = false;
         existe = this.listaUsuarioMandante.find(usuario => usuario.usuarioDependencia.id === result.usuarioDependencia?.id);
         if(!existe){
+          if(result.adminActivo === true){
+              this.libroInfoGeneralFormGroup.controls["nombreAdminMandante"].setValue(result.usuarioDependencia.usuario.firstName + '' + result.usuarioDependencia.usuario.lastName);
+              this.libroInfoGeneralFormGroup.controls["perfilUsuarioAdminMandante"].setValue(result.perfilUsuarioLibro.nombre);
+              this.libroInfoGeneralFormGroup.controls["cargoAdminMandante"].setValue(result.cargoFuncion);
+              this.libroInfoGeneralFormGroup.controls["entidadAdminMandante"].setValue(result.usuarioDependencia.dependencia.entidad.nombre);
+              this.libroInfoGeneralFormGroup.controls["rutEntidadAdminMandante"].setValue(result.usuarioDependencia.dependencia.entidad.rut);
+              this.libroInfoGeneralFormGroup.controls["dependenciaEntidadMandante"].setValue(result.usuarioDependencia.dependencia.nombre);
+              this.libroInfoGeneralFormGroup.controls["emailAdminMandante"].setValue(result.usuarioDependencia.usuario.email);
+          }
           this.listaUsuarioMandante = [...this.listaUsuarioMandante, result];
         }
       }
     });
   }
   modalCrearUsuarioContratista() {
+    let usuarioEditar;
+    let existe = false;
+    if(this.listaUsuarioContratistaAgregados.length > 0){
+      this.listaUsuarioContratistaAgregados.forEach(
+        element=>{
+          if(element.adminActivo === true){
+            existe= true;
+            usuarioEditar = element;
+          }
+        }
+      );
+    }else{
+      existe=false;
+    }
     this.listaUsuariosContratista = this.listaUsuariosContratistaOrigen;
     let listaUsuariosFiltrados = this.listaUsuariosContratista.filter((usuarios:any)=>{
       let res = this.listaUsuarioContratistaAgregados.find((usuarioContratista)=>{
@@ -391,13 +473,18 @@ export class DetalleLibroComponent implements OnInit {
       return res == undefined;
     });
     this.editar = false;
+    if(this.editar === false){
+      usuarioEditar = new UsuarioLibro();
+    }
+    console.log(usuarioEditar);
     const dialogRef = this.dialog.open(CrearUsuarioComponent, {
       width: "500px",
       data: {
         usuarioLibroPerfil: this.usuarioLibroPerfil,
         usuariosDependenciaMandante: listaUsuariosFiltrados,
         editar : this.editar,
-        usuarioEditar : {}
+        usuarioEditar : usuarioEditar,
+        existe : existe
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -406,6 +493,16 @@ export class DetalleLibroComponent implements OnInit {
         let existe = false;
         existe = this.listaUsuarioContratistaAgregados.find(usuario => usuario.usuarioDependencia.id === result.usuarioDependencia?.id);
         if(!existe){
+          if(result.adminActivo === true){
+            console.log(result);
+            this.libroInfoGeneralFormGroup.controls["nombreAdminContratista"].setValue(result.usuarioDependencia.usuario.firstName + '' + result.usuarioDependencia.usuario.lastName);
+            this.libroInfoGeneralFormGroup.controls["perfilUsuarioAdminContratista"].setValue(result.perfilUsuarioLibro.nombre);
+            this.libroInfoGeneralFormGroup.controls["cargoAdminContratista"].setValue(result.cargoFuncion);
+            this.libroInfoGeneralFormGroup.controls["emailAdminContratista"].setValue(result.usuarioDependencia.usuario.email);
+            this.libroInfoGeneralFormGroup.controls["entidadAdminContratista"].setValue(result.usuarioDependencia.dependencia.entidad.nombre);
+            this.libroInfoGeneralFormGroup.controls["rutEntidadAdminContratista"].setValue(result.usuarioDependencia.dependencia.entidad.rut);
+            this.libroInfoGeneralFormGroup.controls["dependenciaEntidadContratista"].setValue(result.usuarioDependencia.dependencia.nombre);
+          }
           this.listaUsuarioContratistaAgregados = [...this.listaUsuarioContratistaAgregados, result];
         }
       }
@@ -480,15 +577,48 @@ export class DetalleLibroComponent implements OnInit {
   }
   eliminarUsuarioRowMandante(row){
     const index = this.listaUsuarioMandante.indexOf(row);
+    if(row.adminActivo === true ){
+      this.libroInfoGeneralFormGroup.controls["rutAdminMandante"].setValue("");
+      this.libroInfoGeneralFormGroup.controls["nombreAdminMandante"].setValue("");
+      this.libroInfoGeneralFormGroup.controls["perfilUsuarioAdminMandante"].setValue("");
+      this.libroInfoGeneralFormGroup.controls["cargoAdminMandante"].setValue("");
+      this.libroInfoGeneralFormGroup.controls["entidadAdminMandante"].setValue("");
+      this.libroInfoGeneralFormGroup.controls["rutEntidadAdminMandante"].setValue("");
+      this.libroInfoGeneralFormGroup.controls["dependenciaEntidadMandante"].setValue("");
+      this.libroInfoGeneralFormGroup.controls["emailAdminMandante"].setValue("");
+    }
     this.usuarioEliminadosSersionMandante = [...this.usuarioEliminadosSersionMandante,row];
     this.listaUsuarioMandante.splice(index , 1 );
+   
   }
   eliminarUsuarioRowContratista(row){
     const index = this.listaUsuarioContratistaAgregados.indexOf(row);
+    this.libroInfoGeneralFormGroup.controls["rutAdminContratista"].setValue("");
+    this.libroInfoGeneralFormGroup.controls["nombreAdminContratista"].setValue("");
+    this.libroInfoGeneralFormGroup.controls["perfilUsuarioAdminContratista"].setValue("");
+    this.libroInfoGeneralFormGroup.controls["fechaAsignacionAdminContratista"].setValue("");
+    this.libroInfoGeneralFormGroup.controls["cargoAdminContratista"].setValue("");
+    this.libroInfoGeneralFormGroup.controls["telefonoAdminContratista"].setValue("");
+    this.libroInfoGeneralFormGroup.controls["emailAdminContratista"].setValue("");
+    this.libroInfoGeneralFormGroup.controls["entidadAdminContratista"].setValue("");
+    this.libroInfoGeneralFormGroup.controls["rutEntidadAdminContratista"].setValue("");
+    this.libroInfoGeneralFormGroup.controls["dependenciaEntidadContratista"].setValue("");
     this.usuarioEliminadosContratista = [...this.usuarioEliminadosContratista,row];
     this.listaUsuarioContratistaAgregados.splice(index , 1 );
   }
   editarUsuario(row){
+    let existe = false;
+    if(this.listaUsuarioMandante.length > 0){
+      this.listaUsuarioMandante.forEach(
+        element=>{
+          if(element.adminActivo === true){
+            existe= true;
+          }
+        }
+      );
+    }else{
+      existe=false;
+    }
     this.editar = true;
     const dialogRef = this.dialog.open(CrearUsuarioComponent, {
       width: "500px",
@@ -496,7 +626,8 @@ export class DetalleLibroComponent implements OnInit {
         usuarioLibroPerfil: this.usuarioLibroPerfil,
         usuariosDependenciaMandante: this.listaUsuarios,
         editar : this.editar,
-        usuarioEditar : row
+        usuarioEditar : row,
+        existe : existe
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -506,22 +637,87 @@ export class DetalleLibroComponent implements OnInit {
         let existe = false;
         existe = this.listaUsuarioMandante.find(usuario => usuario.usuarioDependencia.id === result.usuarioDependencia?.id);
         if(!existe){
+          if(result.adminActivo === true){
+            this.usuarioDependenciaService
+                    .find(result.usuarioDependencia.id)
+                    .subscribe((respuesta) => {
+                      console.log(respuesta.body);
+                      this.libroInfoGeneralFormGroup.controls[
+                        "rutAdminMandante"
+                      ].setValue("");
+                      this.libroInfoGeneralFormGroup.controls[
+                        "nombreAdminMandante"
+                      ].setValue(respuesta.body.usuario.firstName);
+                      this.libroInfoGeneralFormGroup.controls[
+                        "perfilUsuarioAdminMandante"
+                      ].setValue(
+                        respuesta.body.perfilUsuarioDependencia.nombre
+                      );
+                      this.libroInfoGeneralFormGroup.controls[
+                        "cargoAdminMandante"
+                      ].setValue(result.cargoFuncion);
+                      this.libroInfoGeneralFormGroup.controls[
+                        "entidadAdminMandante"
+                      ].setValue(respuesta.body.dependencia.entidad.nombre);
+                      this.libroInfoGeneralFormGroup.controls[
+                        "rutEntidadAdminMandante"
+                      ].setValue(respuesta.body.dependencia.entidad.rut);
+                      this.libroInfoGeneralFormGroup.controls[
+                        "dependenciaEntidadMandante"
+                      ].setValue(respuesta.body.dependencia.nombre);
+                      this.libroInfoGeneralFormGroup.controls[
+                        "emailAdminMandante"
+                      ].setValue(respuesta.body.usuario.email);
+                    });
+          }
+          
           this.listaUsuarioMandante = [...this.listaUsuarioMandante, result];
         }else{
-          console.log(this.listaUsuarioMandante);
+          if(result.adminActivo === true){
+              this.libroInfoGeneralFormGroup.controls["nombreAdminMandante"].setValue(result.usuarioDependencia.usuario.firstName + '' + result.usuarioDependencia.usuario.lastName);
+              this.libroInfoGeneralFormGroup.controls["perfilUsuarioAdminMandante"].setValue(result.perfilUsuarioLibro.nombre);
+              this.libroInfoGeneralFormGroup.controls["cargoAdminMandante"].setValue(result.cargoFuncion);
+              this.libroInfoGeneralFormGroup.controls["entidadAdminMandante"].setValue(result.usuarioDependencia.dependencia.entidad.nombre);
+              this.libroInfoGeneralFormGroup.controls["rutEntidadAdminMandante"].setValue(result.usuarioDependencia.dependencia.entidad.rut);
+              this.libroInfoGeneralFormGroup.controls["dependenciaEntidadMandante"].setValue(result.usuarioDependencia.dependencia.nombre);
+              this.libroInfoGeneralFormGroup.controls["emailAdminMandante"].setValue(result.usuarioDependencia.usuario.email);
+          }
+          //console.log(this.listaUsuarioMandante);
         }
       }
     });
   }
   editarUsuarioContratista(row){
-    this.editar = true;
+    let usuarioEditar;
+    let existe = false;
+    if(this.listaUsuarioContratistaAgregados.length > 0){
+      this.listaUsuarioContratistaAgregados.forEach(
+        element=>{
+          if(element.adminActivo === true){
+            existe= true;
+            usuarioEditar = element;
+          }
+        }
+      );
+    }else{
+      existe=false;
+    }
+    this.listaUsuariosContratista = this.listaUsuariosContratistaOrigen;
+    let listaUsuariosFiltrados = this.listaUsuariosContratista.filter((usuarios:any)=>{
+      let res = this.listaUsuarioContratistaAgregados.find((usuarioContratista)=>{
+       return usuarioContratista.usuarioDependencia.id == usuarios.id_usuario_dependencia;
+       });
+      return res == undefined;
+    });
+    this.editar=true;
     const dialogRef = this.dialog.open(CrearUsuarioComponent, {
       width: "500px",
       data: {
         usuarioLibroPerfil: this.usuarioLibroPerfil,
         usuariosDependenciaMandante: this.listaUsuarios,
         editar : this.editar,
-        usuarioEditar : row
+        usuarioEditar : row,
+        existe  : existe
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -531,8 +727,26 @@ export class DetalleLibroComponent implements OnInit {
         let existe = false;
         existe = this.listaUsuarioContratista.find(usuario => usuario.usuarioDependencia.id === result.usuarioDependencia?.id);
         if(!existe){
+          if(result.adminActivo === true){
+            this.libroInfoGeneralFormGroup.controls["nombreAdminContratista"].setValue(result.usuarioDependencia.usuario.firstName + '' + result.usuarioDependencia.usuario.lastName);
+            this.libroInfoGeneralFormGroup.controls["perfilUsuarioAdminContratista"].setValue(result.perfilUsuarioLibro.nombre);
+            this.libroInfoGeneralFormGroup.controls["cargoAdminContratista"].setValue(result.cargoFuncion);
+            this.libroInfoGeneralFormGroup.controls["emailAdminContratista"].setValue(result.usuarioDependencia.usuario.email);
+            this.libroInfoGeneralFormGroup.controls["entidadAdminContratista"].setValue(result.usuarioDependencia.dependencia.entidad.nombre);
+            this.libroInfoGeneralFormGroup.controls["rutEntidadAdminContratista"].setValue(result.usuarioDependencia.dependencia.entidad.rut);
+            this.libroInfoGeneralFormGroup.controls["dependenciaEntidadContratista"].setValue(result.usuarioDependencia.dependencia.nombre);
+          }
           this.listaUsuarioContratista = [...this.listaUsuarioContratista, result];
         }else{
+          if(result.adminActivo === true){
+            this.libroInfoGeneralFormGroup.controls["nombreAdminContratista"].setValue(result.usuarioDependencia.usuario.firstName + '' + result.usuarioDependencia.usuario.lastName);
+            this.libroInfoGeneralFormGroup.controls["perfilUsuarioAdminContratista"].setValue(result.perfilUsuarioLibro.nombre);
+            this.libroInfoGeneralFormGroup.controls["cargoAdminContratista"].setValue(result.cargoFuncion);
+            this.libroInfoGeneralFormGroup.controls["emailAdminContratista"].setValue(result.usuarioDependencia.usuario.email);
+            this.libroInfoGeneralFormGroup.controls["entidadAdminContratista"].setValue(result.usuarioDependencia.dependencia.entidad.nombre);
+            this.libroInfoGeneralFormGroup.controls["rutEntidadAdminContratista"].setValue(result.usuarioDependencia.dependencia.entidad.rut);
+            this.libroInfoGeneralFormGroup.controls["dependenciaEntidadContratista"].setValue(result.usuarioDependencia.dependencia.nombre);
+          }
           console.log(this.listaUsuarioContratista);
         }
       }

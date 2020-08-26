@@ -212,6 +212,13 @@ export class ModalCrearFolioComponent implements OnInit {
       .subscribe((respuesta) => {
         console.log(respuesta.body);
         this.usuario = respuesta.body[0];
+        if(this.usuario.perfilUsuarioLibro.nombre.toLowerCase() === "superior"){
+          this.tipoFolio = this.tipoFolio.filter(tipo => tipo.nombre.toLowerCase() === "cambio administrador")
+        }
+        if(this.usuario.perfilUsuarioLibro.nombre.toLowerCase() === "asistente"){
+          this.tipoFolio = this.tipoFolio.filter(tipo => tipo.nombre.toLowerCase() !== "cambio administrador")
+        }
+        
       });
   }
 }

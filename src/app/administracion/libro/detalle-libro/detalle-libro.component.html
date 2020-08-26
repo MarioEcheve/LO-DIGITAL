@@ -115,6 +115,7 @@
                   <mat-form-field class="example-full-width col-md-2">
                     <input
                       matInput
+                      formControlName="rutAdminMandante"
                       placeholder="RUT"
                       type="text"
                       value="13.224.233-k"
@@ -128,6 +129,7 @@
                       type="text"
                       value="Fernando Vilches Soleman"
                       disabled
+                      formControlName="nombreAdminMandante"
                     />
                   </mat-form-field>
                   <mat-form-field class="example-full-width col-md-3">
@@ -137,6 +139,7 @@
                       type="text"
                       value="Administrador (s)"
                       disabled
+                      formControlName="perfilUsuarioAdminMandante"
                     />
                   </mat-form-field>
                   <mat-form-field class="example-full-width col-md-2">
@@ -146,6 +149,7 @@
                       type="text"
                       value="12/05/2020"
                       disabled
+                      formControlName="fechaAsignacionAdminMandante"
                     />
                   </mat-form-field>
                 </div>
@@ -157,6 +161,7 @@
                       type="text"
                       value="Inspector Fiscal"
                       disabled
+                      formControlName="cargoAdminMandante"
                     />
                   </mat-form-field>
                   <mat-form-field class="example-full-width col-md-3">
@@ -166,6 +171,7 @@
                       type="text"
                       value="966453188"
                       disabled
+                      formControlName="telefonoAdminMandante"
                     />
                   </mat-form-field>
                   <mat-form-field class="example-full-width col-md-4">
@@ -175,6 +181,7 @@
                       type="text"
                       value="fvilchessoleman@gmail.com"
                       disabled
+                      formControlName="emailAdminMandante"
                     />
                   </mat-form-field>
                 </div>
@@ -186,6 +193,7 @@
                       type="text"
                       value="Ilustre Municipalidad de La Serena"
                       disabled
+                      formControlName="entidadAdminMandante"
                     />
                   </mat-form-field>
                   <mat-form-field class="example-full-width col-md-2">
@@ -195,6 +203,7 @@
                       type="text"
                       value="78.456.415-9"
                       disabled
+                      formControlName="rutEntidadAdminMandante"
                     />
                   </mat-form-field>
                   <mat-form-field class="example-full-width col-md-5">
@@ -204,6 +213,7 @@
                       type="text"
                       value="Dirección de Obras Muncipales"
                       disabled
+                      formControlName="dependenciaEntidadMandante"
                     />
                   </mat-form-field>
                 </div>
@@ -217,7 +227,7 @@
                       matInput
                       placeholder="RUT"
                       type="text"
-                      value="14.455.225-1"
+                      formControlName="rutAdminContratista"
                       disabled
                     />
                   </mat-form-field>
@@ -226,7 +236,7 @@
                       matInput
                       placeholder="Nombre"
                       type="text"
-                      value="Héctor Segovia Cabrera"
+                      formControlName="nombreAdminContratista"
                       disabled
                     />
                   </mat-form-field>
@@ -235,7 +245,7 @@
                       matInput
                       placeholder="Perfil Usuario"
                       type="text"
-                      value="Administrador"
+                      formControlName="perfilUsuarioAdminContratista"
                       disabled
                     />
                   </mat-form-field>
@@ -244,7 +254,7 @@
                       matInput
                       placeholder="Fecha Asignación"
                       type="text"
-                      value="12/05/2020"
+                      formControlName="fechaAsignacionAdminContratista"
                       disabled
                     />
                   </mat-form-field>
@@ -255,7 +265,7 @@
                       matInput
                       placeholder="Cargo/Función"
                       type="text"
-                      value="Administrador de Contrato"
+                      formControlName="cargoAdminContratista"
                       disabled
                     />
                   </mat-form-field>
@@ -264,7 +274,7 @@
                       matInput
                       placeholder="Teféfono"
                       type="text"
-                      value="945555763"
+                      formControlName="telefonoAdminContratista"
                       disabled
                     />
                   </mat-form-field>
@@ -273,7 +283,7 @@
                       matInput
                       placeholder="E-mail"
                       type="text"
-                      value="hsegoviac@gmail.com"
+                      formControlName="emailAdminContratista"
                       disabled
                     />
                   </mat-form-field>
@@ -284,7 +294,7 @@
                       matInput
                       placeholder="Entidad"
                       type="text"
-                      value="Constructora La Serena Ltda."
+                      formControlName="entidadAdminContratista"
                       disabled
                     />
                   </mat-form-field>
@@ -293,7 +303,7 @@
                       matInput
                       placeholder="RUT"
                       type="text"
-                      value="77.124.245-5"
+                      formControlName="rutEntidadAdminContratista"
                       disabled
                     />
                   </mat-form-field>
@@ -302,7 +312,7 @@
                       matInput
                       placeholder="Dependencia"
                       type="text"
-                      value="Oficina de Obras"
+                      formControlName="dependenciaEntidadContratista"
                       disabled
                     />
                   </mat-form-field>
@@ -363,10 +373,10 @@
                     <tr *ngFor="let row of listaUsuarioMandante">
                       <td scope="row" style="width: auto;">{{ row[0] }}</td>
 
-                      <td>{{ row.usuarioDependencia.usuario.firstName }}</td>
+                      <td>{{ row.usuarioDependencia.usuario?.firstName }}</td>
                       <td>{{ row.cargoFuncion }}</td>
                       <td>{{ row.perfilUsuarioLibro.nombre }}</td>
-                      <td>
+                      <td style="display: flex;">
                         <span
                           *ngIf="row.nombreEstado === 'Activo'"
                           class="badge badge-primary"
@@ -379,6 +389,7 @@
                           style="background-color: red  ;"
                           > {{ row.nombreEstado }}</span
                         >
+                        <i *ngIf="row.adminActivo === true" class=" material-icons text-info iconoAdminAcual">settings</i>
                       </td>
                       <td class="td-actions text-right">
                         <button
@@ -389,7 +400,8 @@
                         >
                           <i class="material-icons">edit</i>
                         </button>
-                        <button
+                        <!--
+                          <button
                           mat-raised-button
                           type="button"
                           class="btn btn-default {{ row[5] }}"
@@ -397,6 +409,8 @@
                         >
                           <i class="material-icons">delete</i>
                         </button>
+                        -->
+                        
                       </td>
                     </tr>
                   </tbody>
@@ -444,7 +458,7 @@
                       <td>{{ row.usuarioDependencia.usuario.firstName }}</td>
                       <td>{{ row.cargoFuncion }}</td>
                       <td>{{ row.perfilUsuarioLibro.nombre }}</td>
-                      <td>
+                      <td style="display: flex;">
                         <span
                           *ngIf="row.nombreEstado === 'Activo'"
                           class="badge badge-primary"
@@ -457,6 +471,7 @@
                           style="background-color: red  ;"
                           > {{ row.nombreEstado }}</span
                         >
+                        <i *ngIf="row.adminActivo === true" class=" material-icons text-info iconoAdminAcual">settings</i>
                       </td>
                       <td class="td-actions text-right">
                         <button
@@ -467,7 +482,8 @@
                         >
                           <i class="material-icons">edit</i>
                         </button>
-                        <button
+                        <!--
+                          <button
                           mat-raised-button
                           type="button"
                           (click)="eliminarUsuarioRowContratista(row)"
@@ -475,6 +491,8 @@
                         >
                           <i class="material-icons">delete</i>
                         </button>
+                        -->
+                        
                       </td>
                     </tr>
                   </tbody>

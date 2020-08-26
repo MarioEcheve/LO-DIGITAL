@@ -290,9 +290,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
     this.folioServie.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
       folios = respuesta.body;
       this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
-      console.log('entrando al buscar folio');
       respuesta.body.forEach(element=>{
-        console.log('fecha requerida: ' + element.fechaRequerida);
         if(element.fechaRequerida!== undefined){
           element.fechaRequerida = element.fechaRequerida.local();
           let resultado = calcDate(element.fechaRequerida.toDate(),new Date());
@@ -334,7 +332,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
             nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
             element.emisor = nombreEmisor;
           },error=>{
-            console.log('No existe', error);
           });
           if(element.idReceptor !== null ){
             this.usuarioLibroService
@@ -343,7 +340,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
                 nombreReceptor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
                 element.receptor = nombreReceptor;
               },error=>{
-                console.log('No existe', error);
               })
           }
         }else{
@@ -353,7 +349,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
             nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
             element.emisor = nombreEmisor;
           },error=>{
-            console.log('No existe', error);
           })
           this.usuarioLibroService
           .find(element.idReceptor )
@@ -361,7 +356,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
             nombreReceptor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
             element.receptor = nombreReceptor;
           },error=>{
-            console.log('No existe', error);
           })
         }
         
@@ -407,7 +401,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
         let libro = new Libro();
         libro.id = this.idlibro;
         this.folioServie.delete(row.id).subscribe((respuesta) => {
-          //console.log(respuesta);
           this.buscaFolios(libro);
         });
         Swal.fire("Eliminado!", "Folio Eliminado Correctamente.", "success");
@@ -441,7 +434,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
       .buscarlibroPorContrato(idLibro, idUsuario)
       .subscribe((respuesta) => {
         this.usuarioLibro = respuesta.body[0];
-        console.log(this.usuarioLibro);
         /*
         let permisos = [this.usuarioLibro.nombre.toLowerCase()]
         this.permissionsService.loadPermissions(permisos);
@@ -486,7 +478,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
       let foliosGuardados= [];
       this.favoritoService.BuscarFavoritoByUsuario(this.usuarioLibro.id).subscribe(
         folioFavoritos =>{
-          console.log(folioFavoritos.body);
           if(folioFavoritos.body.length > 0){
             folioFavoritos.body.forEach(
               element=>{
@@ -502,7 +493,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
           }
           setTimeout(() => {
             this.folios = foliosGuardados;
-            console.log(foliosGuardados);
           }, 500);
           
         }
@@ -510,7 +500,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
       this.typesOfActions[index].isClicked = true;
       break;
     case 7 :
-        //console.log(this.fo);
       this.folios = this.folios.filter(folio=>folio.idUsuarioFirma === null );
       this.typesOfActions[index].isClicked = true;
       break;
@@ -526,7 +515,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
     folioFavorito.nota = "";
     this.favoritoService.BuscarFavoritoByFolio(row.id).subscribe(
       folioFavorito => {
-        console.log(folioFavorito);
         if(folioFavorito.body.length > 0 ){
           existe = true;
           idFolioExiste = folioFavorito.body[0].id;
@@ -556,15 +544,12 @@ export class FolioComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       //this.folios = this.foliosOrigen;
-      console.log(result);
       let foliosBuscados = [];
       if(result !== undefined){
         result.forEach(element => {
-          console.log(element);
           foliosBuscados = [...foliosBuscados,this.foliosOrigen.filter(folio => folio.id === element.id)[0]];
         });
         setTimeout(() => {
-          console.log(foliosBuscados);
           this.folios = foliosBuscados;
         }, 500);
       }else{
@@ -579,7 +564,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
 
     let valorBusqueda = this.formFiltrosGroup.controls['inputBusqueda'].value;
     let criterioBusqueda = this.formFiltrosGroup.controls['criterioBusqueda'].value;
-    console.log(this.formFiltrosGroup.value);
     if(criterioBusqueda === 0){
       this.folios = this.foliosOrigen.filter(
         folio => {
@@ -589,7 +573,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
           }
         }
       );
-    console.log(this.folios);
     }
     if(criterioBusqueda === 1){
       this.filter(valorBusqueda, criterioBusqueda);
@@ -619,25 +602,20 @@ export class FolioComponent implements OnInit, AfterViewInit {
     if(criterio === 1){
       foliosFiltrados = this.foliosOrigen.filter(folio=> folio.emisor.toLowerCase().indexOf(valorBusqueda) > -1);
       this.folios = foliosFiltrados;
-      console.log(foliosFiltrados);
     }
     if(criterio === 2){
-      console.log(this.foliosOrigen);
       foliosFiltrados = this.foliosOrigen.filter(folio=> {
         if(folio.receptor !== undefined){
           return folio.receptor.toLowerCase().indexOf(valorBusqueda) > -1
         }
       });
       this.folios = foliosFiltrados;
-      console.log(foliosFiltrados);
     }
     if(criterio === 3){
-      console.log(this.foliosOrigen);
       foliosFiltrados = this.foliosOrigen.filter(folio=> {
           return folio.asunto.toLowerCase().indexOf(valorBusqueda) > -1
       });
       this.folios = foliosFiltrados;
-      console.log(foliosFiltrados);
     }
     if(criterio === 4){
       //this.formFiltrosGroup.controls['inputBusqueda'].setValue('');
@@ -676,7 +654,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
     this.usuarioLibroService
       .buscarlibroPorContrato(idLibro, idUsuario)
       .subscribe((respuesta) => {
-        console.log(respuesta.body);
         let permisos = [respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase()];
         this.permissionsService.loadPermissions(permisos);
       });
@@ -688,7 +665,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
     }
 
     button.isClicked = true;
-    console.log(button);
   }
   
 }

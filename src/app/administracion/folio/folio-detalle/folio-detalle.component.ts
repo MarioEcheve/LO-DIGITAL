@@ -13,7 +13,7 @@ import * as moment from "moment";
 import { MatDialog } from "@angular/material/dialog";
 import { ModalFirmaFolioComponent } from "../modal-firma-folio/modal-firma-folio.component";
 import { DatePipe } from "@angular/common";
-import { Folio } from "../../TO/folio.model";
+import { Folio, IFolio } from "../../TO/folio.model";
 import { UsuarioLibroService } from "../../services/usuario-libro.service";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import { VisorPdfComponent } from "../../shared/visor-pdf/visor-pdf/visor-pdf.component";
@@ -26,6 +26,7 @@ import { FolioReferenciaService } from "../../services/folio-referencia.service"
 import { FolioReferencia } from "../../TO/folio-referencia.model";
 import { element } from "protractor";
 import { NgxPermissionsService } from "ngx-permissions";
+import { CambioAdministradorComponent } from "../../shared/cambio-administrador/cambio-administrador.component";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 declare var $: any;
 declare interface TableData {
@@ -52,12 +53,13 @@ export class FolioDetalleComponent implements OnInit {
   folioSiguiente;
   receptor = [];
   multipleConfig="";
+  folioRelacionado : IFolio;
   private fechaRequeridaValidators = [
     Validators.maxLength(250),
   ]
   // IMPLEMENTACION CONFIG ANGULAR-EDITOR
   editorConfig: AngularEditorConfig = {
- editable: true,
+  editable: true,
     spellcheck: true,
     height: '15rem',
     minHeight: '5rem',
@@ -91,9 +93,8 @@ export class FolioDetalleComponent implements OnInit {
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  folios: any[] = [
-   
-  ];
+  folios: any[] = [];
+  listaUsuariosCambioAdmin = [];
   cities = [
     { value: "paris-0", viewValue: "Paris" },
     { value: "miami-1", viewValue: "Miami" },
@@ -151,7 +152,8 @@ export class FolioDetalleComponent implements OnInit {
       respuestaFolio : ["respuesta de "],
       fechaRequeridaDatepicker : ["",this.fechaRequeridaValidators],
       folioReferencia : [],
-      receptor : [ null,Validators.required]
+      receptor : [ null,Validators.required],
+      cambioAdmin : ["Cambio Administrador"]
     });
     this.tableData1 = {
       headerRow: ["#", "Name", "Job Position", "Since", "Salary", "Actions"],
@@ -169,8 +171,6 @@ export class FolioDetalleComponent implements OnInit {
     
     this.folioService.getListaFoliosRelacionadosAgregadosSubject().subscribe(
       respuesta => {
-        console.log('se ejecuta la respuesta');
-        console.log(respuesta);
         if(respuesta.length === 0){
           //this.folioService.removeFolioReferencia(new Folio, false);
           //this.folioService.AgregarFolioReferenciaAlista(new Folio, true , []);
@@ -208,9 +208,7 @@ export class FolioDetalleComponent implements OnInit {
           this.Folio.folioReferencias.forEach(element=>{
             this.folioService.find(element.idFolioReferencia).subscribe(
               folioReferencia=>{
-                console.log(folioReferencia.body);
                 this.folios = [...this.folios, folioReferencia.body];
-                console.log(this.folios);
               }
             );
            })
@@ -221,7 +219,7 @@ export class FolioDetalleComponent implements OnInit {
         this.folioService.AgregarFolioReferenciaAlista(new Folio ,true ,this.folios);
       }, 800);
       this.buscaCorrelativoFolio();
-
+      
       this.obtenerPerfilLibroUsuario(this.Folio.libro.id, usuarioActual.id);
       this.folioForm.controls["asunto"].setValue(respuesta.body.asunto);
       this.folioForm.controls["anotacion"].setValue(respuesta.body.anotacion);
@@ -234,7 +232,8 @@ export class FolioDetalleComponent implements OnInit {
             folioRelacionado => {
               this.folioForm.controls["respuestaFolio"].setValue("Respuesta de : "+folioRelacionado.body.libro.nombre+" | " +
                 "Folio : " + folioRelacionado.body.numeroFolio 
-                )
+                );
+              this.folioRelacionado = folioRelacionado.body;
             }
           );
         }
@@ -304,6 +303,7 @@ export class FolioDetalleComponent implements OnInit {
     this.folioForm.controls["usuarioPerfilLibro"].disable();
     this.folioForm.controls["respuestaFolio"].disable();
     this.folioForm.controls["folioReferencia"].disable();
+    this.folioForm.controls['cambioAdmin'].disable();
     
   }
   obtenerTipoFolio() {
@@ -540,7 +540,16 @@ export class FolioDetalleComponent implements OnInit {
         this.usuario = respuesta.body[0];
         let permisos = [respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase()];
         this.permissionsService.loadPermissions(permisos);
+        console.log(this.tipoFolio);
+        console.log(this.usuario);
 
+        if(this.usuario.perfilUsuarioLibro.nombre.toLowerCase() === "superior"){
+          this.tipoFolio = this.tipoFolio.filter(tipo => tipo.nombre.toLowerCase() === "cambio administrador")
+        }
+        if(this.usuario.perfilUsuarioLibro.nombre.toLowerCase() === "asistente"){
+          this.tipoFolio = this.tipoFolio.filter(tipo => tipo.nombre.toLowerCase() !== "cambio administrador")
+        }
+        
         this.folioForm.controls["usuarioNombre"].setValue(
           respuesta.body[0].usuarioDependencia.usuario.firstName +
             " " +
@@ -687,7 +696,6 @@ export class FolioDetalleComponent implements OnInit {
                     },
                   ],
                 },
-                /* a nested table will appear here as soon as I fix a bug */
                 [""],
                 {
                   stack: [
@@ -1126,7 +1134,8 @@ export class FolioDetalleComponent implements OnInit {
           usuario: this.usuario,
           pdfArchivoCompleto: pdfDocGenerator,
           previsualisar : true,
-          lectura : false
+          lectura : false,
+          listaUsuariosCambioAdmin : this.listaUsuariosCambioAdmin
         },
       });
     });
@@ -1167,7 +1176,7 @@ export class FolioDetalleComponent implements OnInit {
   buscaFolioReferencia(){
     const dialogRef = this.dialog.open(ModalBuscarFolioComponent,{
       width : "100%",
-      data : {idContrato : this.libro.contrato.id , folios : this.folios, libro : this.libro}
+      data : {idContrato : this.libro.contrato.id , folios : this.folios, libro : this.libro,folioRelacionado:this.folioRelacionado}
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === null || result === "" || result === undefined) {
@@ -1176,6 +1185,27 @@ export class FolioDetalleComponent implements OnInit {
     }
     );
   }
+
+  modalCambioAdministrador(){
+    const dialogRef = this.dialog.open(CambioAdministradorComponent,{
+      width : "40%",
+      data : { libro : this.libro }
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === null || result === "" || result === undefined) {
+      } else {
+        this.listaUsuariosCambioAdmin = result;
+        let textoAdminActual= "Administrador Actual : "+result[0].usuarioDependencia.usuario.firstName +' ' +result[0].usuarioDependencia.usuario.lastName;
+        let textoNuevoAdmin = "Nuevo Administrador : "+result[1].usuarioDependencia.usuario.firstName +' ' +result[1].usuarioDependencia.usuario.lastName;
+        let textoCompleto = textoAdminActual + ' | ' + textoNuevoAdmin;
+        this.folioForm.controls['cambioAdmin'].setValue(textoCompleto);
+        
+      }
+    }
+    );
+  }
+
+
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;

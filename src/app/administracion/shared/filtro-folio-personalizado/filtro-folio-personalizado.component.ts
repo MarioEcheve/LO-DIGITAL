@@ -66,7 +66,7 @@ export class FiltroFolioPersonalizadoComponent implements OnInit {
               private fb : FormBuilder) { }
 
   ngOnInit(): void {
-    this.dialModalRef.updatePosition({ top: '260px', left: '320px' });
+   // this.dialModalRef.updatePosition({ top: '260px', left: '320px' });
   }
   FiltroFolioPersonalizado(){
     let idLibro = this.data.libro.id;

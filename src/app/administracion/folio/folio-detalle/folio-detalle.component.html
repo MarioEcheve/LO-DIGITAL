@@ -158,6 +158,23 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
+                <div class="d-flex mt-1" *ngxPermissionsOnly="['administrador','superior']">
+                  <div class="flex-grow-1">
+                    <mat-form-field  class="example-full-width">
+                      <input
+                        matInput
+                        formControlName="cambioAdmin"
+                        type="text"
+                        disabled
+                      />
+                    </mat-form-field>
+                  </div>
+                  <div class="ml-2">
+                    <button (click)="modalCambioAdministrador()" mat-raised-button class="btn btn-primary btn-sm btn-fab btn-round">
+                      <i class="material-icons">search</i>
+                    </button>
+                  </div>
+                </div>
                 <div class="d-flex mt-1">
                   <div class="flex-grow-1">
                     <mat-form-field  class="example-full-width">
@@ -321,7 +338,7 @@
                   type="submit"
                   class="btn btn-danger pull-left"
                   (click)="eliminarFolio()"
-                  *ngxPermissionsOnly="['administrador','asistente']"
+                  *ngxPermissionsOnly="['administrador','asistente','superior']"
                 >
                   <!--  <span class="btn-label">
                       <i class="material-icons">close</i>
@@ -358,7 +375,7 @@
                     class="btn btn-primary"
                     (click)="guardarFolio()"
                     [disabled]="!folioForm.valid"
-                    *ngxPermissionsOnly="['administrador','asistente']"
+                    *ngxPermissionsOnly="['administrador','asistente','superior']"
                   >
                     <!-- <span class="btn-label">
                       <i class="material-icons">get_app</i>

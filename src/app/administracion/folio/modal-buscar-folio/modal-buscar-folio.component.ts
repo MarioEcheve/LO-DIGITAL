@@ -67,7 +67,14 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
   buscaFolios(libro){
     let valor2 = [];
     this.folioService.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
-      valor2 = respuesta.body.filter( folio => folio.idUsuarioFirma !== null);
+      let folioRelacionado  = new Folio;
+      folioRelacionado = this.data.folioRelacionado;
+      if(this.data.folioRelacionado !== undefined){
+        valor2 = respuesta.body.filter( folio => folio.idUsuarioFirma !== null && folio.id !== folioRelacionado.id);
+      }else{
+        valor2 = respuesta.body.filter( folio => folio.idUsuarioFirma !== null);
+      }
+      
       valor2.forEach(element=>{
         this.usuarioLibroService
         .find(element.idUsuarioFirma)
@@ -76,10 +83,10 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
           " " + respuesta.body.usuarioDependencia.usuario.lastName;
         });
       });
+
       if(this.folios.length > 0){
         valor2.forEach(valor2=>{
           valor2.existTableSearchFolio = false;
-          console.log(this.folios);
           this.folios.forEach(folios=>{
             if(valor2.id === folios.id){
               valor2.existTableSearchFolio = true;
@@ -109,7 +116,6 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
         return res.blob();
       })
       .then(blob => {
-        console.log(blob);
         resolve(URL.createObjectURL(blob));
       });
     });

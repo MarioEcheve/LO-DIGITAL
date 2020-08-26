@@ -322,16 +322,27 @@
                       <td>{{ row.nombre }}</td>
                       <td>{{ row.cargoFuncion }}</td>
                       <td>{{ row.perfilUsuarioLibro.nombre }}</td>
-                      <td>
-                        <span class="badge badge-primary">{{
-                          row.estado
-                        }}</span>
+                      <td style="display: flex;">
+                        <span
+                          *ngIf="row.nombreEstado === 'Activo'"
+                          class="badge badge-primary"
+                          style="background-color: green;"
+                          > {{ row.nombreEstado }}</span
+                        >
+                        <span
+                          *ngIf="row.nombreEstado === 'Inactivo'"
+                          class="badge badge-primary"
+                          style="background-color: red  ;"
+                          > {{ row.nombreEstado }}</span
+                        >
+                        <i *ngIf="row.adminActivo === true" class=" material-icons text-info iconoAdminAcual">settings</i>
                       </td>
                       <td class="td-actions text-right">
                         <button
                           mat-raised-button
                           type="button"
                           class="btn btn-default {{ row[5] }}"
+                          (click)="editarUsuario(row)"
                         >
                           <i class="material-icons">edit</i>
                         </button>
@@ -394,16 +405,27 @@
                       <td>{{ row.nombre }}</td>
                       <td>{{ row.cargoFuncion }}</td>
                       <td>{{ row.perfilUsuarioLibro.nombre }}</td>
-                      <td>
-                        <span class="badge badge-primary">{{
-                          row.estado
-                        }}</span>
-                      </td>
+                      <td style="display: flex;">
+                        <span
+                          *ngIf="row.nombreEstado === 'Activo'"
+                          class="badge badge-primary"
+                          style="background-color: green;"
+                          > {{ row.nombreEstado }}</span
+                        >
+                        <span
+                          *ngIf="row.nombreEstado === 'Inactivo'"
+                          class="badge badge-primary"
+                          style="background-color: red  ;"
+                          > {{ row.nombreEstado }}</span
+                        >
+                        <i *ngIf="row.adminActivo === true" class=" material-icons text-info iconoAdminAcual">settings</i>
+                      </td> 
                       <td class="td-actions text-right">
                         <button
                           mat-raised-button
                           type="button"
                           class="btn btn-default {{ row[5] }}"
+                          (click)="editarUsuarioContratista(row)"
                         >
                           <i class="material-icons">edit</i>
                         </button>

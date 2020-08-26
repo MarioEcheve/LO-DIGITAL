@@ -45,7 +45,9 @@ export class LibroComponent implements OnInit {
   listaUsuariosContratista = [];
   usuariosAgregadosContratista: IUsuarioLibro[] = [];
   estadoLibro;
-
+  editar = false;
+  listaUsuarioMandante = [];
+  listaUsuarioContratista = [];
   constructor(
     private fb: FormBuilder,
     private tipoLibroService: TipoLibroService,
@@ -116,7 +118,7 @@ export class LibroComponent implements OnInit {
     this.desabilitaElementosFormGroup();
     this.obtenerContrato();
     this.obtenerTipoFirmas();
-    this.obtenerTipoLibros();
+    this.obtenerTipoLibros(this.idContrato);
     this.obtenerPerfilUsuariolibro();
     this.obtenerEstadoLibro();
   }
@@ -171,24 +173,24 @@ export class LibroComponent implements OnInit {
       this.tipoFirma = respuesta.body;
     });
   }
-  obtenerTipoLibros() {
-    this.tipoLibroService.query().subscribe((respuesta) => {
-      this.tipoLibro = respuesta.body;
+  obtenerTipoLibros(idContrado? :number) {
+    let resultado;
+    this.tipoLibroService.query().subscribe((tipoLibro) => {
+      resultado = tipoLibro.body;
       this.libroService
-        .buscarlibroPorContrato(this.contrato.id)
-        .subscribe((respuesta) => {
-          if (respuesta.body.length <= 0) {
-            const resutado = this.tipoLibro.filter(
-              (tipo) => tipo.descripcion.toLowerCase() === "maestro"
-            );
-            this.tipoLibro = resutado;
+        .buscarlibroPorContrato(idContrado)
+        .subscribe((contrato) => {
+          if (contrato.body.length <= 0) {
+             resultado = resultado.filter((tipo) => tipo.descripcion.toLowerCase() === "maestro");
+
           } else {
-            const resutado = this.tipoLibro.filter(
-              (tipo) => tipo.descripcion.toLowerCase() === "auxiliar"
-            );
-            this.tipoLibro = resutado;
+            resultado = resultado.filter((tipo) => tipo.descripcion.toLowerCase() === "auxiliar");
           }
         });
+        setTimeout(() => {
+          console.log(resultado);
+          this.tipoLibro =resultado;
+        }, 500);
     });
   }
   obtenerEstadoLibro() {
@@ -229,11 +231,34 @@ export class LibroComponent implements OnInit {
     });
   }
   modalCrearUsuario() {
+    let existe = false;
+    if( this.usuariosAgregados.length > 0 ){
+      this.usuariosAgregados.forEach(
+        element=>{
+          if(element.adminActivo === true){
+            existe= true;
+          }
+        }
+      );
+    }else{
+      existe = false;
+    }
+    console.log(existe);
+    let listaUsuariosFiltrados = this.listaUsuarios.filter((usuarios:any)=>{
+      let res = this.usuariosAgregados.find((usuarioMandante)=>{
+         return usuarioMandante.usuarioDependencia.id == usuarios.id_usuario_dependencia;
+         });
+        return res == undefined;
+      });
+    this.editar = false;
     const dialogRef = this.dialog.open(CrearUsuarioComponent, {
       width: "500px",
       data: {
         usuarioLibroPerfil: this.usuarioLibroPerfil,
-        usuariosDependenciaMandante: this.listaUsuarios,
+        usuariosDependenciaMandante: listaUsuariosFiltrados,
+        editar : this.editar,
+        usuarioEditar : {},
+        existe : existe
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -251,10 +276,6 @@ export class LibroComponent implements OnInit {
               this.usuariosAgregados.splice(i);
               this.usuariosAgregados.push(result);
             } else {
-              if (
-                this.usuariosAgregados[i].perfilUsuarioLibro.nombre ===
-                result.perfilUsuarioLibro.nombre
-              ) {
                 if (
                   result.perfilUsuarioLibro.nombre.toLowerCase() ===
                   "administrador"
@@ -291,11 +312,7 @@ export class LibroComponent implements OnInit {
                       ].setValue(respuesta.body.usuario.email);
                     });
                 }
-                this.usuariosAgregados.splice(i);
                 this.usuariosAgregados.push(result);
-              } else {
-                this.usuariosAgregados.push(result);
-              }
             }
           }
         } else {
@@ -345,11 +362,34 @@ export class LibroComponent implements OnInit {
     });
   }
   modalCrearUsuarioContratista() {
+    let existe = false;
+    if( this.usuariosAgregadosContratista.length > 0 ){
+      this.usuariosAgregadosContratista.forEach(
+        element=>{
+          if(element.adminActivo === true){
+            existe= true;
+          }
+        }
+      );
+    }else{
+      existe = false;
+    }
+    console.log(existe);
+    let listaUsuariosFiltrados = this.listaUsuariosContratista.filter((usuarios:any)=>{
+      let res = this.usuariosAgregadosContratista.find((usuarioMandante)=>{
+         return usuarioMandante.usuarioDependencia.id == usuarios.id_usuario_dependencia;
+         });
+        return res == undefined;
+      });
+    this.editar = false;
     const dialogRef = this.dialog.open(CrearUsuarioComponent, {
       width: "40%",
       data: {
         usuarioLibroPerfil: this.usuarioLibroPerfil,
-        usuariosDependenciaMandante: this.listaUsuariosContratista,
+        usuariosDependenciaMandante: listaUsuariosFiltrados,
+        editar : this.editar,
+        usuarioEditar : {},
+        existe : existe
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -365,12 +405,8 @@ export class LibroComponent implements OnInit {
               result.idUsuarioDependencia
             ) {
               this.usuariosAgregadosContratista.splice(i);
-              this.usuariosAgregadosContratista.push(result);
+              this.usuariosAgregadosContratista = [...this.usuariosAgregadosContratista, result];
             } else {
-              if (
-                this.usuariosAgregadosContratista[i].perfilUsuarioLibro
-                  .nombre === result.perfilUsuarioLibro.nombre
-              ) {
                 if (
                   result.perfilUsuarioLibro.nombre.toLowerCase() ===
                   "administrador"
@@ -406,12 +442,11 @@ export class LibroComponent implements OnInit {
                         "emailAdminContratista"
                       ].setValue(respuesta.body.usuario.email);
                     });
+                    this.usuariosAgregadosContratista = [...this.usuariosAgregadosContratista, result];
+
+                }else{
+                  this.usuariosAgregadosContratista = [...this.usuariosAgregadosContratista, result];
                 }
-                this.usuariosAgregadosContratista.splice(i);
-                this.usuariosAgregadosContratista.push(result);
-              } else {
-                this.usuariosAgregadosContratista.push(result);
-              }
             }
           }
         } else {
@@ -606,5 +641,61 @@ export class LibroComponent implements OnInit {
           "</div>",
       }
     );
+  }
+  editarUsuario(row){
+    let existe = false;
+    if(this.usuariosAgregados.length > 0){
+      this.usuariosAgregados.forEach(
+        element=>{
+          if(element.adminActivo === true){
+            existe= true;
+          }
+        }
+      );
+    }else{
+      existe=false;
+    }
+    this.editar = true;
+    const dialogRef = this.dialog.open(CrearUsuarioComponent, {
+      width: "500px",
+      data: {
+        usuarioLibroPerfil: this.usuarioLibroPerfil,
+        usuariosDependenciaMandante: this.listaUsuarios,
+        editar : this.editar,
+        usuarioEditar : row,
+        existe : existe
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === undefined || result === false) {
+      } else {
+        console.log(result);
+      }
+    });
+  }
+  editarUsuarioContratista(row){
+    let existe = false;
+    if(this.usuariosAgregadosContratista.length > 0){
+      this.usuariosAgregadosContratista.forEach(
+        element=>{
+          if(element.adminActivo === true){
+            existe= true;
+          }
+        }
+      );
+    }else{
+      existe=false;
+    }
+    this.editar = true;
+    const dialogRef = this.dialog.open(CrearUsuarioComponent, {
+      width: "500px",
+      data: {
+        usuarioLibroPerfil: this.usuarioLibroPerfil,
+        usuariosDependenciaMandante: this.listaUsuarios,
+        editar : this.editar,
+        usuarioEditar : row,
+        existe : existe
+      },
+    });
   }
 }

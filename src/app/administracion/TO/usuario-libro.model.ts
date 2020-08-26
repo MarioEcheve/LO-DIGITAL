@@ -12,6 +12,7 @@ export interface IUsuarioLibro {
   estado?: boolean;
   cargoFuncion?: string;
   fechaCreacion?: Moment;
+  adminActivo?: boolean;
   fechaModificacion?: Moment;
   gesAlertas?: IGesAlerta[];
   gesNotas?: IGesNota[];
@@ -39,7 +40,9 @@ export class UsuarioLibro implements IUsuarioLibro {
     public perfilUsuarioLibro?: IUsuarioLibroPerfil,
     public idUsuarioDependencia?: number,
     public nombreEstado?: string,
+    public adminActivo?: boolean,
   ) {
     this.estado = this.estado || false;
+    this.adminActivo = this.adminActivo || false;
   }
 }

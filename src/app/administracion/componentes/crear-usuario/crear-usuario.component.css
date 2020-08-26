@@ -10,3 +10,8 @@ table {
 .example-full-width {  
   width: 100%;
 }
+.claseAdmin{
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}

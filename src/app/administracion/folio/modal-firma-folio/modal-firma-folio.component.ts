@@ -26,7 +26,6 @@ export class ModalFirmaFolioComponent implements OnInit {
   }
   firmar() {
     let tipoFirma = this.firmaFormGroup.controls["tipoFirma"].value;
-    console.log(this.data.lectura);
     if(this.data.lectura === true){
       this.dialogRef.close(tipoFirma);
     }else{

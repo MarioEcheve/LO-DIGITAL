@@ -18,6 +18,7 @@ import * as moment from "moment";
 import { LibroService } from "src/app/administracion/services/libro.service";
 import { UsuarioLibroService } from "src/app/administracion/services/usuario-libro.service";
 import { NgxPermissionsService } from "ngx-permissions";
+import { UsuarioLibro } from "src/app/administracion/TO/usuario-libro.model";
 declare var $: any;
 @Component({
   selector: "app-visor-pdf",
@@ -90,9 +91,17 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
         this.folioService
           .correlativoFolio(this.folio.libro.id)
           .subscribe((respuesta) => {
-            
+            if(this.data.listaUsuariosCambioAdmin.length > 0 ){
+              let adminActual = new UsuarioLibro();
+              adminActual =  this.data.listaUsuariosCambioAdmin[0];
+              let adminNuevo = new UsuarioLibro();
+              adminNuevo =  this.data.listaUsuariosCambioAdmin[1];
+              adminActual.adminActivo = false;
+              adminNuevo.adminActivo = true;
+              this.usuarioLibroService.update(adminActual).subscribe();
+              this.usuarioLibroService.update(adminNuevo).subscribe();
+            }
             this.folio.estadoFolio = true;
-            
             this.folio.fechaFirma = moment(Date.now());
             if(this.data.lectura === true){
               this.folio.idUsuarioLectura = this.usuario.id;
@@ -117,7 +126,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               }
             );
             if(this.folio.requiereRespuesta === true){
-              this.folio.estadoRespuesta = {id: 1903, nombre: "Pendiente", folios: null}
+              this.folio.estadoRespuesta = {id: 1351, nombre: "Pendiente", folios: null}
             }else{
               this.folio.estadoRespuesta =null;
             }
@@ -126,7 +135,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               if(this.folio.idFolioRelacionado!==null){
                 this.folioService.find(this.folio.idFolioRelacionado).subscribe(
                   respuesta=>{
-                    respuesta.body.estadoRespuesta = {id: 1904, nombre: "Respondido", folios: null};
+                    respuesta.body.estadoRespuesta = {id: 1352, nombre: "Respondido", folios: null};
                     this.folioService.update(respuesta.body).subscribe();
                   }
                 );
@@ -135,7 +144,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               this.folioService.update(this.folio).subscribe((respuesta) => {
                 if(this.folio.tipoFolio.nombre.toLowerCase() === "apertura libro") {
                     this.folio.libro.estadoLibro = {
-                    id:  3051,
+                    id:  1851,
                     nombre: "Abierto",
                     libros: null,
                   };
@@ -144,7 +153,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                 }
                 if(this.folio.tipoFolio.nombre.toLowerCase() === "cierre libro") {
                     this.folio.libro.estadoLibro = {
-                      id:  3052,
+                      id:  1852,
                       nombre: "Cerrado",
                       libros: null,
                     };

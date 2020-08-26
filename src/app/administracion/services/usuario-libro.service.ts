@@ -6,7 +6,7 @@ import * as moment from "moment";
 
 //import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from "../util/request-util";
-import { IUsuarioLibro } from "../TO/usuario-libro.model";
+import { IUsuarioLibro, UsuarioLibro } from "../TO/usuario-libro.model";
 
 type EntityResponseType = HttpResponse<IUsuarioLibro>;
 type EntityArrayResponseType = HttpResponse<IUsuarioLibro[]>;
@@ -20,7 +20,8 @@ export class UsuarioLibroService {
     this.SERVER_API_URL + "api/ListaUsuariosLibrosFolio";
   public resourceUrlUsuariosPorLibro =
     this.SERVER_API_URL + "api/UsuariosPorLibro";
-
+  public resourceUrlGetAdministradorActual = this.SERVER_API_URL + "api/getAdministradorActual"; 
+  public resourceUrlGetAdministradoresLibro= this.SERVER_API_URL + "api/getAdministradoresLibro";
   constructor(protected http: HttpClient) {}
 
   create(usuarioLibro: IUsuarioLibro): Observable<EntityResponseType> {
@@ -47,6 +48,25 @@ export class UsuarioLibroService {
     const options = createRequestOption(idlibro);
     return this.http
       .get<IUsuarioLibro[]>(`${this.resourceUrlListaUsuariosLibros}/${idlibro}/${idUsuario}`, {
+        params: options,
+        observe: "response",
+      })
+      .pipe(
+        map((res: EntityArrayResponseType) =>
+          this.convertDateArrayFromServer(res)
+        )
+      );
+  }
+
+  getAdministradorActual(idLibro:number, idDependencia :number):Observable<EntityResponseType>{
+    return this.http
+    .get<IUsuarioLibro>(`${this.resourceUrlGetAdministradorActual}/${idLibro}/${idDependencia}`, { observe: "response" })
+    .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+  getAdministradoresLibro(idLibro: number,idDependencia : number): Observable<EntityArrayResponseType> {
+    const options = createRequestOption();
+    return this.http
+      .get<IUsuarioLibro[]>(`${this.resourceUrlGetAdministradoresLibro}/${idLibro}/${idDependencia}`, {
         params: options,
         observe: "response",
       })

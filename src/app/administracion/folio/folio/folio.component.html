@@ -85,7 +85,7 @@
                 class="btn btn-pinterest col-md-12 "                
                 (click)="nuevoFolio()"
                 [disabled]="libroSeleccionado?.estadoLibro?.nombre === 'Cerrado'"
-                *ngxPermissionsOnly="['administrador','asistente']"
+                *ngxPermissionsOnly="['administrador','asistente', 'superior']"
               >
                 <span class="btn-label">
                   <i class="material-icons">add</i>

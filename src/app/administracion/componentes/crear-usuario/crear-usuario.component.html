@@ -30,17 +30,23 @@
         formControlName="cargo"
       />
     </mat-form-field>
-    <mat-form-field>
-      <mat-select placeholder="Seleccione Perfil" formControlName="perfil">
-        <mat-option
-          *ngFor="let perfil of data.usuarioLibroPerfil"
-          [value]="perfil.nombre"
-          (click)="valorPerfilUsuarioLibro(perfil)"
-        >
-          {{ perfil.nombre }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+
+    <div class="row">
+      <mat-form-field class="col-9">
+        <mat-select placeholder="Seleccione Perfil" formControlName="perfil">
+          <mat-option
+            *ngFor="let perfil of data.usuarioLibroPerfil"
+            [value]="perfil.nombre"
+            (click)="valorPerfilUsuarioLibro(perfil)"
+          >
+            {{ perfil.nombre }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="col-3 claseAdmin"  *ngIf="muestraChexAdmin">
+        <mat-checkbox  formControlName="adminActivo" [disabled]="existeAdminActivo">Admin.Actual</mat-checkbox>
+      </div>
+    </div>
     <mat-form-field>
       <mat-select placeholder="Estado Usuario" formControlName="estado">
         <mat-option

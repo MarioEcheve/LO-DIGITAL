@@ -37,6 +37,10 @@ export class CrearUsuarioComponent implements AfterViewInit {
   listaPerfilesLibro: IUsuarioLibroPerfil;
   idUsuarioDependenciaAutoComplete: number;
   perfilUsuario;
+  // variables para validar el usuario que es administrador
+  existeAdminActivo = false;
+  muestraChexAdmin = false;
+  // ------
   estadosPerfil = [
     {
       id: 1,
@@ -58,7 +62,13 @@ export class CrearUsuarioComponent implements AfterViewInit {
   ) {}
 
   ngOnInit() {
-   
+    console.log(this.data.existe);
+    if(this.data.existe === true){
+      this.existeAdminActivo = true;
+      if(this.data.usuarioEditar.adminActivo === true){
+        this.existeAdminActivo = false;
+      }
+    }
     this.data.usuariosDependenciaMandante.forEach(element => {
         element.nombre = element.nombre +' ' + element.apellidos
     });
@@ -72,7 +82,8 @@ export class CrearUsuarioComponent implements AfterViewInit {
     this.usuarioFormGroup = this.fb.group({
       perfil: ["", [Validators.required]],
       cargo: ["", [Validators.required]],
-      estado : []
+      estado : [],
+      adminActivo : [false]
     });
     if(this.data.editar === true){
       console.log(this.data.usuarioEditar);
@@ -80,6 +91,12 @@ export class CrearUsuarioComponent implements AfterViewInit {
       this.usuarioFormGroup.controls['cargo'].setValue(this.data.usuarioEditar.cargoFuncion)
       this.usuarioFormGroup.controls['perfil'].setValue(this.data.usuarioEditar.perfilUsuarioLibro.nombre)
       this.perfilUsuario = this.data.usuarioEditar.perfilUsuarioLibro;
+      if(this.data.usuarioEditar.perfilUsuarioLibro.nombre.toLowerCase() === "administrador"){
+        this.muestraChexAdmin = true;
+      }else{
+        this.muestraChexAdmin = false;
+      }
+      this.usuarioFormGroup.controls['adminActivo'].setValue(this.data.usuarioEditar.adminActivo);
       let estado =  this.data.usuarioEditar.estado;
       if(estado){
         this.usuarioFormGroup.controls['estado'].setValue('Activo')
@@ -92,12 +109,7 @@ export class CrearUsuarioComponent implements AfterViewInit {
     //this.obtenerPerfilUsuarioDependencia();
   }
   ngAfterViewInit() {
-    /*
-    this.perfilUsuarioLibro.query().subscribe((respuesta) => {
-      this.perfiles = respuesta.body;
-      this.perfilUsuarioDependenciaService.changePerfilUsuarioDependencia(respuesta.body);
-    });
-    */
+    
   }
   cerrar() {
     this.dialogRef.close(false);
@@ -122,6 +134,7 @@ export class CrearUsuarioComponent implements AfterViewInit {
       usuarioLibro.perfilUsuarioLibro = this.perfilUsuario;
       usuarioLibro.estado = valorEstado;
       usuarioLibro.nombreEstado = estadoUsuarioLibro;
+      usuarioLibro.adminActivo = this.usuarioFormGroup.controls['adminActivo'].value;
       this.dialogRef.close(usuarioLibro);
 
     }else{
@@ -137,6 +150,7 @@ export class CrearUsuarioComponent implements AfterViewInit {
       let json_usuario_dep = {
         cargoFuncion: this.usuarioFormGroup.controls["cargo"].value,
         estado: valorEstado,
+        adminActivo : this.usuarioFormGroup.controls['adminActivo'].value,
         nombreEstado :estadoUsuarioLibro,
         fechaCreacion: null,
         fechaModificacion: null,
@@ -181,6 +195,12 @@ export class CrearUsuarioComponent implements AfterViewInit {
   }
   valorPerfilUsuarioLibro(perfil){
     this.perfilUsuario = perfil;
+    if(this.perfilUsuario.nombre.toLowerCase() ==="administrador"){
+      this.muestraChexAdmin = true;
+    }else{
+      this.muestraChexAdmin = false;
+      this.usuarioFormGroup.controls['adminActivo'].setValue(false);
+    }
   }
   /*
   guardarUsuario() {
