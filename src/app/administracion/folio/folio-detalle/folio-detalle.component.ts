@@ -646,7 +646,8 @@ export class FolioDetalleComponent implements OnInit {
       }
     );
       setTimeout(() => {
-
+        var docDefinition = {};
+    /*
     var docDefinition = {
       content: [
         {
@@ -825,36 +826,10 @@ export class FolioDetalleComponent implements OnInit {
                     },
                   ],
                 },
-                /* a nested table will appear here as soon as I fix a bug */
+               
                 [""],
                 {
-                  /*
-                  stack: [
-                    {
-                      text: "Libro: " + "Libro Axiliar",
-                      italics: true,
-                    },
-                    { text: "Clase Libro: " + "Axiliar", italics: true },
-                    {
-                      text: [
-                        { text: "Tipo Firma: ", italics: true },
-                        { text: "Digital Simple  ", italics: true },
-                      ],
-                    },
-                    {
-                      text: [
-                        { text: "Fecha Apertura: ", italics: true },
-                        { text: "08-07-2020 11:59", italics: true },
-                      ],
-                    },
-                    {
-                      text: [
-                        { text: "Fecha cierre: ", italics: true },
-                        { text: "", italics: true },
-                      ],
-                    },
-                  ],
-                  */
+                 
                 },
               ],
             ],
@@ -891,10 +866,10 @@ export class FolioDetalleComponent implements OnInit {
                     { text: "Archivo 1  " + "Archivo 2", italics: true },
                   ],
                 },
-                /* a nested table will appear here as soon as I fix a bug */
+                
                 [""],
                 {
-                  /*
+                  
                   stack: [
                     {
                       text: "Libro: " + "Libro Axiliar",
@@ -920,7 +895,7 @@ export class FolioDetalleComponent implements OnInit {
                       ],
                     },
                   ],
-                  */
+                  
                 },
               ],
             ],
@@ -967,10 +942,10 @@ export class FolioDetalleComponent implements OnInit {
                     },
                   ],
                 },
-                /* a nested table will appear here as soon as I fix a bug */
+                
                 [""],
                 {
-                  /*
+                  
                   stack: [
                     {
                       text: "Libro: " + "Libro Axiliar",
@@ -996,7 +971,7 @@ export class FolioDetalleComponent implements OnInit {
                       ],
                     },
                   ],
-                  */
+                  
                 },
               ],
             ],
@@ -1036,10 +1011,10 @@ export class FolioDetalleComponent implements OnInit {
                     },
                   ],
                 },
-                /* a nested table will appear here as soon as I fix a bug */
+                
                 [""],
                 {
-                  /*
+                  
                   stack: [
                     {
                       text: "Libro: " + "Libro Axiliar",
@@ -1065,7 +1040,7 @@ export class FolioDetalleComponent implements OnInit {
                       ],
                     },
                   ],
-                  */
+                  
                 },
               ],
             ],
@@ -1116,6 +1091,7 @@ export class FolioDetalleComponent implements OnInit {
         },
       },
     };
+    */
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     let url;
     let promise = new Promise(function (resolve, reject) {

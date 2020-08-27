@@ -25,7 +25,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let row of libros">
+            <tr *ngFor="let row of libros" class="animate__animated animate__fadeIn">
               <td class="text-left">{{ row.codigo }}</td>
               <td>{{ row.nombre }}</td>
               <td>{{ row.tipoLibro.descripcion }}</td>
