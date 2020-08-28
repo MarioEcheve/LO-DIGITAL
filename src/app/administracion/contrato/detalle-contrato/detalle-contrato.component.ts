@@ -82,6 +82,7 @@ export class DetalleContratoComponent
   tipoContrato: ITipoContrato[];
   modalidadContrato: IModalidad[];
   librosUsuario = [];
+  validaEditarLibro = false;
   cities = [
     { value: "paris-0", viewValue: "Paris" },
     { value: "miami-1", viewValue: "Miami" },
@@ -475,13 +476,13 @@ export class DetalleContratoComponent
       usuarioDependencia=>{
         perfilUsuario = usuarioDependencia.body[0].perfilUsuarioDependencia;
         console.log(perfilUsuario);
-
           let permisos = [perfilUsuario.nombre.toLowerCase()]
           this.permissionsService.loadPermissions(permisos);
           
-          if(perfilUsuario.nombre?.toLowerCase() === "administrador"){
+          if(perfilUsuario.nombre.toLowerCase() === "super usuario"){
             this.libroService.getMisLibros(usuario.id).subscribe(
               respuesta => {
+                this.validaEditarLibro = true;
                 console.log(respuesta.body);
                 this.libros = respuesta.body;
               }
@@ -491,6 +492,7 @@ export class DetalleContratoComponent
               libros=>{
                 console.log(libros.body);
                 this.libros = libros.body;
+                this.validaEditarLibro = false;
               }
             );
           }

@@ -27,7 +27,12 @@ import { FolioReferencia } from "../../TO/folio-referencia.model";
 import { element } from "protractor";
 import { NgxPermissionsService } from "ngx-permissions";
 import { CambioAdministradorComponent } from "../../shared/cambio-administrador/cambio-administrador.component";
+import htmlToPdfmake from "html-to-pdfmake";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import htmlToImage from 'html-to-image';
+
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -43,6 +48,7 @@ export class FolioDetalleComponent implements OnInit {
   public tableData1: TableData;
   libro = new Libro();
   Folio = new Folio();
+  src;
   dependenciaContratista = new Dependencia();
   tipoFolio: ITipoFolio[];
   tipoFolioSeleccionado: any = "";
@@ -634,8 +640,8 @@ export class FolioDetalleComponent implements OnInit {
     this.tipoFolioSeleccionado = tipo;
   }
   previsualizar() {
-    let imagenLogo1 = getBase64Image(document.getElementById("imagenLogo1"));
-    let imagenLogo2 = getBase64Image(document.getElementById("imagenLogo2"));
+    let imagenDiv1;
+    let imagenDiv2;
     let anotacion = stripHtml(this.folioForm.controls["anotacion"].value);
     this.Folio.idReceptor = this.folioForm.controls["receptor"].value;
     this.Folio.fechaRequerida = moment(this.folioForm.controls["fechaRequeridaDatepicker"].value);
@@ -645,477 +651,73 @@ export class FolioDetalleComponent implements OnInit {
         nombreReceptor = respuesta.body.usuarioDependencia.usuario.firstName +  respuesta.body.usuarioDependencia.usuario.lastName 
       }
     );
-      setTimeout(() => {
-        var docDefinition = {};
-    /*
-    var docDefinition = {
-      content: [
-        {
-          absolutePosition: { x: 50, y: 50 },
-          style: "tableExample",
-          table: {
-            widths: ["60%", "0%", "40%"],
-            body: [
-              [
-                {
-                  image: "bee",
-                  width: 60,
-                  height: 50,
-                },
-                "",
-                "        ",
-              ],
-              [
-                {
-                  stack: [
-                    {
-                      text: "Contrato: " + this.libro.contrato.nombre,
-                      italics: true,
-                    },
-                    {
-                      text: "Codigo: " + this.libro.contrato.codigo,
-                      italics: true,
-                    },
-                    {
-                      text: [
-                        { text: "Mandante : ", italics: true },
-                        {
-                          text: this.libro.contrato.dependenciaMandante.entidad
-                            .nombre,
-                          italics: true,
-                        },
-                      ],
-                    },
-                    {
-                      text: [
-                        { text: "Contratista : ", italics: true },
-                        {
-                          text: this.dependenciaContratista.entidad.nombre,
-                          italics: true,
-                        },
-                      ],
-                    },
-                  ],
-                },
-                [""],
-                {
-                  stack: [
-                    {
-                      text: "Libro: " + this.libro.nombre,
-                      italics: true,
-                    },
-                    { text: "Codigo: " + this.libro.codigo, italics: true },
-                    {
-                      text: "Clase Libro: " + this.libro.tipoLibro.descripcion,
-                      italics: true,
-                    },
-                    {
-                      text: [
-                        { text: "Tipo Firma: ", italics: true },
-                        { text: this.libro.tipoFirma.nombre, italics: true },
-                      ],
-                    },
-                    {
-                      text: [
-                        { text: "Fecha Apertura: ", italics: true },
-                        {
-                          text: this.datePipe.transform(
-                            this.libro.fechaApertura,
-                            "dd-MM-yyyy hh:mm"
-                          ),
-                          italics: true,
-                        },
-                      ],
-                    },
-                    {
-                      text: [
-                        { text: "Fecha cierre: ", italics: true },
-                        {
-                          text: this.datePipe.transform(
-                            this.libro.fechaCierre,
-                            "dd-MM-yyyy hh:mm"
-                          ),
-                          italics: true,
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            ],
+      
+      var node = document.getElementById('data');
+      var node2 = document.getElementById('data2');
+      let promesa1 = new Promise((resolve,reject)=>{
+        htmlToImage.toPng(node)
+        .then( url=> {
+            let img = new Image();
+            img.src = url;
+            //document.body.appendChild(img);
+            resolve(img.src);
+          })
+          .catch(function (error) {
+            console.error('oops, something went wrong!', error);
+          });   
+       });
+       let promesa2 = new Promise((resolve,reject)=>{
+        htmlToImage.toPng(node2)
+        .then( url=> {
+            let img = new Image();
+            img.src = url;
+            //document.body.appendChild(img);
+            resolve(img.src);
+          })
+          .catch(function (error) {
+            console.error('oops, something went wrong!', error);
+          });   
+       });
+      Promise.all([promesa1, promesa2,]).then(values => { 
+        var docDefinition = {
+          content: [
+            {
+              image: "div1",
+              width: 600,
+              height: 650,
+              margin: [ -42, -80, 10, 20 ] ,
+            },
+          ],
+          images: {
+            div1: values[0],
+          
           },
-          layout: {
-            hLineWidth: function (i, node) {
-              return i === 0 || i === node.table.body.length ? 0 : 0.2;
+        };
+        
+        const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+        let url;
+        let promise = new Promise(function (resolve, reject) {
+          pdfDocGenerator.getBlob((blob) => {
+            url = URL.createObjectURL(blob);
+            resolve(url);
+          });
+        });
+        promise.then((resultado) => {
+          const dialogRef = this.dialog.open(VisorPdfComponent, {
+            width: "100%",
+            height: "90%",
+            data: {
+              pdf: resultado,
+              folio: this.Folio,
+              usuario: this.usuario,
+              pdfArchivoCompleto: pdfDocGenerator,
+              previsualisar : true,
+              lectura : false,
+              listaUsuariosCambioAdmin : this.listaUsuariosCambioAdmin
             },
-            vLineWidth: function (i, node) {
-              return 0;
-            },
-            hLineColor: function (i, node) {
-              return i === 0 || i === node.table.body.length ? "red" : "grey";
-            },
-            vLineColor: function (i, node) {
-              return i === 0 || i === node.table.widths.length ? "red" : "grey";
-            },
-          },
-        },
-        {
-          absolutePosition: { x: 50, y: 200 },
-          style: "tableExample",
-          table: {
-            widths: ["60%", "0%", "40%"],
-            body: [
-              ["", "", "        "],
-              [
-                {
-                  stack: [
-                    {
-                      text:
-                        "Folio" +
-                        "#" +
-                        this.folioSiguiente +
-                        ": " +
-                        this.datePipe.transform(Date.now(), "dd-MM-yyyy hh:mm"),
-                      italics: true,
-                    },
-                    {
-                      text:
-                        "Emisor: " + this.folioForm.controls["emisor"].value,
-                      italics: true,
-                    },
-                    {
-                      text:
-                        "Receptor: " + nombreReceptor,
-                      italics: true,
-                    },
-                    {
-                      text: [
-                        { text: "Tipo de Folio : ", italics: true },
-                        {
-                          text: this.folioForm.controls["tipoFolio"].value,
-                          italics: true,
-                        },
-                      ],
-                    },
-                    {
-                      text: [
-                        { text: "Respuesta de: ", italics: true },
-                        { text: "n/a  ", italics: true },
-                      ],
-                    },
-                    {
-                      text: [
-                        { text: "Referencia de: ", italics: true },
-                        { text: "", italics: true },
-                      ],
-                    },
-                    {
-                      text: [
-                        { text: "Fecha requerida: ", italics: true },
-                        { text: "", italics: true },
-                      ],
-                    },
-                    {
-                      text: [
-                        { text: "Asunto: ", italics: true },
-                        {
-                          text: this.folioForm.controls["asunto"].value,
-                          italics: true,
-                        },
-                      ],
-                    },
-                  ],
-                },
-               
-                [""],
-                {
-                 
-                },
-              ],
-            ],
-          },
-          layout: {
-            hLineWidth: function (i, node) {
-              return i === 0 || i === node.table.body.length ? 0 : 0.2;
-            },
-            vLineWidth: function (i, node) {
-              return 0;
-            },
-            hLineColor: function (i, node) {
-              return i === 0 || i === node.table.body.length ? "red" : "grey";
-            },
-            vLineColor: function (i, node) {
-              return i === 0 || i === node.table.widths.length ? "red" : "grey";
-            },
-          },
-        },
-        {
-          absolutePosition: { x: 50, y: 320 },
-          style: "tableExample",
-          table: {
-            widths: ["60%", "0%", "40%"],
-            body: [
-              ["", "", "        "],
-              [
-                {
-                  stack: [
-                    {
-                      text: "2 " + "Archivos Adjuntos",
-                      italics: true,
-                    },
-                    { text: "Archivo 1  " + "Archivo 2", italics: true },
-                  ],
-                },
-                
-                [""],
-                {
-                  
-                  stack: [
-                    {
-                      text: "Libro: " + "Libro Axiliar",
-                      italics: true,
-                    },
-                    { text: "Clase Libro: " + "Axiliar", italics: true },
-                    {
-                      text: [
-                        { text: "Tipo Firma: ", italics: true },
-                        { text: "Digital Simple  ", italics: true },
-                      ],
-                    },
-                    {
-                      text: [
-                        { text: "Fecha Apertura: ", italics: true },
-                        { text: "08-07-2020 11:59", italics: true },
-                      ],
-                    },
-                    {
-                      text: [
-                        { text: "Fecha cierre: ", italics: true },
-                        { text: "", italics: true },
-                      ],
-                    },
-                  ],
-                  
-                },
-              ],
-            ],
-          },
-          layout: {
-            hLineWidth: function (i, node) {
-              return i === 0 || i === node.table.body.length ? 0 : 0.01;
-            },
-            vLineWidth: function (i, node) {
-              return 0;
-            },
-            hLineColor: function (i, node) {
-              return i === 0 || i === node.table.body.length ? "red" : "grey";
-            },
-            vLineColor: function (i, node) {
-              return i === 0 || i === node.table.widths.length ? "red" : "grey";
-            },
-          },
-        },
-        {
-          absolutePosition: { x: 50, y: 370 },
-          style: "tableExample",
-          table: {
-            widths: ["90%", "0%", "0%"],
-            body: [
-              ["", "", "        "],
-              [
-                {
-                  stack: [
-                    {
-                      text: "Fernando vilchez",
-                      italics: true,
-                    },
-                    { text: "Administrador de contrato", italics: true },
-                    {
-                      text: "Fecha Firma:" + " 09-07-2020 15:46",
-                      italics: true,
-                    },
-                    { text: "Firma Digital Avanzada", italics: true },
-                    {
-                      text:
-                        "Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745",
-                      italics: true,
-                    },
-                  ],
-                },
-                
-                [""],
-                {
-                  
-                  stack: [
-                    {
-                      text: "Libro: " + "Libro Axiliar",
-                      italics: true,
-                    },
-                    { text: "Clase Libro: " + "Axiliar", italics: true },
-                    {
-                      text: [
-                        { text: "Tipo Firma: ", italics: true },
-                        { text: "Digital Simple  ", italics: true },
-                      ],
-                    },
-                    {
-                      text: [
-                        { text: "Fecha Apertura: ", italics: true },
-                        { text: "08-07-2020 11:59", italics: true },
-                      ],
-                    },
-                    {
-                      text: [
-                        { text: "Fecha cierre: ", italics: true },
-                        { text: "", italics: true },
-                      ],
-                    },
-                  ],
-                  
-                },
-              ],
-            ],
-          },
-          layout: {
-            hLineWidth: function (i, node) {
-              return i === 0 || i === node.table.body.length ? 0 : 0.01;
-            },
-            vLineWidth: function (i, node) {
-              return 0;
-            },
-            hLineColor: function (i, node) {
-              return i === 0 || i === node.table.body.length ? "red" : "grey";
-            },
-            vLineColor: function (i, node) {
-              return i === 0 || i === node.table.widths.length ? "red" : "grey";
-            },
-          },
-        },
-        {
-          absolutePosition: { x: 50, y: 460 },
-          style: "tableExample",
-          table: {
-            widths: ["100%", "0%", "0%"],
-            body: [
-              ["", "", "        "],
-              [
-                {
-                  stack: [
-                    {
-                      text: "Anotacion",
-                      italics: true,
-                    },
-                    {
-                      text: anotacion,
-                      italics: true,
-                    },
-                  ],
-                },
-                
-                [""],
-                {
-                  
-                  stack: [
-                    {
-                      text: "Libro: " + "Libro Axiliar",
-                      italics: true,
-                    },
-                    { text: "Clase Libro: " + "Axiliar", italics: true },
-                    {
-                      text: [
-                        { text: "Tipo Firma: ", italics: true },
-                        { text: "Digital Simple  ", italics: true },
-                      ],
-                    },
-                    {
-                      text: [
-                        { text: "Fecha Apertura: ", italics: true },
-                        { text: "08-07-2020 11:59", italics: true },
-                      ],
-                    },
-                    {
-                      text: [
-                        { text: "Fecha cierre: ", italics: true },
-                        { text: "", italics: true },
-                      ],
-                    },
-                  ],
-                  
-                },
-              ],
-            ],
-          },
-          layout: {
-            hLineWidth: function (i, node) {
-              return i === 0 || i === node.table.body.length ? 0 : 0.01;
-            },
-            vLineWidth: function (i, node) {
-              return 0;
-            },
-            hLineColor: function (i, node) {
-              return i === 0 || i === node.table.body.length ? "red" : "grey";
-            },
-            vLineColor: function (i, node) {
-              return i === 0 || i === node.table.widths.length ? "red" : "grey";
-            },
-          },
-        },
-        {
-          text: "",
-          pageBreak: "after",
-        },
-      ],
-      images: {
-        bee: "data:image/png;base64," + imagenLogo1,
-        logo2: "data:image/png;base64," + imagenLogo2,
-      },
-      styles: {
-        header: {
-          fontSize: 18,
-          bold: true,
-          margin: [0, 0, 0, 10],
-        },
-        subheader: {
-          fontSize: 16,
-          bold: true,
-          margin: [0, 10, 0, 5],
-        },
-        tableExample: {
-          margin: [0, 5, 0, 15],
-          width: 500,
-        },
-        tableHeader: {
-          bold: true,
-          fontSize: 13,
-          color: "black",
-        },
-      },
-    };
-    */
-    const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-    let url;
-    let promise = new Promise(function (resolve, reject) {
-      pdfDocGenerator.getBlob((blob) => {
-        url = URL.createObjectURL(blob);
-        resolve(url);
+          });
+        });  
       });
-    });
-    promise.then((resultado) => {
-      const dialogRef = this.dialog.open(VisorPdfComponent, {
-        width: "100%",
-        height: "90%",
-        data: {
-          pdf: resultado,
-          folio: this.Folio,
-          usuario: this.usuario,
-          pdfArchivoCompleto: pdfDocGenerator,
-          previsualisar : true,
-          lectura : false,
-          listaUsuariosCambioAdmin : this.listaUsuariosCambioAdmin
-        },
-      });
-    });
-      }, 800);
   }
   visualizarPdfOrigen(){
     this.folioService.find(this.Folio.idFolioRelacionado).subscribe(

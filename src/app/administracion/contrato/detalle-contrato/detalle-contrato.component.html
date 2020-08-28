@@ -364,10 +364,11 @@
                     </div>
                   </div>
                 </div>
-                <button
+                <button 
                   mat-raised-button
                   type="submit"
                   class="btn btn-primary pull-right"
+                  *ngxPermissionsOnly="['super usuario']"
                 >
                   Editar Información
                 </button>
@@ -437,6 +438,7 @@
                           type="button"
                           class="btn btn-default {{ row[5] }} mr-1"
                           (click)="editarLibro(row)"
+                          *ngIf="validaEditarLibro"
                         >
                           <i class="material-icons">edit</i>
                         </button>
@@ -506,7 +508,7 @@
                 </div>
               </form>
               <hr />
-              <div class="pull-right">
+              <div class="pull-right" *ngxPermissionsOnly="['super usuario']">
                 <button
                   mat-raised-button
                   type="submit"
@@ -514,7 +516,7 @@
                 >
                   Cancelar
                 </button>
-                <button mat-raised-button type="submit" class="btn btn-primary">
+                <button mat-raised-button type="submit" class="btn btn-primary" >
                   Guardar Cambios
                 </button>
               </div>

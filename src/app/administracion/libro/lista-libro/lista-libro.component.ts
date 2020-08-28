@@ -35,6 +35,7 @@ export class ListaLibroComponent implements OnInit {
   libros : ILibro[]  = [];
   mostrar ="";
   permisos=[];
+  validaEditarLibro = true;
   constructor(
     private libroService :LibroService,
     private router : Router,
@@ -120,8 +121,14 @@ export class ListaLibroComponent implements OnInit {
       .buscarlibroPorContrato(idLibro, idUsuario)
       .subscribe((respuesta) => {
         console.log(respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase());
+        if(respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase() === 'administrador'){
+          this.validaEditarLibro = true;
+        }else{
+          this.validaEditarLibro = false;
+        }
         this.permisos = [...this.permisos,respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase()];
         console.log(this.permisos);
+
         this.permissionsService.loadPermissions(this.permisos);
       });
   }
