@@ -83,6 +83,8 @@ export class DetalleContratoComponent
   modalidadContrato: IModalidad[];
   librosUsuario = [];
   validaEditarLibro = false;
+  muestraOtroTipoContrato=false;
+  muestraOtroTipoModalidad=false;
   cities = [
     { value: "paris-0", viewValue: "Paris" },
     { value: "miami-1", viewValue: "Miami" },
@@ -484,7 +486,7 @@ export class DetalleContratoComponent
               libros=>{
                 console.log(libros.body);
                 this.libros = libros.body;
-                this.validaEditarLibro = false;
+                this.validaEditarLibro = true;
               }
             );
           }else{
