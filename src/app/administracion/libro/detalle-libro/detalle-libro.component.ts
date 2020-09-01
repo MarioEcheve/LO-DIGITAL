@@ -132,7 +132,7 @@ export class DetalleLibroComponent implements OnInit {
               element.nombreEstado = "Inactivo";
             }
             if(element.adminActivo === true){
-              this.libroInfoGeneralFormGroup.controls["nombreAdminMandante"].setValue(element.usuarioDependencia.usuario.firstName + '' + element.usuarioDependencia.usuario.lastName);
+              this.libroInfoGeneralFormGroup.controls["nombreAdminMandante"].setValue(element.usuarioDependencia.usuario.firstName + ' ' + element.usuarioDependencia.usuario.lastName);
               this.libroInfoGeneralFormGroup.controls["perfilUsuarioAdminMandante"].setValue(element.perfilUsuarioLibro.nombre);
               this.libroInfoGeneralFormGroup.controls["cargoAdminMandante"].setValue(element.cargoFuncion);
               this.libroInfoGeneralFormGroup.controls["entidadAdminMandante"].setValue(element.usuarioDependencia.dependencia.entidad.nombre);
@@ -149,7 +149,7 @@ export class DetalleLibroComponent implements OnInit {
               element.nombreEstado = "Inactivo";
             }
             if(element.adminActivo === true){
-              this.libroInfoGeneralFormGroup.controls["nombreAdminContratista"].setValue(element.usuarioDependencia.usuario.firstName + '' + element.usuarioDependencia.usuario.lastName);
+              this.libroInfoGeneralFormGroup.controls["nombreAdminContratista"].setValue(element.usuarioDependencia.usuario.firstName + ' ' + element.usuarioDependencia.usuario.lastName);
               this.libroInfoGeneralFormGroup.controls["perfilUsuarioAdminContratista"].setValue(element.perfilUsuarioLibro.nombre);
               this.libroInfoGeneralFormGroup.controls["cargoAdminContratista"].setValue(element.cargoFuncion);
               this.libroInfoGeneralFormGroup.controls["emailAdminContratista"].setValue(element.usuarioDependencia.usuario.email);

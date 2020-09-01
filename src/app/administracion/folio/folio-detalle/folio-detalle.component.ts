@@ -325,11 +325,14 @@ export class FolioDetalleComponent implements OnInit {
             respuesta.body.perfilUsuarioLibro.nombre
           );
         });
-      this.usuarioLibroService.find(respuesta.body.idReceptor).subscribe(
-        receptor=>{
-          this.receptorPdf = receptor.body;
-        }
-      );
+      if(respuesta.body.idReceptor !== null){
+        this.usuarioLibroService.find(respuesta.body.idReceptor).subscribe(
+          receptor=>{
+            this.receptorPdf = receptor.body;
+          }
+        );
+      }
+      
     });
     // desabilitamos los inputs del form
     this.folioForm.controls["fechaModificacion"].disable();

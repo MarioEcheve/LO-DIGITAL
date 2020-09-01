@@ -50,7 +50,7 @@ export class ModalBuscarEntidadComponent implements OnInit {
       console.log(respuesta.body);
       console.log(this.data.entidadSeleccionada);
       let datos = [];
-      datos= respuesta.body.filter(entidad=> entidad.id !== this.data.entidadSeleccionada.entidad.id);
+      datos= respuesta.body.filter(entidad=> entidad.id !== this.data.entidadSeleccionada.entidad?.id);
       this.dataSource = new MatTableDataSource(datos);
     });
   }
