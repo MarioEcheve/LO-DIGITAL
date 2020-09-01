@@ -70,7 +70,9 @@ export class CrearUsuarioComponent implements AfterViewInit {
       }
     }
     this.data.usuariosDependenciaMandante.forEach(element => {
-        element.nombre = element.nombre +' ' + element.apellidos
+        let nombre = "";
+        nombre = element.nombre +' ' + element.apellidos;
+        element.nombre = element.nombre;
     });
     this.options = this.data.usuariosDependenciaMandante;
     this.listaPerfilesLibro = this.data.usuarioLibroPerfil;
@@ -192,6 +194,10 @@ export class CrearUsuarioComponent implements AfterViewInit {
   valorAutoComplete(option) {
     console.log(option);
     this.idUsuarioDependenciaAutoComplete = option.id_usuario_dependencia;
+    console.log(option);
+      let nombreCompleto = option.nombre + ' '+  option.apellidos;
+      this.myControl.setValue(nombreCompleto)
+    
   }
   valorPerfilUsuarioLibro(perfil){
     this.perfilUsuario = perfil;
@@ -262,7 +268,6 @@ export class CrearUsuarioComponent implements AfterViewInit {
   */
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-
     return this.options.filter(
       (option: any) => option.nombre.toLowerCase().indexOf(filterValue) === 0
     );

@@ -363,7 +363,7 @@
                     <tr *ngFor="let row of listaUsuarioMandante">
                       <td scope="row" style="width: auto;">{{ row[0] }}</td>
 
-                      <td>{{ row.usuarioDependencia.usuario?.firstName }}</td>
+                      <td>{{ row.usuarioDependencia.usuario?.firstName }} {{ row.usuarioDependencia.usuario.lastName }}</td>
                       <td>{{ row.cargoFuncion }}</td>
                       <td>{{ row.perfilUsuarioLibro.nombre }}</td>
                       <td style="display: flex;">
@@ -435,7 +435,7 @@
                     <tr *ngFor="let row of listaUsuarioContratistaAgregados">
                       <td scope="row" style="width: auto;">{{ row[0] }}</td>
 
-                      <td>{{ row.usuarioDependencia.usuario.firstName }}</td>
+                      <td>{{ row.usuarioDependencia.usuario.firstName }} {{ row.usuarioDependencia.usuario.lastName }}</td>
                       <td>{{ row.cargoFuncion }}</td>
                       <td>{{ row.perfilUsuarioLibro.nombre }}</td>
                       <td style="display: flex;">
