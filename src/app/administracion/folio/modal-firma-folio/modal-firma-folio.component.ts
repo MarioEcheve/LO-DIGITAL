@@ -44,8 +44,28 @@ export class ModalFirmaFolioComponent implements OnInit {
   }
   obtenerTipoFirma() {
     this.tipoFirmaService.query().subscribe((respuesta) => {
-      this.tipoFirma = respuesta.body;
+      //this.tipoFirma = respuesta.body;
+      let firmas = [
+        {
+          id : 1 ,
+          nombre : 'Digital Avanzada MOP'
+        },
+        {
+          id : 2 ,
+          nombre : 'Digital Avanzada e-certchile'
+        },
+        {
+          id : 3 ,
+          nombre : 'Digital Avanzada e-sign'
+        },
+        {
+          id : 4 ,
+          nombre : 'Digital Avanzada firma.cl'
+        }
+      ]
+      this.tipoFirma = firmas;
     });
+   
   }
   notificacionError(){
     Swal.fire({
