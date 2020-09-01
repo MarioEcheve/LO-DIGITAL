@@ -379,6 +379,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
         libroSeleccionado: this.libroSeleccionado,
         habilitar : false,
         folio : null,
+        editar : false
 
       },
     });
