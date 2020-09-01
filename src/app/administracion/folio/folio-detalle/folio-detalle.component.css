@@ -8,3 +8,6 @@
 .iconoFolioOrigen :hover{
     cursor: pointer;
 }
+.cardPdf {
+    border: none;
+}

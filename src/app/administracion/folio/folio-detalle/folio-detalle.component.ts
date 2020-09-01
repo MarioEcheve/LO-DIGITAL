@@ -32,6 +32,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import htmlToImage from 'html-to-image';
+import { UsuarioLibro } from "../../TO/usuario-libro.model";
 
 declare var $: any;
 declare interface TableData {
@@ -63,6 +64,15 @@ export class FolioDetalleComponent implements OnInit {
   private fechaRequeridaValidators = [
     Validators.maxLength(250),
   ]
+  // variables utilizadas para pintar el pdf
+  receptorPdf = new UsuarioLibro();
+  emisorPdf = new UsuarioLibro();
+  correlativoPdf = 0;
+  tipoFolioPdf;
+  respuestaPdf;
+  asuntoPdf;
+  referenciaPdf;
+  anotacionPdf;
   // IMPLEMENTACION CONFIG ANGULAR-EDITOR
   editorConfig: AngularEditorConfig = {
   editable: true,
@@ -202,6 +212,7 @@ export class FolioDetalleComponent implements OnInit {
     let usuarioActual = JSON.parse(localStorage.getItem("user"));
     this.folioService.find(id).subscribe((respuesta) => {
       this.Folio = respuesta.body;
+      this.correlativoFolio(this.Folio.libro.id);
       this.usuarioLibroService.ListaUsuariosLibros(respuesta.body.libro.id,usuarioActual.id).subscribe(
         respuesta=>{
           this.receptor = respuesta.body;
@@ -211,10 +222,18 @@ export class FolioDetalleComponent implements OnInit {
         respuesta=>{
           this.folios = [];
           this.Folio.folioReferencias = respuesta.body.folioReferencias;
+          if(this.Folio.folioReferencias.length > 0 ){
+            this.referenciaPdf = this.folios;
+          }else{
+            this.referenciaPdf = "n/a";
+          }
           this.Folio.folioReferencias.forEach(element=>{
             this.folioService.find(element.idFolioReferencia).subscribe(
               folioReferencia=>{
                 this.folios = [...this.folios, folioReferencia.body];
+                this.folioService.AgregarFolioReferenciaAlista(folioReferencia.body);
+                console.log(this.folios);
+                
               }
             );
            })
@@ -227,6 +246,8 @@ export class FolioDetalleComponent implements OnInit {
       this.buscaCorrelativoFolio();
       
       this.obtenerPerfilLibroUsuario(this.Folio.libro.id, usuarioActual.id);
+      this.asuntoPdf = respuesta.body.asunto;
+      this.anotacionPdf =  respuesta.body.anotacion;
       this.folioForm.controls["asunto"].setValue(respuesta.body.asunto);
       this.folioForm.controls["anotacion"].setValue(respuesta.body.anotacion);
       this.folioForm.controls["requiereRespuesta"].setValue(respuesta.body.requiereRespuesta);
@@ -239,6 +260,7 @@ export class FolioDetalleComponent implements OnInit {
               this.folioForm.controls["respuestaFolio"].setValue("Respuesta de : "+folioRelacionado.body.libro.nombre+" | " +
                 "Folio : " + folioRelacionado.body.numeroFolio 
                 );
+                this.respuestaPdf = this.folioForm.controls["respuestaFolio"].value;
               this.folioRelacionado = folioRelacionado.body;
             }
           );
@@ -254,6 +276,7 @@ export class FolioDetalleComponent implements OnInit {
       let tipo = this.folioForm.controls["tipoFolio"].setValue(
         respuesta.body.tipoFolio
       );
+      this.tipoFolioPdf = respuesta.body.tipoFolio;
       if (
         respuesta.body.tipoFolio.nombre.toLocaleLowerCase() === "apertura libro"
       ) {
@@ -292,6 +315,7 @@ export class FolioDetalleComponent implements OnInit {
       this.usuarioLibroService
         .find(respuesta.body.idUsuarioCreador)
         .subscribe((respuesta) => {
+          this.emisorPdf = respuesta.body;
           this.folioForm.controls["emisor"].setValue(
             respuesta.body.usuarioDependencia.usuario.firstName +
               " " +
@@ -301,6 +325,11 @@ export class FolioDetalleComponent implements OnInit {
             respuesta.body.perfilUsuarioLibro.nombre
           );
         });
+      this.usuarioLibroService.find(respuesta.body.idReceptor).subscribe(
+        receptor=>{
+          this.receptorPdf = receptor.body;
+        }
+      );
     });
     // desabilitamos los inputs del form
     this.folioForm.controls["fechaModificacion"].disable();
@@ -640,15 +669,14 @@ export class FolioDetalleComponent implements OnInit {
     this.tipoFolioSeleccionado = tipo;
   }
   previsualizar() {
-    let imagenDiv1;
-    let imagenDiv2;
     let anotacion = stripHtml(this.folioForm.controls["anotacion"].value);
     this.Folio.idReceptor = this.folioForm.controls["receptor"].value;
     this.Folio.fechaRequerida = moment(this.folioForm.controls["fechaRequeridaDatepicker"].value);
-    let nombreReceptor ="";
     this.usuarioLibroService.find(this.Folio.idReceptor).subscribe(
       respuesta=>{
-        nombreReceptor = respuesta.body.usuarioDependencia.usuario.firstName +  respuesta.body.usuarioDependencia.usuario.lastName 
+        let valorRecepor = respuesta.body.usuarioDependencia.usuario.firstName +  respuesta.body.usuarioDependencia.usuario.lastName;
+        this.receptorPdf = respuesta.body;
+        console.log(this.receptorPdf);
       }
     );
       
@@ -829,6 +857,17 @@ export class FolioDetalleComponent implements OnInit {
   }
   onUploadSuccess(event){
 
+  }
+  correlativoFolio(id:any){
+    this.folioService
+          .correlativoFolio(id)
+          .subscribe((respuesta) => {
+            console.log(respuesta);
+            this.correlativoPdf = respuesta.body[0].numero_folio;
+          });
+  }
+  cambiaReceptor(receptor){
+    this.receptorPdf = receptor;
   }
 }
 function getBase64Image(img) {

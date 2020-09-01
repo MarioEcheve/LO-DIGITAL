@@ -39,6 +39,7 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
     this.folios$.subscribe(
       folios=>{
         this.folios = folios;
+        console.log(this.folios);
       }
     );
     this.libroService

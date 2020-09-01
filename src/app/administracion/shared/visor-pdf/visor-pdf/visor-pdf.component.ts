@@ -97,6 +97,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               let adminNuevo = new UsuarioLibro();
               adminNuevo =  this.data.listaUsuariosCambioAdmin[1];
               adminActual.adminActivo = false;
+              adminActual.perfilUsuarioLibro = {id: 1301, nombre: "Administrador", usuarioLibros: null}
               adminNuevo.adminActivo = true;
               this.usuarioLibroService.update(adminActual).subscribe();
               this.usuarioLibroService.update(adminNuevo).subscribe();

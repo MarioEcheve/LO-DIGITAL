@@ -152,6 +152,7 @@
                       <mat-option
                         *ngFor="let recep of receptor"
                         [value]="recep.id"
+                        (click)="cambiaReceptor(recep)"
                       >
                       {{ recep?.usuarioDependencia?.usuario?.firstName }} {{ recep?.usuarioDependencia?.usuario?.lastName }}   |  Cargo : {{ recep?.cargoFuncion }}
                       </mat-option>
@@ -631,11 +632,12 @@
     </div>
   </div>
 </div>
-<div style="opacity: 1;"id="data">
+<div style="opacity: 0;">
   <div class="main-content animate__animated animate__fadeIn" >
     <div class="container-fluid" >
-      <div class="card" >
-        <div class="card-body" >
+      <div class="card cardPdf" id="data">
+        <br>
+        <div class="card-body " >
             <div class="container-fluid">
               <hr />
               <img class="mr-1" src="/assets/img/logo42_.png" />
@@ -643,7 +645,7 @@
               <hr />
               <div class="row" >
                 <div class="col-6 d-flex justify-content-start">
-                  <table>
+                  <table style="width: 100%;">
                     <tr>
                       <td style="font-size: 15px; font-weight: bold;">
                         Contrato:
@@ -690,12 +692,12 @@
                   </table>
                 </div>
                 <div class="col-6 d-flex justify-content-end">
-                  <table>
+                  <table style="width: 50%;">
                     <tr>
                       <td style="font-size: 15px; font-weight: bold;">
                         <strong>Libro:</strong>
                       </td>
-                      <td style=" font-weight: bold;">
+                      <td style=" font-size: 12px; font-weight: bold;">
                         &nbsp;<strong>{{ libro.nombre }}</strong>
                       </td>
                     </tr>
@@ -721,7 +723,9 @@
                     </tr>
                     <tr>
                       <td>Fecha Cierre:</td>
-                      <td>&nbsp;-</td>
+                      <td>&nbsp;{{
+                        libro.fechaCierre | date: "dd-MM-yyyy HH:mm"
+                      }}</td>
                     </tr>
                   </table>
                 </div>
@@ -729,18 +733,18 @@
               <br>
               <br>
               <hr />
-              <table>
+              <table style="width: 40%;">
                 <tr>
                   <td style="font-size: 15px; font-weight: bold;">
-                    Folio #
+                    Folio # {{  correlativoPdf }}
                   <td>
                     &nbsp;
                   </td>
                 </tr>
                 <tr>
-                  <td>Emisor:</td>
-                  <td *ngIf="emisor">
-                    &nbsp;
+                  <td style="width: 60px;">Emisor:</td>
+                  <td >
+                    &nbsp;{{ emisorPdf.usuarioDependencia?.usuario.firstName }} {{ emisorPdf.usuarioDependencia?.usuario.lastName  }} 
                   </td>
                 </tr>
                 <tr>
@@ -748,9 +752,9 @@
                   <td>&nbsp;Administrador Contratista</td>
                 </tr>
                 <tr>
-                  <td>Receptor:</td>
-                  <td  *ngIf="receptor">
-                    &nbsp;</td>
+                  <td style="width: 60px;">Receptor:</td>
+                  <td  >
+                    &nbsp;{{ receptorPdf.usuarioDependencia?.usuario.firstName }} {{ receptorPdf.usuarioDependencia?.usuario.lastName  }} </td>
                 </tr>
                 <tr>
                   <td></td>
@@ -758,18 +762,19 @@
                 </tr>
                 <tr *ngIf="Folio.libro">
                   <td>Tipo de Folio:</td>
-                  <td>&nbsp;</td>
+                  <td>&nbsp;{{ tipoFolioPdf.nombre }}</td>
                 </tr>
                 <tr>
                   <td>Respuesta de:</td>
-                  <td  *ngIf="Folio.idlibroRelacionado !== null">&nbsp; 
+                  <td  *ngIf="respuestaPdf">&nbsp;{{ respuestaPdf }}
                             
                   </td>
-                  <td *ngIf="Folio.idlibroRelacionado === null">&nbsp;n/a</td>
+                  <td *ngIf="!respuestaPdf">&nbsp;n/a</td>
                 </tr>
                 <tr>
-                  <td>Referencia de:</td>
-                  <td>
+                  <td style="width: 100px;">Referencia de:</td>
+                  <td>&nbsp;{{ referenciaPdf }}
+                     
                     <!--
                              &nbsp;
                     <li class="list-inline-item">
@@ -795,11 +800,16 @@
                 </tr>
                 <tr>
                   <td>Asunto:</td>
-                  <td>&nbsp;</td>
+                  <td>&nbsp;{{ asuntoPdf }}</td>
                 </tr>
               </table>
               <hr />
-              <div style="font-size: 15px; font-weight: bold;">Anotación:</div>
+              <div style="font-size: 15px; font-weight: bold;">
+                Anotación:
+                <br>
+                <p [innerHtml]="anotacionPdf"></p>
+              </div>
+                
               <br />
               <p ></p>
              
@@ -845,7 +855,5 @@
       </div>
     </div>
   </div>
-</div>
-<div id="src">
 </div>
 
