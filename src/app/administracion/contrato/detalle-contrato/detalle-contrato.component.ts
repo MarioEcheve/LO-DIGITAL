@@ -480,11 +480,11 @@ export class DetalleContratoComponent
           this.permissionsService.loadPermissions(permisos);
           
           if(perfilUsuario.nombre.toLowerCase() === "super usuario"){
-            this.libroService.getMisLibros(usuario.id).subscribe(
-              respuesta => {
-                this.validaEditarLibro = true;
-                console.log(respuesta.body);
-                this.libros = respuesta.body;
+            this.libroService.getMisLibrosContratoDetalle(usuario.id, this.contrato.id).subscribe(
+              libros=>{
+                console.log(libros.body);
+                this.libros = libros.body;
+                this.validaEditarLibro = false;
               }
             );
           }else{
