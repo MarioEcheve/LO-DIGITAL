@@ -50,13 +50,34 @@ export class ModalCrearFolioComponent implements OnInit {
     this.obtenerTipoFolio();
     this.asignarValorForm();
     // metodo para saber si un libro posee folios
-    this.buscaFolios(this.libroSeleccionado);
+  
     let usuarioActual = JSON.parse(localStorage.getItem("user"));
     this.obtenerPerfilLibroUsuario(this.libroSeleccionado.id, usuarioActual.id);
   }
   obtenerTipoFolio() {
     this.tipoFolioService.query().subscribe((respuesta) => {
       this.tipoFolio = respuesta.body;
+
+      this.buscaFolios(this.libroSeleccionado);
+      if(this.data.habilitar === true){
+        this.obtenerTipoFolio();
+      }
+      this.folioService.buscarFolioPorLibro(this.libroSeleccionado.id).subscribe((respuesta) => {
+        if (respuesta.body.length === 0) {
+          console.log(respuesta.body);
+          let tipo = this.tipoFolio.filter((tipo) => {
+            return tipo.nombre.toLowerCase() === "apertura libro";
+          });
+          console.log(this.tipoFolio);
+          this.tipoFolio = tipo;
+        } else {
+          let tipo = this.tipoFolio.filter((tipo) => {
+            return tipo.nombre.toLowerCase() !== "apertura libro";
+          });
+          this.tipoFolio = tipo;
+        }
+      });
+      
     });
   }
   inicializarForm() {
@@ -110,7 +131,6 @@ export class ModalCrearFolioComponent implements OnInit {
     if(this.data.habilitar === true){
       this.obtenerTipoFolio();
     }
-    this.libroSeleccionado = libro;
     this.folioService.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
       if (respuesta.body.length === 0) {
         console.log(respuesta.body);
