@@ -188,14 +188,12 @@ export class LibroComponent implements OnInit {
           }
         });
         setTimeout(() => {
-          console.log(resultado);
           this.tipoLibro =resultado;
         }, 500);
     });
   }
   obtenerEstadoLibro() {
     this.estadoLibroService.query().subscribe((respuesta) => {
-      console.log(respuesta.body);
       for (var i = 0; i < respuesta.body.length; i++) {
         if (
           respuesta.body[i].nombre === "En creacion" ||
@@ -217,14 +215,12 @@ export class LibroComponent implements OnInit {
       this.dependenciaService
         .buscaUsuariosDependencia(this.contrato.dependenciaMandante.id)
         .subscribe((respuesta) => {
-          //console.log(respuesta);
           this.listaUsuarios = respuesta.body;
           this.muestraListaUsuarios = true;
         });
       this.dependenciaService
         .buscaUsuariosDependencia(this.contrato.idDependenciaContratista)
         .subscribe((respuesta) => {
-          //console.log(respuesta);
           this.listaUsuariosContratista = respuesta.body;
           this.muestraListaUsuarios = true;
         });
@@ -243,7 +239,6 @@ export class LibroComponent implements OnInit {
     }else{
       existe = false;
     }
-    console.log(existe);
     let listaUsuariosFiltrados = this.listaUsuarios.filter((usuarios:any)=>{
       let res = this.usuariosAgregados.find((usuarioMandante)=>{
          return usuarioMandante.usuarioDependencia.id == usuarios.id_usuario_dependencia;
@@ -262,12 +257,10 @@ export class LibroComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      //console.log(result);
       if (result === undefined || result === false) {
       } else {
         // contamos si el valor de la lista es mayor a 0
         if (this.usuariosAgregados.length > 0) {
-          console.log(this.usuariosAgregados);
           for (var i = 0; i < this.usuariosAgregados.length; i++) {
             if (
               this.usuariosAgregados[i].idUsuarioDependencia ===
@@ -283,7 +276,6 @@ export class LibroComponent implements OnInit {
                   this.usuarioDependenciaService
                     .find(result.idUsuarioDependencia)
                     .subscribe((respuesta) => {
-                      console.log(respuesta.body);
                       this.libroInfoGeneralFormGroup.controls[
                         "rutAdminMandante"
                       ].setValue("");
@@ -320,11 +312,9 @@ export class LibroComponent implements OnInit {
           if (
             result.perfilUsuarioLibro.nombre.toLowerCase() === "administrador"
           ) {
-            console.log("admin");
             this.usuarioDependenciaService
               .find(result.idUsuarioDependencia)
               .subscribe((respuesta) => {
-                console.log(respuesta.body);
                 this.libroInfoGeneralFormGroup.controls[
                   "rutAdminMandante"
                 ].setValue("");
@@ -374,7 +364,6 @@ export class LibroComponent implements OnInit {
     }else{
       existe = false;
     }
-    console.log(existe);
     let listaUsuariosFiltrados = this.listaUsuariosContratista.filter((usuarios:any)=>{
       let res = this.usuariosAgregadosContratista.find((usuarioMandante)=>{
          return usuarioMandante.usuarioDependencia.id == usuarios.id_usuario_dependencia;
@@ -393,12 +382,10 @@ export class LibroComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      //console.log(result);
       if (result === undefined || result === false) {
       } else {
         // contamos si el valor de la lista es mayor a 0
         if (this.usuariosAgregadosContratista.length > 0) {
-          console.log(this.usuariosAgregadosContratista);
           for (var i = 0; i < this.usuariosAgregadosContratista.length; i++) {
             if (
               this.usuariosAgregadosContratista[i].idUsuarioDependencia ===
@@ -414,7 +401,6 @@ export class LibroComponent implements OnInit {
                   this.usuarioDependenciaService
                     .find(result.idUsuarioDependencia)
                     .subscribe((respuesta) => {
-                      console.log(respuesta.body);
                       this.libroInfoGeneralFormGroup.controls[
                         "rutAdminContratista"
                       ].setValue("");
@@ -454,11 +440,9 @@ export class LibroComponent implements OnInit {
           if (
             result.perfilUsuarioLibro.nombre.toLowerCase() === "administrador"
           ) {
-            console.log("admin");
             this.usuarioDependenciaService
               .find(result.idUsuarioDependencia)
               .subscribe((respuesta) => {
-                console.log(respuesta.body);
                 this.libroInfoGeneralFormGroup.controls[
                   "rutAdminContratista"
                 ].setValue("");
@@ -491,7 +475,6 @@ export class LibroComponent implements OnInit {
     });
   }
   guardaLibro() {
-    //console.log(this.permisosFormGroup.value);
     let libro = new Libro();
     libro.aperturaContratista = this.permisosFormGroup.controls[
       "aperturaContratista"
@@ -545,7 +528,6 @@ export class LibroComponent implements OnInit {
   }
   guardaUsuariosMandante(libro) {
     for (var i = 0; i < this.usuariosAgregados.length; i++) {
-      console.log(this.usuariosAgregados[i]);
       this.usuariosAgregados[i].libro = libro;
       this.usuariosAgregados[i].fechaCreacion = moment(Date.now());
       this.usuarioLibroService
@@ -555,7 +537,6 @@ export class LibroComponent implements OnInit {
   }
   guardaUsuariosContratista(libro) {
     for (var i = 0; i < this.usuariosAgregadosContratista.length; i++) {
-      console.log(this.usuariosAgregadosContratista[i]);
       this.usuariosAgregadosContratista[i].libro = libro;
       this.usuariosAgregadosContratista[i].fechaCreacion = moment(Date.now());
       this.usuarioLibroService
@@ -669,7 +650,6 @@ export class LibroComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === undefined || result === false) {
       } else {
-        console.log(result);
       }
     });
   }

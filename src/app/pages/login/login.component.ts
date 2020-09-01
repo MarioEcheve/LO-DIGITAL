@@ -4,8 +4,9 @@ import { FormBuilder, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AccountService } from "src/app/core/auth/account.service";
 import { UsuarioService } from "src/app/core/user/usuario.service";
-
-declare var $: any;
+import { UsuarioDependenciaService } from '../../administracion/services/usuario-dependencia.service';
+import { User } from "src/app/core/user/user.model";
+ declare var $: any;
 
 @Component({
   selector: "app-login-cmp",
@@ -30,7 +31,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private loginService: LoginService,
     private router: Router,
     private accountService: AccountService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private usuarioDependenciaService : UsuarioDependenciaService
   ) {
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;
@@ -87,8 +89,17 @@ export class LoginComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           this.showNotificationSuccess("top", "right", res);
-          localStorage.setItem("user", JSON.stringify(res));
-          this.router.navigate(["dashboard"]);
+          let usuario = new User;
+          usuario = res;
+          this.usuarioDependenciaService.findUserByUsuarioDependencia(usuario.id).subscribe(
+            usuarioDependencia=>{
+              usuario.authorities = [...usuario.authorities, usuarioDependencia.body[0].perfilUsuarioDependencia.nombre.toUpperCase()]
+              localStorage.setItem("user", JSON.stringify(usuario));
+              this.router.navigate(["dashboard"]);
+            }
+          );
+          
+          
           //console.log(JSON.parse(localStorage.getItem("user")));
         },
         (error) => {
