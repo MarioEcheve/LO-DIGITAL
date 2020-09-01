@@ -137,15 +137,15 @@
                             </mat-select>
                           </mat-form-field>
                         </div>
-                        <div class="row">
-                          <mat-form-field class="example-full-width col-md-6">
+                        <div class="row" >
+                          <mat-form-field class="example-full-width col-md-6" *ngIf="muestraOtroTipoContrato">
                             <input
                               matInput
                               placeholder="Otro tipo de Contrato"
                               type="text"
                             />
                           </mat-form-field>
-                          <mat-form-field class="example-full-width col-md-6">
+                          <mat-form-field class="example-full-width col-md-6" *ngIf="muestraOtroTipoModalidad">
                             <input
                               matInput
                               placeholder="Otra modalidad de Contrato"

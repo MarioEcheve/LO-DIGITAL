@@ -57,6 +57,7 @@ export class FolioDetalleComponent implements OnInit {
   base64textString: string = "";
   usuario;
   muestraImagenes = false;
+  muestraRespuestaReferenciaFechaRequerida = true;
   folioSiguiente;
   receptor = [];
   multipleConfig="";
@@ -287,6 +288,7 @@ export class FolioDetalleComponent implements OnInit {
           return tipo.nombre.toLowerCase() === "apertura libro";
         });
         this.tipoFolio = tipo;
+        this.muestraRespuestaReferenciaFechaRequerida = false;
       } else {
         if (
           respuesta.body.tipoFolio.nombre.toLocaleLowerCase() === "cambio administrador"
