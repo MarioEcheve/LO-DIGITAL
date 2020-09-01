@@ -484,7 +484,7 @@ export class DetalleContratoComponent
               libros=>{
                 console.log(libros.body);
                 this.libros = libros.body;
-                this.validaEditarLibro = false;
+                this.validaEditarLibro = true;
               }
             );
           }else{
