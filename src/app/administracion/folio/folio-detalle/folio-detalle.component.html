@@ -177,7 +177,7 @@
                   </div>
                 </div>
                 <div class="d-flex mt-1">
-                  <div class="flex-grow-1">
+                  <div class="flex-grow-1" *ngIf="muestraRespuestaReferenciaFechaRequerida">
                     <mat-form-field  class="example-full-width">
                       <input
                         matInput
@@ -198,7 +198,7 @@
                     Folios de referencia: <tag-input [(ngModel)]='regularItems' theme='filled-theme'></tag-input>
                   </div> -->
 
-                <div class="d-flex mt-1">
+                <div class="d-flex mt-1" *ngIf="muestraRespuestaReferenciaFechaRequerida">
                   <div class="flex-grow-1">
                     <mat-form-field class="example-chip-list">
                       <mat-chip-list #chipList aria-label="Fruit selection">
@@ -241,7 +241,7 @@
                   </mat-form-field>
                   <div class="col-md-1"></div>
                   <div class="col-md-4">
-                    <div class="row">
+                    <div class="row" *ngIf="muestraRespuestaReferenciaFechaRequerida">
                       <div class="togglebutton togglebutton-success col-md-6" style="margin-right: auto;">
                         <label>
                           <input
