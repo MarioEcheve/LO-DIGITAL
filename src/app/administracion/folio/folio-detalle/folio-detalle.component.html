@@ -159,8 +159,8 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <div class="d-flex mt-1" *ngxPermissionsOnly="['administrador','superior']">
-                  <div class="flex-grow-1">
+                <div   class="d-flex mt-1" *ngxPermissionsOnly="['administrador','superior']">
+                  <div class="flex-grow-1" *ngIf="muestraCambioAdmin">
                     <mat-form-field  class="example-full-width">
                       <input
                         matInput
@@ -170,7 +170,7 @@
                       />
                     </mat-form-field>
                   </div>
-                  <div class="ml-2">
+                  <div class="ml-2" *ngIf="muestraCambioAdmin">
                     <button (click)="modalCambioAdministrador()" mat-raised-button class="btn btn-primary btn-sm btn-fab btn-round">
                       <i class="material-icons">search</i>
                     </button>

@@ -73,6 +73,9 @@ export class FolioDetalleComponent implements OnInit {
   asuntoPdf;
   referenciaPdf;
   anotacionPdf;
+
+  // VARIABLE PARA MOSTRAR CAMBIO DE ADMIN
+  muestraCambioAdmin = false;
   // IMPLEMENTACION CONFIG ANGULAR-EDITOR
   editorConfig: AngularEditorConfig = {
   editable: true,
@@ -285,11 +288,19 @@ export class FolioDetalleComponent implements OnInit {
         });
         this.tipoFolio = tipo;
       } else {
+        if (
+          respuesta.body.tipoFolio.nombre.toLocaleLowerCase() === "cambio administrador"
+        ){
+          this.muestraCambioAdmin = true;
+        }
+
         let tipo = this.tipoFolio.filter((tipo) => {
           return tipo.nombre.toLowerCase() !== "apertura libro";
         });
         this.tipoFolio = tipo;
       }
+      
+
       this.folioForm.controls["fechaCreacion"].setValue(
         this.datePipe.transform(
           respuesta.body.fechaCreacion,
@@ -325,11 +336,13 @@ export class FolioDetalleComponent implements OnInit {
             respuesta.body.perfilUsuarioLibro.nombre
           );
         });
-      this.usuarioLibroService.find(respuesta.body.idReceptor).subscribe(
-        receptor=>{
-          this.receptorPdf = receptor.body;
-        }
-      );
+      if(respuesta.body.idReceptor !== null){
+        this.usuarioLibroService.find(respuesta.body.idReceptor).subscribe(
+          receptor=>{
+            this.receptorPdf = receptor.body;
+          }
+        );
+      }
     });
     // desabilitamos los inputs del form
     this.folioForm.controls["fechaModificacion"].disable();
@@ -409,6 +422,7 @@ export class FolioDetalleComponent implements OnInit {
         this.tipoFolio = this.tipoFolio.filter(
           (tipo) => tipo.nombre.toLowerCase() === "apertura libro"
         );
+        this.muestraCambioAdmin
       } else {
         this.tipoFolio = this.tipoFolio.filter(
           (tipo) => tipo.nombre.toLowerCase() !== "apertura libro"
@@ -667,6 +681,11 @@ export class FolioDetalleComponent implements OnInit {
   }
   valorTipoFolio(tipo) {
     this.tipoFolioSeleccionado = tipo;
+    if(this.tipoFolioSeleccionado.nombre.toLowerCase() === "cambio administrador"){
+      this.muestraCambioAdmin = true;
+    }else{
+      this.muestraCambioAdmin = false;
+    }
   }
   previsualizar() {
     let anotacion = stripHtml(this.folioForm.controls["anotacion"].value);

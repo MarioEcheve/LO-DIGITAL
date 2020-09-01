@@ -26,6 +26,7 @@ export class UserRouteAccessService implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> {
     const authorities = route.data["authorities"];
+    console.log(authorities);
     // We need to call the checkLogin / and so the accountService.identity() function, to ensure,
     // that the client has a principal too, if they already logged in by the server.
     // This could happen on a page refresh.
