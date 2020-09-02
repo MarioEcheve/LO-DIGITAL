@@ -48,7 +48,7 @@
                 <button
                   mat-raised-button
                   class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
-                  [disabled]="Folio.requiereRespuesta === false || idlibroRelacionado !== null || usuario.adminActivo === false"
+                  [disabled]="Folio.requiereRespuesta === false || idlibroRelacionado !== null || usuario?.adminActivo === false"
                   (click)="responderFolio()"
                   *ngxPermissionsOnly="['administrador']"
                 >

@@ -57,26 +57,11 @@ export class ModalCrearFolioComponent implements OnInit {
   obtenerTipoFolio() {
     this.tipoFolioService.query().subscribe((respuesta) => {
       this.tipoFolio = respuesta.body;
-
       this.buscaFolios(this.libroSeleccionado);
       if(this.data.habilitar === true){
-        this.obtenerTipoFolio();
+        //this.obtenerTipoFolio();
       }
-      this.folioService.buscarFolioPorLibro(this.libroSeleccionado.id).subscribe((respuesta) => {
-        if (respuesta.body.length === 0) {
-          console.log(respuesta.body);
-          let tipo = this.tipoFolio.filter((tipo) => {
-            return tipo.nombre.toLowerCase() === "apertura libro";
-          });
-          console.log(this.tipoFolio);
-          this.tipoFolio = tipo;
-        } else {
-          let tipo = this.tipoFolio.filter((tipo) => {
-            return tipo.nombre.toLowerCase() !== "apertura libro";
-          });
-          this.tipoFolio = tipo;
-        }
-      });
+      
       
     });
   }
@@ -129,7 +114,7 @@ export class ModalCrearFolioComponent implements OnInit {
   }
   buscaFolios(libro) {
     if(this.data.habilitar === true){
-      this.obtenerTipoFolio();
+      //this.obtenerTipoFolio();
     }
     this.folioService.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
       if (respuesta.body.length === 0) {
