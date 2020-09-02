@@ -48,7 +48,7 @@
                 <button
                   mat-raised-button
                   class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
-                  [disabled]="Folio.requiereRespuesta === false || idlibroRelacionado !== null"
+                  [disabled]="Folio.requiereRespuesta === false || idlibroRelacionado !== null || usuario.adminActivo === false"
                   (click)="responderFolio()"
                   *ngxPermissionsOnly="['administrador']"
                 >
@@ -83,7 +83,7 @@
                 <button
                   mat-raised-button
                   class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
-                  [disabled]="Folio.idUsuarioLectura !== null"
+                  [disabled]="Folio.idUsuarioLectura !== null  || usuario?.adminActivo === false"
                   (click)="lecturaFolio()"
                    *ngxPermissionsOnly="['administrador']"
                 >

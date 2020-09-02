@@ -1,6 +1,16 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="card">
+      <div class="ml-3 mt-2">
+        <button mat-raised-button type="button" class="btn btn-primary btn-sm" (click)="routeDetalleContrato()">
+          <i class="material-icons">search</i>
+          Detalle Contrato
+        </button>
+        <button mat-raised-button type="button" class="btn btn-primary btn-sm" (click)="routeResumenFolio()">
+          <i class="material-icons">search</i>
+          Resumen Folios
+        </button>
+      </div>
       <div class="card-body">
         <mat-tab-group>
           <mat-tab label="Libro">

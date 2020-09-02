@@ -339,7 +339,7 @@
                   type="submit"
                   class="btn btn-danger pull-left"
                   (click)="eliminarFolio()"
-                  *ngxPermissionsOnly="['administrador','asistente','superior']"
+                  *ngxPermissionsOnly="['administrador','asistente','superior', 'administrador/s']"
                 >
                   <!--  <span class="btn-label">
                       <i class="material-icons">close</i>
@@ -376,7 +376,7 @@
                     class="btn btn-primary"
                     (click)="guardarFolio()"
                     [disabled]="!folioForm.valid"
-                    *ngxPermissionsOnly="['administrador','asistente','superior']"
+                    *ngxPermissionsOnly="['administrador','asistente','superior', 'administrador/s']"
                   >
                     <!-- <span class="btn-label">
                       <i class="material-icons">get_app</i>

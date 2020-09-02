@@ -438,7 +438,7 @@
                           type="button"
                           class="btn btn-default {{ row[5] }} mr-1"
                           (click)="editarLibro(row)"
-                          *ngIf="validaEditarLibro"
+                          *ngIf="row.adminLibroActivo === true"
                         >
                           <i class="material-icons">edit</i>
                         </button>

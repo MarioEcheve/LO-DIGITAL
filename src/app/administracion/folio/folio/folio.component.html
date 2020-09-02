@@ -79,13 +79,13 @@
             class="col-md-2"
             style="margin-left: initial; margin-right: auto;padding: inherit; margin: auto; margin-top: initial;"
           >
-            <div>
+            <div *ngIf="muestraRedactarFolioAdminActivo">
               <button
                 mat-raised-button
                 class="btn btn-pinterest col-md-12 "                
                 (click)="nuevoFolio()"
                 [disabled]="libroSeleccionado?.estadoLibro?.nombre === 'Cerrado'"
-                *ngxPermissionsOnly="['administrador','asistente', 'superior']"
+                *ngxPermissionsOnly="['administrador','asistente', 'superior' , 'administrador/s']"
               >
                 <span class="btn-label">
                   <i class="material-icons">add</i>

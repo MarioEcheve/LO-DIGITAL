@@ -28,6 +28,7 @@ export interface ILibro {
   tipoLibro?: ITipoLibro;
   tipoFirma?: ITipoFirma;
   estadoLibro?: IEstadoLibro;
+  adminLibroActivo? : boolean
 }
 
 export class Libro implements ILibro {
@@ -52,7 +53,8 @@ export class Libro implements ILibro {
     public contrato?: IContrato,
     public tipoLibro?: ITipoLibro,
     public tipoFirma?: ITipoFirma,
-    public estadoLibro?: IEstadoLibro
+    public estadoLibro?: IEstadoLibro,
+    public adminLibroActivo?: boolean,
   ) {
     this.aperturaMandante = this.aperturaMandante || false;
     this.aperturaContratista = this.aperturaContratista || false;

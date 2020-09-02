@@ -34,6 +34,7 @@ import { element } from "protractor";
 import { UsuarioDependenciaService } from "../../services/usuario-dependencia.service";
 import { UsuarioDependencia } from "../../TO/usuario-dependencia.model";
 import { NgxPermissionsService } from "ngx-permissions";
+import { UsuarioLibroService } from "../../services/usuario-libro.service";
 
 
 declare const $: any;
@@ -119,7 +120,8 @@ export class DetalleContratoComponent
     private modalidadService: ModalidadService,
     private folioService : FolioService,
     private UsuarioDependenciaService : UsuarioDependenciaService,
-    private permissionsService: NgxPermissionsService
+    private permissionsService: NgxPermissionsService,
+    private usuarioLibroService : UsuarioLibroService
     
   ) {
 
@@ -484,9 +486,30 @@ export class DetalleContratoComponent
           if(perfilUsuario.nombre.toLowerCase() === "super usuario"){
             this.libroService.getMisLibrosContratoDetalle(usuario.id, this.contrato.id).subscribe(
               libros=>{
-                console.log(libros.body);
                 this.libros = libros.body;
-                this.validaEditarLibro = true;
+                this.libros.forEach(element=>{
+                  this.usuarioLibroService
+                  .buscarlibroPorContrato(element.id, usuario.id).subscribe(
+                    usuarioLibro=>{
+                      let usuarioLibroAdminActual = usuarioLibro.body[0];
+                      this.usuarioLibroService.query().subscribe(
+                        usuariosLibros=>{
+                          let valor = usuariosLibros.body.filter(usuarioLibro=> usuarioLibro.libro.id === element.id && usuarioLibro.adminActivo === true);
+                          valor.forEach(element2=>{
+                            if(element2.id === usuarioLibroAdminActual.id){
+                              console.log(element2);
+                              if(element2.adminActivo === true){
+                                element.adminLibroActivo = true;
+                              }else{
+                                element.adminLibroActivo = false;
+                              }
+                            }
+                          });
+                        }
+                      );
+                    }
+                  );
+                });
               }
             );
           }else{
@@ -494,7 +517,29 @@ export class DetalleContratoComponent
               libros=>{
                 console.log(libros.body);
                 this.libros = libros.body;
-                this.validaEditarLibro = false;
+                this.libros.forEach(element=>{
+                  this.usuarioLibroService
+                  .buscarlibroPorContrato(element.id, usuario.id).subscribe(
+                    usuarioLibro=>{
+                      let usuarioLibroAdminActual = usuarioLibro.body[0];
+                      this.usuarioLibroService.query().subscribe(
+                        usuariosLibros=>{
+                          let valor = usuariosLibros.body.filter(usuarioLibro=> usuarioLibro.libro.id === element.id && usuarioLibro.adminActivo === true);
+                          valor.forEach(element2=>{
+                            if(element2.id === usuarioLibroAdminActual.id){
+                              console.log(element2);
+                              if(element2.adminActivo === true){
+                                element.adminLibroActivo = true;
+                              }else{
+                                element.adminLibroActivo = false;
+                              }
+                            }
+                          });
+                        }
+                      );
+                    }
+                  );
+                });
               }
             );
           }

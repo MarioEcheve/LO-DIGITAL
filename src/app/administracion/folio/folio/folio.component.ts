@@ -46,6 +46,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
   libroSeleccionado: Libro;
   usuarioLibro = new UsuarioLibro();
   type="number";
+  muestraRedactarFolioAdminActivo = true;
   filtroFolios = [
     {
       id : 0,
@@ -371,6 +372,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
 
   }
   nuevoFolio() {
+    
     const dialogRef = this.dialog.open(ModalCrearFolioComponent, {
       width: "500px",
       height: "290px",
@@ -435,14 +437,31 @@ export class FolioComponent implements OnInit, AfterViewInit {
       .buscarlibroPorContrato(idLibro, idUsuario)
       .subscribe((respuesta) => {
         this.usuarioLibro = respuesta.body[0];
-        /*
-        let permisos = [this.usuarioLibro.nombre.toLowerCase()]
-        this.permissionsService.loadPermissions(permisos);
-        */
+        if(this.usuarioLibro.adminActivo === false && this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "superior") {
+          this.muestraRedactarFolioAdminActivo = true;
+        }
+        if(this.usuarioLibro.adminActivo === false && this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "asistente") {
+          this.muestraRedactarFolioAdminActivo = true;
+        }
+        if(this.usuarioLibro.adminActivo === false && this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "visita") {
+          this.muestraRedactarFolioAdminActivo = false;
+        }
+        if(this.usuarioLibro.adminActivo === false && this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "administrador") {
+          this.muestraRedactarFolioAdminActivo = false;
+        }
+        if(this.usuarioLibro.adminActivo === true && this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "administrador") {
+          this.muestraRedactarFolioAdminActivo = true;
+        }
+        if(this.usuarioLibro.adminActivo === false && this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "administrador/s") {
+          this.muestraRedactarFolioAdminActivo = false;
+        }
+        if(this.usuarioLibro.adminActivo === true && this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "administrador/s") {
+          this.muestraRedactarFolioAdminActivo = true;
+        }
       });
   }
   volverContrato() {
-    this.router.navigate(["/contrato/detalle-contrato/", this.contrato.id]);
+    this.router.navigate(["/libro/detalle-libro/", this.libroSeleccionado.id]);
   }
 
   filtrarFolios(accion : any){
@@ -501,8 +520,21 @@ export class FolioComponent implements OnInit, AfterViewInit {
       this.typesOfActions[index].isClicked = true;
       break;
     case 7 :
+      console.log(this.usuarioLibro);
       this.folios = this.folios.filter(folio=>folio.idUsuarioFirma === null );
       this.typesOfActions[index].isClicked = true;
+      if(this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "visita"){
+        this.folios = [];
+      }
+      if(this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "administrador" && this.usuarioLibro.adminActivo === false){
+        this.folios = [];
+      }
+      if(this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "superior"){
+        this.folios = this.folios.filter(folio=>folio.tipoFolio.nombre.toLowerCase() === "cambio administrador" );
+      }
+      if(this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "asistente"){
+        this.folios = this.folios.filter(folio=>folio.tipoFolio.nombre.toLowerCase() !== "cambio administrador" );
+      }
       break;
    }
   }
