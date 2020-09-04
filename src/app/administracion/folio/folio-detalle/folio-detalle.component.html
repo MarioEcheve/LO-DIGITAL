@@ -42,30 +42,29 @@
                         <td *ngIf="libro.contrato">
                           &nbsp;{{
                             libro.contrato.dependenciaMandante.entidad.nombre
-                          }}
+                          }} |  &nbsp;RUT:
+                          {{ libro.contrato.dependenciaMandante.entidad.rut }}
                         </td>
                       </tr>
                       <tr>
                         <td></td>
                         <td *ngIf="libro.contrato">
-                          &nbsp;RUT:
-                          {{ libro.contrato.dependenciaMandante.entidad.rut }},
-                          Dirección
-                          {{ libro.contrato.dependenciaMandante.direccion }}
+                          &nbsp;Dependencia
+                          {{ libro.contrato.dependenciaMandante.nombre }}
                         </td>
                       </tr>
                       <tr>
                         <td>Contratista:</td>
                         <td *ngIf="dependenciaContratista.entidad">
-                          &nbsp;{{ dependenciaContratista.entidad.nombre }}
+                          &nbsp;{{ dependenciaContratista.entidad.nombre }} | &nbsp;RUT:
+                          {{ dependenciaContratista.entidad.rut }}
                         </td>
                       </tr>
                       <tr>
                         <td></td>
                         <td *ngIf="dependenciaContratista.entidad">
-                          &nbsp;RUT:
-                          {{ dependenciaContratista.entidad.rut }}, Dirección
-                          {{ dependenciaContratista.direccion }}
+                          &nbsp;Dependencia
+                          {{ dependenciaContratista.nombre }}
                         </td>
                       </tr>
                     </table>
@@ -101,8 +100,10 @@
                         </td>
                       </tr>
                       <tr>
-                        <td>Fecha Cierre:</td>
-                        <td>&nbsp;-</td>
+                        <!--
+                            <td>Fecha Cierre:</td>
+                             <td>&nbsp;-</td>
+                        -->
                       </tr>
                     </table>
                   </div>
@@ -176,7 +177,7 @@
                     </button>
                   </div>
                 </div>
-                <div class="d-flex mt-1">
+                <div class="d-flex mt-1"  *ngIf="necesitaRespuesta">
                   <div class="flex-grow-1" *ngIf="muestraRespuestaReferenciaFechaRequerida">
                     <mat-form-field  class="example-full-width">
                       <input
@@ -339,7 +340,7 @@
                   type="submit"
                   class="btn btn-danger pull-left"
                   (click)="eliminarFolio()"
-                  *ngxPermissionsOnly="['administrador','asistente','superior']"
+                  *ngxPermissionsOnly="['administrador','asistente','superior', 'administrador/s']"
                 >
                   <!--  <span class="btn-label">
                       <i class="material-icons">close</i>
@@ -376,7 +377,7 @@
                     class="btn btn-primary"
                     (click)="guardarFolio()"
                     [disabled]="!folioForm.valid"
-                    *ngxPermissionsOnly="['administrador','asistente','superior']"
+                    *ngxPermissionsOnly="['administrador','asistente','superior', 'administrador/s']"
                   >
                     <!-- <span class="btn-label">
                       <i class="material-icons">get_app</i>
@@ -387,7 +388,8 @@
               </div>
             </form>
           </mat-tab>
-          <mat-tab label="Notas">
+          <!--
+            <mat-tab label="Notas">
             NOTAS
           </mat-tab>
           <mat-tab label="Alertas">
@@ -627,6 +629,8 @@
               </div>
             </div>
           </mat-tab>
+          -->
+          
         </mat-tab-group>
       </div>
     </div>

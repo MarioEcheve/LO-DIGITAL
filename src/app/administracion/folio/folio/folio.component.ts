@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from "@angular/core";
+import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
 import { DropzoneConfigInterface } from "ngx-dropzone-wrapper";
 import { TableData } from "src/app/md/md-table/md-table.component";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -24,6 +24,10 @@ import { type } from "jquery";
 import { NgxPermissionsService } from "ngx-permissions";
 import { UsuarioDependenciaService } from "../../services/usuario-dependencia.service";
 import { UsuarioDependencia } from "../../TO/usuario-dependencia.model";
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import { MatTableDataSource } from "@angular/material/table";
+import { MatPaginator } from "@angular/material/paginator";
+
 const defaultConfig: DropzoneConfigInterface = {
   clickable: true,
   addRemoveLinks: true,
@@ -32,9 +36,24 @@ const defaultConfig: DropzoneConfigInterface = {
   selector: "app-folio",
   templateUrl: "./folio.component.html",
   styleUrls: ["./folio.component.css"],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class FolioComponent implements OnInit, AfterViewInit {
   public tableData1: TableData;
+  // implementacion nueva tabla
+  columnsToDisplay = ['Folio', 'Emisor', 'Tipo Folio - Asunto', 'Fecha requerida' ,'Fecha creacion', 'Acción' ];
+  expandedElement: Folio | null;
+  dataSource: MatTableDataSource<Folio>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  //-----------------------------
+  marcaTipoFiltroSideBar = 0;
+  indexEliminadoFavorito = [];
   contrato = new Contrato();
   libros: Libro[] = [];
   folios: Folio[] = [];
@@ -46,6 +65,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
   libroSeleccionado: Libro;
   usuarioLibro = new UsuarioLibro();
   type="number";
+  muestraRedactarFolioAdminActivo = true;
   filtroFolios = [
     {
       id : 0,
@@ -74,72 +94,86 @@ export class FolioComponent implements OnInit, AfterViewInit {
       maxFiles: 1,
     },
   };
+  // contador de filtros sidebar folio
+  contadorFolios = [
+    {
+      bandeja : 0
+    },
+    {
+      folioMandante : 0
+    },
+    {
+      folioContratista : 0
+    },
+    {
+      sinRespuesta : 0
+    },
+    {
+      sinLeer : 0
+    },
+    {
+      destacados : 0
+    },
+    {
+      borradores : 0
+    },
+
+  ]
   multipleConfig: DropzoneConfigInterface = {
     ...defaultConfig,
     ...{
       maxFiles: 10,
     },
   };
-  cities = [
-    {
-      value: "paris-0",
-      viewValue:
-        "Libro Maestro | Cod.: LM01 | Clase Libro: Maestro | Tipo Firma: Digital Avanzada | Estado: Abierto",
-    },
-    {
-      value: "miami-1",
-      viewValue:
-        "Libro Comunicaciones | Cod.: LA01 | Clase Libro: Auxiliar | Tipo Firma: Por Sistema | Estado: Abierto",
-    },
-    {
-      value: "bucharest-2",
-      viewValue:
-        "Libro Prevención de Riesgos | Cod.: LA02 | Clase Libro: Auxiliar | Tipo Firma: Por Sistema | Estado: Abierto",
-    },
-  ];
-
   typesOfActions= [
       {
         id :1,
         accion : 'Bandeja de Folio',
         icon :'inbox',
-        isClicked: true
+        isClicked: true,
+        contadorFolios : this.contadorFolios[0].bandeja
       },
       {
         id :2,
         accion : 'Folio Mandante',
         icon :'apartment',
-        isClicked: false
+        isClicked: false,
+        contadorFolios : this.contadorFolios[0].folioMandante
       },
       {
         id :3,
         accion : 'Folio Contratista',
         icon :'engineering',
-        isClicked: false
+        isClicked: false,
+        contadorFolios : this.contadorFolios[0].folioContratista
       },
       {
         id :4,
         accion : 'Sin respuesta',
         icon :'unsubscribe',
-        isClicked: false
+        isClicked: false,
+        contadorFolios : this.contadorFolios[0].sinRespuesta
       },
       {
         id :5,
         accion : 'Sin Leer',
         icon :'mark_email_unread',
-        isClicked: false
+        isClicked: false,
+        contadorFolios : this.contadorFolios[0].sinLeer
       },
       {
         id :6,
         accion : 'Destacados',
         icon :'star',
-        isClicked: false
+        isClicked: false,
+        contadorFolios : this.contadorFolios[0].destacados
       },
       {
         id :7,
         accion : 'Borradores',
         icon :'insert_drive_file',
-        isClicked: false
+        isClicked: false,
+        contadorFolios : this.contadorFolios[0].borradores 
       }
   ];
   // definicion del form de los filtros
@@ -207,7 +241,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
         });
        
       });
-
+    /*
     this.tableData1 = {
       headerRow: [
         "# Folio",
@@ -217,59 +251,9 @@ export class FolioComponent implements OnInit, AfterViewInit {
         "Fecha",
         "Acción",
       ],
-      dataRows: [
-        [
-          "0001",
-          "Fernando Vilches Soleman",
-          "Apertura Libro",
-          "Aqui va el asunto del folio",
-          "",
-          "",
-          "12/02/2020",
-          "btn-link",
-        ],
-        [
-          "0002",
-          "Andres Contreras Bustamantes",
-          "Solicitud",
-          "Aqui va el asunto del folio",
-          "",
-          "",
-          "12/02/2020",
-          "btn-link",
-        ],
-        [
-          "0003",
-          "Fernando Vilches Soleman",
-          "Adjuntar Información",
-          "Aqui va el asunto del folio",
-          "badge-warning",
-          "14/07/2020",
-          "12/02/2020",
-          "btn-link",
-        ],
-        [
-          "0004",
-          "Fernando Vilches Soleman",
-          "Advertencia",
-          "Aqui va el asunto del folio",
-          "",
-          "",
-          "12/02/2020",
-          "btn-link",
-        ],
-        [
-          "0005",
-          "Andres Contreras Bustamantes",
-          "Adjuntar Información",
-          "Aqui va el asunto del folio",
-          "badge-danger",
-          "12/02/2020",
-          "12/02/2020",
-          "btn-link",
-        ],
-      ],
+      dataRows: [],
     };
+    */
   }
   ngAfterViewInit(folios?:any){
     setTimeout(() => {
@@ -277,7 +261,27 @@ export class FolioComponent implements OnInit, AfterViewInit {
       this.folios = this.folios.filter(folio=> 
           folio.idUsuarioFirma !== null);
       this.foliosSinBorradores = this.folios;
-    },1500);
+
+      this.folioServie.favoritosUsuarioLibro(this.usuarioLibro.id, this.libroSeleccionado.id).subscribe(
+        favoritos=>{
+          console.log(favoritos.body);
+          this.folios.forEach(element=>{
+            let valor = null;
+            valor = favoritos.body.find(favorito=> favorito.id === element.id);
+            if(valor !== undefined){
+              element.existeFavorito = false;
+            }else{
+              element.existeFavorito = true;
+            }
+          })
+        }
+      );
+      setTimeout(() => {
+        this.getContadorFolioSideBar();
+        this.dataSource = new MatTableDataSource(this.folios);
+        this.dataSource.paginator = this.paginator;
+       }, 600);
+    },1600);
   }
   buscaFolios(libro, filtra?: boolean) {
     this.folios = [];
@@ -363,14 +367,20 @@ export class FolioComponent implements OnInit, AfterViewInit {
     });
     setTimeout(() => {
       this.folios = folios;
+      this.folios.forEach(element=>{
+        element.existeFavorito = true;
+      })
       this.foliosOrigen = folios;
       this.folios = this.folios.filter(folio=> 
           folio.idUsuarioFirma !== null);
+      this.dataSource = new MatTableDataSource(this.folios);
+      this.dataSource.paginator = this.paginator;
       this.foliosSinBorradores = this.folios;
     }, 1000);
 
   }
   nuevoFolio() {
+    
     const dialogRef = this.dialog.open(ModalCrearFolioComponent, {
       width: "500px",
       height: "290px",
@@ -435,18 +445,36 @@ export class FolioComponent implements OnInit, AfterViewInit {
       .buscarlibroPorContrato(idLibro, idUsuario)
       .subscribe((respuesta) => {
         this.usuarioLibro = respuesta.body[0];
-        /*
-        let permisos = [this.usuarioLibro.nombre.toLowerCase()]
-        this.permissionsService.loadPermissions(permisos);
-        */
+        if(this.usuarioLibro.adminActivo === false && this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "superior") {
+          this.muestraRedactarFolioAdminActivo = true;
+        }
+        if(this.usuarioLibro.adminActivo === false && this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "asistente") {
+          this.muestraRedactarFolioAdminActivo = true;
+        }
+        if(this.usuarioLibro.adminActivo === false && this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "visita") {
+          this.muestraRedactarFolioAdminActivo = false;
+        }
+        if(this.usuarioLibro.adminActivo === false && this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "administrador") {
+          this.muestraRedactarFolioAdminActivo = false;
+        }
+        if(this.usuarioLibro.adminActivo === true && this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "administrador") {
+          this.muestraRedactarFolioAdminActivo = true;
+        }
+        if(this.usuarioLibro.adminActivo === false && this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "administrador/s") {
+          this.muestraRedactarFolioAdminActivo = false;
+        }
+        if(this.usuarioLibro.adminActivo === true && this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "administrador/s") {
+          this.muestraRedactarFolioAdminActivo = true;
+        }
       });
+      
   }
   volverContrato() {
-    this.router.navigate(["/contrato/detalle-contrato/", this.contrato.id]);
+    this.router.navigate(["/libro/detalle-libro/", this.libroSeleccionado.id]);
   }
 
   filtrarFolios(accion : any){
-    this.folios = [];
+   this.folios = [];
    this.folios = this.foliosOrigen;
    let index = this.typesOfActions.indexOf(accion);
    this.typesOfActions.forEach(acciones=>{
@@ -454,24 +482,86 @@ export class FolioComponent implements OnInit, AfterViewInit {
    })
    switch(accion.id){
      case 1 : 
-          this.folios = this.foliosSinBorradores;
-          this.typesOfActions[index].isClicked = true;
+        this.folios = this.foliosSinBorradores;
+        // permite actualizar el folio si se elimino desde el favorito
+        if(this.indexEliminadoFavorito.length > 0 ){
+          this.indexEliminadoFavorito.forEach(element=>{
+            let folio = this.folios.find(folio => folio.id === element.id);
+            let index = this.folios.indexOf(folio);
+            this.folios[index].existeFavorito = true;
+            console.log(this.folios[index]);
+          })
+        }
+        this.typesOfActions[index].isClicked = true;
+        this.dataSource = new MatTableDataSource(this.folios);
+        this.dataSource.paginator = this.paginator;
+        this.marcaTipoFiltroSideBar === 1;
+        this.indexEliminadoFavorito = [];
+       
       break;
     case 2 :
       this.folios = this.folios.filter(folio=>folio.entidadCreacion === true && folio.idUsuarioFirma !== null); 
+      if(this.indexEliminadoFavorito.length > 0 ){
+        this.indexEliminadoFavorito.forEach(element=>{
+          let folio = this.folios.find(folio => folio.id === element.id);
+          let index = this.folios.indexOf(folio);
+          this.folios[index].existeFavorito = true;
+          console.log(this.folios[index]);
+        })
+      }
       this.typesOfActions[index].isClicked = true;
+      this.dataSource = new MatTableDataSource(this.folios);
+      this.dataSource.paginator = this.paginator;
+      this.marcaTipoFiltroSideBar === 2;
+      this.indexEliminadoFavorito = [];
       break;
     case 3 : 
       this.folios = this.folios.filter(folio=>folio.entidadCreacion === false && folio.idUsuarioFirma !== null);  
+      if(this.indexEliminadoFavorito.length > 0 ){
+        this.indexEliminadoFavorito.forEach(element=>{
+          let folio = this.folios.find(folio => folio.id === element.id);
+          let index = this.folios.indexOf(folio);
+          this.folios[index].existeFavorito = true;
+          console.log(this.folios[index]);
+        })
+      }
       this.typesOfActions[index].isClicked = true;
+      this.dataSource = new MatTableDataSource(this.folios);
+      this.dataSource.paginator = this.paginator;
+      this.marcaTipoFiltroSideBar === 3;
+      this.indexEliminadoFavorito = [];
       break;
     case 4 : 
       this.folios = this.folios.filter(folio=>folio.estadoRespuesta?.nombre==='Pendiente')
+      if(this.indexEliminadoFavorito.length > 0 ){
+        this.indexEliminadoFavorito.forEach(element=>{
+          let folio = this.folios.find(folio => folio.id === element.id);
+          let index = this.folios.indexOf(folio);
+          this.folios[index].existeFavorito = true;
+          console.log(this.folios[index]);
+        })
+      }
       this.typesOfActions[index].isClicked = true;
+      this.dataSource = new MatTableDataSource(this.folios);
+      this.dataSource.paginator = this.paginator;
+      this.marcaTipoFiltroSideBar === 4;
+      this.indexEliminadoFavorito = [];
       break;
     case 5 :
       this.folios = this.folios.filter(folio=>folio.idUsuarioLectura === null && folio.idUsuarioFirma !== null);
+      if(this.indexEliminadoFavorito.length > 0 ){
+        this.indexEliminadoFavorito.forEach(element=>{
+          let folio = this.folios.find(folio => folio.id === element.id);
+          let index = this.folios.indexOf(folio);
+          this.folios[index].existeFavorito = true;
+          console.log(this.folios[index]);
+        })
+      }
       this.typesOfActions[index].isClicked = true;
+      this.dataSource = new MatTableDataSource(this.folios);
+      this.dataSource.paginator = this.paginator;
+      this.marcaTipoFiltroSideBar === 5;
+      this.indexEliminadoFavorito = [];
       break;
     case 6 :
       this.folios = [];
@@ -494,15 +584,53 @@ export class FolioComponent implements OnInit, AfterViewInit {
           }
           setTimeout(() => {
             this.folios = foliosGuardados;
-          }, 500);
-          
+            if(this.indexEliminadoFavorito.length > 0 ){
+              this.indexEliminadoFavorito.forEach(element=>{
+                let folio = this.folios.find(folio => folio.id === element.id);
+                let index = this.folios.indexOf(folio);
+                this.folios[index].existeFavorito = true;
+                console.log(this.folios[index]);
+              })
+            }
+            this.dataSource = new MatTableDataSource(this.folios);
+            this.dataSource.paginator = this.paginator;
+          }, 600);
         }
       );
       this.typesOfActions[index].isClicked = true;
+      this.marcaTipoFiltroSideBar = 6;
       break;
     case 7 :
+      console.log(this.usuarioLibro);
       this.folios = this.folios.filter(folio=>folio.idUsuarioFirma === null );
       this.typesOfActions[index].isClicked = true;
+      if(this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "visita"){
+        this.folios = [];
+      }
+      if(this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "administrador" && this.usuarioLibro.adminActivo === false){
+        this.folios = [];
+      }
+      if(this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "superior"){
+        this.folios = this.folios.filter(folio=>folio.tipoFolio.nombre.toLowerCase() === "cambio administrador" );
+      }
+      if(this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "asistente"){
+        this.folios = this.folios.filter(folio=>folio.tipoFolio.nombre.toLowerCase() !== "cambio administrador" );
+      }
+      if(this.indexEliminadoFavorito.length > 0 ){
+        this.indexEliminadoFavorito.forEach(element=>{
+          let folio = this.folios.find(folio => folio.id === element.id);
+          let index = this.folios.indexOf(folio);
+          this.folios[index].existeFavorito = true;
+          console.log(this.folios[index]);
+        })
+      }
+      setTimeout(() => {
+        this.indexEliminadoFavorito = [];
+        this.dataSource = new MatTableDataSource(this.folios);
+        this.dataSource.paginator = this.paginator;
+        this.marcaTipoFiltroSideBar === 7;
+      }, 300);
+      
       break;
    }
   }
@@ -528,10 +656,13 @@ export class FolioComponent implements OnInit, AfterViewInit {
       if(existe === false){
         this.favoritoService.create(folioFavorito).subscribe(
           folioFavorito =>{
-    
+            let index = this.folios.indexOf(row);
+            this.folios[index].existeFavorito = false;
+            this.dataSource = new MatTableDataSource(this.folios);
+            this.dataSource.paginator = this.paginator;
+            this.getContadorFolioSideBar();
+            Swal.fire("Agregado!", "Favorito Agregado Correctamente.", "success");
           });
-      }else{
-        this.favoritoService.delete(idFolioExiste).subscribe();
       }
     }, 300);
   }
@@ -574,6 +705,8 @@ export class FolioComponent implements OnInit, AfterViewInit {
           }
         }
       );
+      this.dataSource = new MatTableDataSource(this.folios);
+        this.dataSource.paginator = this.paginator;
     }
     if(criterioBusqueda === 1){
       this.filter(valorBusqueda, criterioBusqueda);
@@ -603,6 +736,8 @@ export class FolioComponent implements OnInit, AfterViewInit {
     if(criterio === 1){
       foliosFiltrados = this.foliosOrigen.filter(folio=> folio.emisor.toLowerCase().indexOf(valorBusqueda) > -1);
       this.folios = foliosFiltrados;
+      this.dataSource = new MatTableDataSource(this.folios);
+      this.dataSource.paginator = this.paginator;
     }
     if(criterio === 2){
       foliosFiltrados = this.foliosOrigen.filter(folio=> {
@@ -611,16 +746,22 @@ export class FolioComponent implements OnInit, AfterViewInit {
         }
       });
       this.folios = foliosFiltrados;
+      this.dataSource = new MatTableDataSource(this.folios);
+      this.dataSource.paginator = this.paginator;
     }
     if(criterio === 3){
       foliosFiltrados = this.foliosOrigen.filter(folio=> {
           return folio.asunto.toLowerCase().indexOf(valorBusqueda) > -1
       });
       this.folios = foliosFiltrados;
+      this.dataSource = new MatTableDataSource(this.folios);
+      this.dataSource.paginator = this.paginator;
     }
     if(criterio === 4){
       //this.formFiltrosGroup.controls['inputBusqueda'].setValue('');
       this.folios = this.foliosOrigen;
+      this.dataSource = new MatTableDataSource(this.folios);
+      this.dataSource.paginator = this.paginator;
     }
   }
   setForm(filtros:any){
@@ -667,9 +808,92 @@ export class FolioComponent implements OnInit, AfterViewInit {
 
     button.isClicked = true;
   }
-  
+  getContadorFolioSideBar(){
+    let foliosFalso = this.foliosSinBorradores;
+    let contadorBandeja =  foliosFalso.length;
+    foliosFalso = this.foliosOrigen;
+    let contadorFolioMandante =  foliosFalso.filter(folio=>folio.entidadCreacion === true && folio.idUsuarioFirma !== null); 
+    foliosFalso = this.foliosOrigen;
+    let contadorFolioContratista = foliosFalso.filter(folio=>folio.entidadCreacion === false && folio.idUsuarioFirma !== null);  
+    foliosFalso = this.foliosOrigen;
+    let contadorSinRespuesta = foliosFalso.filter(folio=>folio.estadoRespuesta?.nombre==='Pendiente');
+    foliosFalso = this.foliosOrigen;
+    let contadorSinLeer = foliosFalso.filter(folio=>folio.idUsuarioLectura === null && folio.idUsuarioFirma !== null);
+    foliosFalso = this.foliosOrigen;
+    let contadorBorradores = [];
+    foliosFalso = foliosFalso.filter(folio=>folio.idUsuarioFirma === null );
+    contadorBorradores = foliosFalso;
+    if(this.usuarioLibro.perfilUsuarioLibro?.nombre.toLowerCase() === "visita"){
+      foliosFalso = [];
+      contadorBorradores = foliosFalso;
+    }
+    if(this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "administrador" && this.usuarioLibro.adminActivo === false){
+      foliosFalso = [];
+      contadorBorradores = foliosFalso;
+    }
+    if(this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "superior"){
+      foliosFalso = foliosFalso.filter(folio=>folio.tipoFolio.nombre.toLowerCase() === "cambio administrador" );
+      contadorBorradores = foliosFalso;
+    }
+    if(this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "asistente"){
+      foliosFalso = foliosFalso.filter(folio=>folio.tipoFolio.nombre.toLowerCase() !== "cambio administrador" );
+      contadorBorradores = foliosFalso;
+    }
+    foliosFalso = this.foliosOrigen;
+    let contadorDestacados  = [];
+    this.favoritoService.BuscarFavoritoByUsuario(this.usuarioLibro.id).subscribe(
+      folioFavoritos =>{
+        contadorDestacados = folioFavoritos.body;
+        this.typesOfActions[5].contadorFolios = contadorDestacados.length;
+      }
+    );
+    this.typesOfActions[0].contadorFolios = contadorBandeja;
+    this.typesOfActions[1].contadorFolios = contadorFolioMandante.length;
+    this.typesOfActions[2].contadorFolios = contadorFolioContratista.length;
+    this.typesOfActions[3].contadorFolios = contadorSinRespuesta.length;
+    this.typesOfActions[4].contadorFolios = contadorSinLeer.length;
+    this.typesOfActions[6].contadorFolios = contadorBorradores.length;
+    
+    //this.contadorFolios[0].bandeja = contadorBandeja;
+  }
+  eliminarFavorito(folio : any){
+    let existe = false;
+    let idFolioExiste= null;
+    let folioFavorito = new GesFavorito();
+    folioFavorito.usuarioLibro = this.usuarioLibro;
+    folioFavorito.folio = folio;
+    folioFavorito.fechaCreacion = moment(Date.now());
+    folioFavorito.nota = "";
+    this.favoritoService.BuscarFavoritoByFolio(folio.id).subscribe(
+      folioFavorito => {
+        if(folioFavorito.body.length > 0 ){
+          existe = true;
+          idFolioExiste = folioFavorito.body[0].id;
+        }else{
+          existe = false;
+        }
+        setTimeout(() => {
+          this.favoritoService.delete(idFolioExiste).subscribe(
+            folioFavorito=>{
+              let index = this.folios.indexOf(folio);
+              this.indexEliminadoFavorito = [...this.indexEliminadoFavorito, folio];
+              this.folios[index].existeFavorito = true;
+              if(this.marcaTipoFiltroSideBar === 6 ){
+                this.folios.splice(index, 1 );
+                this.dataSource = new MatTableDataSource(this.folios);
+                this.dataSource.paginator = this.paginator;
+              }else{
+                
+              }
+              this.getContadorFolioSideBar();
+              Swal.fire("Eliminado!", "Favorito Eliminado Correctamente.", "success");
+            }
+          );
+        }, 300);
+      }
+    );
+  }
 }
- 
 function calcDate(date1,date2) {
   var diff = Math.floor(date1.getTime() - date2.getTime());
   var day = 1000 * 60 * 60 * 24;

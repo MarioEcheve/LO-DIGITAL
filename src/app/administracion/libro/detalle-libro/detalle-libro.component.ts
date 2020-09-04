@@ -66,10 +66,12 @@ export class DetalleLibroComponent implements OnInit {
     private contratoService : ContratoService,
     private dependenciaService : DependenciaService,
     private perfilUsuarioLibro : UsuarioLibroPerfilService,
-    private usuarioDependenciaService: UsuarioDependenciaService
+    private usuarioDependenciaService: UsuarioDependenciaService,
+    private folioService : FolioService
   ) {}
 
   ngOnInit(): void {
+    this.folioService.navBarChange(2);
     let idLibro = this.route.snapshot.paramMap.get("id");
     this.inicializadorForms();
     this.tableData2 = {
@@ -751,5 +753,11 @@ export class DetalleLibroComponent implements OnInit {
         }
       }
     });
+  }
+  routeDetalleContrato(){
+    this.router.navigate(['/contrato/detalle-contrato', this.libro.contrato.id])
+  }
+  routeResumenFolio(){
+    this.router.navigate(['/folio/folio', this.libro.contrato.id,this.libro.id])
   }
 }

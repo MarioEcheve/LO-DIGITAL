@@ -23,7 +23,8 @@ export class FolioService {
     this.SERVER_API_URL + "api/folioReferencias";
   public resourceUrlFiltroFolioPersonalizado=
     this.SERVER_API_URL + "api/filtroFolioPersonalizado";
-
+  public resourceUrlFavoritosUsuarioLibro=
+    this.SERVER_API_URL + "api/favoritosUsuarioLibro";
   private folioRelacionadoSubject = new BehaviorSubject([]);
   private folioRelacionado: IFolio[];
   private listafolioRelacionadoSubject = new BehaviorSubject([]);
@@ -192,6 +193,17 @@ export class FolioService {
   buscarFolioPorLibro(id: number): Observable<EntityArrayResponseType> {
     return this.http
       .get<IFolio[]>(`${this.resourceUrlBuscarFolioPorLibro}/${id}`, {
+        observe: "response",
+      })
+      .pipe(
+        map((res: EntityArrayResponseType) =>
+          this.convertDateArrayFromServer(res)
+        )
+      );
+  }
+  favoritosUsuarioLibro(idUsuarioLibro : any , idLibro : any ): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<IFolio[]>(`${this.resourceUrlFavoritosUsuarioLibro}/${idUsuarioLibro}/${idLibro}`, {
         observe: "response",
       })
       .pipe(

@@ -15,7 +15,8 @@
                     >arrow_back_ios</i
                   >
                 </button>
-                <button
+                <!--
+                  <button
                   mat-raised-button
                   class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
                 >
@@ -39,32 +40,25 @@
                     >cloud_download</i
                   >
                 </button>
+               
+                
                 <button
                   mat-raised-button
                   class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
                 >
                   <i class="material-icons" style="color: #4e4e4e;">push_pin</i>
                 </button>
+                 -->
                 <button
                   mat-raised-button
                   class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
-                  [disabled]="Folio.requiereRespuesta === false || idlibroRelacionado !== null"
+                  [disabled]="Folio.requiereRespuesta === false || idlibroRelacionado !== null || usuario?.adminActivo === false"
                   (click)="responderFolio()"
                   *ngxPermissionsOnly="['administrador']"
                 >
                   <i class="material-icons" style="color: #4e4e4e;">reply</i>
                 </button>
-                <button
-                  mat-raised-button
-                  class="btn btn-just-icon btn-white btn-fab btn-round"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i class="material-icons" style="color: #5c5c5c;"
-                    >more_vert</i
-                  >
-                </button>
+                
                 <div class="dropdown-menu">
                   <a class="dropdown-item" href=""
                     ><i class="material-icons" style="font-size: 18px;">reply</i
@@ -83,7 +77,7 @@
                 <button
                   mat-raised-button
                   class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
-                  [disabled]="Folio.idUsuarioLectura !== null"
+                  [disabled]="Folio.idUsuarioLectura !== null  || usuario?.adminActivo === false"
                   (click)="lecturaFolio()"
                    *ngxPermissionsOnly="['administrador']"
                 >
@@ -311,6 +305,7 @@
               </p>
             </div>
           </mat-tab>
+          <!--
           <mat-tab label="Notas">
             <div class="container-fluid">
               <p style="font-weight: bold;">dasdasdas</p>
@@ -326,6 +321,7 @@
               ddasdasdasd
             </div>
           </mat-tab>
+             -->
         </mat-tab-group>
       </div>
     </div>

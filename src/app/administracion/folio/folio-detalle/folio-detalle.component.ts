@@ -58,6 +58,7 @@ export class FolioDetalleComponent implements OnInit {
   usuario;
   muestraImagenes = false;
   muestraRespuestaReferenciaFechaRequerida = true;
+  necesitaRespuesta = false;
   folioSiguiente;
   receptor = [];
   multipleConfig="";
@@ -259,6 +260,7 @@ export class FolioDetalleComponent implements OnInit {
       if(this.folioForm.controls["requiereRespuesta"].value === false){
         this.muestraFechaRequerida = false;
         if(respuesta.body.idFolioRelacionado !== null){
+          this.necesitaRespuesta= true;
           this.folioService.find(respuesta.body.idFolioRelacionado).subscribe(
             folioRelacionado => {
               this.folioForm.controls["respuestaFolio"].setValue("Respuesta de : "+folioRelacionado.body.libro.nombre+" | " +
@@ -289,6 +291,7 @@ export class FolioDetalleComponent implements OnInit {
         });
         this.tipoFolio = tipo;
         this.muestraRespuestaReferenciaFechaRequerida = false;
+        this.necesitaRespuesta = false;
       } else {
         if (
           respuesta.body.tipoFolio.nombre.toLocaleLowerCase() === "cambio administrador"

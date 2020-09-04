@@ -9,7 +9,7 @@ import {
 import { MatTableDataSource } from "@angular/material/table";
 import { FolioService } from "../../services/folio.service";
 import { LibroService } from "../../services/libro.service";
-import { ILibro } from "../../TO/libro.model";
+import { ILibro, Libro } from "../../TO/libro.model";
 import { TableData } from "src/app/md/md-table/md-table.component";
 import { Router } from "@angular/router";
 import { ContratoService } from "../../services/contrato.service";
@@ -51,46 +51,13 @@ export class ListaLibroComponent implements OnInit {
       headerRow: [
         "Código",
         "Nombre",
+        "Contrato",
         "Tipo Libro",
         "Tipo Firma",
         "Estado",
         "Acción",
       ],
-      dataRows: [
-        [
-          "LM01",
-          "Libro Principal",
-          "Maestro",
-          "Digital Avanzada",
-          "En creación",
-          "btn-link",
-        ],
-        [
-          "LC01",
-          "Libro de Comuniaciones",
-          "Auxiliar",
-          "Digital Simple",
-          "Abierto",
-          "btn-link",
-        ],
-        [
-          "LA01",
-          "Libro Prevención de Riesgos",
-          "Auxiliar",
-          "Por Sistema",
-          "Abierto",
-          "btn-link",
-        ],
-        ["LA02", "Libro PAC", "Auxiliar", "Por Sistema", "Abierto", "btn-link"],
-        [
-          "LA03",
-          "Libro Administrativo",
-          "Auxiliar",
-          "Por Sistema",
-          "Cerrado",
-          "btn-link",
-        ],
-      ],
+      dataRows: []
     };
   }
 
@@ -99,7 +66,6 @@ export class ListaLibroComponent implements OnInit {
     let usuario = JSON.parse(localStorage.getItem("user"));
     this.libroService.getMisLibros(usuario.id).subscribe(
       respuesta => {
-        console.log(respuesta.body);
         this.libros = respuesta.body;
         respuesta.body.forEach(element => {
            this.obtenerPerfilLibroUsuario(element.id,usuario.id);
@@ -120,15 +86,25 @@ export class ListaLibroComponent implements OnInit {
     this.usuarioLibroService
       .buscarlibroPorContrato(idLibro, idUsuario)
       .subscribe((respuesta) => {
-        console.log(respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase());
-        if(respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase() === 'administrador'){
-          this.validaEditarLibro = true;
-        }else{
-          this.validaEditarLibro = false;
-        }
+        this.libros.forEach(element=>{
+          let usuarioLibroAdminActual = respuesta.body[0];
+          this.usuarioLibroService.query().subscribe(
+            usuariosLibros=>{
+              let valor = usuariosLibros.body.filter(usuarioLibro=> usuarioLibro.libro.id === element.id && usuarioLibro.adminActivo === true);
+              valor.forEach(element2=>{
+                if(element2.id === usuarioLibroAdminActual.id){
+                  console.log(element2);
+                  if(element2.adminActivo === true){
+                    element.adminLibroActivo = true;
+                  }else{
+                    element.adminLibroActivo = false;
+                  }
+                }
+              });
+            }
+          );
+        });
         this.permisos = [...this.permisos,respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase()];
-        console.log(this.permisos);
-
         this.permissionsService.loadPermissions(this.permisos);
       });
   }
