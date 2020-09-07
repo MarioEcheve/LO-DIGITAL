@@ -15,40 +15,6 @@
                     >arrow_back_ios</i
                   >
                 </button>
-                <!--
-                  <button
-                  mat-raised-button
-                  class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
-                >
-                  <i class="material-icons" style="color: #4e4e4e;"
-                    >forward_to_inbox</i
-                  >
-                </button>
-                <button
-                  mat-raised-button
-                  class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
-                >
-                  <i class="material-icons" style="color: #4e4e4e;"
-                    >star_border</i
-                  >
-                </button>
-                <button
-                  mat-raised-button
-                  class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
-                >
-                  <i class="material-icons" style="color: #4e4e4e;"
-                    >cloud_download</i
-                  >
-                </button>
-               
-                
-                <button
-                  mat-raised-button
-                  class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
-                >
-                  <i class="material-icons" style="color: #4e4e4e;">push_pin</i>
-                </button>
-                 -->
                 <button
                   mat-raised-button
                   class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
@@ -107,30 +73,27 @@
                       <td>Mandante:</td>
                       <td *ngIf="Folio.libro">
                         &nbsp;{{
-                          Folio.libro.contrato.dependenciaMandante.entidad
-                            .nombre
-                        }}
+                          Folio.libro.contrato.dependenciaMandante.entidad.nombre}} | &nbsp;RUT:
+                          {{
+                            Folio.libro.contrato.dependenciaMandante.entidad.rut
+                          }}
                       </td>
                     </tr>
                     <tr>
                       <td></td>
                       <td *ngIf="Folio.libro">
-                        &nbsp;RUT:
-                        {{
-                          Folio.libro.contrato.dependenciaMandante.entidad.rut
-                        }}, Dirección
-                        {{ Folio.libro.contrato.dependenciaMandante.direccion }}
+                        &nbsp;Dependencia
+                        {{ Folio.libro.contrato.dependenciaMandante.nombre }}
                       </td>
                     </tr>
                     <tr>
                       <td>Contratista:</td>
-                      <td  *ngIf="dependenciaMandante">&nbsp;{{ dependenciaMandante.entidad.nombre }}</td>
+                      <td  *ngIf="dependenciaMandante">&nbsp;{{ dependenciaMandante.entidad.nombre }} |  &nbsp;RUT: {{ dependenciaMandante.entidad.rut }}</td>
                     </tr>
                     <tr>
                       <td></td>
                       <td *ngIf="dependenciaMandante">
-                        &nbsp;RUT: {{ dependenciaMandante.entidad.rut }},
-                        Dirección {{ dependenciaMandante.direccion }}
+                        &nbsp;Dependencia {{ dependenciaMandante.nombre }}
                       </td>
                     </tr>
                   </table>
@@ -177,8 +140,6 @@
                 </div>
               </div>
               <hr />
-              <!-- <h4>Folio Nº: 00001</h4>
-              fecha: 12/02/2020 a las 14:15 -->
               <table>
                 <tr>
                   <td style="font-size: 15px; font-weight: bold;">
@@ -263,7 +224,7 @@
               <hr />
               <div class="row">
                 <div class="col-6" style="font-size: 15px; font-weight: bold;">
-                  3 Archivos Adjuntos:
+                  {{ listaArchivos.length}} Archivos Adjuntos:
                 </div>
                 <div class="col-6 text-right">
                   <a href=""
@@ -278,16 +239,11 @@
                   >
                 </div>
               </div>
-              <ul class="list-inline">
-                <li class="list-inline-item"><a href="">Foto Sector.jpg</a></li>
-                &nbsp;
-                <li class="list-inline-item">
-                  <a href="">Planos de planta.zip</a>
+              <ul class="list-inline" >
+                <li *ngFor="let archivo of listaArchivos" (click)="openFile(archivo.archivoContentType, archivo.archivo , archivo.descripcion)"class="list-inline-item">
+                  <a >{{ archivo.descripcion}}</a>
                 </li>
                 &nbsp;
-                <li class="list-inline-item">
-                  <a href="">Detalle Constructivo.dwg</a>
-                </li>
               </ul>
               <hr />
               <strong *ngIf="emisor"

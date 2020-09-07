@@ -315,7 +315,8 @@
                   formControlName="anotacion"
                 ></angular-editor>
                 <hr />
-                <div
+                <!--
+                   <div
                   [dropzone]="multipleConfig"
                   class="dropzone dropzone-container"
                   message="Click or drag images here to upload"
@@ -333,6 +334,31 @@
                       total máximo de 10 archivos por folio.
                     </p>
                   </div>
+                </div>
+                -->
+                <input type="file" (change)="onFileChange($event)" multiple  id="file"> 
+                <br>
+                <div>
+                  <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="50%">Name</th>
+                            <th ng-show="uploader.isHTML5">Size</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let file of archivosFolio">
+                        <td><strong>{{ file.descripcion }}</strong></td>
+                        <td><strong ng-show="uploader.isHTML5" nowrap>{{ file.size }} MB</strong></td>
+                        <td nowrap>
+                          <button type="button" class="btn btn-danger btn-xs" (click)="eliminarArchivo(file)">
+                            <span class="glyphicon glyphicon-upload"></span> Eliminar
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
                 <hr />
                 <button
@@ -636,228 +662,5 @@
     </div>
   </div>
 </div>
-<div style="opacity: 0;">
-  <div class="main-content animate__animated animate__fadeIn" >
-    <div class="container-fluid" >
-      <div class="card cardPdf" id="data">
-        <br>
-        <div class="card-body " >
-            <div class="container-fluid">
-              <hr />
-              <img class="mr-1" src="/assets/img/logo42_.png" />
-              <img src="/assets/img/letra120x34_.png" />
-              <hr />
-              <div class="row" >
-                <div class="col-6 d-flex justify-content-start">
-                  <table style="width: 100%;">
-                    <tr>
-                      <td style="font-size: 15px; font-weight: bold;">
-                        Contrato:
-                      </td>
-                      <td style=" font-weight: bold;" *ngIf="libro.contrato">
-                        &nbsp;<strong>{{ libro.contrato.nombre }}</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Código:</td>
-                      <td *ngIf="libro.contrato">&nbsp;{{ libro.contrato.codigo }}</td>
-                    </tr>
-                    <tr>
-                      <td>Mandante:</td>
-                      <td *ngIf="libro.contrato">
-                        &nbsp;{{
-                          libro.contrato.dependenciaMandante.entidad.nombre
-                        }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td *ngIf="libro.contrato">
-                        &nbsp;RUT:
-                        {{ libro.contrato.dependenciaMandante.entidad.rut }},
-                        Dirección
-                        {{ libro.contrato.dependenciaMandante.direccion }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Contratista:</td>
-                      <td *ngIf="dependenciaContratista.entidad">
-                        &nbsp;{{ dependenciaContratista.entidad.nombre }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td *ngIf="dependenciaContratista.entidad">
-                        &nbsp;RUT:
-                        {{ dependenciaContratista.entidad.rut }}, Dirección
-                        {{ dependenciaContratista.direccion }}
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-                <div class="col-6 d-flex justify-content-end">
-                  <table style="width: 50%;">
-                    <tr>
-                      <td style="font-size: 15px; font-weight: bold;">
-                        <strong>Libro:</strong>
-                      </td>
-                      <td style=" font-size: 12px; font-weight: bold;">
-                        &nbsp;<strong>{{ libro.nombre }}</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Código:</td>
-                      <td>&nbsp;{{ libro.codigo }}</td>
-                    </tr>
-                    <tr>
-                      <td>Clase Libro:</td>
-                      <td *ngIf="libro.tipoLibro">&nbsp;{{ libro.tipoLibro.descripcion }}</td>
-                    </tr>
-                    <tr>
-                      <td>Tipo Firma:</td>
-                      <td *ngIf="libro.tipoFirma">&nbsp;{{ libro.tipoFirma.nombre }}</td>
-                    </tr>
-                    <tr>
-                      <td>Fecha Apertura:</td>
-                      <td>
-                        &nbsp;{{
-                          libro.fechaApertura | date: "dd-MM-yyyy HH:mm"
-                        }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Fecha Cierre:</td>
-                      <td>&nbsp;{{
-                        libro.fechaCierre | date: "dd-MM-yyyy HH:mm"
-                      }}</td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-              <br>
-              <br>
-              <hr />
-              <table style="width: 40%;">
-                <tr>
-                  <td style="font-size: 15px; font-weight: bold;">
-                    Folio # {{  correlativoPdf }}
-                  <td>
-                    &nbsp;
-                  </td>
-                </tr>
-                <tr>
-                  <td style="width: 60px;">Emisor:</td>
-                  <td >
-                    &nbsp;{{ emisorPdf.usuarioDependencia?.usuario.firstName }} {{ emisorPdf.usuarioDependencia?.usuario.lastName  }} 
-                  </td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>&nbsp;Administrador Contratista</td>
-                </tr>
-                <tr>
-                  <td style="width: 60px;">Receptor:</td>
-                  <td  >
-                    &nbsp;{{ receptorPdf.usuarioDependencia?.usuario.firstName }} {{ receptorPdf.usuarioDependencia?.usuario.lastName  }} </td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>&nbsp;Administrador Mandante</td>
-                </tr>
-                <tr *ngIf="Folio.libro">
-                  <td>Tipo de Folio:</td>
-                  <td>&nbsp;{{ tipoFolioPdf.nombre }}</td>
-                </tr>
-                <tr>
-                  <td>Respuesta de:</td>
-                  <td  *ngIf="respuestaPdf">&nbsp;{{ respuestaPdf }}
-                            
-                  </td>
-                  <td *ngIf="!respuestaPdf">&nbsp;n/a</td>
-                </tr>
-                <tr>
-                  <td style="width: 100px;">Referencia de:</td>
-                  <td>&nbsp;{{ referenciaPdf }}
-                     
-                    <!--
-                             &nbsp;
-                    <li class="list-inline-item">
-                      <a href="">Libro Maestro, Folio Nº003</a>
-                    </li>
-                    &nbsp;
-                    <li class="list-inline-item">
-                      <a href="">Libro Maestro, Folio Nº010</a>
-                    </li>
-                    &nbsp;
-                    <li class="list-inline-item">
-                      <a href="">Libro Maestro, Folio Nº012</a>
-                    </li>
-                    -->
-                  </td>
-                </tr>
-                <tr>
-                  <td>Fecha Requerida:</td>
-                  <td>
-                    &nbsp;<span *ngIf="Folio.fechaRequerida === undefined || Folio.fechaRequerida === null" class="badge badge-primary">No</span
-                    >&nbsp;&nbsp;
-                  </td>
-                </tr>
-                <tr>
-                  <td>Asunto:</td>
-                  <td>&nbsp;{{ asuntoPdf }}</td>
-                </tr>
-              </table>
-              <hr />
-              <div style="font-size: 15px; font-weight: bold;">
-                Anotación:
-                <br>
-                <p [innerHtml]="anotacionPdf"></p>
-              </div>
-                
-              <br />
-              <p ></p>
-             
-            </div>
-            <br>
-            <hr />
-            <div  id="data2">
-              <div class="col-6" style="font-size: 15px; font-weight: bold; text-align: left;">
-                3 Archivos Adjuntos:
-              </div>
-                <div class="col-6">
-                  <ul class="list-inline">
-                    <li class="list-inline-item"><a href="">Foto Sector.jpg</a></li>
-                    &nbsp;
-                    <li class="list-inline-item">
-                      <a href="">Planos de planta.zip</a>
-                    </li>
-                    &nbsp;
-                    <li class="list-inline-item">
-                      <a href="">Detalle Constructivo.dwg</a>
-                    </li>
-                  </ul>
-                </div>
-                <br>
-              <hr />
-              <div class="col-6" style="margin-top: -20px;"> 
-                <strong *ngIf="emisor"
-                >
-                </strong
-              >
-              <br />Administrador de Contrato <br />Fecha Firma:
-               <br />Fimar
-              Digital Avanzada (no existe el campo )<br />Cód. Verificación:
-              d5sd4537dasd45675asd456ad-7856asd-745
-              <mat-divider class="mt-2"></mat-divider>
-              <p style="font-size: smaller;" class="text-left mt-1">
-                Creado mediante en plataforma <a href="">www.lodigital.cl</a>,
-                Diseñada por LinkSystem Spa.
-              </p>
-              </div>
-            </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+
 

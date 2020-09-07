@@ -61,15 +61,15 @@ export class ListaLibroComponent implements OnInit {
     };
   }
 
-  getMisLibros(){
+   getMisLibros(){
     this.folioService.navBarChange(2);
     let usuario = JSON.parse(localStorage.getItem("user"));
     this.libroService.getMisLibros(usuario.id).subscribe(
       respuesta => {
-        this.libros = respuesta.body;
         respuesta.body.forEach(element => {
            this.obtenerPerfilLibroUsuario(element.id,usuario.id);
         });
+          this.libros = respuesta.body;
       }
     );
   }

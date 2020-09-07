@@ -1,0 +1,6 @@
+.list-inline-item{
+    color:blue
+}
+.list-inline-item:hover{
+    cursor: pointer;
+}

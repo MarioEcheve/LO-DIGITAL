@@ -194,6 +194,16 @@
                         >
                           <i class="material-icons">keyboard_arrow_right</i>
                         </button>
+                        <button
+                            mat-raised-button
+                            type="button"
+                            class="btn btn-default btn-sm btn-fab"
+                            (click)="detalleLibro(element)"
+                            *ngIf="element.numeroFolio === null"
+                            style="float: right;"
+                          >
+                        <i class="material-icons">keyboard_arrow_right</i>
+                      </button>
                     </td>
                   </ng-container>
 

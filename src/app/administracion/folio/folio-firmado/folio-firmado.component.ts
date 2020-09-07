@@ -14,6 +14,8 @@ import { VisorPdfComponent } from "../../shared/visor-pdf/visor-pdf/visor-pdf.co
 import { UsuarioDependencia } from "../../TO/usuario-dependencia.model";
 import { UsuarioDependenciaService } from "../../services/usuario-dependencia.service";
 import { NgxPermissionsService } from "ngx-permissions";
+import { ArchivoService } from "../../services/archivo.service";
+import { Archivo } from "../../TO/archivo.model";
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -32,6 +34,7 @@ export class FolioFirmadoComponent implements OnInit {
   libros: Libro[] = [];
   idlibroRelacionado =null;;
   folioRelacionado=  new Folio();
+  listaArchivos:Archivo[] = [];
   emisor;
   receptor;
   usuario;
@@ -55,14 +58,13 @@ export class FolioFirmadoComponent implements OnInit {
     private libroService : LibroService,
     private UsuarioDependenciaService : UsuarioDependenciaService,
     private permissionsService : NgxPermissionsService,
+    private archivoService : ArchivoService
   ) {}
   ngOnInit() {
     this.folioService.navBarChange(2);
     let idFolio = this.route.snapshot.paramMap.get("id");
     this.obtenerFolio(idFolio);
-
-   
-
+    this.getArchivosFolio(idFolio);
     this.tableData1 = {
       headerRow: ["#", "Name", "Job Position", "Since", "Salary", "Actions"],
       dataRows: [
@@ -218,4 +220,50 @@ export class FolioFirmadoComponent implements OnInit {
         this.permissionsService.loadPermissions(permisos);
       });
   }
+  async getArchivosFolio(idFolio){
+    let response = await this.archivoService.AchivosPorFolio(idFolio).subscribe(
+      respuesta=>{
+        this.listaArchivos = respuesta.body;
+        console.log(this.listaArchivos);
+      }
+    );
+    return response;
+  }
+  openFile(contentType: string, base64String: string , nombreArchivo : any ): void {
+    const blob = b64toBlob(base64String, contentType);
+    const blobUrl = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = blobUrl;
+    link.download = nombreArchivo;
+    document.body.appendChild(link);
+    link.dispatchEvent(
+      new MouseEvent('click', { 
+        bubbles: true, 
+        cancelable: true, 
+        view: window 
+      })
+    );
+    // Remove link from body
+    document.body.removeChild(link);
+    console.log(blobUrl)
+  }
+}
+const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+  const byteCharacters = atob(b64Data);
+  const byteArrays = [];
+
+  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+    const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+
+  const blob = new Blob(byteArrays, {type: contentType});
+  return blob;
 }

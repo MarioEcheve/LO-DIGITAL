@@ -20,7 +20,7 @@ import { VisorPdfComponent } from "../../shared/visor-pdf/visor-pdf/visor-pdf.co
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { ModalBuscarFolioComponent } from "../modal-buscar-folio/modal-buscar-folio.component";
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { FolioReferenciaService } from "../../services/folio-referencia.service";
 import { FolioReferencia } from "../../TO/folio-referencia.model";
@@ -29,10 +29,14 @@ import { NgxPermissionsService } from "ngx-permissions";
 import { CambioAdministradorComponent } from "../../shared/cambio-administrador/cambio-administrador.component";
 import htmlToPdfmake from "html-to-pdfmake";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-import htmlToImage from 'html-to-image';
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import htmlToImage from "html-to-image";
 import { UsuarioLibro } from "../../TO/usuario-libro.model";
+import { Archivo } from "../../TO/archivo.model";
+import { ArchivoService } from "../../services/archivo.service";
+import { Img } from "pdfmake-wrapper";
+import { async } from "@angular/core/testing";
 
 declare var $: any;
 declare interface TableData {
@@ -51,6 +55,10 @@ export class FolioDetalleComponent implements OnInit {
   Folio = new Folio();
   src;
   dependenciaContratista = new Dependencia();
+  // implementacion de administrador de archivos folios
+  filesArray = [];
+  showFileArray: [];
+  //------------------------------
   tipoFolio: ITipoFolio[];
   tipoFolioSeleccionado: any = "";
   muestraFechaRequerida = false;
@@ -61,11 +69,11 @@ export class FolioDetalleComponent implements OnInit {
   necesitaRespuesta = false;
   folioSiguiente;
   receptor = [];
-  multipleConfig="";
-  folioRelacionado : IFolio;
-  private fechaRequeridaValidators = [
-    Validators.maxLength(250),
-  ]
+  multipleConfig = "";
+  folioRelacionado: IFolio;
+  archivosFolio = [];
+  editarArchivosFolios = false;
+  private fechaRequeridaValidators = [Validators.maxLength(250)];
   // variables utilizadas para pintar el pdf
   receptorPdf = new UsuarioLibro();
   emisorPdf = new UsuarioLibro();
@@ -80,32 +88,30 @@ export class FolioDetalleComponent implements OnInit {
   muestraCambioAdmin = false;
   // IMPLEMENTACION CONFIG ANGULAR-EDITOR
   editorConfig: AngularEditorConfig = {
-  editable: true,
+    editable: true,
     spellcheck: true,
-    height: '15rem',
-    minHeight: '5rem',
-    placeholder: 'Enter text here...',
-    translate: 'no',
-    defaultParagraphSeparator: 'p',
-    defaultFontName: 'Arial',
-    toolbarHiddenButtons: [
-      ['bold']
-      ],
+    height: "15rem",
+    minHeight: "5rem",
+    placeholder: "Enter text here...",
+    translate: "no",
+    defaultParagraphSeparator: "p",
+    defaultFontName: "Arial",
+    toolbarHiddenButtons: [["bold"]],
     customClasses: [
       {
         name: "quote",
         class: "quote",
       },
       {
-        name: 'redText',
-        class: 'redText'
+        name: "redText",
+        class: "redText",
       },
       {
         name: "titleText",
         class: "titleText",
         tag: "h1",
       },
-    ]
+    ],
   };
 
   // implementacion de chips
@@ -138,16 +144,16 @@ export class FolioDetalleComponent implements OnInit {
     private dialog: MatDialog,
     private datePipe: DatePipe,
     private usuarioLibroService: UsuarioLibroService,
-    private folioReferenciaService : FolioReferenciaService,
-    private permissionsService : NgxPermissionsService,
+    private folioReferenciaService: FolioReferenciaService,
+    private permissionsService: NgxPermissionsService,
+    private archivoService: ArchivoService
   ) {
-    this.folioService.removeFolioReferencia(new Folio, false);
+    this.folioService.removeFolioReferencia(new Folio(), false);
     this.folios = [];
     this.folioService.navBarChange(2);
   }
 
   ngOnInit() {
-    
     this.obtenerTipoFolio();
     this.folioForm = this.fb.group({
       id: [],
@@ -170,11 +176,12 @@ export class FolioDetalleComponent implements OnInit {
       usuarioPerfilLibro: [],
       usuarioNombre: [],
       perfilUsuario: [],
-      respuestaFolio : ["respuesta de "],
-      fechaRequeridaDatepicker : ["",this.fechaRequeridaValidators],
-      folioReferencia : [],
-      receptor : [ null,Validators.required],
-      cambioAdmin : ["Cambio Administrador"]
+      respuestaFolio: ["respuesta de "],
+      fechaRequeridaDatepicker: ["", this.fechaRequeridaValidators],
+      folioReferencia: [],
+      receptor: [null, Validators.required],
+      cambioAdmin: ["Cambio Administrador"],
+      archivos: [],
     });
     this.tableData1 = {
       headerRow: ["#", "Name", "Job Position", "Since", "Salary", "Actions"],
@@ -187,95 +194,118 @@ export class FolioDetalleComponent implements OnInit {
       ],
     };
     let idFolio = this.route.snapshot.paramMap.get("id");
-  
-    this.buscarFolio(idFolio);  
-    
-    this.folioService.getListaFoliosRelacionadosAgregadosSubject().subscribe(
-      respuesta => {
-        if(respuesta.length === 0){
+
+    this.buscarFolio(idFolio);
+    this.achivosPorFolio(idFolio);
+
+    this.folioService
+      .getListaFoliosRelacionadosAgregadosSubject()
+      .subscribe((respuesta) => {
+        if (respuesta.length === 0) {
           //this.folioService.removeFolioReferencia(new Folio, false);
           //this.folioService.AgregarFolioReferenciaAlista(new Folio, true , []);
-            this.folios = [];
-        }else{
-          if(this.folios.length > 0){
+          this.folios = [];
+        } else {
+          if (this.folios.length > 0) {
             let hash = {};
             this.folios = respuesta;
-            this.folios = this.folios.filter(o => hash[o.id] ? false : hash[o.id] = true);
-          }else{
-              if(respuesta.length === 1){
-                this.folios = respuesta;
-              }else{
-                let hash = {};
-                this.folios = respuesta.filter(o => hash[o.id] ? false : hash[o.id] = true);
-              }
+            this.folios = this.folios.filter((o) =>
+              hash[o.id] ? false : (hash[o.id] = true)
+            );
+          } else {
+            if (respuesta.length === 1) {
+              this.folios = respuesta;
+            } else {
+              let hash = {};
+              this.folios = respuesta.filter((o) =>
+                hash[o.id] ? false : (hash[o.id] = true)
+              );
+            }
           }
         }
-      }
-    );
+      });
   }
   buscarFolio(id) {
     let usuarioActual = JSON.parse(localStorage.getItem("user"));
     this.folioService.find(id).subscribe((respuesta) => {
       this.Folio = respuesta.body;
       this.correlativoFolio(this.Folio.libro.id);
-      this.usuarioLibroService.ListaUsuariosLibros(respuesta.body.libro.id,usuarioActual.id).subscribe(
-        respuesta=>{
+      this.usuarioLibroService
+        .ListaUsuariosLibros(respuesta.body.libro.id, usuarioActual.id)
+        .subscribe((respuesta) => {
           this.receptor = respuesta.body;
-        }
-      );
-      this.folioService.foliosReferencias(respuesta.body.id).subscribe(
-        respuesta=>{
+        });
+      this.folioService
+        .foliosReferencias(respuesta.body.id)
+        .subscribe((respuesta) => {
           this.folios = [];
           this.Folio.folioReferencias = respuesta.body.folioReferencias;
-          if(this.Folio.folioReferencias.length > 0 ){
+          if (this.Folio.folioReferencias.length > 0) {
             this.referenciaPdf = this.folios;
-          }else{
+          } else {
             this.referenciaPdf = "n/a";
           }
-          this.Folio.folioReferencias.forEach(element=>{
-            this.folioService.find(element.idFolioReferencia).subscribe(
-              folioReferencia=>{
+          this.Folio.folioReferencias.forEach((element) => {
+            this.folioService
+              .find(element.idFolioReferencia)
+              .subscribe((folioReferencia) => {
                 this.folios = [...this.folios, folioReferencia.body];
-                this.folioService.AgregarFolioReferenciaAlista(folioReferencia.body);
-                console.log(this.folios);
-                
-              }
-            );
-           })
-        }
-        
-      );
+                this.folioService.AgregarFolioReferenciaAlista(
+                  folioReferencia.body
+                );
+              });
+          });
+        });
       setTimeout(() => {
-        this.folioService.AgregarFolioReferenciaAlista(new Folio ,true ,this.folios);
+        this.folioService.AgregarFolioReferenciaAlista(
+          new Folio(),
+          true,
+          this.folios
+        );
       }, 800);
       this.buscaCorrelativoFolio();
-      
+
       this.obtenerPerfilLibroUsuario(this.Folio.libro.id, usuarioActual.id);
       this.asuntoPdf = respuesta.body.asunto;
-      this.anotacionPdf =  respuesta.body.anotacion;
+      this.anotacionPdf = respuesta.body.anotacion;
       this.folioForm.controls["asunto"].setValue(respuesta.body.asunto);
       this.folioForm.controls["anotacion"].setValue(respuesta.body.anotacion);
-      this.folioForm.controls["requiereRespuesta"].setValue(respuesta.body.requiereRespuesta);
+      this.folioForm.controls["requiereRespuesta"].setValue(
+        respuesta.body.requiereRespuesta
+      );
       this.folioForm.controls["receptor"].setValue(respuesta.body.idReceptor);
-      if(this.folioForm.controls["requiereRespuesta"].value === false){
+      if (this.folioForm.controls["requiereRespuesta"].value === false) {
         this.muestraFechaRequerida = false;
-        if(respuesta.body.idFolioRelacionado !== null){
-          this.necesitaRespuesta= true;
-          this.folioService.find(respuesta.body.idFolioRelacionado).subscribe(
-            folioRelacionado => {
-              this.folioForm.controls["respuestaFolio"].setValue("Respuesta de : "+folioRelacionado.body.libro.nombre+" | " +
-                "Folio : " + folioRelacionado.body.numeroFolio 
-                );
-                this.respuestaPdf = this.folioForm.controls["respuestaFolio"].value;
+        if (respuesta.body.idFolioRelacionado !== null) {
+          this.necesitaRespuesta = true;
+          this.folioService
+            .find(respuesta.body.idFolioRelacionado)
+            .subscribe((folioRelacionado) => {
+              this.folioForm.controls["respuestaFolio"].setValue(
+                "Respuesta de : " +
+                  folioRelacionado.body.libro.nombre +
+                  " | " +
+                  "Folio : " +
+                  folioRelacionado.body.numeroFolio
+              );
+              this.respuestaPdf = this.folioForm.controls[
+                "respuestaFolio"
+              ].value;
               this.folioRelacionado = folioRelacionado.body;
-            }
-          );
+            });
         }
-      }else{
-        if(respuesta.body.fechaRequerida !== undefined){
-          this.folioForm.get('fechaRequeridaDatepicker').setValidators([Validators.required])
-          let fecha =this.Folio.fechaRequerida.local().toISOString().split(":00.000Z");
-          this.folioForm.controls["fechaRequeridaDatepicker"].setValue(fecha[0]);
+      } else {
+        if (respuesta.body.fechaRequerida !== undefined) {
+          this.folioForm
+            .get("fechaRequeridaDatepicker")
+            .setValidators([Validators.required]);
+          let fecha = this.Folio.fechaRequerida
+            .local()
+            .toISOString()
+            .split(":00.000Z");
+          this.folioForm.controls["fechaRequeridaDatepicker"].setValue(
+            fecha[0]
+          );
         }
         this.muestraFechaRequerida = true;
       }
@@ -294,8 +324,9 @@ export class FolioDetalleComponent implements OnInit {
         this.necesitaRespuesta = false;
       } else {
         if (
-          respuesta.body.tipoFolio.nombre.toLocaleLowerCase() === "cambio administrador"
-        ){
+          respuesta.body.tipoFolio.nombre.toLocaleLowerCase() ===
+          "cambio administrador"
+        ) {
           this.muestraCambioAdmin = true;
         }
 
@@ -304,7 +335,6 @@ export class FolioDetalleComponent implements OnInit {
         });
         this.tipoFolio = tipo;
       }
-      
 
       this.folioForm.controls["fechaCreacion"].setValue(
         this.datePipe.transform(
@@ -341,12 +371,12 @@ export class FolioDetalleComponent implements OnInit {
             respuesta.body.perfilUsuarioLibro.nombre
           );
         });
-      if(respuesta.body.idReceptor !== null){
-        this.usuarioLibroService.find(respuesta.body.idReceptor).subscribe(
-          receptor=>{
+      if (respuesta.body.idReceptor !== null) {
+        this.usuarioLibroService
+          .find(respuesta.body.idReceptor)
+          .subscribe((receptor) => {
             this.receptorPdf = receptor.body;
-          }
-        );
+          });
       }
     });
     // desabilitamos los inputs del form
@@ -356,8 +386,7 @@ export class FolioDetalleComponent implements OnInit {
     this.folioForm.controls["usuarioPerfilLibro"].disable();
     this.folioForm.controls["respuestaFolio"].disable();
     this.folioForm.controls["folioReferencia"].disable();
-    this.folioForm.controls['cambioAdmin'].disable();
-    
+    this.folioForm.controls["cambioAdmin"].disable();
   }
   obtenerTipoFolio() {
     this.tipoFolioService.query().subscribe((respuesta) => {
@@ -371,12 +400,22 @@ export class FolioDetalleComponent implements OnInit {
     this.Folio.asunto = this.folioForm.controls["asunto"].value;
     this.Folio.idUsuarioCreador = this.usuario.id;
     this.Folio.idReceptor = this.folioForm.controls["receptor"].value;
+    this.Folio.archivos = [];
+    /*
+    blobToBase64(blob).then((res: string) => {
+      var documento = res.split(",");
+      var aux = documento[0].split("data:");
+      var tipoDocumento = aux[1].split(";");
+      //this.folio.pdfFirmado = documento[1];
+      //this.folio.pdfFirmadoContentType = tipoDocumento[0];
+    });*/
     this.Folio.estadoFolio = false;
-    if(this.folioForm.controls["fechaRequeridaDatepicker"].value !== ""){
-      let fechaRequerida = moment(this.folioForm.controls["fechaRequeridaDatepicker"].value +":00Z");
+    if (this.folioForm.controls["fechaRequeridaDatepicker"].value !== "") {
+      let fechaRequerida = moment(
+        this.folioForm.controls["fechaRequeridaDatepicker"].value + ":00Z"
+      );
       this.Folio.fechaRequerida = fechaRequerida;
-    }
-    else{
+    } else {
       this.Folio.fechaRequerida = undefined;
     }
     if (this.tipoFolioSeleccionado !== "") {
@@ -384,31 +423,60 @@ export class FolioDetalleComponent implements OnInit {
     }
     this.folioService.update(this.Folio).subscribe(
       (respuesta) => {
-        if(this.folios.length > 0){
-          for(let i =0; i< this.folios.length; i++){
-            let folioReferencia = new FolioReferencia;
+        // guardar archivos
+        if (this.editarArchivosFolios === false) {
+          if (this.archivosFolio.length > 0) {
+            this.archivosFolio.forEach((element) => {
+              element.folio = respuesta.body;
+              this.archivoService.create(element).subscribe(
+                (respuesta) => {
+                  let index = this.archivosFolio.indexOf(element);
+                  this.archivosFolio[index].id = respuesta.body.id;
+                  console.log(respuesta.body);
+                },
+                (existe) => {}
+              );
+            });
+          }
+        } else {
+          this.archivosFolio.forEach((element) => {
+            element.folio = respuesta.body;
+            element.size = 0;
+            if (element.id !== undefined) {
+              this.archivoService.update(element).subscribe();
+            } else {
+              this.archivoService.create(element).subscribe((respuesta) => {
+                let index = this.archivosFolio.indexOf(element);
+                this.archivosFolio[index].id = respuesta.body.id;
+              });
+            }
+          });
+        }
+        if (this.folios.length > 0) {
+          for (let i = 0; i < this.folios.length; i++) {
+            let folioReferencia = new FolioReferencia();
             folioReferencia.idFolioReferencia = this.folios[i].id;
             folioReferencia.idFolioOrigen = respuesta.body.id;
-            folioReferencia.asunto=`Folio Relacionado | asunto : ${this.folios[i].asunto}`
-            this.folioReferenciaService.create(folioReferencia).subscribe(
-              respuesta2 => {
-                respuesta.body.folioReferencias =[];
+            folioReferencia.asunto = `Folio Relacionado | asunto : ${this.folios[i].asunto}`;
+            this.folioReferenciaService
+              .create(folioReferencia)
+              .subscribe((respuesta2) => {
+                respuesta.body.folioReferencias = [];
                 respuesta.body.folioReferencias.push(respuesta2.body);
                 this.folioService.update(respuesta.body).subscribe();
-              }
-            );
+              });
           }
-          
+
           setTimeout(() => {
             this.buscarFolio(respuesta.body.id);
             this.showNotificationSuccess("top", "right");
           }, 500);
           //this.folioRelacionadoService.create().subscribe();
-        }else{ 
+        } else {
           setTimeout(() => {
             respuesta.body.folioReferencias = [];
             this.folioService.ListaFoliosDeFolios([]);
-            this.folioService.update(respuesta.body).subscribe(); 
+            this.folioService.update(respuesta.body).subscribe();
             setTimeout(() => {
               this.buscarFolio(respuesta.body.id);
             }, 1000);
@@ -427,14 +495,13 @@ export class FolioDetalleComponent implements OnInit {
         this.tipoFolio = this.tipoFolio.filter(
           (tipo) => tipo.nombre.toLowerCase() === "apertura libro"
         );
-        this.muestraCambioAdmin
+        this.muestraCambioAdmin;
       } else {
         this.tipoFolio = this.tipoFolio.filter(
           (tipo) => tipo.nombre.toLowerCase() !== "apertura libro"
         );
       }
     });
-    
   }
   firmarFolio() {
     const dialogRef = this.dialog.open(ModalFirmaFolioComponent, {
@@ -450,10 +517,12 @@ export class FolioDetalleComponent implements OnInit {
         this.Folio.asunto = this.folioForm.controls["asunto"].value;
         this.Folio.idUsuarioCreador = this.usuario.id;
         this.Folio.idUsuarioFirma = this.usuario.id;
-        this.Folio.fechaRequerida = this.Folio.fechaRequerida = moment(this.folioForm.controls["fechaRequeridaDatepicker"].value);
+        this.Folio.fechaRequerida = this.Folio.fechaRequerida = moment(
+          this.folioForm.controls["fechaRequeridaDatepicker"].value
+        );
         this.Folio.estadoFolio = true;
 
-       /*
+        /*
         this.folioService
           .correlativoFolio(this.Folio.libro.id)
           .subscribe((respuesta) => {
@@ -484,28 +553,26 @@ export class FolioDetalleComponent implements OnInit {
         );
         */
       }
-      
     });
   }
   ocultaFechaRequerida() {
-
     this.folioForm.controls["requiereRespuesta"].valueChanges.subscribe(
-      res=>{
-        if(res){
+      (res) => {
+        if (res) {
           this.muestraFechaRequerida = true;
-          this.Folio.requiereRespuesta = true; 
-          this.folioForm.get('fechaRequeridaDatepicker').setValue(new Date());  
-          this.folioForm.get('fechaRequeridaDatepicker').setValidators([Validators.required])
-        }
-        else{
-          this.folioForm.get('fechaRequeridaDatepicker').clearValidators();
+          this.Folio.requiereRespuesta = true;
+          this.folioForm.get("fechaRequeridaDatepicker").setValue(new Date());
+          this.folioForm
+            .get("fechaRequeridaDatepicker")
+            .setValidators([Validators.required]);
+        } else {
+          this.folioForm.get("fechaRequeridaDatepicker").clearValidators();
           this.muestraFechaRequerida = false;
           this.Folio.requiereRespuesta = false;
-          this.folioForm.get('fechaRequeridaDatepicker').setValue("");  
+          this.folioForm.get("fechaRequeridaDatepicker").setValue("");
         }
       }
     );
-
   }
   showNotificationSuccess(from: any, align: any) {
     const type = [
@@ -585,25 +652,36 @@ export class FolioDetalleComponent implements OnInit {
       }
     );
   }
-  onUploadInit(event) {}
+  onUploadInit(event, archivos?: any) {
+    if (!archivos) {
+      console.log(event);
+    }
+  }
 
   obtenerPerfilLibroUsuario(idLibro, idUsuario) {
     this.usuarioLibroService
       .buscarlibroPorContrato(idLibro, idUsuario)
       .subscribe((respuesta) => {
         this.usuario = respuesta.body[0];
-        let permisos = [respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase()];
+        let permisos = [
+          respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase(),
+        ];
         this.permissionsService.loadPermissions(permisos);
-        console.log(this.tipoFolio);
-        console.log(this.usuario);
+        if (
+          this.usuario.perfilUsuarioLibro.nombre.toLowerCase() === "superior"
+        ) {
+          this.tipoFolio = this.tipoFolio.filter(
+            (tipo) => tipo.nombre.toLowerCase() === "cambio administrador"
+          );
+        }
+        if (
+          this.usuario.perfilUsuarioLibro.nombre.toLowerCase() === "asistente"
+        ) {
+          this.tipoFolio = this.tipoFolio.filter(
+            (tipo) => tipo.nombre.toLowerCase() !== "cambio administrador"
+          );
+        }
 
-        if(this.usuario.perfilUsuarioLibro.nombre.toLowerCase() === "superior"){
-          this.tipoFolio = this.tipoFolio.filter(tipo => tipo.nombre.toLowerCase() === "cambio administrador")
-        }
-        if(this.usuario.perfilUsuarioLibro.nombre.toLowerCase() === "asistente"){
-          this.tipoFolio = this.tipoFolio.filter(tipo => tipo.nombre.toLowerCase() !== "cambio administrador")
-        }
-        
         this.folioForm.controls["usuarioNombre"].setValue(
           respuesta.body[0].usuarioDependencia.usuario.firstName +
             " " +
@@ -624,50 +702,71 @@ export class FolioDetalleComponent implements OnInit {
       cancelButtonText: "No, Mantener folio",
     }).then((result) => {
       if (result.value) {
-        if(this.Folio.idFolioRelacionado !== null){
+        if (this.Folio.idFolioRelacionado !== null) {
           // valida si el folio es referenciado
-          if(this.folios.length > 0){
-            for(let i =0; i< this.folios.length;i++){
-              this.folioService.find(this.folios[i].folioReferencias.idFolioOrigen).subscribe(
-                folioOrigen=>{
+          if (this.archivosFolio.length > 0) {
+            this.archivosFolio.forEach((element) => {
+              this.archivoService.delete(element.id).subscribe();
+            });
+          }
+          if (this.folios.length > 0) {
+            for (let i = 0; i < this.folios.length; i++) {
+              this.folioService
+                .find(this.folios[i].folioReferencias.idFolioOrigen)
+                .subscribe((folioOrigen) => {
                   folioOrigen.body.folioReferencias = [];
                   this.folioService.update(folioOrigen.body).subscribe();
-                }
-              );
+                });
             }
           }
-          this.folioService.find(this.Folio.idFolioRelacionado).subscribe(
-            respuesta=>{
+          this.folioService
+            .find(this.Folio.idFolioRelacionado)
+            .subscribe((respuesta) => {
               respuesta.body.idFolioRespuesta = null;
               respuesta.body.estadoRespuesta = null;
-              this.folioService.update(respuesta.body).subscribe(
-                respuesta2=>{
-                  this.folioService.delete(this.Folio.id).subscribe((respuesta) => {
-                    Swal.fire("Eliminado!", "Folio Eliminado Correctamente.", "success");
-                    // For more information about handling dismissals please visit
-                    // https://sweetalert2.github.io/#handling-dismissals
-                    this.router.navigate([
-                      "/folio/folio/",
-                      this.libro.contrato.id,
-                      this.libro.id,
-                    ]);
-                  });
-                }
+              this.folioService
+                .update(respuesta.body)
+                .subscribe((respuesta2) => {
+                  this.folioService
+                    .delete(this.Folio.id)
+                    .subscribe((respuesta) => {
+                      Swal.fire(
+                        "Eliminado!",
+                        "Folio Eliminado Correctamente.",
+                        "success"
+                      );
+                      // For more information about handling dismissals please visit
+                      // https://sweetalert2.github.io/#handling-dismissals
+                      this.router.navigate([
+                        "/folio/folio/",
+                        this.libro.contrato.id,
+                        this.libro.id,
+                      ]);
+                    });
+                });
+            });
+        } else {
+          if (this.archivosFolio.length > 0) {
+            this.archivosFolio.forEach((element) => {
+              this.archivoService.delete(element.id).subscribe();
+            });
+          }
+          setTimeout(() => {
+            this.folioService.delete(this.Folio.id).subscribe((respuesta) => {
+              Swal.fire(
+                "Eliminado!",
+                "Folio Eliminado Correctamente.",
+                "success"
               );
-            }
-          );
-        }
-        else{
-          this.folioService.delete(this.Folio.id).subscribe((respuesta) => {
-            Swal.fire("Eliminado!", "Folio Eliminado Correctamente.", "success");
-            // For more information about handling dismissals please visit
-            // https://sweetalert2.github.io/#handling-dismissals
-            this.router.navigate([
-              "/folio/folio/",
-              this.libro.contrato.id,
-              this.libro.id,
-            ]);
-          });
+              // For more information about handling dismissals please visit
+              // https://sweetalert2.github.io/#handling-dismissals
+              this.router.navigate([
+                "/folio/folio/",
+                this.libro.contrato.id,
+                this.libro.id,
+              ]);
+            });
+          }, 600);
         }
         /*
        
@@ -686,105 +785,189 @@ export class FolioDetalleComponent implements OnInit {
   }
   valorTipoFolio(tipo) {
     this.tipoFolioSeleccionado = tipo;
-    if(this.tipoFolioSeleccionado.nombre.toLowerCase() === "cambio administrador"){
+    if (
+      this.tipoFolioSeleccionado.nombre.toLowerCase() === "cambio administrador"
+    ) {
       this.muestraCambioAdmin = true;
-    }else{
+    } else {
       this.muestraCambioAdmin = false;
     }
   }
-  previsualizar() {
+  async previsualizar() {
     let anotacion = stripHtml(this.folioForm.controls["anotacion"].value);
+    let imagen = document.getElementById('imagenLogo1');
+    let imagen2 = document.getElementById('imagenLogo2');
+    let imagenBase64 = getBase64Image(imagen);
+    let imagenBase642 = getBase64Image(imagen2);    
     this.Folio.idReceptor = this.folioForm.controls["receptor"].value;
-    this.Folio.fechaRequerida = moment(this.folioForm.controls["fechaRequeridaDatepicker"].value);
-    this.usuarioLibroService.find(this.Folio.idReceptor).subscribe(
-      respuesta=>{
-        let valorRecepor = respuesta.body.usuarioDependencia.usuario.firstName +  respuesta.body.usuarioDependencia.usuario.lastName;
-        this.receptorPdf = respuesta.body;
-        console.log(this.receptorPdf);
-      }
+    this.Folio.fechaRequerida = moment(
+      this.folioForm.controls["fechaRequeridaDatepicker"].value
     );
-      
-      var node = document.getElementById('data');
-      var node2 = document.getElementById('data2');
-      let promesa1 = new Promise((resolve,reject)=>{
-        htmlToImage.toPng(node)
-        .then( url=> {
-            let img = new Image();
-            img.src = url;
-            //document.body.appendChild(img);
-            resolve(img.src);
-          })
-          .catch(function (error) {
-            console.error('oops, something went wrong!', error);
-          });   
-       });
-       let promesa2 = new Promise((resolve,reject)=>{
-        htmlToImage.toPng(node2)
-        .then( url=> {
-            let img = new Image();
-            img.src = url;
-            //document.body.appendChild(img);
-            resolve(img.src);
-          })
-          .catch(function (error) {
-            console.error('oops, something went wrong!', error);
-          });   
-       });
-      Promise.all([promesa1, promesa2,]).then(values => { 
-        var docDefinition = {
-          content: [
-            {
-              image: "div1",
-              width: 600,
-              height: 650,
-              margin: [ -42, -80, 10, 20 ] ,
-            },
-          ],
-          images: {
-            div1: values[0],
-          
-          },
-        };
-        
-        const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-        let url;
-        let promise = new Promise(function (resolve, reject) {
-          pdfDocGenerator.getBlob((blob) => {
-            url = URL.createObjectURL(blob);
-            resolve(url);
-          });
-        });
-        promise.then((resultado) => {
-          const dialogRef = this.dialog.open(VisorPdfComponent, {
-            width: "100%",
-            height: "90%",
-            data: {
-              pdf: resultado,
-              folio: this.Folio,
-              usuario: this.usuario,
-              pdfArchivoCompleto: pdfDocGenerator,
-              previsualisar : true,
-              lectura : false,
-              listaUsuariosCambioAdmin : this.listaUsuariosCambioAdmin
-            },
-          });
-        });  
+    this.usuarioLibroService
+      .find(this.Folio.idReceptor)
+      .subscribe((respuesta) => {
+        let valorRecepor =
+          respuesta.body.usuarioDependencia.usuario.firstName +
+          respuesta.body.usuarioDependencia.usuario.lastName;
+        this.receptorPdf = respuesta.body;
       });
+    var docDefinition = {
+      content: [
+        {
+          image: 'data:image/png;base64,'+ imagenBase642,
+          style: 'sectionHeader'
+        },
+        {  
+          columns: [  
+              [  
+                  {  
+                      text: `Contrato :    ${this.Folio.libro.contrato.nombre}` ,  
+                      bold: true,
+                      fontSize: 9,  
+                  },  
+                  { text: `Codigo :       ${this.Folio.libro.contrato.codigo}`, fontSize: 9, margin: [0, 5, 0, 0] },  
+                  { text: `Mandante :  ${this.Folio.libro.contrato.dependenciaMandante.entidad.nombre} | Rut: 18.011.897-7`,fontSize: 9,margin: [0, 5, 0, 0] }, 
+                  { text: `Dependencia  ${this.Folio.libro.contrato.dependenciaMandante.nombre}`,fontSize: 9,alignment: 'center', margin: [11, 5, 0, 0]  }, 
+                  { text: `Contratista: ${this.dependenciaContratista.entidad.nombre} | Rut: 18.011.897-7`,fontSize: 9, margin: [0, 5, 0, 0]}, 
+                  { text: `Dependencia  ${this.dependenciaContratista.nombre}`,fontSize: 9,alignment: 'center', margin: [11, 5, 0, 0]  },  
+              ],  
+              [  
+                  {  
+                      text: `Libro :                    ${this.Folio.libro.nombre}` ,  
+                      bold: true,
+                      fontSize: 9,  
+                      alignment: 'left'  ,
+                      margin: [70, 0, 0, 0]
+                  }, 
+                  { text: `Codigo :                 ${this.Folio.libro.codigo}`, fontSize: 9,  alignment: 'left',margin: [70, 5, 0, 0] }, 
+                  { text: `Clase libro :           ${this.Folio.libro.tipoLibro.descripcion}`, fontSize: 9,  alignment: 'left',margin: [70, 5, 0, 0] },  
+                  { text: `Tipo Firma :           ${this.Folio.libro.tipoLibro.descripcion}`, fontSize: 9,  alignment: 'left',margin: [70, 5, 0, 0] }, 
+                  { text: `Fecha Apertura :   ${moment(this.Folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}`, fontSize: 9,  alignment: 'left',margin: [70, 5, 0, 0] }, 
+                 
+              ] ,
+          ],
+          columnGap: 10
+        },  
+        {  
+          columns: [  
+            
+              [ 
+                {  
+                  text: `Folio #${this.correlativoPdf}                ${moment(this.Folio.fechaFirma).format('DD-MM-YYYY hh:mm')}` ,  
+                  bold: true,
+                  fontSize: 9,  
+                  margin: [0, 20, 0, 0]
+                 },  
+                { text: `Emisor :                   ${this.emisorPdf.usuarioDependencia.usuario.firstName}  ${this.emisorPdf.usuarioDependencia.usuario.lastName}| Rut: 18.011.897-7`,fontSize: 9 ,margin: [0, 5, 0, 0]}, 
+                { text: `Administrador Mandante`,fontSize: 9,alignment: 'left', margin: [74, 5, 0, 0]  }, 
+                { text: `Receptor:                ${this.receptorPdf.usuarioDependencia.usuario.firstName} ${this.receptorPdf.usuarioDependencia.usuario.lastName}| Rut: 18.011.897-7`,fontSize: 9, margin: [0, 5, 0, 0]}, 
+                { text: `Administrador Contratista`,fontSize: 9,alignment: 'left', margin: [74, 5, 0, 0]  }, 
+                { text: `Tipo de Folio :        ${this.Folio.tipoFolio.nombre}`, fontSize: 9,  margin: [0, 5, 0, 0]},  
+                { text: `Respuesta de :       N/A`, fontSize: 9,  margin: [0, 5, 0, 0]}, 
+                { text: `Fecha Requerida : No`, fontSize: 9,  margin: [0, 5, 0, 0]},  
+                { text: `Asunto :                  ${this.Folio.asunto}`, fontSize: 9,  margin: [0, 5, 0, 0]},   
+              ],
+              
+          ]
+        },
+        {  
+          text: `Anotacion :` ,  
+          bold: true,
+          fontSize: 9, 
+          margin: [0, 20, 0, 0]  
+        },  
+        {  
+          text: `${anotacion}` ,  
+          bold: true,
+          fontSize: 9, 
+          margin: [0, 5, 0, 0]  
+        },  
+        {  
+          text: `1 Archivos Adjuntos :` ,  
+          bold: true,
+          fontSize: 9, 
+          margin: [0, 20, 0, 0]  
+        },  
+        {  
+          text: `foto.png` ,  
+          bold: true,
+          fontSize: 9, 
+          margin: [0, 5, 0, 0]  
+        },  
+        {  
+          text: `Mario Andres Echeverria Lopez` ,  
+          bold: true,
+          fontSize: 9, 
+          margin: [0, 20, 0, 0]  
+        },  
+        {  
+          text: `Fecha Firma : ${moment(this.Folio.fechaFirma).format('DD-MM-YYYY hh:mm')}` ,  
+          bold: false,
+          fontSize: 9, 
+          margin: [0, 5, 0, 0]  
+        },  
+        {  
+          text: `Firma Digital Avanzada` ,  
+          bold: false,
+          fontSize: 9, 
+          margin: [0, 5, 0, 0]  
+        },  
+        {  
+          text: `Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745` ,  
+          bold: false,
+          fontSize: 9, 
+          margin: [0, 5, 0, 0]  
+        },  
+      ],
+      styles: {  
+        sectionHeader: {  
+            bold: true,  
+            decoration: 'underline',  
+            fontSize: 14,  
+            margin: [0, 15, 0, 15]  
+        }  
+      } ,
+      images: {
+
+      } 
+    };
+    const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+    let url;
+    let promise = await new Promise(function (resolve, reject) {
+      pdfDocGenerator.getBlob((blob) => {
+        url = URL.createObjectURL(blob);
+        resolve(url);
+      });
+    });
+    const dialogRef = this.dialog.open(VisorPdfComponent, {
+      width: "100%",
+      height: "90%",
+      data: {
+        pdf: url,
+        folio: this.Folio,
+        usuario: this.usuario,
+        pdfArchivoCompleto: pdfDocGenerator,
+        previsualisar: true,
+        lectura: false,
+        listaUsuariosCambioAdmin: this.listaUsuariosCambioAdmin,
+      },
+    });
   }
-  visualizarPdfOrigen(){
-    this.folioService.find(this.Folio.idFolioRelacionado).subscribe(
-      folioOrigen => {
+  visualizarPdfOrigen() {
+    this.folioService
+      .find(this.Folio.idFolioRelacionado)
+      .subscribe((folioOrigen) => {
         let pdf = folioOrigen.body.pdfFirmado;
         let contentType = folioOrigen.body.pdfFirmadoContentType;
-        let url = "data:"+contentType+";base64,"+pdf;
+        let url = "data:" + contentType + ";base64," + pdf;
         let promise = new Promise(function (resolve, reject) {
           fetch(url)
-          .then(res => {
-            return res.blob();
-          })
-          .then(blob => {
-            resolve(URL.createObjectURL(blob));
-          });
+            .then((res) => {
+              return res.blob();
+            })
+            .then((blob) => {
+              resolve(URL.createObjectURL(blob));
+            });
         });
         promise.then((resultado) => {
           const dialogRef = this.dialog.open(VisorPdfComponent, {
@@ -795,74 +978,81 @@ export class FolioDetalleComponent implements OnInit {
               folio: this.Folio,
               usuario: null,
               pdfArchivoCompleto: null,
-              previsualisar : false,
-              lectura : false
+              previsualisar: false,
+              lectura: false,
             },
           });
         });
-      }
-    );
+      });
   }
-  buscaFolioReferencia(){
-    const dialogRef = this.dialog.open(ModalBuscarFolioComponent,{
-      width : "100%",
-      data : {idContrato : this.libro.contrato.id , folios : this.folios, libro : this.libro,folioRelacionado:this.folioRelacionado}
+  buscaFolioReferencia() {
+    const dialogRef = this.dialog.open(ModalBuscarFolioComponent, {
+      width: "100%",
+      data: {
+        idContrato: this.libro.contrato.id,
+        folios: this.folios,
+        libro: this.libro,
+        folioRelacionado: this.folioRelacionado,
+      },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === null || result === "" || result === undefined) {
       } else {
       }
-    }
-    );
+    });
   }
 
-  modalCambioAdministrador(){
-    const dialogRef = this.dialog.open(CambioAdministradorComponent,{
-      width : "40%",
-      data : { libro : this.libro }
+  modalCambioAdministrador() {
+    const dialogRef = this.dialog.open(CambioAdministradorComponent, {
+      width: "40%",
+      data: { libro: this.libro },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === null || result === "" || result === undefined) {
       } else {
         this.listaUsuariosCambioAdmin = result;
-        let textoAdminActual= "Administrador Actual : "+result[0].usuarioDependencia.usuario.firstName +' ' +result[0].usuarioDependencia.usuario.lastName;
-        let textoNuevoAdmin = "Nuevo Administrador : "+result[1].usuarioDependencia.usuario.firstName +' ' +result[1].usuarioDependencia.usuario.lastName;
-        let textoCompleto = textoAdminActual + ' | ' + textoNuevoAdmin;
-        this.folioForm.controls['cambioAdmin'].setValue(textoCompleto);
-        
+        let textoAdminActual =
+          "Administrador Actual : " +
+          result[0].usuarioDependencia.usuario.firstName +
+          " " +
+          result[0].usuarioDependencia.usuario.lastName;
+        let textoNuevoAdmin =
+          "Nuevo Administrador : " +
+          result[1].usuarioDependencia.usuario.firstName +
+          " " +
+          result[1].usuarioDependencia.usuario.lastName;
+        let textoCompleto = textoAdminActual + " | " + textoNuevoAdmin;
+        this.folioForm.controls["cambioAdmin"].setValue(textoCompleto);
       }
-    }
-    );
+    });
   }
-
 
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
 
     // Add our fruit
-    if ((value || '').trim()) {
-      this.folios.push({name: value.trim()});
+    if ((value || "").trim()) {
+      this.folios.push({ name: value.trim() });
     }
 
     // Reset the input value
     if (input) {
-      input.value = '';
+      input.value = "";
     }
   }
 
   remove(folio: any): void {
     const index = this.folios.indexOf(folio);
     if (index >= 0) {
-      if(this.folios.length <= 1){
+      if (this.folios.length <= 1) {
         this.folios = [];
         this.folioService.removerListaFoliosAgregados(folio);
         this.folioService.clearListaFoliosAgregados();
-      }else{
+      } else {
         this.folios.splice(index, 1);
         this.folioService.removerListaFoliosAgregados(folio);
       }
-      
     }
   }
   _handleReaderLoaded(readerEvt) {
@@ -876,25 +1066,120 @@ export class FolioDetalleComponent implements OnInit {
         this.folioSiguiente = respuesta.body[0].numero_folio;
       });
   }
-  onUploadError(event){
-
+  onUploadError(event) {}
+  onUploadSuccess(event) {
+    let file = new Archivo();
+    let archivoEvent = event[1].files.file;
+    var documento = archivoEvent.split(",");
+    var aux = documento[0].split("data:");
+    var tipoDocumento = aux[1].split(";");
+    file.archivo = documento[1];
+    file.archivoContentType = tipoDocumento[0];
+    this.archivosFolio.push(file);
   }
-  onUploadSuccess(event){
-
+  correlativoFolio(id: any) {
+    this.folioService.correlativoFolio(id).subscribe((respuesta) => {
+      this.correlativoPdf = respuesta.body[0].numero_folio;
+    });
   }
-  correlativoFolio(id:any){
-    this.folioService
-          .correlativoFolio(id)
-          .subscribe((respuesta) => {
-            console.log(respuesta);
-            this.correlativoPdf = respuesta.body[0].numero_folio;
-          });
-  }
-  cambiaReceptor(receptor){
+  cambiaReceptor(receptor) {
     this.receptorPdf = receptor;
   }
+  achivosPorFolio(idFolio) {
+    this.archivoService.AchivosPorFolio(idFolio).subscribe((folio) => {
+      if (folio.body.length > 0) {
+        this.archivosFolio = folio.body;
+        this.editarArchivosFolios = true;
+        this.onUploadInit(1, this.archivosFolio);
+        this.getFilesFromLibrary();
+      } else {
+        this.archivosFolio = [];
+        this.editarArchivosFolios = false;
+      }
+    });
+  }
+  async readFiles(listName: string, options?: any) {
+    let res;
+    res = this.archivosFolio;
+    return res;
+  }
+  async getFilesFromLibrary() {
+    const results = await this.readFiles("archivo_folios");
+    this.archivosFolio = results;
+  }
+  async onFileChange(event) {
+    for (var i = 0; i < event.target.files.length; i++) {
+      let archivo = new Archivo();
+      const base64 = await this.toBase64Handler(event.target.files[i]);
+      let fileBase64 = base64[0].selectedFile;
+      var documento = fileBase64.split(",");
+      var aux = documento[0].split("data:");
+      var tipoDocumento = aux[1].split(";");
+      archivo.archivo = documento[1];
+      archivo.archivoContentType = tipoDocumento[0];
+      archivo.descripcion = event.target.files[i].name;
+      archivo.size = event.target.files[i].size;
+      this.archivosFolio = [...this.archivosFolio, archivo];
+      console.log(archivo);
+    }
+  }
+  toBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  }
+  async toBase64Handler(file) {
+    const filePathsPromises = [];
+    let files2 = [];
+    files2 = file;
+    filePathsPromises.push(this.toBase64(files2));
+    const filePaths = await Promise.all(filePathsPromises);
+    const mappedFiles = filePaths.map((base64File) => ({
+      selectedFile: base64File,
+    }));
+    console.log(mappedFiles);
+    return mappedFiles;
+  }
+  eliminarArchivo(file) {
+    console.log(file);
+    if (file.id === undefined) {
+      let index = this.archivosFolio.indexOf(file);
+      this.archivosFolio.splice(index, 1);
+    } else {
+      Swal.fire({
+        title: "Esta Seguro ?",
+        text: "Los cambios no podran ser revertidos!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Si, Eliminar Archivo!",
+        cancelButtonText: "No, Mantener Archivo",
+      }).then((result) => {
+        if (result.value) {
+          let index = this.archivosFolio.indexOf(file);
+          this.archivosFolio.splice(index, 1);
+          this.archivoService.delete(file.id).subscribe(
+            (response) => {
+              Swal.fire(
+                "Eliminado!",
+                "Archivo Eliminado Correctamente.",
+                "success"
+              );
+            },
+            (error) => {
+              Swal.fire("Error!", "El archivo no pudo ser borrado.", "warning");
+            }
+          );
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire("Cancelado", "Cancelado", "error");
+        }
+      });
+    }
+  }
 }
-function getBase64Image(img) {
+function  getBase64Image (img ){
   var canvas = document.createElement("canvas");
   canvas.width = img.width;
   canvas.height = img.height;
@@ -911,3 +1196,12 @@ function stripHtml(html) {
   // Retrieve the text property of the element (cross-browser support)
   return temporalDivElement.textContent || temporalDivElement.innerText || "";
 }
+const blobToBase64 = (blob) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(blob);
+  return new Promise((resolve) => {
+    reader.onloadend = () => {
+      resolve(reader.result);
+    };
+  });
+};
