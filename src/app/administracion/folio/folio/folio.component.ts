@@ -52,6 +52,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<Folio>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   //-----------------------------
+  
   marcaTipoFiltroSideBar = 0;
   indexEliminadoFavorito = [];
   contrato = new Contrato();
@@ -893,6 +894,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
       }
     );
   }
+  
 }
 function calcDate(date1,date2) {
   var diff = Math.floor(date1.getTime() - date2.getTime());
@@ -908,6 +910,6 @@ function calcDate(date1,date2) {
   message += months + " meses "
   message += years + " año \n"
   return [days,months,years]
-  }
+}
 
   

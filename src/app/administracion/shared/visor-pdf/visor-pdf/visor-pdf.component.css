@@ -4,3 +4,6 @@
     overflow-y: visible;
   }
 }
+mat-dialog-content{
+  overflow: hidden;
+}
