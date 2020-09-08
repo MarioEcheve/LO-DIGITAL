@@ -61,12 +61,14 @@
                   </mat-select>
                 </mat-form-field>
               </div>
-              <div class="ml-2">
+              <div class="ml-2" *ngIf="muestraRedactarFolioAdminActivo">
                 <button
                   mat-raised-button
                   type="button"
                   class="btn btn-default btn-sm btn-fab"
                   (click)="volverContrato()"
+                  
+                  *ngxPermissionsOnly="['administrador','administrador/s']"
                 >
                   <i class="material-icons">keyboard_arrow_right</i>
                 </button>

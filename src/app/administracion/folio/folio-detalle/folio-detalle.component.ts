@@ -800,6 +800,12 @@ export class FolioDetalleComponent implements OnInit {
     let imagenBase64 = getBase64Image(imagen);
     let imagenBase642 = getBase64Image(imagen2);    
     this.Folio.idReceptor = this.folioForm.controls["receptor"].value;
+    let numeroFolio = "";
+    if(this.correlativoPdf >= 9){
+      numeroFolio = `Folio #${this.correlativoPdf}                ${moment(this.Folio.fechaFirma).format('DD-MM-YYYY hh:mm')}`
+    }else{
+      numeroFolio = `Folio #${this.correlativoPdf}                   ${moment(this.Folio.fechaFirma).format('DD-MM-YYYY hh:mm')}`
+    }
     this.Folio.fechaRequerida = moment(
       this.folioForm.controls["fechaRequeridaDatepicker"].value
     );
@@ -853,7 +859,7 @@ export class FolioDetalleComponent implements OnInit {
             
               [ 
                 {  
-                  text: `Folio #${this.correlativoPdf}                ${moment(this.Folio.fechaFirma).format('DD-MM-YYYY hh:mm')}` ,  
+                  text: numeroFolio ,  
                   bold: true,
                   fontSize: 9,  
                   margin: [0, 20, 0, 0]
@@ -865,7 +871,7 @@ export class FolioDetalleComponent implements OnInit {
                 { text: `Tipo de Folio :        ${this.Folio.tipoFolio.nombre}`, fontSize: 9,  margin: [0, 5, 0, 0]},  
                 { text: `Respuesta de :       N/A`, fontSize: 9,  margin: [0, 5, 0, 0]}, 
                 { text: `Fecha Requerida : No`, fontSize: 9,  margin: [0, 5, 0, 0]},  
-                { text: `Asunto :                  ${this.Folio.asunto}`, fontSize: 9,  margin: [0, 5, 0, 0]},   
+                { text: `Asunto :                   ${this.Folio.asunto}`, fontSize: 9,  margin: [0, 5, 0, 0]},   
               ],
               
           ]
