@@ -374,10 +374,13 @@ export class FolioComponent implements OnInit, AfterViewInit {
       this.foliosOrigen = folios;
       this.folios = this.folios.filter(folio=> 
           folio.idUsuarioFirma !== null);
+      this.ngAfterViewInit();
       this.dataSource = new MatTableDataSource(this.folios);
       this.dataSource.paginator = this.paginator;
       this.foliosSinBorradores = this.folios;
-    }, 1000);
+      this.getContadorFolioSideBar();
+
+    }, 400);
 
   }
   nuevoFolio() {

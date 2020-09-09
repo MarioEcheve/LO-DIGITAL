@@ -82,8 +82,7 @@
                     <tr>
                       <td></td>
                       <td *ngIf="Folio.libro">
-                        &nbsp;Dependencia
-                        {{ Folio.libro.contrato.dependenciaMandante.nombre }}
+                        &nbsp;{{ Folio.libro.contrato.dependenciaMandante.nombre }}
                       </td>
                     </tr>
                     <tr>
@@ -93,7 +92,7 @@
                     <tr>
                       <td></td>
                       <td *ngIf="dependenciaMandante">
-                        &nbsp;Dependencia {{ dependenciaMandante.nombre }}
+                        &nbsp;{{ dependenciaMandante.nombre }}
                       </td>
                     </tr>
                   </table>
