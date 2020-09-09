@@ -2,21 +2,12 @@
   <div class="container-fluid">
     <div class="navbar-wrapper">
       <div class="navbar-minimize">
-        <button
-          mat-raised-button
-          (click)="minimizeSidebar(3)"
-          class="btn btn-just-icon btn-white btn-fab btn-round"
-        >
-          <i class="material-icons text_align-center visible-on-sidebar-regular"
-            >more_vert</i
-          >
-          <i
-            class="material-icons design_bullet-list-67 visible-on-sidebar-mini"
-            >view_list</i
-          >
+        <button mat-raised-button (click)="minimizeSidebar(3)" class="btn btn-just-icon btn-default btn-fab btn-sm mb-2">
+          <i class="material-icons text_align-center visible-on-sidebar-regular">more_vert</i>
+          <i class="material-icons design_bullet-list-67 visible-on-sidebar-mini">menu</i>
         </button>
       </div>
-      <a class="navbar-brand" href="{{ getPath() }}"> {{ getTitle() }}</a>
+      <a style="font-size: 16px;" class="navbar-brand" href="{{ getPath() }}"> {{ getTitle() }}</a>
     </div>
     <button
       mat-button
@@ -31,8 +22,8 @@
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navigation">
       <form class="navbar-form">
-        <div class="input-group no-border">
-          <label style="font-size: medium;">
+        <div class="input-group no-border mt-1">
+          <label style="font-size: 14px;">
             {{ usuario.firstName }} {{ usuario.lastName }}</label
           >
         </div>

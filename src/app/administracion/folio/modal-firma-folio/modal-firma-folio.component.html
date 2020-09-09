@@ -1,16 +1,14 @@
-<h2 mat-dialog-title>Protocolo de firma</h2>
-<mat-dialog-content class="mat-typography ">
+<mat-dialog-content>
+  <h5 style="font-weight: bold;">Firmar Folio</h5>
+  <br/>  
   <form [formGroup]="firmaFormGroup">
-      <mat-form-field class="col-md-12">
-        <mat-select
-          placeholder="Tipo Firma"
-          formControlName="tipoFirma"
-        >
-          <mat-option *ngFor="let tipo of tipoFirma" [value]="tipo">
-            {{ tipo.nombre }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Seleccione protocolo firma" formControlName="tipoFirma">
+        <mat-option *ngFor="let tipo of tipoFirma" [value]="tipo">
+          {{ tipo.nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

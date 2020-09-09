@@ -6,49 +6,49 @@
           <mat-tab label="Folio">
             <div class="container-fluid">
               <div class="mt-2">
-                <button
-                  mat-raised-button
-                  class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
-                  (click)="volverListaFolios()"
-                >
-                  <i class="material-icons" style="color: #4e4e4e;"
-                    >arrow_back_ios</i
-                  >
+                <button mat-raised-button 
+                  type="button" 
+                  class="btn btn-default btn-fab btn-sm mr-1" 
+                  (click)="volverListaFolios()">
+                    <i class="material-icons">keyboard_arrow_left</i>
                 </button>
+                <button mat-raised-button 
+                  type="button" 
+                  class="btn btn-primary btn-sm mr-1"
+                  [disabled]="Folio.requiereRespuesta === false || idlibroRelacionado !== null || usuario?.adminActivo === false" 
+                  (click)="responderFolio()" 
+                  *ngxPermissionsOnly="['administrador']">
+                  <i class="material-icons">reply</i>
+                  Responder
+                </button>                
                 <button
                   mat-raised-button
-                  class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
-                  [disabled]="Folio.requiereRespuesta === false || idlibroRelacionado !== null || usuario?.adminActivo === false"
-                  (click)="responderFolio()"
-                  *ngxPermissionsOnly="['administrador']"
-                >
-                  <i class="material-icons" style="color: #4e4e4e;">reply</i>
-                </button>
-                
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href=""
-                    ><i class="material-icons" style="font-size: 18px;">reply</i
-                    >Responder</a
-                  >
-                  <a class="dropdown-item" href=""
-                    ><i class="material-icons">push_pin</i>Referenciar</a
-                  >
-                  <a class="dropdown-item" href=""
-                    >Exportar Archivos Adjuntos</a
-                  >
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="">Imprimir Folio</a>
-                  <a class="dropdown-item" href="">Imprimir Folio Respuesta</a>
-                </div>
-                <button
-                  mat-raised-button
-                  class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
+                  class="btn btn-primary btn-sm mr-1"
                   [disabled]="Folio.idUsuarioLectura !== null  || usuario?.adminActivo === false"
                   (click)="lecturaFolio()"
                    *ngxPermissionsOnly="['administrador']"
                 >
-                  <i class="material-icons" style="color: #4e4e4e;">visibility</i>
+                  <i class="material-icons">insert_drive_file</i>
+                  Visualizar PDF
                 </button>
+                <button mat-raised-button 
+                  type="button" 
+                  class="btn btn-primary btn-fab btn-sm mr-1">
+                    <i class="material-icons">save_alt</i>                    
+                </button>
+                <button mat-raised-button 
+                  type="button" 
+                  class="btn btn-primary btn-fab btn-sm mr-1">
+                    <i class="material-icons">print</i>                    
+                </button>
+
+
+
+
+
+
+
+
               </div>
               <hr />
               <img class="mr-1" src="/assets/img/logo42_.png" />
@@ -82,8 +82,7 @@
                     <tr>
                       <td></td>
                       <td *ngIf="Folio.libro">
-                        &nbsp;Dependencia
-                        {{ Folio.libro.contrato.dependenciaMandante.nombre }}
+                        &nbsp;{{ Folio.libro.contrato.dependenciaMandante.nombre }}
                       </td>
                     </tr>
                     <tr>
@@ -93,7 +92,7 @@
                     <tr>
                       <td></td>
                       <td *ngIf="dependenciaMandante">
-                        &nbsp;Dependencia {{ dependenciaMandante.nombre }}
+                        &nbsp;{{ dependenciaMandante.nombre }}
                       </td>
                     </tr>
                   </table>

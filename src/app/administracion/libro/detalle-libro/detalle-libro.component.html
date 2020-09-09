@@ -3,12 +3,12 @@
     <div class="card">
       <div class="ml-3 mt-2">
         <button mat-raised-button type="button" class="btn btn-primary btn-sm" (click)="routeDetalleContrato()">
-          <i class="material-icons">search</i>
+          <i class="material-icons">keyboard_arrow_left</i>
           Detalle Contrato
         </button>
-        <button mat-raised-button type="button" class="btn btn-primary btn-sm" (click)="routeResumenFolio()">
-          <i class="material-icons">search</i>
+        <button mat-raised-button type="button" class="btn btn-primary btn-sm float-right mr-3" (click)="routeResumenFolio()">
           Resumen Folios
+          <i class="material-icons">keyboard_arrow_right</i>
         </button>
       </div>
       <div class="card-body">
@@ -349,10 +349,7 @@
           <mat-tab label="Usuarios Mandante">
             <div class="container-fluid mt-3">
               <div class="pull-right">
-                <button mat-raised-button type="submit" class="btn btn-primary" (click)="modalCrearUsuario()">
-                  <span class="btn-label">
-                    <i class="material-icons">person_add</i>
-                  </span>
+                <button mat-raised-button type="submit" class="btn btn-primary" (click)="modalCrearUsuario()">                  
                   Nuevo Usuario
                 </button>
               </div>
@@ -422,9 +419,6 @@
             <div class="container-fluid mt-3">
               <div class="pull-right">
                 <button mat-raised-button type="submit" class="btn btn-primary " (click)="modalCrearUsuarioContratista()">
-                  <span class="btn-label">
-                    <i class="material-icons">person_add</i>
-                  </span>
                   Nuevo Usuario
                 </button>
               </div>
