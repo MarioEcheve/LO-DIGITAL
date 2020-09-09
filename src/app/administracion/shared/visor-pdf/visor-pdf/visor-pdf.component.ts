@@ -81,8 +81,8 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
   }
   modalFirmarFolio() {
     const dialogRef = this.dialog.open(ModalFirmaFolioComponent, {
-      width: "40%",
-      height: "35%",
+      width: "440px",
+      height: "195px",
       data: { folio : this.folio , lectura : this.data.lectura }
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -97,7 +97,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               let adminNuevo = new UsuarioLibro();
               adminNuevo =  this.data.listaUsuariosCambioAdmin[1];
               adminActual.adminActivo = false;
-              adminActual.perfilUsuarioLibro = {id: 1301, nombre: "Administrador", usuarioLibros: null}
+              adminActual.perfilUsuarioLibro = {id: 1701, nombre: "Administrador", usuarioLibros: null}
               adminNuevo.adminActivo = true;
               this.usuarioLibroService.update(adminActual).subscribe();
               this.usuarioLibroService.update(adminNuevo).subscribe();
@@ -127,7 +127,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               }
             );
             if(this.folio.requiereRespuesta === true){
-              this.folio.estadoRespuesta = {id: 1351, nombre: "Pendiente", folios: null}
+              this.folio.estadoRespuesta = {id: 1903, nombre: "Pendiente", folios: null}
             }else{
               this.folio.estadoRespuesta =null;
             }
@@ -136,7 +136,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               if(this.folio.idFolioRelacionado!==null){
                 this.folioService.find(this.folio.idFolioRelacionado).subscribe(
                   respuesta=>{
-                    respuesta.body.estadoRespuesta = {id: 1352, nombre: "Respondido", folios: null};
+                    respuesta.body.estadoRespuesta = {id: 1904, nombre: "Respondido", folios: null};
                     this.folioService.update(respuesta.body).subscribe();
                   }
                 );
@@ -145,7 +145,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               this.folioService.update(this.folio).subscribe((respuesta) => {
                 if(this.folio.tipoFolio.nombre.toLowerCase() === "apertura libro") {
                     this.folio.libro.estadoLibro = {
-                    id:  1851,
+                    id:  3051,
                     nombre: "Abierto",
                     libros: null,
                   };
@@ -154,7 +154,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                 }
                 if(this.folio.tipoFolio.nombre.toLowerCase() === "cierre libro") {
                     this.folio.libro.estadoLibro = {
-                      id:  1852,
+                      id:  3052,
                       nombre: "Cerrado",
                       libros: null,
                     };

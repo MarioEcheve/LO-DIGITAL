@@ -49,7 +49,8 @@
                       <tr>
                         <td></td>
                         <td *ngIf="libro.contrato">
-                          &nbsp;{{ libro.contrato.dependenciaMandante.nombre }}
+                          <!-- &nbsp;Dependencia -->
+                          {{ libro.contrato.dependenciaMandante.nombre }}
                         </td>
                       </tr>
                       <tr>
@@ -62,7 +63,8 @@
                       <tr>
                         <td></td>
                         <td *ngIf="dependenciaContratista.entidad">
-                          &nbsp;{{ dependenciaContratista.nombre }}
+                          <!-- &nbsp;Dependencia -->
+                          {{ dependenciaContratista.nombre }}
                         </td>
                       </tr>
                     </table>

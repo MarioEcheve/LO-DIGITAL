@@ -301,13 +301,13 @@ export class FolioComponent implements OnInit, AfterViewInit {
           let resultado = calcDate(element.fechaRequerida.toDate(),new Date());
           if(element.estadoRespuesta !== null){
             if(element.estadoRespuesta.nombre.toLowerCase() === "respondido"){
-              element.color = "#70F81D";
+              element.color = "#4EA21A";
             }else{
               if(resultado[0] <= 1){
-                element.color = "#F8F81D";
+                element.color = "#FFD000";
               }
               if(resultado[0] >= 2){
-                element.color = "#3364FF";
+                element.color = "#4285F4";
               }
               if(resultado[0] <= -1){
                 element.color = "#FF3C33";
@@ -315,10 +315,10 @@ export class FolioComponent implements OnInit, AfterViewInit {
             }
           }else{
             if(resultado[0] <= 1){
-              element.color = "#F8F81D";
+              element.color = "#FFD000";
             }
             if(resultado[0] >= 2){
-              element.color = "#3364FF";
+              element.color = "#4285F4";
             }
             if(resultado[0] <= -1){
               element.color = "#FF3C33";
