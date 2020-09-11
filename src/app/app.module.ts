@@ -63,6 +63,7 @@ import { NgxExtendedPdfViewerModule } from "ngx-extended-pdf-viewer";
 import { FiltroFolioPersonalizadoComponent } from './administracion/shared/filtro-folio-personalizado/filtro-folio-personalizado.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CambioAdministradorComponent } from './administracion/shared/cambio-administrador/cambio-administrador.component';
+import { InformarPdfComponent } from './administracion/shared/informar-pdf/informar-pdf.component';
 registerLocaleData(localePy, 'es');
 registerLocaleData(localePt, 'pt');
 registerLocaleData(localeEn, 'en');
@@ -126,7 +127,7 @@ export class MaterialModule {}
     FormsModule,
     ReactiveFormsModule,
   ],
-  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent,FiltroFolioPersonalizadoComponent,VisorPdfComponent,CambioAdministradorComponent],
+  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent,FiltroFolioPersonalizadoComponent,VisorPdfComponent,CambioAdministradorComponent, InformarPdfComponent],
   providers: [
     MatNativeDateModule,
     Title,

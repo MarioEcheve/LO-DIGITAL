@@ -350,7 +350,7 @@
                     <tbody>
                       <tr *ngFor="let file of archivosFolio">
                         <td><strong>{{ file.descripcion }}</strong></td>
-                        <td><strong ng-show="uploader.isHTML5" nowrap>{{ file.size }} MB</strong></td>
+                        <td><strong ng-show="uploader.isHTML5" nowrap>{{ file.size }}</strong></td>
                         <td nowrap>
                           <button type="button" class="btn btn-danger btn-xs" (click)="eliminarArchivo(file)">
                             <span class="glyphicon glyphicon-upload"></span> Eliminar

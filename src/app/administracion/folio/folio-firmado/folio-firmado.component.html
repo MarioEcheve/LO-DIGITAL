@@ -41,6 +41,12 @@
                   class="btn btn-primary btn-fab btn-sm mr-1">
                     <i class="material-icons">print</i>                    
                 </button>
+                <button mat-raised-button 
+                  type="button" 
+                  (click)="informar()"
+                  class="btn btn-primary btn-fab btn-sm mr-1">
+                    <i class="material-icons">email</i>                    
+                </button>
 
 
 
@@ -153,7 +159,7 @@
                   <td *ngIf="emisor">
                     &nbsp;{{ emisor.usuarioDependencia.usuario.firstName }}
                     {{ emisor.usuarioDependencia.usuario.lastName }}- RUT:{{
-                      emisor.usuarioDependencia.usuario.lastName
+                      emisor.usuarioDependencia.rut
                     }}
                   </td>
                 </tr>
@@ -166,7 +172,7 @@
                   <td  *ngIf="receptor">
                     &nbsp;{{ receptor.usuarioDependencia.usuario.firstName }}
                     {{ receptor.usuarioDependencia.usuario.lastName }}- RUT:{{
-                      receptor.usuarioDependencia.usuario.lastName
+                      receptor.usuarioDependencia.rut
                     }}</td>
                 </tr>
                 <tr>

@@ -262,7 +262,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
       this.folios = this.folios.filter(folio=> 
           folio.idUsuarioFirma !== null);
       this.foliosSinBorradores = this.folios;
-
       this.folioServie.favoritosUsuarioLibro(this.usuarioLibro.id, this.libroSeleccionado.id).subscribe(
         favoritos=>{
           console.log(favoritos.body);
@@ -284,7 +283,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
        }, 600);
     },1600);
   }
-  buscaFolios(libro, filtra?: boolean) {
+  async buscaFolios(libro, filtra?: boolean) {
     this.folios = [];
     let folios=[];
     this.libroSeleccionado = libro;
@@ -292,16 +291,29 @@ export class FolioComponent implements OnInit, AfterViewInit {
     this.idlibro = libro.id;
     let nombreEmisor = "";
     let nombreReceptor = "";
-    this.folioServie.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
-      folios = respuesta.body;
-      this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
-      respuesta.body.forEach(element=>{
-        if(element.fechaRequerida!== undefined){
-          element.fechaRequerida = element.fechaRequerida.local();
-          let resultado = calcDate(element.fechaRequerida.toDate(),new Date());
-          if(element.estadoRespuesta !== null){
-            if(element.estadoRespuesta.nombre.toLowerCase() === "respondido"){
-              element.color = "#4EA21A";
+
+    await new Promise((resolve,reject)=>{
+      this.folioServie.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
+        folios = respuesta.body;
+        this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
+        respuesta.body.forEach(element=>{
+          if(element.fechaRequerida!== undefined){
+            element.fechaRequerida = element.fechaRequerida.local();
+            let resultado = calcDate(element.fechaRequerida.toDate(),new Date());
+            if(element.estadoRespuesta !== null){
+              if(element.estadoRespuesta.nombre.toLowerCase() === "respondido"){
+                element.color = "#4EA21A";
+              }else{
+                if(resultado[0] <= 1){
+                  element.color = "#FFD000";
+                }
+                if(resultado[0] >= 2){
+                  element.color = "#4285F4";
+                }
+                if(resultado[0] <= -1){
+                  element.color = "#FF3C33";
+                }
+              }
             }else{
               if(resultado[0] <= 1){
                 element.color = "#FFD000";
@@ -313,76 +325,68 @@ export class FolioComponent implements OnInit, AfterViewInit {
                 element.color = "#FF3C33";
               }
             }
-          }else{
-            if(resultado[0] <= 1){
-              element.color = "#FFD000";
-            }
-            if(resultado[0] >= 2){
-              element.color = "#4285F4";
-            }
-            if(resultado[0] <= -1){
-              element.color = "#FF3C33";
-            }
           }
-          
-        }
-        //this.folios = respuesta.body;
-        
-      });
-      folios.forEach((element) => {
-        if(element.idUsuarioFirma === null){
-          this.usuarioLibroService
-          .find(element.idUsuarioCreador)
-          .subscribe((respuesta2) => {
-            nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
-            element.emisor = nombreEmisor;
-          },error=>{
-          });
-          if(element.idReceptor !== null ){
+          //this.folios = respuesta.body;
+        });
+        folios.forEach((element) => {
+          if(element.idUsuarioFirma === null){
             this.usuarioLibroService
-              .find(element.idReceptor )
-              .subscribe((respuesta2) => {
-                nombreReceptor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
-                element.receptor = nombreReceptor;
-              },error=>{
-              })
+            .find(element.idUsuarioCreador)
+            .subscribe((respuesta2) => {
+              nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
+              element.emisor = nombreEmisor;
+            },error=>{
+            });
+            if(element.idReceptor !== null ){
+              this.usuarioLibroService
+                .find(element.idReceptor )
+                .subscribe((respuesta2) => {
+                  nombreReceptor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
+                  element.receptor = nombreReceptor;
+                },error=>{
+                })
+            }
+          }else{
+            this.usuarioLibroService
+            .find(element.idUsuarioFirma )
+            .subscribe((respuesta2) => {
+              nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
+              element.emisor = nombreEmisor;
+            },error=>{
+            })
+            this.usuarioLibroService
+            .find(element.idReceptor )
+            .subscribe((respuesta2) => {
+              nombreReceptor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
+              element.receptor = nombreReceptor;
+            },error=>{
+            })
           }
-        }else{
-          this.usuarioLibroService
-          .find(element.idUsuarioFirma )
-          .subscribe((respuesta2) => {
-            nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
-            element.emisor = nombreEmisor;
-          },error=>{
-          })
-          this.usuarioLibroService
-          .find(element.idReceptor )
-          .subscribe((respuesta2) => {
-            nombreReceptor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
-            element.receptor = nombreReceptor;
-          },error=>{
-          })
-        }
-        
+        });
+        setTimeout(() => {
+          resolve(folios);
+        }, 1000);
       });
     });
-    setTimeout(() => {
-      this.folios = folios;
-      this.folios.forEach(element=>{
-        element.existeFavorito = true;
-      })
-      this.foliosOrigen = folios;
-      this.folios = this.folios.filter(folio=> 
-          folio.idUsuarioFirma !== null);
-      this.ngAfterViewInit();
-      this.dataSource = new MatTableDataSource(this.folios);
-      this.dataSource.paginator = this.paginator;
-      this.foliosSinBorradores = this.folios;
-      this.getContadorFolioSideBar();
+    this.folios = folios;
+    this.folios.forEach(element=>{
+      element.existeFavorito = true;
+    })
+    this.foliosOrigen = folios;
+    this.folios = this.folios.filter(folio=> 
+        folio.idUsuarioFirma !== null);
+    this.ngAfterViewInit();
+    this.dataSource = new MatTableDataSource(this.folios);
+    this.dataSource.paginator = this.paginator;
+    this.foliosSinBorradores = this.folios;
+    this.getContadorFolioSideBar();
+  }
 
-    }, 400);
+  buscarFolioPorLibro(idLibro){
 
   }
+
+
   nuevoFolio() {
     
     const dialogRef = this.dialog.open(ModalCrearFolioComponent, {
@@ -444,7 +448,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
     // onUploadSuccess
   }
 
-  obtenerPerfilLibroUsuario(idLibro, idUsuario) {
+  async obtenerPerfilLibroUsuario(idLibro, idUsuario) {
     this.usuarioLibroService
       .buscarlibroPorContrato(idLibro, idUsuario)
       .subscribe((respuesta) => {

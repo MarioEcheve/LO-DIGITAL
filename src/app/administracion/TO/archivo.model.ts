@@ -5,7 +5,7 @@ export interface IArchivo {
   archivoContentType?: string;
   archivo?: any;
   descripcion?: string;
-  size?: number;
+  size?: string;
   folio?: IFolio;
 }
 
@@ -15,7 +15,7 @@ export class Archivo implements IArchivo {
     public archivoContentType?: string,
     public archivo?: any,
     public descripcion?: string,
-    public size?: number,
+    public size?: string,
     public folio?: IFolio
   ) {}
 }

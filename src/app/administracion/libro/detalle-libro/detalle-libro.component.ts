@@ -433,7 +433,7 @@ export class DetalleLibroComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
        console.log(result);
-      if (result === undefined || result === false) {
+      if (result === undefined || result === false || result === "") {
       } else {
         let existe = false;
         existe = this.listaUsuarioMandante.find(usuario => usuario.usuarioDependencia.id === result.usuarioDependencia?.id);
@@ -490,7 +490,7 @@ export class DetalleLibroComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === undefined || result === false) {
+      if (result === undefined || result === false || result === "") {
       } else {
         let existe = false;
         existe = this.listaUsuarioContratistaAgregados.find(usuario => usuario.usuarioDependencia.id === result.usuarioDependencia?.id);

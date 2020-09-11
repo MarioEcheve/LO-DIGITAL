@@ -262,7 +262,7 @@ export class FolioDetalleComponent implements OnInit {
           true,
           this.folios
         );
-      }, 800);
+      }, 1000);
       this.buscaCorrelativoFolio();
 
       this.obtenerPerfilLibroUsuario(this.Folio.libro.id, usuarioActual.id);
@@ -441,7 +441,6 @@ export class FolioDetalleComponent implements OnInit {
         } else {
           this.archivosFolio.forEach((element) => {
             element.folio = respuesta.body;
-            element.size = 0;
             if (element.id !== undefined) {
               this.archivoService.update(element).subscribe();
             } else {
@@ -823,37 +822,38 @@ export class FolioDetalleComponent implements OnInit {
           image: 'data:image/png;base64,'+ imagenBase642,
           style: 'sectionHeader'
         },
-        {  
-          columns: [  
-              [  
-                  {  
-                      text: `Contrato :    ${this.Folio.libro.contrato.nombre}` ,  
-                      bold: true,
-                      fontSize: 9,  
-                  },  
-                  { text: `Codigo :       ${this.Folio.libro.contrato.codigo}`, fontSize: 9, margin: [0, 5, 0, 0] },  
-                  { text: `Mandante :  ${this.Folio.libro.contrato.dependenciaMandante.entidad.nombre} | Rut: 18.011.897-7`,fontSize: 9,margin: [0, 5, 0, 0] }, 
-                  { text: `${this.Folio.libro.contrato.dependenciaMandante.nombre}`,fontSize: 9,alignment: 'center', margin: [0, 5, 42, 0]  }, 
-                  { text: `Contratista: ${this.dependenciaContratista.entidad.nombre} | Rut: 18.011.897-7`,fontSize: 9, margin: [0, 5, 0, 0]}, 
-                  { text: `${this.dependenciaContratista.nombre}`,fontSize: 9,alignment: 'center', margin: [0, 5, 42, 0]  },  
-              ],  
-              [  
-                  {  
-                      text: `Libro :                    ${this.Folio.libro.nombre}` ,  
-                      bold: true,
-                      fontSize: 9,  
-                      alignment: 'left'  ,
-                      margin: [70, 0, 0, 0]
-                  }, 
-                  { text: `Codigo :                 ${this.Folio.libro.codigo}`, fontSize: 9,  alignment: 'left',margin: [70, 5, 0, 0] }, 
-                  { text: `Clase libro :           ${this.Folio.libro.tipoLibro.descripcion}`, fontSize: 9,  alignment: 'left',margin: [70, 5, 0, 0] },  
-                  { text: `Tipo Firma :           ${this.Folio.libro.tipoLibro.descripcion}`, fontSize: 9,  alignment: 'left',margin: [70, 5, 0, 0] }, 
-                  { text: `Fecha Apertura :   ${moment(this.Folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}`, fontSize: 9,  alignment: 'left',margin: [70, 5, 0, 0] }, 
-                 
-              ] ,
-          ],
-          columnGap: 10
-        },  
+        {
+          table: {
+            // headers are automatically repeated if the table spans over multiple pages
+            // you can declare how many rows should be treated as headers
+            headerRows: 0,
+            widths: [ 50, 260, 70, '*' ],
+            body: [
+              [ { text: 'Contrato :', bold: true , fontSize: 9, }, { text: `${this.Folio.libro.contrato.nombre}`, bold: true ,fontSize: 9,}, { text: 'Libro :', bold: true , fontSize: 9, }, { text: `${this.Folio.libro.nombre}`, bold: true ,fontSize: 9,} ],
+              [ { text: 'Codigo :', fontSize: 9, }, { text: `${this.Folio.libro.contrato.codigo}` ,fontSize: 9,}, { text: 'Codigo :' , fontSize: 9, }, { text: `${this.Folio.libro.codigo}` ,fontSize: 9,} ],
+              [ { text: 'Mandante :' , fontSize: 9, }, { text: `${this.Folio.libro.contrato.dependenciaMandante.entidad.nombre} | Rut: 18.011.897-7` ,fontSize: 9,}, { text: 'Clase Libro :' , fontSize: 9, }, { text: `${this.Folio.libro.tipoLibro.descripcion}`,fontSize: 9,} ],
+              [ { text: '', fontSize: 9, }, { text: `${this.Folio.libro.contrato.dependenciaMandante.nombre}` ,fontSize: 9,}, { text: 'Tipo Firma :' , fontSize: 9, }, { text: `${this.Folio.libro.tipoFirma.nombre}` ,fontSize: 9,} ],
+              [ { text: 'Contratista : ', fontSize: 9, }, { text: `${this.dependenciaContratista.entidad.nombre} | Rut: 18.011.897-7` ,fontSize: 9,}, { text: 'Fecha Apertura :' , fontSize: 9, }, { text: `${moment(this.Folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}` ,fontSize: 9,} ],
+              [ { text: '', fontSize: 9, }, { text: `${this.dependenciaContratista.nombre}` ,fontSize: 9,}, { text: '' , fontSize: 9, }, { text: `` ,fontSize: 9,} ],
+
+            ],
+          },
+          layout: {
+            hLineWidth: function (i, node) {
+              return i === 0 || i === node.table.body.length ? 0 : 0;
+            },
+            vLineWidth: function (i, node) {
+              return 0;
+            },
+            hLineColor: function (i, node) {
+              return i === 0 || i === node.table.body.length ? "red" : "grey";
+            },
+            vLineColor: function (i, node) {
+              return i === 0 || i === node.table.widths.length ? "red" : "grey";
+            },
+          },
+          
+        },
         {  
           columns: [  
             
@@ -923,7 +923,7 @@ export class FolioDetalleComponent implements OnInit {
           bold: false,
           fontSize: 9, 
           margin: [0, 5, 0, 0]  
-        },  
+        }, 
       ],
       styles: {  
         sectionHeader: {  
@@ -931,6 +931,9 @@ export class FolioDetalleComponent implements OnInit {
             decoration: 'underline',  
             fontSize: 14,  
             margin: [0, 15, 0, 15]  
+        },
+        exampleLayout : {
+          
         }  
       } ,
       images: {
@@ -1124,7 +1127,7 @@ export class FolioDetalleComponent implements OnInit {
       archivo.archivo = documento[1];
       archivo.archivoContentType = tipoDocumento[0];
       archivo.descripcion = event.target.files[i].name;
-      archivo.size = event.target.files[i].size;
+      archivo.size = formatBytes(event.target.files[i].size);
       this.archivosFolio = [...this.archivosFolio, archivo];
       console.log(archivo);
     }
@@ -1210,4 +1213,10 @@ const blobToBase64 = (blob) => {
       resolve(reader.result);
     };
   });
+};
+function formatBytes(bytes) {
+  if(bytes < 1024) return bytes + " Bytes";
+  else if(bytes < 1048576) return(bytes / 1024).toFixed(3) + " KB";
+  else if(bytes < 1073741824) return(bytes / 1048576).toFixed(3) + " MB";
+  else return(bytes / 1073741824).toFixed(3) + " GB";
 };

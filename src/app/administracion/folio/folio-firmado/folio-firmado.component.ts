@@ -16,6 +16,7 @@ import { UsuarioDependenciaService } from "../../services/usuario-dependencia.se
 import { NgxPermissionsService } from "ngx-permissions";
 import { ArchivoService } from "../../services/archivo.service";
 import { Archivo } from "../../TO/archivo.model";
+import { InformarPdfComponent } from '../../shared/informar-pdf/informar-pdf.component'
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -246,6 +247,12 @@ export class FolioFirmadoComponent implements OnInit {
     // Remove link from body
     document.body.removeChild(link);
     console.log(blobUrl)
+  }
+  informar(){
+    const dialogRef = this.dialog.open(InformarPdfComponent, {
+      width: "50%",
+      height: "60%",
+    });
   }
 }
 const b64toBlob = (b64Data, contentType='', sliceSize=512) => {

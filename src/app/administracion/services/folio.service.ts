@@ -221,9 +221,10 @@ export class FolioService {
       })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
-  informarEmailFolioFirmado(): Observable<EntityResponseType> {
+  informarEmailFolioFirmado( data :any): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(data);
     return this.http
-      .get<any>(`${this.resourceUrlSendEmail}`, {
+      .post<any>(`${this.resourceUrlSendEmail}`,data, {
         observe: "response",
       })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
