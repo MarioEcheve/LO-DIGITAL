@@ -13,8 +13,8 @@
         <table class="table table-striped mt-2">
           <thead class="text-muted">
             <tr>
-              <th class="text-left">{{ tableData1.headerRow[0] }}</th>
-              <th>{{ tableData1.headerRow[1] }}</th>
+              <!-- <th class="text-left">{{ tableData1.headerRow[0] }}</th> -->
+              <th class="text-left">{{ tableData1.headerRow[1] }}</th>
               <th>{{ tableData1.headerRow[2] }}</th>
               <th>{{ tableData1.headerRow[3] }}</th>
               <th>{{ tableData1.headerRow[4] }}</th>
@@ -24,8 +24,8 @@
           </thead>
           <tbody>
             <tr *ngFor="let row of libros" class="animate__animated animate__fadeIn">
-              <td class="text-left">{{ row.codigo }}</td>
-              <td>{{ row.nombre }}</td>
+              <!-- <td class="text-left">{{ row.codigo }}</td> -->
+              <td class="text-left">{{ row.nombre }} | Cod.: {{ row.codigo }}</td>
               <td>{{ row.contrato.nombre }} | Cod.: {{ row.contrato.codigo }}</td>
               <td>{{ row.tipoLibro.descripcion }}</td>
               <td>{{ row.tipoFirma.nombre }}</td>

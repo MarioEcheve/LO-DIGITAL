@@ -50,7 +50,7 @@ export class ListaLibroComponent implements OnInit {
     this.tableData1 = {
       headerRow: [
         "Código",
-        "Nombre",
+        "Libro",
         "Contrato",
         "Tipo Libro",
         "Tipo Firma",

@@ -431,7 +431,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
     });
   }
   folioFirmado(row) {
-    this.router.navigate(["/folio/folio-firmado/", row.id]);
+    this.router.navigate(["/folio/folio-firmado", row.id]);
   }
   detalleLibro(row) {
     this.router.navigate(["/folio/folio-detalle/", row.id]);

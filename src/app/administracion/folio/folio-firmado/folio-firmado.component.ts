@@ -248,11 +248,12 @@ export class FolioFirmadoComponent implements OnInit {
     document.body.removeChild(link);
     console.log(blobUrl)
   }
-  informar(){
-    const dialogRef = this.dialog.open(InformarPdfComponent, {
-      width: "50%",
-      height: "60%",
-    });
+  navegateFolioRespuesta(){
+    alert('entra');
+    this.router.navigate([
+      "/folio/folio-firmado",
+      this.Folio.id,      
+    ]);
   }
 }
 const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
