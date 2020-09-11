@@ -2,26 +2,32 @@
   <div class="container-fluid">
     <div class="card"  >
       <div class="card-body" >
-        <button
-          mat-raised-button
-          class="btn btn-just-icon btn-white btn-fab btn-round mr-1"
-          (click)="volverListaFolios()"
-        >
-          <i class="material-icons" style="color: #4e4e4e;">arrow_back_ios</i>
-        </button>
         <mat-tab-group>
           <mat-tab label="Borrador">
             <form [formGroup]="folioForm">
               <div class="container-fluid">
-                <div class="mt-3">
+                <div class="mt-2">                
+                  <button mat-raised-button class="btn btn-default btn-fab btn-sm mr-1" (click)="volverListaFolios()">
+                    <i class="material-icons">keyboard_arrow_left</i>
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-primary btn-fab btn-sm mr-1">
+                    <i class="material-icons">save_alt</i>                    
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-primary btn-fab btn-sm mr-1">
+                    <i class="material-icons">print</i>                    
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-primary btn-fab btn-sm mr-1">
+                    <i class="material-icons">mail</i>                    
+                  </button>                 
+                </div>
+                <hr/>                
                   <img
                     id="imagenLogo1"
                     class="mr-1"
                     src="/assets/img/logo42_.png"
                   />
-                  <img id="imagenLogo2" src="/assets/img/letra120x34_.png" />
-                </div>
-                <hr />
+                  <img id="imagenLogo2" src="/assets/img/letra120x34_.png" />                
+                <hr/>
                 <div class="row" id="formFolio">
                   <div class="col-6 d-flex justify-content-start">
                     <table>
@@ -49,8 +55,7 @@
                       <tr>
                         <td></td>
                         <td *ngIf="libro.contrato">
-                          <!-- &nbsp;Dependencia -->
-                          {{ libro.contrato.dependenciaMandante.nombre }}
+                          &nbsp;{{ libro.contrato.dependenciaMandante.nombre }}
                         </td>
                       </tr>
                       <tr>
@@ -63,8 +68,7 @@
                       <tr>
                         <td></td>
                         <td *ngIf="dependenciaContratista.entidad">
-                          <!-- &nbsp;Dependencia -->
-                          {{ dependenciaContratista.nombre }}
+                          &nbsp;{{ dependenciaContratista.nombre }}
                         </td>
                       </tr>
                     </table>
@@ -314,7 +318,7 @@
                   [config]="editorConfig"
                   formControlName="anotacion"
                 ></angular-editor>
-                <hr />
+                
                 <!--
                    <div
                   [dropzone]="multipleConfig"
@@ -336,81 +340,53 @@
                   </div>
                 </div>
                 -->
-                <input type="file" (change)="onFileChange($event)" multiple  id="file"> 
+                <input type="file" (change)="onFileChange($event)" multiple  id="file">
+                <br>
+                <button type="button" class="btn btn-primary btn-sm mb-2">
+                  <i class="material-icons">attach_file</i>
+                  Adjuntar Archivo
+                </button> 
                 <br>
                 <div>
                   <table class="table">
                     <thead>
                         <tr>
-                            <th width="50%">Name</th>
-                            <th ng-show="uploader.isHTML5">Size</th>
-                            <th>Acciones</th>
+                            <th width="50%">Archivo</th>
+                            <th ng-show="uploader.isHTML5">Tamaño</th>
+                            <th class="text-right">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let file of archivosFolio">
                         <td><strong>{{ file.descripcion }}</strong></td>
-                        <td><strong ng-show="uploader.isHTML5" nowrap>{{ file.size }} MB</strong></td>
-                        <td nowrap>
-                          <button type="button" class="btn btn-danger btn-xs" (click)="eliminarArchivo(file)">
-                            <span class="glyphicon glyphicon-upload"></span> Eliminar
-                          </button>
+                        <td><strong ng-show="uploader.isHTML5" nowrap>{{file.size}} MB</strong></td>                        
+                        <td nowrap class="text-right">                          
+                            <i type="button" class="material-icons text-gray" (click)="eliminarArchivo(file)">delete</i>                          
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                </div>
-                <hr />
-                <button
-                  mat-raised-button
-                  type="submit"
-                  class="btn btn-danger pull-left"
-                  (click)="eliminarFolio()"
-                  *ngxPermissionsOnly="['administrador','asistente','superior', 'administrador/s']"
-                >
-                  <!--  <span class="btn-label">
-                      <i class="material-icons">close</i>
-                    </span> -->
-                  Eliminar
-                </button>
-                <div class="text-right mb-3">
-                  <button
-                    mat-raised-button
-                    type="submit"
-                    class="btn btn-default mr-1"
-                    [disabled]="!folioForm.valid"
-                  >
-                    <!-- <span class="btn-label">
-                        <i class="material-icons">mail</i>
-                      </span> -->
-                    Informar
+                  <hr>
+                  <button mat-raised-button type="submit" class="btn btn-default" (click)="eliminarFolio()" *ngxPermissionsOnly="['administrador','asistente','superior', 'administrador/s']">
+                    <!-- <i class="material-icons">delete</i> -->
+                    Eliminar
                   </button>
-                  <button
-                    mat-raised-button
-                    type="submit"
-                    class="btn btn-default mr-1"
-                    [disabled]="!folioForm.valid"
-                    (click)="previsualizar()"
-                  >
-                    <!-- <span class="btn-label">
-                        <i class="material-icons">pageview</i>
-                      </span> -->
-                    Previsualizar
-                  </button>
-                  <button
-                    mat-raised-button
-                    type="submit"
-                    class="btn btn-primary"
-                    (click)="guardarFolio()"
-                    [disabled]="!folioForm.valid"
-                    *ngxPermissionsOnly="['administrador','asistente','superior', 'administrador/s']"
-                  >
-                    <!-- <span class="btn-label">
-                      <i class="material-icons">get_app</i>
-                    </span> -->
-                    Guardar
-                  </button>
-                </div>
+                  <div class="pull-right">
+                    <button mat-raised-button type="submit" class="btn btn-primary mr-1" [disabled]="!folioForm.valid" (click)="previsualizar()">                    
+                      <!-- <i class="material-icons">pageview</i>                     -->
+                      Previsualizar
+                    </button>
+                    <button mat-raised-button type="submit" class="btn btn-primary" (click)="guardarFolio()" [disabled]="!folioForm.valid" *ngxPermissionsOnly="['administrador','asistente','superior', 'administrador/s']">
+                      <!-- <i class="material-icons">get_app</i>                     -->
+                      Guardar
+                    </button>                  
+                  </div>                  
+                </div>                
+                <mat-divider class="mt-2"></mat-divider>
+                <p style="font-size: smaller;" class="text-right mt-1 mb-3">
+                  Creado mediante en plataforma <a href="">www.lodigital.cl</a>,
+                  Diseñada por LinkSystem Spa.
+                </p>
               </div>
             </form>
           </mat-tab>

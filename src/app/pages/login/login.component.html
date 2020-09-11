@@ -8,7 +8,6 @@
       background-position: top center;
     "
   >
-    <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
     <div class="container animate__animated animate__fadeInDown" >
       <div class="row">
         <div class="col-lg-4 col-md-6 col-sm-6 ml-auto mr-auto">
@@ -16,46 +15,19 @@
             <div class="card card-login ">
               <span class="mb-2 mt-5" style="text-align: center;">
                 <img src="/assets/img/accesologo.jpg" />
-              </span>
-              <div class="card-body">
-                <span class="bmd-form-group">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <i class="material-icons">person</i>
-                      </span>
-                    </div>
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="RUT"
-                      formControlName="username"
-                    />
-                  </div>
-                </span>
-
-                <span class="bmd-form-group">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <i class="material-icons">lock_outline</i>
-                      </span>
-                    </div>
-                    <input
-                      type="password"
-                      class="form-control"
-                      placeholder="Contraseña"
-                      formControlName="password"
-                    />
-                  </div>
-                </span>
-                <div class="d-flex justify-content-end">
-                  <a href="" class="align-content-end"
-                    ><strong>¿Olvidaste tu contraseña?</strong></a
-                  >
-                </div>
+              </span>           
+              <div class="ml-4 mr-4">                                         
+                <a style="margin: 2px;">Usuario</a>                     
+                <input type="text" style="border-radius: 4px; background: rgb(241, 241, 241);" class="form-control border border-default mt-1" placeholder="" formControlName="username"/>
               </div>
-              <div class="card-footer justify-content-center mt-3">
+              <div class="ml-4 mr-4 mt-3">                                         
+                <a style="margin: 2px;">Contraseña</a>                    
+                <input type="password" style="border-radius: 4px; background: rgb(241, 241, 241);" class="form-control form-control border border-default mt-1" placeholder="" formControlName="password"/>
+              </div>                
+              <div class="d-flex justify-content-end mr-4 mt-1">
+                <a href="" class="align-content-end"><strong>¿Olvidaste tu contraseña?</strong></a>
+                </div>             
+              <div class="card-footer justify-content-center mt-3 ml-4 mr-4">
                 <button
                   mat-raised-button
                   class="btn btn-primary btn-block"
@@ -80,31 +52,7 @@
       </div>
     </div>
     <footer class="footer">
-      <div class="container">
-        <!-- <nav class="pull-left">
-          <ul>
-            <li>
-              <a href="https://www.creative-tim.com">
-                Creative Tim
-              </a>
-            </li>
-            <li>
-              <a href="https://creative-tim.com/about-us">
-                About Us
-              </a>
-            </li>
-            <li>
-              <a href="http://blog.creative-tim.com">
-                Blog
-              </a>
-            </li>
-            <li>
-              <a href="https://www.creative-tim.com/license">
-                Licenses
-              </a>
-            </li>
-          </ul>
-        </nav> -->
+      <div class="container">        
         <div class="copyright pull-right">
           &copy; LODigital, Plataforma desarrollada por
           <a href="https://www.linksystem.cl">LinkSystem</a> Spa.

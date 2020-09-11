@@ -247,6 +247,14 @@ export class FolioFirmadoComponent implements OnInit {
     document.body.removeChild(link);
     console.log(blobUrl)
   }
+  navegateFolioRespuesta(){
+    alert('entra');
+    this.router.navigate([
+      "/folio/folio-firmado",
+      this.Folio.id,      
+    ]);
+
+  }
 }
 const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
   const byteCharacters = atob(b64Data);

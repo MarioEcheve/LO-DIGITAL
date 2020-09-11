@@ -20,7 +20,19 @@
                   *ngxPermissionsOnly="['administrador']">
                   <i class="material-icons">reply</i>
                   Responder
-                </button>                
+                </button>
+                <button mat-raised-button 
+                  type="button" 
+                  class="btn btn-primary btn-sm mr-1">
+                  <i class="material-icons">reply_all</i>
+                  Reiterar
+                </button>
+                <button mat-raised-button 
+                  type="button" 
+                  class="btn btn-primary btn-sm mr-1">
+                  <i class="material-icons">push_pin</i>
+                  Relacionar
+                </button>
                 <button
                   mat-raised-button
                   class="btn btn-primary btn-sm mr-1"
@@ -41,14 +53,11 @@
                   class="btn btn-primary btn-fab btn-sm mr-1">
                     <i class="material-icons">print</i>                    
                 </button>
-
-
-
-
-
-
-
-
+                <button mat-raised-button 
+                  type="button" 
+                  class="btn btn-primary btn-fab btn-sm mr-1">
+                    <i class="material-icons">mail</i>                    
+                </button>
               </div>
               <hr />
               <img class="mr-1" src="/assets/img/logo42_.png" />
@@ -159,7 +168,7 @@
                 </tr>
                 <tr>
                   <td></td>
-                  <td>&nbsp;Administrador Contratista</td>
+                  <td>&nbsp;{{emisor?.cargoFuncion}}</td>
                 </tr>
                 <tr>
                   <td>Receptor:</td>
@@ -171,7 +180,7 @@
                 </tr>
                 <tr>
                   <td></td>
-                  <td>&nbsp;Administrador Mandante</td>
+                  <td>&nbsp;{{receptor?.cargoFuncion}}</td>
                 </tr>
                 <tr *ngIf="Folio.libro">
                   <td>Tipo de Folio:</td>
@@ -179,9 +188,15 @@
                 </tr>
                 <tr>
                   <td>Respuesta de:</td>
-                  <td  *ngIf="Folio.idlibroRelacionado !== null">&nbsp; {{folioRelacionado.libro?.nombre}} 
+                  <td *ngIf="Folio.idlibroRelacionado !== null">&nbsp; {{folioRelacionado.libro?.nombre}} 
                             | Folio : {{folioRelacionado.numeroFolio }} 
-                            
+                     
+                            <button mat-raised-button 
+                            type="button" 
+                            class="btn btn-default btn-fab btn-sm mr-1" 
+                            (click)="navegateFolioRespuesta()">
+                              <i class="material-icons">keyboard_arrow_left</i>
+                          </button>
                   </td>
                   <td *ngIf="Folio.idlibroRelacionado === null">&nbsp;n/a</td>
                 </tr>
@@ -245,14 +260,12 @@
                 &nbsp;
               </ul>
               <hr />
-              <strong *ngIf="emisor"
-                >{{ emisor.usuarioDependencia.usuario.firstName }}
-                {{ emisor.usuarioDependencia.usuario.lastName }}</strong
-              >
-              <br />Administrador de Contrato <br />Fecha Firma:
-              {{ Folio.fechaFirma | date: "dd-MM-yyyy HH:mm" }} <br />Fimar
-              Digital Avanzada (no existe el campo )<br />Cód. Verificación:
-              d5sd4537dasd45675asd456ad-7856asd-745
+              <a style="font-weight: bold;" *ngIf="emisor">
+                {{ emisor.usuarioDependencia.usuario.firstName }} {{ emisor.usuarioDependencia.usuario.lastName }}</a>
+              <br/>{{emisor?.cargoFuncion}}
+              <br/>Fecha Firma: {{ Folio.fechaFirma | date: "dd-MM-yyyy HH:mm" }} 
+              <br/>Fimar Digital Avanzada
+              <br/>Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745
               <mat-divider class="mt-2"></mat-divider>
               <p style="font-size: smaller;" class="text-right mt-1">
                 Creado mediante en plataforma <a href="">www.lodigital.cl</a>,
