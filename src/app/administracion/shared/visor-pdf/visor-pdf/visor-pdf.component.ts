@@ -19,6 +19,8 @@ import { LibroService } from "src/app/administracion/services/libro.service";
 import { UsuarioLibroService } from "src/app/administracion/services/usuario-libro.service";
 import { NgxPermissionsService } from "ngx-permissions";
 import { UsuarioLibro } from "src/app/administracion/TO/usuario-libro.model";
+import { InformarPdfComponent } from "../../informar-pdf/informar-pdf.component";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 declare var $: any;
 @Component({
   selector: "app-visor-pdf",
@@ -29,6 +31,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
   folio = new Folio();
   usuario;
   mostrar="";
+  muestraFirmar = true;
   constructor(
     public dialogRef: MatDialogRef<VisorPdfComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -44,9 +47,10 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
     //console.log(this.data.lectura);
     //this.mostrar = t
     let usuarioActual = JSON.parse(localStorage.getItem("user"));
-    let idLibro = this.folio = this.data.folio.libro.id;
-    this.getPermisos(idLibro, usuarioActual.id);
-
+    setTimeout(() => {
+      let idLibro =  this.data.folio.libro.id;
+      this.getPermisos(idLibro, usuarioActual.id);
+    }, 300);
   }
   ngAfterViewInit() {
     if(this.data.previsualisar === true){
@@ -97,7 +101,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               let adminNuevo = new UsuarioLibro();
               adminNuevo =  this.data.listaUsuariosCambioAdmin[1];
               adminActual.adminActivo = false;
-              adminActual.perfilUsuarioLibro = {id: 1701, nombre: "Administrador", usuarioLibros: null}
+              adminActual.perfilUsuarioLibro = {id: 1801, nombre: "Administrador", usuarioLibros: null}
               adminNuevo.adminActivo = true;
               this.usuarioLibroService.update(adminActual).subscribe();
               this.usuarioLibroService.update(adminNuevo).subscribe();
@@ -127,7 +131,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               }
             );
             if(this.folio.requiereRespuesta === true){
-              this.folio.estadoRespuesta = {id: 1903, nombre: "Pendiente", folios: null}
+              this.folio.estadoRespuesta = {id: 1952, nombre: "Pendiente", folios: null}
             }else{
               this.folio.estadoRespuesta =null;
             }
@@ -136,7 +140,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               if(this.folio.idFolioRelacionado!==null){
                 this.folioService.find(this.folio.idFolioRelacionado).subscribe(
                   respuesta=>{
-                    respuesta.body.estadoRespuesta = {id: 1904, nombre: "Respondido", folios: null};
+                    respuesta.body.estadoRespuesta = {id: 1951, nombre: "Respondido", folios: null};
                     this.folioService.update(respuesta.body).subscribe();
                   }
                 );
@@ -145,7 +149,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               this.folioService.update(this.folio).subscribe((respuesta) => {
                 if(this.folio.tipoFolio.nombre.toLowerCase() === "apertura libro") {
                     this.folio.libro.estadoLibro = {
-                    id:  3051,
+                    id:  2201,
                     nombre: "Abierto",
                     libros: null,
                   };
@@ -154,7 +158,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                 }
                 if(this.folio.tipoFolio.nombre.toLowerCase() === "cierre libro") {
                     this.folio.libro.estadoLibro = {
-                      id:  3052,
+                      id:  2202,
                       nombre: "Cerrado",
                       libros: null,
                     };
@@ -162,19 +166,27 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                   this.folio.libro.fechaApertura = moment(this.folio.libro.fechaApertura);
                   this.libroService.update(this.folio.libro).subscribe();
                 }
+                this.muestraFirmar = false;
+                this.mostrarAlertaLoaderFirmasFolio();
+                /*
                 this.dialogRef.close();
                 this.dialogRef.beforeClosed().subscribe((respuesta) => {
                   if(this.data.lectura === true){
                     this.showNotificationSuccessLectura("top", "right");
                   }else{
-                    this.showNotificationSuccess("top", "right");
+                    this.router.navigate([
+                      "/folio/folio/",
+                      this.folio.libro.contrato.id,
+                      this.folio.libro.id,
+                    ]);
+                   
                     this.router.navigate([
                       "/folio/folio/",
                       this.folio.libro.contrato.id,
                       this.folio.libro.id,
                     ]);
                   }
-                });
+                });*/
                 
               });
             }else{
@@ -279,7 +291,53 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
       });
   }
 
+  informar(){
+    const dialog = this.dialog.open(InformarPdfComponent, {
+      width : '500'
+    });
+    dialog.afterClosed().subscribe((result) => {
+      if (result === null || result === "" || result === undefined) {
 
+      }else{
+        this.dialogRef.close();
+      }
+    });
+    
+  }
+  mostrarAlertaLoaderFirmasFolio(){
+    let timerInterval
+    Swal.fire({
+      title: 'Procesando firma de folio',
+      html: 'Esto puede tardar unos segundos...',
+      timer: 2000,
+      timerProgressBar: true,
+      onBeforeOpen: () => {
+        Swal.showLoading()
+        timerInterval = setInterval(() => {
+          const content = Swal.getContent()
+          if (content) {
+            const b = content.querySelector('b')
+            if (b) {
+              b.textContent = Swal.getTimerLeft()
+            }
+          }
+        }, 100)
+      },
+      onClose: () => {
+        clearInterval(timerInterval);
+        this.router.navigate([
+          "/folio/folio-firmado",
+          this.folio.id,
+        ]);
+        Swal.fire("Creado!", "Folio Firmado Correctamente.", "success");
+      }
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log('I was closed by the timer')
+      }
+  })
+  }
 
 }
 const blobToBase64 = (blob) => {

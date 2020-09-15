@@ -67,6 +67,7 @@
     "ngx-dropzone-wrapper": "^9.0.0",
     "ngx-extended-pdf-viewer": "^4.0.0-alpha.5",
     "ngx-file-drop": "^9.0.1",
+    "ngx-loading": "^2.0.1",
     "ngx-permissions": "^8.0.0",
     "ngx-webstorage": "^5.0.0",
     "nouislider": "14.1.1",

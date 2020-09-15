@@ -25,6 +25,8 @@ export class FolioService {
     this.SERVER_API_URL + "api/filtroFolioPersonalizado";
   public resourceUrlFavoritosUsuarioLibro=
     this.SERVER_API_URL + "api/favoritosUsuarioLibro";
+  public resourceUrlSendEmail = this.SERVER_API_URL + "api/folios/sendMail";
+  
   private folioRelacionadoSubject = new BehaviorSubject([]);
   private folioRelacionado: IFolio[];
   private listafolioRelacionadoSubject = new BehaviorSubject([]);
@@ -215,6 +217,14 @@ export class FolioService {
   correlativoFolio(id: number): Observable<EntityResponseType> {
     return this.http
       .get<any>(`${this.resourceUrlCorrelativoFolio}/${id}`, {
+        observe: "response",
+      })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+  informarEmailFolioFirmado( data :any): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(data);
+    return this.http
+      .post<any>(`${this.resourceUrlSendEmail}`,data, {
         observe: "response",
       })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));

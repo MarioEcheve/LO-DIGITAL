@@ -342,7 +342,7 @@
                 -->
                 <input type="file" (change)="onFileChange($event)" multiple  id="file">
                 <br>
-                <button type="button" class="btn btn-primary btn-sm mb-2">
+                <button type="button" class="btn btn-primary btn-sm mb-2" (click)="onFileChange($event)" multiple  id="file">
                   <i class="material-icons">attach_file</i>
                   Adjuntar Archivo
                 </button> 
@@ -359,7 +359,7 @@
                     <tbody>
                       <tr *ngFor="let file of archivosFolio">
                         <td><strong>{{ file.descripcion }}</strong></td>
-                        <td><strong ng-show="uploader.isHTML5" nowrap>{{file.size}} MB</strong></td>                        
+                        <td><strong ng-show="uploader.isHTML5" nowrap>{{file.size}} </strong></td>                        
                         <td nowrap class="text-right">                          
                             <i type="button" class="material-icons text-gray" (click)="eliminarArchivo(file)">delete</i>                          
                         </td>

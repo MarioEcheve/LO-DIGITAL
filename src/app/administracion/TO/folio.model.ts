@@ -39,8 +39,8 @@ export interface IFolio {
   libro?: ILibro;
   tipoFolio?: ITipoFolio;
   estadoRespuesta?: IEstadoRespuesta;
-  emisor: string;
-  color : string;
+  emisor?: string;
+  color? : string;
   idReceptor?: number;
   folioReferencias?: IFolioReferencia[];
   existTableSearchFolio? : Boolean;
@@ -80,8 +80,8 @@ export class Folio implements IFolio {
     public libro?: ILibro,
     public tipoFolio?: ITipoFolio,
     public estadoRespuesta?: IEstadoRespuesta,
-    public emisor = "",
-    public color = "",
+    public emisor? : string,
+    public color? : string,
     public idReceptor?: number,
     public folioReferencias?: IFolioReferencia[],
     public existTableSearchFolio? : Boolean,

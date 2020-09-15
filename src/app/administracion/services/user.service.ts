@@ -8,7 +8,7 @@ import { IUser } from "../TO/user.model";
 
 @Injectable({ providedIn: "root" })
 export class UserService {
-  SERVER_API_URL = "";
+  SERVER_API_URL = "https://libro-obra-digital.nn.r.appspot.com/";
   public resourceUrl = this.SERVER_API_URL + "api/users";
 
   constructor(private http: HttpClient) {}

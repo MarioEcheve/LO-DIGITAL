@@ -16,6 +16,8 @@ import { UsuarioDependenciaService } from "../../services/usuario-dependencia.se
 import { NgxPermissionsService } from "ngx-permissions";
 import { ArchivoService } from "../../services/archivo.service";
 import { Archivo } from "../../TO/archivo.model";
+import { InformarPdfComponent } from '../../shared/informar-pdf/informar-pdf.component';
+import Swal from "sweetalert2/dist/sweetalert2.js";
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -35,6 +37,7 @@ export class FolioFirmadoComponent implements OnInit {
   idlibroRelacionado =null;;
   folioRelacionado=  new Folio();
   listaArchivos:Archivo[] = [];
+  respuestaFolioShow = false;
   emisor;
   receptor;
   usuario;
@@ -58,7 +61,8 @@ export class FolioFirmadoComponent implements OnInit {
     private libroService : LibroService,
     private UsuarioDependenciaService : UsuarioDependenciaService,
     private permissionsService : NgxPermissionsService,
-    private archivoService : ArchivoService
+    private archivoService : ArchivoService,
+    
   ) {}
   ngOnInit() {
     this.folioService.navBarChange(2);
@@ -209,7 +213,7 @@ export class FolioFirmadoComponent implements OnInit {
   }
   // este metodo permite buscar el usuario usuario libro por el idusuario y el id del libro
   // luego setea los permisos para ejecutar acciones
-  obtenerPerfilLibroUsuario(idLibro, idUsuario) {
+  async obtenerPerfilLibroUsuario(idLibro, idUsuario) {
     this.usuarioLibroService
       .buscarlibroPorContrato(idLibro, idUsuario)
       .subscribe((respuesta) => {
@@ -218,6 +222,16 @@ export class FolioFirmadoComponent implements OnInit {
         console.log(respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase());
         let permisos = [respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase()];
         this.permissionsService.loadPermissions(permisos);
+        this.usuarioLibroService.find(this.Folio.idReceptor).subscribe(
+            response=>{ 
+              console.log(response.body);
+              if(respuesta.body[0].usuarioDependencia?.dependencia.id === response.body.usuarioDependencia?.dependencia.id){
+                this.respuestaFolioShow = true;
+              }else{
+                this.respuestaFolioShow = false;
+              }
+            }
+        );
       });
   }
   async getArchivosFolio(idFolio){
@@ -247,13 +261,41 @@ export class FolioFirmadoComponent implements OnInit {
     document.body.removeChild(link);
     console.log(blobUrl)
   }
-  navegateFolioRespuesta(){
-    alert('entra');
-    this.router.navigate([
-      "/folio/folio-firmado",
-      this.Folio.id,      
-    ]);
-
+  async navegateFolioRespuesta(folioRelacionado){
+    let timerInterval
+    Swal.fire({
+      title: 'Buscando folio respuesta',
+      html: 'Esto puede tardar unos segundos...',
+      timer: 2000,
+      timerProgressBar: true,
+      onBeforeOpen: () => {
+        Swal.showLoading()
+        timerInterval = setInterval(() => {
+          const content = Swal.getContent()
+          if (content) {
+            const b = content.querySelector('b')
+            if (b) {
+              b.textContent = Swal.getTimerLeft()
+            }
+          }
+        }, 100)
+      },
+      onClose: () => {
+        clearInterval(timerInterval)
+      }
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log('I was closed by the timer')
+      }
+      this.obtenerFolio(folioRelacionado.id);
+      this.getArchivosFolio(folioRelacionado.id);
+  })  
+  }
+  informar(){
+    this.dialog.open(InformarPdfComponent, {
+      width : '500'
+    })
   }
 }
 const b64toBlob = (b64Data, contentType='', sliceSize=512) => {

@@ -7,6 +7,7 @@ import { IPerfilUsuarioDependencia } from "../TO/perfil-usuario-dependencia.mode
 export interface IUsuarioDependencia {
   id?: number;
   nombre?: string;
+  rut? : string;
   fechaCreacion?: Moment;
   fechaModificacion?: Moment;
   estado?: boolean;
@@ -21,6 +22,7 @@ export class UsuarioDependencia implements IUsuarioDependencia {
   constructor(
     public id?: number,
     public nombre?: string,
+    public rut? : string,
     public fechaCreacion?: Moment,
     public fechaModificacion?: Moment,
     public estado?: boolean,

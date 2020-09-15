@@ -257,7 +257,7 @@ export class LibroComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === undefined || result === false) {
+      if (result === undefined || result === false || result === "") {
       } else {
         // contamos si el valor de la lista es mayor a 0
         if (this.usuariosAgregados.length > 0) {

@@ -18,6 +18,7 @@ import { DependenciaService } from "../../services/dependencia.service";
 import { ContratoService } from "../../services/contrato.service";
 import { Contrato } from "../../TO/contrato.model";
 import { ActivatedRoute, Params, Router } from "@angular/router";
+import { FolioService } from "../../services/folio.service";
 declare const require: any;
 declare const $: any;
 
@@ -74,7 +75,8 @@ export class ContratoComponent implements OnInit {
     private dependenciaService: DependenciaService,
     private contratoService: ContratoService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private folioService : FolioService
   ) {}
   selectTheme = "primary";
 
@@ -311,7 +313,7 @@ export class ContratoComponent implements OnInit {
       (contrato.tipoMoneda = null),
       (contrato.tipoMonto = null),
       (contrato.tipoOtro = null),
-      (contrato.estadoServicio = {id: 2451, nombre: "Pendiente", contratoes: null})
+      (contrato.estadoServicio = {id: 2101, nombre: "Pendiente", contratoes: null})
       this.contratoService.create(contrato).subscribe(
         (respuesta) => {
           console.log(respuesta);

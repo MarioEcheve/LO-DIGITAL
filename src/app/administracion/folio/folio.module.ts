@@ -25,7 +25,7 @@ import { ModalBuscarFolioComponent } from './modal-buscar-folio/modal-buscar-fol
 import { TablaBuscarFoliosComponent } from './componentes/tabla-buscar-folios/tabla-buscar-folios.component';
 import { FiltroFolioPersonalizadoComponent } from "../shared/filtro-folio-personalizado/filtro-folio-personalizado.component";
 import { NgxPermissionsModule } from "ngx-permissions";
-
+import { InformarPdfComponent } from '../shared/informar-pdf/informar-pdf.component'
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   // Change this to your upload POST address:
   url: "https://httpbin.org/post",
@@ -70,7 +70,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     VisorPdfComponent,
     ModalCrearFolioComponent,
     ModalBuscarFolioComponent,
-    FiltroFolioPersonalizadoComponent
+    FiltroFolioPersonalizadoComponent,
+    InformarPdfComponent
   ],
 })
 export class FolioModule {}
