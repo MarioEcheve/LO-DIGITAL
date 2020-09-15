@@ -64,6 +64,8 @@ import { FiltroFolioPersonalizadoComponent } from './administracion/shared/filtr
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CambioAdministradorComponent } from './administracion/shared/cambio-administrador/cambio-administrador.component';
 import { InformarPdfComponent } from './administracion/shared/informar-pdf/informar-pdf.component';
+
+
 registerLocaleData(localePy, 'es');
 registerLocaleData(localePt, 'pt');
 registerLocaleData(localeEn, 'en');

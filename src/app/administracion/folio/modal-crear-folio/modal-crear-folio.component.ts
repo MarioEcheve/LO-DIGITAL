@@ -127,8 +127,19 @@ export class ModalCrearFolioComponent implements OnInit {
       } else {
         let tipo = this.tipoFolio.filter((tipo) => {
           return tipo.nombre.toLowerCase() !== "apertura libro";
-        });
-        this.tipoFolio = tipo;
+      });
+      this.tipoFolio = tipo;
+      if(libro.tipoLibro.descripcion.toLowerCase() === "maestro"){
+        this.tipoFolio = this.tipoFolio.filter(folio => folio.visibleMaestro === true);
+      }
+      if(libro.tipoLibro.descripcion.toLowerCase() === "auxiliar"){
+        this.tipoFolio = this.tipoFolio.filter(folio => folio.visibleAuxliar === true);
+      }
+      if(this.data.usuarioLibro.usuarioDependencia.dependencia.id === this.libroSeleccionado.contrato.dependenciaMandante.id){
+        this.tipoFolio = this.tipoFolio.filter(folio => folio.visibleMandante === true);
+      }else{
+        this.tipoFolio = this.tipoFolio.filter(folio => folio.visibleContratista === true);
+      }
       }
     });
     
@@ -221,7 +232,7 @@ export class ModalCrearFolioComponent implements OnInit {
           this.tipoFolio = this.tipoFolio.filter(tipo => tipo.nombre.toLowerCase() === "cambio administrador")
         }
         if(this.usuario.perfilUsuarioLibro.nombre.toLowerCase() === "asistente"){
-          this.tipoFolio = this.tipoFolio.filter(tipo => tipo.nombre.toLowerCase() !== "cambio administrador")
+          //this.tipoFolio = this.tipoFolio.filter(tipo => tipo.nombre.toLowerCase() !== "cambio administrador")
         }
         
       });

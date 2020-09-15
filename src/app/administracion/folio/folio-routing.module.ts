@@ -27,7 +27,7 @@ const routes: Routes = [
         component: FolioFirmadoComponent,
       },
       {
-        path: "folio- /:id",
+        path: "folio-firmado/:id",
         component: FolioFirmadoComponent,
       },
       {

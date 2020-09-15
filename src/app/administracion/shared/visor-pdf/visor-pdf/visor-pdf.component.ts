@@ -19,6 +19,8 @@ import { LibroService } from "src/app/administracion/services/libro.service";
 import { UsuarioLibroService } from "src/app/administracion/services/usuario-libro.service";
 import { NgxPermissionsService } from "ngx-permissions";
 import { UsuarioLibro } from "src/app/administracion/TO/usuario-libro.model";
+import { InformarPdfComponent } from "../../informar-pdf/informar-pdf.component";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 declare var $: any;
 @Component({
   selector: "app-visor-pdf",
@@ -29,6 +31,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
   folio = new Folio();
   usuario;
   mostrar="";
+  muestraFirmar = true;
   constructor(
     public dialogRef: MatDialogRef<VisorPdfComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -163,19 +166,27 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                   this.folio.libro.fechaApertura = moment(this.folio.libro.fechaApertura);
                   this.libroService.update(this.folio.libro).subscribe();
                 }
+                this.muestraFirmar = false;
+                this.mostrarAlertaLoaderFirmasFolio();
+                /*
                 this.dialogRef.close();
                 this.dialogRef.beforeClosed().subscribe((respuesta) => {
                   if(this.data.lectura === true){
                     this.showNotificationSuccessLectura("top", "right");
                   }else{
-                    this.showNotificationSuccess("top", "right");
+                    this.router.navigate([
+                      "/folio/folio/",
+                      this.folio.libro.contrato.id,
+                      this.folio.libro.id,
+                    ]);
+                   
                     this.router.navigate([
                       "/folio/folio/",
                       this.folio.libro.contrato.id,
                       this.folio.libro.id,
                     ]);
                   }
-                });
+                });*/
                 
               });
             }else{
@@ -280,7 +291,53 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
       });
   }
 
+  informar(){
+    const dialog = this.dialog.open(InformarPdfComponent, {
+      width : '500'
+    });
+    dialog.afterClosed().subscribe((result) => {
+      if (result === null || result === "" || result === undefined) {
 
+      }else{
+        this.dialogRef.close();
+      }
+    });
+    
+  }
+  mostrarAlertaLoaderFirmasFolio(){
+    let timerInterval
+    Swal.fire({
+      title: 'Procesando firma de folio',
+      html: 'Esto puede tardar unos segundos...',
+      timer: 2000,
+      timerProgressBar: true,
+      onBeforeOpen: () => {
+        Swal.showLoading()
+        timerInterval = setInterval(() => {
+          const content = Swal.getContent()
+          if (content) {
+            const b = content.querySelector('b')
+            if (b) {
+              b.textContent = Swal.getTimerLeft()
+            }
+          }
+        }, 100)
+      },
+      onClose: () => {
+        clearInterval(timerInterval);
+        this.router.navigate([
+          "/folio/folio-firmado",
+          this.folio.id,
+        ]);
+        Swal.fire("Creado!", "Folio Firmado Correctamente.", "success");
+      }
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log('I was closed by the timer')
+      }
+  })
+  }
 
 }
 const blobToBase64 = (blob) => {

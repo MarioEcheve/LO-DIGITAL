@@ -7,18 +7,33 @@
     height="85vh"
   ></ngx-extended-pdf-viewer>
 </mat-dialog-content>
-{{mostrar}}
-<mat-dialog-actions align="end">
-  <button  mat-button mat-dialog-close>Salir</button>
+<div style="align-content: flex-end; "  *ngxPermissionsOnly="['administrador','superior','administrador/s']">
   <button
     mat-button
     class="btn btn-primary"
     (click)="modalFirmarFolio()"
-    cdkFocusInitial
     [disabled]="!data.previsualisar"
-     *ngxPermissionsOnly="['administrador','superior','administrador/s']"
+    *ngIf="muestraFirmar"
+    style="float: right;"
   >
     Firmar
   </button>
-</mat-dialog-actions>
+</div>
+<div style="align-content: flex-end; "  *ngxPermissionsOnly="['administrador','superior','administrador/s']">
+  <button
+    mat-button
+    class="btn btn-primary"
+    (click)="informar()"
+    [disabled]="!data.previsualisar"
+    *ngIf="!muestraFirmar"
+    style="float: right;"
+  >
+    Informar
+  </button>
+</div>
+<div style="align-content: flex-end;">
+  <button  class="btn btn-default" mat-button mat-dialog-close style="float: right;">Salir</button>
+</div>
+
+
 

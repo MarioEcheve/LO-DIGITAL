@@ -313,9 +313,7 @@ export class FolioDetalleComponent implements OnInit {
         respuesta.body.tipoFolio
       );
       this.tipoFolioPdf = respuesta.body.tipoFolio;
-      if (
-        respuesta.body.tipoFolio.nombre.toLocaleLowerCase() === "apertura libro"
-      ) {
+      if (respuesta.body.tipoFolio.nombre.toLocaleLowerCase() === "apertura libro") {
         let tipo = this.tipoFolio.filter((tipo) => {
           return tipo.nombre.toLowerCase() === "apertura libro";
         });
@@ -335,7 +333,13 @@ export class FolioDetalleComponent implements OnInit {
         });
         this.tipoFolio = tipo;
       }
-
+      if(respuesta.body.libro.tipoLibro.descripcion.toLowerCase() === "maestro"){
+        this.tipoFolio = this.tipoFolio.filter(folio => folio.visibleMaestro === true);
+      }
+      if(respuesta.body.libro.tipoLibro.descripcion.toLowerCase() === "auxiliar"){
+        this.tipoFolio = this.tipoFolio.filter(folio => folio.visibleAuxliar === true);
+      }
+      
       this.folioForm.controls["fechaCreacion"].setValue(
         this.datePipe.transform(
           respuesta.body.fechaCreacion,
@@ -666,21 +670,21 @@ export class FolioDetalleComponent implements OnInit {
           respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase(),
         ];
         this.permissionsService.loadPermissions(permisos);
-        if (
-          this.usuario.perfilUsuarioLibro.nombre.toLowerCase() === "superior"
-        ) {
+        if (this.usuario.perfilUsuarioLibro.nombre.toLowerCase() === "superior") {
           this.tipoFolio = this.tipoFolio.filter(
             (tipo) => tipo.nombre.toLowerCase() === "cambio administrador"
           );
         }
-        if (
-          this.usuario.perfilUsuarioLibro.nombre.toLowerCase() === "asistente"
-        ) {
+        if (this.usuario.perfilUsuarioLibro.nombre.toLowerCase() === "asistente") {
           this.tipoFolio = this.tipoFolio.filter(
             (tipo) => tipo.nombre.toLowerCase() !== "cambio administrador"
           );
         }
-
+        if(respuesta.body[0].usuarioDependencia.dependencia.id === this.Folio.libro.contrato.dependenciaMandante.id){
+          this.tipoFolio = this.tipoFolio.filter(folio => folio.visibleMandante === true);
+        }else{
+          this.tipoFolio = this.tipoFolio.filter(folio => folio.visibleContratista === true);
+        }
         this.folioForm.controls["usuarioNombre"].setValue(
           respuesta.body[0].usuarioDependencia.usuario.firstName +
             " " +

@@ -15,7 +15,7 @@
                 <button mat-raised-button 
                   type="button" 
                   class="btn btn-primary btn-sm mr-1"
-                  [disabled]="Folio.requiereRespuesta === false || idlibroRelacionado !== null || usuario?.adminActivo === false" 
+                  [disabled]="Folio.requiereRespuesta === false || idlibroRelacionado !== null || usuario?.adminActivo === false || respuestaFolioShow === false" 
                   (click)="responderFolio()" 
                   *ngxPermissionsOnly="['administrador']">
                   <i class="material-icons">reply</i>
@@ -191,13 +191,12 @@
                   <td>Respuesta de:</td>
                   <td *ngIf="Folio.idlibroRelacionado !== null">&nbsp; {{folioRelacionado.libro?.nombre}} 
                             | Folio : {{folioRelacionado.numeroFolio }} 
-                     
-                            <button mat-raised-button 
-                            type="button" 
-                            class="btn btn-default btn-fab btn-sm mr-1" 
-                            (click)="navegateFolioRespuesta()">
-                              <i class="material-icons">keyboard_arrow_left</i>
-                          </button>
+                      <button mat-raised-button 
+                        type="button" 
+                        (click)="navegateFolioRespuesta(folioRelacionado)"
+                        class="btn btn-primary btn-fab btn-sm mr-1">
+                          <i class="material-icons">mail</i>                    
+                      </button>
                   </td>
                   <td *ngIf="Folio.idlibroRelacionado === null">&nbsp;n/a</td>
                 </tr>
@@ -296,3 +295,4 @@
     </div>
   </div>
 </div>
+

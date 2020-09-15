@@ -256,32 +256,35 @@ export class FolioComponent implements OnInit, AfterViewInit {
     };
     */
   }
-  ngAfterViewInit(folios?:any){
-    setTimeout(() => {
-      //this.foliosOrigen = this.folios;
-      this.folios = this.folios.filter(folio=> 
-          folio.idUsuarioFirma !== null);
-      this.foliosSinBorradores = this.folios;
-      this.folioServie.favoritosUsuarioLibro(this.usuarioLibro.id, this.libroSeleccionado.id).subscribe(
-        favoritos=>{
-          console.log(favoritos.body);
-          this.folios.forEach(element=>{
-            let valor = null;
-            valor = favoritos.body.find(favorito=> favorito.id === element.id);
-            if(valor !== undefined){
-              element.existeFavorito = false;
-            }else{
-              element.existeFavorito = true;
-            }
-          })
-        }
-      );
+  async ngAfterViewInit(folios?:any){
+    await new Promise((resolve,reject)=>{
       setTimeout(() => {
-        this.getContadorFolioSideBar();
-        this.dataSource = new MatTableDataSource(this.folios);
-        this.dataSource.paginator = this.paginator;
-       }, 600);
-    },1600);
+        //this.foliosOrigen = this.folios;
+        this.folios = this.folios.filter(folio=> 
+            folio.idUsuarioFirma !== null);
+        this.foliosSinBorradores = this.folios;
+        this.folioServie.favoritosUsuarioLibro(this.usuarioLibro.id, this.libroSeleccionado.id).subscribe(
+          favoritos=>{
+            console.log(favoritos.body);
+            this.folios.forEach(element=>{
+              let valor = null;
+              valor = favoritos.body.find(favorito=> favorito.id === element.id);
+              if(valor !== undefined){
+                element.existeFavorito = false;
+              }else{
+                element.existeFavorito = true;
+              }
+            })
+          }
+        );
+        resolve(this.folios);
+      },1600);
+    }).then((folios: any)=>{
+      this.getContadorFolioSideBar();
+      this.dataSource = new MatTableDataSource(folios);
+      this.dataSource.paginator = this.paginator;
+    })  
+    
   }
   async buscaFolios(libro, filtra?: boolean) {
     this.folios = [];
@@ -291,18 +294,29 @@ export class FolioComponent implements OnInit, AfterViewInit {
     this.idlibro = libro.id;
     let nombreEmisor = "";
     let nombreReceptor = "";
-
     await new Promise((resolve,reject)=>{
-      this.folioServie.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
-        folios = respuesta.body;
-        this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
-        respuesta.body.forEach(element=>{
-          if(element.fechaRequerida!== undefined){
-            element.fechaRequerida = element.fechaRequerida.local();
-            let resultado = calcDate(element.fechaRequerida.toDate(),new Date());
-            if(element.estadoRespuesta !== null){
-              if(element.estadoRespuesta.nombre.toLowerCase() === "respondido"){
-                element.color = "#4EA21A";
+      setTimeout(() => {
+        this.folioServie.buscarFolioPorLibro(libro.id).subscribe((respuesta) => {
+          folios = respuesta.body;
+          this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
+          respuesta.body.forEach(element=>{
+            if(element.fechaRequerida!== undefined){
+              element.fechaRequerida = element.fechaRequerida.local();
+              let resultado = calcDate(element.fechaRequerida.toDate(),new Date());
+              if(element.estadoRespuesta !== null){
+                if(element.estadoRespuesta.nombre.toLowerCase() === "respondido"){
+                  element.color = "#4EA21A";
+                }else{
+                  if(resultado[0] <= 1){
+                    element.color = "#FFD000";
+                  }
+                  if(resultado[0] >= 2){
+                    element.color = "#4285F4";
+                  }
+                  if(resultado[0] <= -1){
+                    element.color = "#FF3C33";
+                  }
+                }
               }else{
                 if(resultado[0] <= 1){
                   element.color = "#FFD000";
@@ -314,72 +328,63 @@ export class FolioComponent implements OnInit, AfterViewInit {
                   element.color = "#FF3C33";
                 }
               }
-            }else{
-              if(resultado[0] <= 1){
-                element.color = "#FFD000";
-              }
-              if(resultado[0] >= 2){
-                element.color = "#4285F4";
-              }
-              if(resultado[0] <= -1){
-                element.color = "#FF3C33";
-              }
             }
-          }
-          //this.folios = respuesta.body;
-        });
-        folios.forEach((element) => {
-          if(element.idUsuarioFirma === null){
-            this.usuarioLibroService
-            .find(element.idUsuarioCreador)
-            .subscribe((respuesta2) => {
-              nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
-              element.emisor = nombreEmisor;
-            },error=>{
-            });
-            if(element.idReceptor !== null ){
+          });
+          folios.forEach((element) => {
+            if(element.idUsuarioFirma === null){
               this.usuarioLibroService
-                .find(element.idReceptor )
-                .subscribe((respuesta2) => {
-                  nombreReceptor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
-                  element.receptor = nombreReceptor;
-                },error=>{
-                })
+              .find(element.idUsuarioCreador)
+              .subscribe((respuesta2) => {
+                nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
+                element.emisor = nombreEmisor;
+              },error=>{
+              });
+              if(element.idReceptor !== null ){
+                this.usuarioLibroService
+                  .find(element.idReceptor )
+                  .subscribe((respuesta2) => {
+                    nombreReceptor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
+                    element.receptor = nombreReceptor;
+                  },error=>{
+                  })
+              }
+            }else{
+              this.usuarioLibroService
+              .find(element.idUsuarioFirma )
+              .subscribe((respuesta2) => {
+                nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
+                element.emisor = nombreEmisor;
+              },error=>{
+              })
+              this.usuarioLibroService
+              .find(element.idReceptor )
+              .subscribe((respuesta2) => {
+                nombreReceptor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
+                element.receptor = nombreReceptor;
+              },error=>{
+              })
             }
-          }else{
-            this.usuarioLibroService
-            .find(element.idUsuarioFirma )
-            .subscribe((respuesta2) => {
-              nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
-              element.emisor = nombreEmisor;
-            },error=>{
-            })
-            this.usuarioLibroService
-            .find(element.idReceptor )
-            .subscribe((respuesta2) => {
-              nombreReceptor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
-              element.receptor = nombreReceptor;
-            },error=>{
-            })
-          }
-        });
-        setTimeout(() => {
+          });
           resolve(folios);
-        }, 1000);
-      });
+        });
+      }, 1000);
+    }).then((folios:any)=>{
+      console.log(folios);
+      
+      this.folios = folios;
+      this.folios.forEach(element=>{
+        element.existeFavorito = true;
+      })
+      this.foliosOrigen = folios;
+      this.folios = this.folios.filter(folio=> 
+          folio.idUsuarioFirma !== null);
+      this.ngAfterViewInit();
+      this.foliosSinBorradores = this.folios;
+      this.getContadorFolioSideBar();
+      
     });
-    this.folios = folios;
-    this.folios.forEach(element=>{
-      element.existeFavorito = true;
-    })
-    this.foliosOrigen = folios;
-    this.folios = this.folios.filter(folio=> 
-        folio.idUsuarioFirma !== null);
-    this.ngAfterViewInit();
-    this.dataSource = new MatTableDataSource(this.folios);
-    this.dataSource.paginator = this.paginator;
-    this.foliosSinBorradores = this.folios;
-    this.getContadorFolioSideBar();
+    
+    
   }
 
   buscarFolioPorLibro(idLibro){
@@ -397,7 +402,8 @@ export class FolioComponent implements OnInit, AfterViewInit {
         libroSeleccionado: this.libroSeleccionado,
         habilitar : false,
         folio : null,
-        editar : false
+        editar : false,
+        usuarioLibro : this.usuarioLibro
 
       },
     });
@@ -642,7 +648,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
       break;
    }
   }
-  favorito(row){
+  async favorito(row){
     let existe = false;
     let idFolioExiste= null;
     let folioFavorito = new GesFavorito();
@@ -650,29 +656,36 @@ export class FolioComponent implements OnInit, AfterViewInit {
     folioFavorito.folio = row;
     folioFavorito.fechaCreacion = moment(Date.now());
     folioFavorito.nota = "";
-    this.favoritoService.BuscarFavoritoByFolio(row.id).subscribe(
-      folioFavorito => {
-        if(folioFavorito.body.length > 0 ){
-          existe = true;
-          idFolioExiste = folioFavorito.body[0].id;
-        }else{
-          existe = false;
+    existe = await this.getFavoritos(row.id);
+    if(existe === false){
+      this.favoritoService.create(folioFavorito).subscribe(
+        folioFavorito =>{
+          let index = this.folios.indexOf(row);
+          this.folios[index].existeFavorito = false;
+          this.dataSource = new MatTableDataSource(this.folios);
+          this.dataSource.paginator = this.paginator;
+          this.getContadorFolioSideBar();
+          Swal.fire("Agregado!", "Favorito Agregado Correctamente.", "success");
+        });
+    }
+  }
+  async getFavoritos(idFolio){
+    let existe = false;
+    let idFolioExiste= null;
+    await new Promise((resolve,reject)=>{
+      this.favoritoService.BuscarFavoritoByFolio(idFolio).subscribe(
+        folioFavorito => {
+          if(folioFavorito.body.length > 0 ){
+            existe = true;
+            idFolioExiste = folioFavorito.body[0].id;
+          }else{
+            existe = false;
+          }
+          return resolve(existe);
         }
-      }
-    );
-    setTimeout(() => {
-      if(existe === false){
-        this.favoritoService.create(folioFavorito).subscribe(
-          folioFavorito =>{
-            let index = this.folios.indexOf(row);
-            this.folios[index].existeFavorito = false;
-            this.dataSource = new MatTableDataSource(this.folios);
-            this.dataSource.paginator = this.paginator;
-            this.getContadorFolioSideBar();
-            Swal.fire("Agregado!", "Favorito Agregado Correctamente.", "success");
-          });
-      }
-    }, 300);
+      );
+    });
+    return existe;
   }
   modalFiltroFolioPersonalizado(){
    
