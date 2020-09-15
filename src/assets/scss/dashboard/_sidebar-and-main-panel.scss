@@ -11,7 +11,7 @@
     left: 0;
     z-index: 2;
     /* FVS (ancho del menu) width: 260px; */
-    width: 240px;
+    width: 220px;
     background: $white-color;
     @include shadow-big();
 
@@ -20,9 +20,9 @@
         max-height: 42px;
 
         img{
-            width: 42px;
-            top: 13px;
-            left: 18px;
+            width: 32px;
+            top: 9px;
+            left: 24px;
             position: absolute;
         }
     }
@@ -52,7 +52,7 @@
         height: calc(100vh - 75px);
         overflow: auto;
         /* FVS (regula el ancho del boton respecto al ancho del menu) width: 260px; */
-        width: 240px;
+        width: 220px;
         z-index: 4;
 
         padding-bottom: 30px;
@@ -191,9 +191,9 @@
         p{
             margin: 0;
             /* FVS (altura del boton menu) line-height: 30px; */
-            line-height: 20px;
+            line-height: 18px;
             /* FVS (tamaño letra del menu) font-size: 14px; */
-            font-size: 13px;
+            font-size: 12px;
             position: relative;
             display: block;
             height: auto;
@@ -203,7 +203,7 @@
 
         i{
             /* FVS (Tamaño icono) font-size: 24px; */
-            font-size: 20px;
+            font-size: 18px;
             float: left;
             /* FVS (Distancia entre icono y letras) margin-right: 15px; */
             margin-right: 5px;
@@ -249,11 +249,12 @@
     }
 
     .logo{
-        padding: 15px 0px;
+        /* FVS padding: 15px 0px; */
+        padding: 3px 0px;
         margin: 0;
         display: block;
         position: relative;
-        z-index: 4;
+        z-index: 4;        
 
         a.logo-mini,
         a.logo-normal{
@@ -564,8 +565,9 @@
             }
         }
 
-        .sidebar:hover{            
-            width: 260px;
+        .sidebar:hover{
+           /*  FVS modifica el ancho del menu en movimiento width: 260px;   */      
+            width: 220px;
 
             .logo{
                 a.logo-normal{
@@ -575,7 +577,8 @@
             }
 
             .sidebar-wrapper{
-                width: 260px;
+                /* FVS Cambia el tamaño del sidebar en la amimaciòn width: 260px; */
+                width: 220px;
 
                 > .nav li > a p,
                 > .nav [data-toggle="collapse"] ~ div > ul > li > a .sidebar-normal,
