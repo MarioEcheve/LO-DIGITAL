@@ -1,4 +1,3 @@
-<h2 mat-dialog-title style="text-align: center;">Firmar Folio</h2>
 <mat-dialog-content>
   <ngx-extended-pdf-viewer
     [src]="data.pdf"
@@ -7,33 +6,30 @@
     height="85vh"
   ></ngx-extended-pdf-viewer>
 </mat-dialog-content>
-<div style="align-content: flex-end; "  *ngxPermissionsOnly="['administrador','superior','administrador/s']">
-  <button
-    mat-button
-    class="btn btn-primary"
-    (click)="modalFirmarFolio()"
-    [disabled]="!data.previsualisar"
-    *ngIf="muestraFirmar"
-    style="float: right;"
-  >
-    Firmar
-  </button>
-</div>
-<div style="align-content: flex-end; "  *ngxPermissionsOnly="['administrador','superior','administrador/s']">
-  <button
-    mat-button
-    class="btn btn-primary"
-    (click)="informar()"
-    [disabled]="!data.previsualisar"
-    *ngIf="!muestraFirmar"
-    style="float: right;"
-  >
-    Informar
-  </button>
-</div>
-<div style="align-content: flex-end;">
-  <button  class="btn btn-default" mat-button mat-dialog-close style="float: right;">Salir</button>
-</div>
-
-
-
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close class="btn btn-default mr-1">Salir</button>
+  <div *ngxPermissionsOnly="['administrador','superior','administrador/s']">
+    <button
+      mat-button
+      class="btn btn-primary"
+      (click)="modalFirmarFolio()"
+      [disabled]="!data.previsualisar"
+      *ngIf="muestraFirmar"
+      style="float: right;"
+    >
+      Firmar
+    </button>
+  </div>
+  <div *ngxPermissionsOnly="['administrador','superior','administrador/s']">
+    <button
+      mat-button
+      class="btn btn-primary"
+      (click)="informar()"
+      [disabled]="!data.previsualisar"
+      *ngIf="!muestraFirmar"
+      style="float: right;"
+    >
+      Informar
+    </button>
+  </div>  
+</mat-dialog-actions>

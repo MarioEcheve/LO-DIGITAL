@@ -1,38 +1,29 @@
-<h5 style="font-weight: bold;">Buscar Folios </h5>
+<h5 style="font-weight: bold;">Folio Referencia</h5>
+<br/>
+<div [formGroup]="buscaFolioForm" class="mr-2">
+  <mat-form-field>
+    <mat-select
+    placeholder="Seleccione libro"
+    name="city"
+    formControlName="libro"    
+    >
+    <mat-option 
+      *ngFor="let libro of libros"
+      [value]="libro.nombre"
+      (click)="buscaFolios(libro)"
+      >
+      {{ libro.nombre }} | Cod.: {{ libro.codigo }} | Clase
+      Libro: {{ libro.tipoLibro.descripcion }} | Tipo Firma:
+      {{ libro.tipoFirma.nombre }} | Estado :
+      {{ libro.estadoLibro.nombre }}
+    </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 <mat-dialog-content>
     <div class="row">
-        <form [formGroup]="buscaFolioForm" class="col-md-12">
-            <div class="col-md-12">
-                <mat-form-field>
-                    <mat-select
-                    placeholder="Seleccione libro"
-                    name="city"
-                    formControlName="libro"
-                    >
-                    <mat-option 
-                      *ngFor="let libro of libros"
-                      [value]="libro.nombre"
-                      (click)="buscaFolios(libro)"
-                      >
-                      {{ libro.nombre }} | Cod.: {{ libro.codigo }} | Clase
-                      Libro: {{ libro.tipoLibro.descripcion }} | Tipo Firma:
-                      {{ libro.tipoFirma.nombre }} | Estado :
-                      {{ libro.estadoLibro.nombre }}
-                    </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="col-md-12">
-                <mat-form-field>
-                    <input
-                        matInput
-                        placeholder="Filtro de Busqueda"
-                        type="text"
-                        value=""
-                    />
-                </mat-form-field>
-            </div>
-            <div class="col-md-12">
+        <form [formGroup]="buscaFolioForm" class="col-md-12">          
+            
                 <table class="table table-striped mt-2">
                     <thead class="text-muted">
                       <tr>
@@ -92,10 +83,10 @@
                     </tbody>
                 </table>
                 <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
-            </div>
+            
         </form>
     </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-raised-button mat-dialog-close class="btn-primary">Salir</button>
-  </mat-dialog-actions>
+    <button mat-raised-button mat-dialog-close class="btn btn-primary">Salir</button>
+</mat-dialog-actions>

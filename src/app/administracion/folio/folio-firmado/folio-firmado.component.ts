@@ -294,7 +294,9 @@ export class FolioFirmadoComponent implements OnInit {
   }
   informar(){
     this.dialog.open(InformarPdfComponent, {
-      width : '500'
+      width: "500px",
+      height: "310px",
+      
     })
   }
 }
