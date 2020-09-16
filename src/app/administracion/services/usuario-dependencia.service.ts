@@ -7,13 +7,14 @@ import * as moment from "moment";
 //import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from "../util/request-util";
 import { IUsuarioDependencia } from "../TO/usuario-dependencia.model";
+import { environment } from './../../../environments/environment';
 
 type EntityResponseType = HttpResponse<IUsuarioDependencia>;
 type EntityArrayResponseType = HttpResponse<IUsuarioDependencia[]>;
 
 @Injectable({ providedIn: "root" })
 export class UsuarioDependenciaService {
-  SERVER_API_URL = "http://localhost:8080/";
+  SERVER_API_URL = environment.apiUrl;
   public resourceUrl = this.SERVER_API_URL + "api/usuario-dependencias";
   public resourceUrlFindUserByUsuarioDependencia = this.SERVER_API_URL + "api/findUserByUsuarioDependencia";
   public resourceUrlFindUserByUsuarioDependenciaRolUser = this.SERVER_API_URL + "api/findUserByUsuarioDependenciaRolUser";

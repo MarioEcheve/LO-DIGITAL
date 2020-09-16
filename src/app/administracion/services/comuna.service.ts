@@ -5,13 +5,14 @@ import { Observable } from "rxjs";
 //import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from "../util/request-util";
 import { IComuna } from "../TO/comuna.model";
+import { environment } from './../../../environments/environment';
 
 type EntityResponseType = HttpResponse<IComuna>;
 type EntityArrayResponseType = HttpResponse<IComuna[]>;
 
 @Injectable({ providedIn: "root" })
 export class ComunaService {
-  SERVER_API_URL = "http://localhost:8080/";
+  SERVER_API_URL = environment.apiUrl;
   public resourceUrl = this.SERVER_API_URL + "api/comunas";
   public resourceUrlComunaPorRegion =
     this.SERVER_API_URL + "api/buscaComunaPorRegion";

@@ -3,6 +3,7 @@ import { HttpClient, HttpResponse } from "@angular/common/http";
 import { Observable, BehaviorSubject, EMPTY } from "rxjs";
 import { map } from "rxjs/operators";
 import * as moment from "moment";
+import { environment } from './../../../environments/environment';
 
 //import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from "../util/request-util";
@@ -13,7 +14,7 @@ type EntityArrayResponseType = HttpResponse<IFolio[]>;
 
 @Injectable({ providedIn: "root" })
 export class FolioService {
-  SERVER_API_URL = "http://localhost:8080/";
+  SERVER_API_URL = environment.apiUrl;
   public resourceUrl = this.SERVER_API_URL + "api/folios";
   public resourceUrlBuscarFolioPorLibro =
     this.SERVER_API_URL + "api/buscarFolioPorLibro";

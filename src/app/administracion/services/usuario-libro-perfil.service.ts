@@ -5,13 +5,14 @@ import { Observable } from "rxjs";
 //import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from "../util/request-util";
 import { IUsuarioLibroPerfil } from "../TO/usuario-libro-perfil.model";
+import { environment } from './../../../environments/environment';
 
 type EntityResponseType = HttpResponse<IUsuarioLibroPerfil>;
 type EntityArrayResponseType = HttpResponse<IUsuarioLibroPerfil[]>;
 
 @Injectable({ providedIn: "root" })
 export class UsuarioLibroPerfilService {
-  SERVER_API_URL = "http://localhost:8080/";
+  SERVER_API_URL = environment.apiUrl;
   public resourceUrl = this.SERVER_API_URL + "api/usuario-libro-perfils";
 
   constructor(protected http: HttpClient) {}

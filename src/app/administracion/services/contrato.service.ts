@@ -3,6 +3,7 @@ import { HttpClient, HttpResponse } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import * as moment from "moment";
+import { environment } from './../../../environments/environment';
 
 //import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from "../util/request-util";
@@ -13,7 +14,7 @@ type EntityArrayResponseType = HttpResponse<IContrato[]>;
 
 @Injectable({ providedIn: "root" })
 export class ContratoService {
-  SERVER_API_URL = "http://localhost:8080/";
+  SERVER_API_URL = environment.apiUrl;
   public resourceUrl = this.SERVER_API_URL + "api/contratoes";
 
   constructor(protected http: HttpClient) {}

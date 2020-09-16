@@ -5,13 +5,14 @@ import { Observable } from 'rxjs';
 //import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from '../util/request-util';
 import { IArchivo } from '../TO/archivo.model';
+import { environment } from './../../../environments/environment';
 
 type EntityResponseType = HttpResponse<IArchivo>;
 type EntityArrayResponseType = HttpResponse<IArchivo[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ArchivoService {
-  SERVER_API_URL = "http://localhost:8080/";
+  SERVER_API_URL = environment.apiUrl;
   public resourceUrl = this.SERVER_API_URL + 'api/archivos';
   public resourceaAchivosPorFolio = this.SERVER_API_URL + 'api/archivosPorFolio'
 

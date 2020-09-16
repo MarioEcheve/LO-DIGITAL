@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpResponse } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { environment } from './../../../environments/environment';
 
 //import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from "../util/request-util";
@@ -11,7 +12,7 @@ type EntityArrayResponseType = HttpResponse<IEstadoLibro[]>;
 
 @Injectable({ providedIn: "root" })
 export class EstadoLibroService {
-  SERVER_API_URL = "http://localhost:8080/";
+  SERVER_API_URL = environment.apiUrl;
   public resourceUrl = this.SERVER_API_URL + "api/estado-libros";
 
   constructor(protected http: HttpClient) {}

@@ -3,8 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
-
-//import { SERVER_API_URL } from 'app/app.constants';
+import { environment } from './../../../environments/environment';
 import { Login } from "../login/login";
 
 type JwtToken = {
@@ -13,7 +12,7 @@ type JwtToken = {
 
 @Injectable({ providedIn: "root" })
 export class AuthServerProvider {
-  SERVER_API_URL = "http://localhost:8080/";
+  SERVER_API_URL = environment.apiUrl;
 
   constructor(
     private http: HttpClient,

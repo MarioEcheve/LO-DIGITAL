@@ -7,13 +7,14 @@ import * as moment from "moment";
 //import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from "../util/request-util";
 import { IUsuarioLibro, UsuarioLibro } from "../TO/usuario-libro.model";
+import { environment } from './../../../environments/environment';
 
 type EntityResponseType = HttpResponse<IUsuarioLibro>;
 type EntityArrayResponseType = HttpResponse<IUsuarioLibro[]>;
 
 @Injectable({ providedIn: "root" })
 export class UsuarioLibroService {
-  SERVER_API_URL = "http://localhost:8080/";
+  SERVER_API_URL = environment.apiUrl;
   public resourceUrl = this.SERVER_API_URL + "api/usuario-libros";
   public resourceUrlListaUsuariosLibros = this.SERVER_API_URL + "api/ListaUsuariosLibros";
   public resourceUrlBuscarlibroPorContrato =

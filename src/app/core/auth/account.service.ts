@@ -5,10 +5,11 @@ import { Observable, ReplaySubject, of } from "rxjs";
 import { shareReplay, tap, catchError } from "rxjs/operators";
 import { StateStorageService } from "../auth/state-storage.service";
 import { Account } from "../user/account.model";
+import { environment } from './../../../environments/environment';
 
 @Injectable({ providedIn: "root" })
 export class AccountService {
-  SERVER_API_URL = "http://localhost:8080/";
+  SERVER_API_URL = environment.apiUrl;
 
   private userIdentity: Account | null = null;
   private authenticationState = new ReplaySubject<Account | null>(1);

@@ -5,10 +5,11 @@ import { Observable } from "rxjs";
 //import { SERVER_API_URL } from "app/app.constants";
 import { createRequestOption, Pagination } from "../util/request-util";
 import { IUser } from "../TO/user.model";
+import { environment } from './../../../environments/environment';
 
 @Injectable({ providedIn: "root" })
 export class UserService {
-  SERVER_API_URL = "https://libro-obra-digital.nn.r.appspot.com/";
+  SERVER_API_URL = environment.apiUrl;
   public resourceUrl = this.SERVER_API_URL + "api/users";
 
   constructor(private http: HttpClient) {}
