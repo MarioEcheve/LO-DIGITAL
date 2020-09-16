@@ -954,7 +954,7 @@ export class FolioDetalleComponent implements OnInit {
     });
     const dialogRef = this.dialog.open(VisorPdfComponent, {
       width: "100%",
-      height: "90%",
+      height: "95%",
       data: {
         pdf: url,
         folio: this.Folio,

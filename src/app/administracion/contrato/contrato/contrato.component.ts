@@ -313,7 +313,7 @@ export class ContratoComponent implements OnInit {
       (contrato.tipoMoneda = null),
       (contrato.tipoMonto = null),
       (contrato.tipoOtro = null),
-      (contrato.estadoServicio = {id: 2101, nombre: "Pendiente", contratoes: null})
+      (contrato.estadoServicio = {id: 2451, nombre: "Pendiente", contratoes: null})
       this.contratoService.create(contrato).subscribe(
         (respuesta) => {
           console.log(respuesta);

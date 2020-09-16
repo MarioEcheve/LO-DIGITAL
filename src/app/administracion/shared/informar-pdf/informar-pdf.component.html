@@ -1,56 +1,40 @@
-<h2>Informar</h2>
-<div class="container">
-    <form [formGroup]="formInformar">
-        <div class="row col-md-12" >
-            <div class="row col-md-12">
-                <mat-form-field class="example-full-width col-md-12">
-                    <input
-                      matInput
-                      placeholder="Ingrese Correo destinatario"
-                      type="text"
-                      formControlName="destinatarios"
-                    />
-                </mat-form-field>
-            </div>
-            <div class="row col-md-12">
-                <mat-form-field class="example-full-width col-md-12">
-                    <input
-                      matInput
-                      placeholder="Asunto"
-                      type="text"
-                      formControlName="asunto"
-                    />
-                </mat-form-field>
-            </div>
-            <div class="row col-md-12">
-                <mat-form-field class="example-full-width">
-                    <mat-label></mat-label>
-                    <textarea matInput placeholder="" formControlName="mensaje"></textarea>
-                  </mat-form-field>
-            </div>
-            <div class="row col-md-12" style="justify-content: flex-end;">
-                <button
-                    mat-raised-button
-                    class="btn btn-default col-md-4"  
-                    (click)="cerrar()"                                              
-                  >
-                    <span class="btn-label">
-                      <i class="material-icons">email</i>
-                    </span>
-                   Cancelar
-                </button>
-                <button
-                    mat-raised-button
-                    class="btn btn-primary col-md-4"   
-                    (click)="sendEmail()"   
-                    [disabled]="!formInformar.valid"                                          
-                  >
-                    <span class="btn-label">
-                      <i class="material-icons">email</i>
-                    </span>
-                   Informar
-                </button>
-            </div>
-        </div>
-    </form>
-</div>
+<mat-dialog-content>
+  <h5 style="font-weight: bold;">Informar</h5>
+  <br/>
+  <form [formGroup]="formInformar">
+    <div class="row">
+      <div class="col-md-12">
+          <mat-form-field class="example-full-width">
+              <input
+                matInput
+                placeholder="Ingrese E-mail"
+                type="text"
+                formControlName="destinatarios"
+              />
+          </mat-form-field>
+      </div>
+      <div class="col-md-12">
+          <mat-form-field class="example-full-width">
+              <input
+                matInput
+                placeholder="Asunto"
+                type="text"
+                formControlName="asunto"
+              />
+          </mat-form-field>
+      </div>
+      <div class="col-md-12">
+        <mat-form-field class="example-full-width">
+          <mat-label>Contenido</mat-label>
+          <textarea matInput placeholder="" formControlName="mensaje"></textarea>
+        </mat-form-field>
+      </div>      
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cerrar()">Cancelar</button>
+  <button mat-button cdkFocusInitial (click)="sendEmail()" [disabled]="!formInformar.valid" class="btn btn-primary">
+    Informar
+  </button>  
+</mat-dialog-actions>
