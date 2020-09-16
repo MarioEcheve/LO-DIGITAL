@@ -233,7 +233,10 @@ export class FolioDetalleComponent implements OnInit {
       this.usuarioLibroService
         .ListaUsuariosLibros(respuesta.body.libro.id, usuarioActual.id)
         .subscribe((respuesta) => {
-          this.receptor = respuesta.body;
+          //this.receptor = respuesta.body;
+          let administradores = respuesta.body.filter(usuarios=> usuarios.perfilUsuarioLibro.nombre.toLowerCase() === "administrador")
+          this.receptor = administradores;
+          console.log(respuesta.body);
         });
       this.folioService
         .foliosReferencias(respuesta.body.id)

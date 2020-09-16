@@ -31,7 +31,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
   folio = new Folio();
   usuario;
   mostrar="";
-  muestraFirmar = true;
+  muestraAcciones;
   constructor(
     public dialogRef: MatDialogRef<VisorPdfComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -55,6 +55,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     if(this.data.previsualisar === true){
       if(this.data.lectura === false){
+        this.muestraAcciones =1;
         this.folio = this.data.folio;
         this.usuario = this.data.usuario;
         this.data.pdfArchivoCompleto.getBlob((blob) => {
@@ -67,6 +68,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
           });
         });
       }else{
+        this.muestraAcciones =3;
         this.folio = this.data.folio;
         this.usuario = this.data.usuario;
         this.folioService.find(this.folio.id).subscribe(
@@ -79,7 +81,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
         );
       }
     }else{
-
+      this.muestraAcciones = 4;
     }
   
   }
@@ -166,7 +168,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                   this.folio.libro.fechaApertura = moment(this.folio.libro.fechaApertura);
                   this.libroService.update(this.folio.libro).subscribe();
                 }
-                this.muestraFirmar = false;
+                this.muestraAcciones = 2;
                 this.mostrarAlertaLoaderFirmasFolio();
                 /*
                 this.dialogRef.close();

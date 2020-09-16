@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Inject, AfterViewInit, ViewChild } from '@angular/core';
 import { TableData } from 'src/app/md/md-table/md-table.component';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { LibroService } from '../../services/libro.service';
@@ -10,6 +10,9 @@ import { VisorPdfComponent } from '../../shared/visor-pdf/visor-pdf/visor-pdf.co
 import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { resolve } from 'path';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-modal-buscar-folio',
@@ -25,6 +28,13 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
   foliosRelacionados = [];
   ListaFolios : Folio[] = [];
   buscaFolioForm : FormGroup;
+
+  // implementacion tabla con paginador y filtro
+  displayedColumns: string[] = ["numeroFolio", "emisor", "asunto", "fechaCreacion", "acciones"];
+  dataSource: MatTableDataSource<any>;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+
   constructor(
     public dialogRef: MatDialogRef<ModalBuscarFolioComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -39,6 +49,7 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
     this.folios$.subscribe(
       folios=>{
         this.folios = folios;
+        
         console.log(this.folios);
       }
     );
@@ -101,6 +112,10 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
       }
       setTimeout(() => {
         this.ListaFolios = valor2;
+        console.log(this.ListaFolios);
+        this.dataSource = new MatTableDataSource(this.ListaFolios);
+        this.dataSource.paginator = this.paginator;
+        console.log(this.dataSource.data);
       }, 100);
     }); 
 
@@ -145,6 +160,15 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
     let index = this.ListaFolios.indexOf(row);
     this.ListaFolios[index].existTableSearchFolio = true;
     this.folioService.AgregarFolioReferenciaAlista(row);
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }
 function removeItemFromArr ( arr, item ) {

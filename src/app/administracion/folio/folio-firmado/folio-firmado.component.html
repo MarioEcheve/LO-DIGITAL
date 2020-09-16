@@ -41,15 +41,27 @@
                    *ngxPermissionsOnly="['administrador']"
                 >
                   <i class="material-icons">insert_drive_file</i>
+                  Lectura PDF
+                </button>
+                <button
+                  mat-raised-button
+                  class="btn btn-primary btn-sm mr-1"
+                  [disabled]="Folio.idUsuarioLectura !== null  || usuario?.adminActivo === false"
+                  (click)="previsualizar()"
+                   *ngxPermissionsOnly="['administrador']"
+                >
+                  <i class="material-icons">insert_drive_file</i>
                   Visualizar PDF
                 </button>
                 <button mat-raised-button 
                   type="button" 
+                  (click)="descargarPdf()"
                   class="btn btn-primary btn-fab btn-sm mr-1">
                     <i class="material-icons">save_alt</i>                    
                 </button>
                 <button mat-raised-button 
                   type="button" 
+                  (click)="print()"
                   class="btn btn-primary btn-fab btn-sm mr-1">
                     <i class="material-icons">print</i>                    
                 </button>
@@ -193,7 +205,7 @@
                             | Folio : {{folioRelacionado.numeroFolio }} 
                       <button mat-raised-button 
                         type="button" 
-                        (click)="navegateFolioRespuesta(folioRelacionado)"
+                        (click)="previsualizarFolioRespuestaFolioRelacionados(folioRelacionado.id)"
                         class="btn btn-primary btn-fab btn-sm mr-1">
                           <i class="material-icons">mail</i>                    
                       </button>
