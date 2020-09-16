@@ -38,6 +38,7 @@ export class FolioFirmadoComponent implements OnInit {
   folioRelacionado=  new Folio();
   listaArchivos:Archivo[] = [];
   respuestaFolioShow = false;
+  folioReferencias : Folio[] = [];
   emisor;
   receptor;
   usuario;
@@ -98,6 +99,7 @@ export class FolioFirmadoComponent implements OnInit {
       }
       this.obtenerEmisorFolio(respuesta.body.idUsuarioFirma);
       this.obtenerReceptorFolio(respuesta.body.idReceptor);
+      this.foliosReferencias();
       this.dependenciaService
         .find(respuesta.body.libro.contrato.idDependenciaContratista)
         .subscribe((respuesta) => {
@@ -376,7 +378,27 @@ export class FolioFirmadoComponent implements OnInit {
         });
       });
   }
+  async foliosReferencias(){
 
+    await new Promise((resolve)=>{
+      this.folioService
+        .foliosReferencias(this.Folio.id)
+        .subscribe((respuesta) => {
+            resolve(respuesta.body);
+        });
+    }).then((foliosOrigen :any)=>{
+
+        foliosOrigen.folioReferencias.forEach(element=>{
+        this.folioService.find(element.idFolioOrigen).subscribe(
+          folio=>{
+            this.folioReferencias = [...this.folioReferencias, folio.body]
+          } 
+        );
+       });
+    })
+  
+    
+  }
 
 }
 const b64toBlob = (b64Data, contentType='', sliceSize=512) => {

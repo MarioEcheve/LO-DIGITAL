@@ -12,15 +12,17 @@
                   (click)="volverListaFolios()">
                     <i class="material-icons">keyboard_arrow_left</i>
                 </button>
-                <button mat-raised-button 
-                  type="button" 
-                  class="btn btn-primary btn-sm mr-1"
-                  [disabled]="Folio.requiereRespuesta === false || idlibroRelacionado !== null || usuario?.adminActivo === false || respuestaFolioShow === false" 
-                  (click)="responderFolio()" 
-                  *ngxPermissionsOnly="['administrador']">
-                  <i class="material-icons">reply</i>
+                <div *ngIf="Folio.requiereRespuesta === true">
+                  <button mat-raised-button 
+                    type="button" 
+                    class="btn btn-primary btn-sm mr-1"
+                    [disabled]="Folio.requiereRespuesta === false || idlibroRelacionado !== null || usuario?.adminActivo === false || respuestaFolioShow === false" 
+                    (click)="responderFolio()" 
+                    *ngxPermissionsOnly="['administrador']">
+                    <i class="material-icons">reply</i>
                   Responder
-                </button>
+                  </button>
+                </div>
                 <button mat-raised-button 
                   type="button" 
                   class="btn btn-primary btn-sm mr-1">
@@ -36,7 +38,7 @@
                 <button
                   mat-raised-button
                   class="btn btn-primary btn-sm mr-1"
-                  [disabled]="Folio.idUsuarioLectura !== null  || usuario?.adminActivo === false"
+                  [disabled]="Folio.idUsuarioLectura !== null  || usuario?.adminActivo === false || respuestaFolioShow === false"
                   (click)="lecturaFolio()"
                    *ngxPermissionsOnly="['administrador']"
                 >
@@ -215,20 +217,12 @@
                 <tr>
                   <td>Referencia de:</td>
                   <td>
-                    <!--
-                             &nbsp;
-                    <li class="list-inline-item">
-                      <a href="">Libro Maestro, Folio Nº003</a>
+                    
+                     &nbsp;
+                    <li class="list-inline-item " *ngFor="let folio of folioReferencias ">
+                      <a (click)="previsualizarFolioRespuestaFolioRelacionados(folio.id)">  {{ folio.libro.nombre }} : {{ folio.numeroFolio }} ,  </a>
                     </li>
-                    &nbsp;
-                    <li class="list-inline-item">
-                      <a href="">Libro Maestro, Folio Nº010</a>
-                    </li>
-                    &nbsp;
-                    <li class="list-inline-item">
-                      <a href="">Libro Maestro, Folio Nº012</a>
-                    </li>
-                    -->
+                    
                   </td>
                 </tr>
                 <tr>
