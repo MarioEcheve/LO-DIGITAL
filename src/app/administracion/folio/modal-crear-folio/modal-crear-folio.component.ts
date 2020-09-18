@@ -83,6 +83,8 @@ export class ModalCrearFolioComponent implements OnInit {
     folio.asunto = this.crearFolioFormGroup.controls["asunto"].value;
     folio.tipoFolio = this.crearFolioFormGroup.controls["tipoFolio"].value;
     folio.idUsuarioCreador = this.usuario.id;
+    folio.emisorMarcado = this.usuario.usuarioDependencia.usuario.firstName + ' ' + this.usuario.usuarioDependencia.usuario.lastName; 
+    console.log(this.usuario);
     folio.libro = this.libroSeleccionado;
     folio.fechaCreacion = moment(Date.now());
     

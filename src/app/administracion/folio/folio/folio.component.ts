@@ -281,6 +281,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
       },1600);
     }).then((folios: any)=>{
       this.getContadorFolioSideBar();
+      console.log(folios);
       this.dataSource = new MatTableDataSource(folios);
       this.dataSource.paginator = this.paginator;
     })  
@@ -292,7 +293,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
     this.libroSeleccionado = libro;
     let usuario = JSON.parse(localStorage.getItem("user"));
     this.idlibro = libro.id;
-    let nombreEmisor = "";
     let nombreReceptor = "";
     await new Promise((resolve,reject)=>{
       setTimeout(() => {
@@ -332,10 +332,11 @@ export class FolioComponent implements OnInit, AfterViewInit {
           });
           folios.forEach((element) => {
             if(element.idUsuarioFirma === null){
+              /*
               this.usuarioLibroService
               .find(element.idUsuarioCreador)
               .subscribe((respuesta2) => {
-                nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
+                nombreEmisor = ;
                 element.emisor = nombreEmisor;
               },error=>{
               });
@@ -347,15 +348,9 @@ export class FolioComponent implements OnInit, AfterViewInit {
                     element.receptor = nombreReceptor;
                   },error=>{
                   })
-              }
+                  
+              }*/
             }else{
-              this.usuarioLibroService
-              .find(element.idUsuarioFirma )
-              .subscribe((respuesta2) => {
-                nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
-                element.emisor = nombreEmisor;
-              },error=>{
-              })
               this.usuarioLibroService
               .find(element.idReceptor )
               .subscribe((respuesta2) => {
@@ -369,8 +364,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
         });
       }, 1000);
     }).then((folios:any)=>{
-      console.log(folios);
-      
       this.folios = folios;
       this.folios.forEach(element=>{
         element.existeFavorito = true;

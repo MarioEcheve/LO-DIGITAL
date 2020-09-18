@@ -8,6 +8,7 @@ import { environment } from './../../../environments/environment';
 //import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from "../util/request-util";
 import { IFolio } from "../TO/folio.model";
+import { FolioReferencia } from "../TO/folio-referencia.model";
 
 type EntityResponseType = HttpResponse<IFolio>;
 type EntityArrayResponseType = HttpResponse<IFolio[]>;
@@ -232,8 +233,12 @@ export class FolioService {
   }
   foliosReferencias(id?: any): Observable<any> {
     const options = createRequestOption(id);
-    return this.http
-      .get<any>(`${this.resourceUrlFolioReferencias}/${id}`, { params: options, observe: "response" });
+    return this.http.get<any>(`${this.resourceUrlFolioReferencias}/${id}`, { params: options, observe: "response" });
+  }
+  foliosReferenciasFirmado(id?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption();
+    return this.http.get<any[]>(`${this.resourceUrlFolioReferencias}/${id}`, { params: options, observe: "response" })
+   
   }
   protected convertDateFromClient(folio: IFolio): IFolio {
     const copy: IFolio = Object.assign({}, folio, {

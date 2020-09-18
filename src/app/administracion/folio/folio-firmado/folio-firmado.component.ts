@@ -18,6 +18,7 @@ import { ArchivoService } from "../../services/archivo.service";
 import { Archivo } from "../../TO/archivo.model";
 import { InformarPdfComponent } from '../../shared/informar-pdf/informar-pdf.component';
 import Swal from "sweetalert2/dist/sweetalert2.js";
+import { FolioReferenciaService } from "../../services/folio-referencia.service";
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -63,6 +64,7 @@ export class FolioFirmadoComponent implements OnInit {
     private UsuarioDependenciaService : UsuarioDependenciaService,
     private permissionsService : NgxPermissionsService,
     private archivoService : ArchivoService,
+    private folioReferenciaService : FolioReferenciaService
     
   ) {}
   ngOnInit() {
@@ -378,26 +380,28 @@ export class FolioFirmadoComponent implements OnInit {
         });
       });
   }
-  async foliosReferencias(){
-
-    await new Promise((resolve)=>{
-      this.folioService
-        .foliosReferencias(this.Folio.id)
-        .subscribe((respuesta) => {
-            resolve(respuesta.body);
-        });
-    }).then((foliosOrigen :any)=>{
-
-        foliosOrigen.folioReferencias.forEach(element=>{
+   foliosReferencias(){
+      this.folioReferenciaService.query().subscribe(
+        folios=>{
+          let foliosFiltrados = folios.body.filter(folio=> folio.idFolioOrigen === this.Folio.id)
+          console.log(foliosFiltrados);
+          foliosFiltrados.forEach(element=>{
+            this.folioService.find(element.idFolioReferencia).subscribe(
+              folio=>{
+                this.folioReferencias = [...this.folioReferencias, folio.body];
+              } 
+            );
+           });
+        }
+      );
+      /*
+      foliosOrigen.folioReferencias.forEach(element=>{
         this.folioService.find(element.idFolioOrigen).subscribe(
           folio=>{
-            this.folioReferencias = [...this.folioReferencias, folio.body]
+            this.folioReferencias = [...this.folioReferencias, folio.body];
           } 
         );
-       });
-    })
-  
-    
+       });*/
   }
 
 }

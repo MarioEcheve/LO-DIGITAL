@@ -21,6 +21,8 @@ import { NgxPermissionsService } from "ngx-permissions";
 import { UsuarioLibro } from "src/app/administracion/TO/usuario-libro.model";
 import { InformarPdfComponent } from "../../informar-pdf/informar-pdf.component";
 import Swal from "sweetalert2/dist/sweetalert2.js";
+import { FolioReferencia } from "src/app/administracion/TO/folio-referencia.model";
+import { FolioReferenciaService } from "src/app/administracion/services/folio-referencia.service";
 declare var $: any;
 @Component({
   selector: "app-visor-pdf",
@@ -41,12 +43,14 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
     private libroService: LibroService,
     private usuarioLibroService : UsuarioLibroService,
     private permissionsService : NgxPermissionsService,
+    private folioReferenciaService : FolioReferenciaService
   ) {}
 
   ngOnInit(): void {
     //console.log(this.data.lectura);
     //this.mostrar = t
     let usuarioActual = JSON.parse(localStorage.getItem("user"));
+    console.log(this.data.folioReferencias);
     setTimeout(() => {
       let idLibro =  this.data.folio.libro.id;
       this.getPermisos(idLibro, usuarioActual.id);
@@ -109,6 +113,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               this.usuarioLibroService.update(adminNuevo).subscribe();
             }
             this.folio.estadoFolio = true;
+            this.folio.asunto = this.data.folio.asunto;
             this.folio.fechaFirma = moment(Date.now());
             if(this.data.lectura === true){
               this.folio.idUsuarioLectura = this.usuario.id;
@@ -117,6 +122,31 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               this.folio.idUsuarioFirma = this.usuario.id;
               this.folio.numeroFolio = respuesta.body[0].numero_folio;
             }
+
+            if(this.data.folioReferencias.length > 0 ){
+              this.folio.poseeFolioReferencia = true;
+              for (let i = 0; i < this.data.folioReferencias.length; i++) {
+                let folioReferencia = new FolioReferencia();
+                folioReferencia.idFolioReferencia = this.data.folioReferencias[i].id;
+                folioReferencia.idFolioOrigen = this.folio.id;
+                folioReferencia.asunto = `Folio Relacionado | asunto : ${this.data.folio.asunto}`;
+                this.folioReferenciaService
+                  .create(folioReferencia)
+                  .subscribe((respuesta2) => {
+                    this.folio.poseeFolioReferencia = true;
+                    this.folio.folioReferencias = [];
+                    this.folio.folioReferencias.push(respuesta2.body);
+                    this.folio.asunto = this.data.folio.asunto;
+                    this.folioService.update(this.folio).subscribe();
+                    
+                  });
+              }
+            }else{
+              this.folio.poseeFolioReferencia = false;
+              this.folio.asunto = this.data.folio.asunto;
+              this.folioService.update(this.folio).subscribe();
+            }
+
             this.folio.libro.fechaCreacion = moment(
               this.folio.libro.fechaCreacion
             );

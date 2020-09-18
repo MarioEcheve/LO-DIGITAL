@@ -46,6 +46,9 @@ export interface IFolio {
   existTableSearchFolio? : Boolean;
   receptor: string;
   existeFavorito? : Boolean;
+  poseeFolioReferencia?: boolean;
+  emisorMarcado?: string;
+  tipoFolioMarcado?: string;
 }
 
 export class Folio implements IFolio {
@@ -87,6 +90,9 @@ export class Folio implements IFolio {
     public existTableSearchFolio? : Boolean,
     public receptor = "",
     public existeFavorito? : Boolean,
+    public poseeFolioReferencia?: boolean,
+    public emisorMarcado?: string,
+    public tipoFolioMarcado?: string,
   ) {
     this.requiereRespuesta = this.requiereRespuesta || false;
     this.estadoLectura = this.estadoLectura || false;

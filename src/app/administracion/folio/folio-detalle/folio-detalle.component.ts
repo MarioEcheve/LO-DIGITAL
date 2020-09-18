@@ -463,6 +463,7 @@ export class FolioDetalleComponent implements OnInit {
             let folioReferencia = new FolioReferencia();
             folioReferencia.idFolioReferencia = this.folios[i].id;
             folioReferencia.idFolioOrigen = respuesta.body.id;
+            respuesta.body.poseeFolioReferencia = true;
             folioReferencia.asunto = `Folio Relacionado | asunto : ${this.folios[i].asunto}`;
             this.folioReferenciaService
               .create(folioReferencia)
@@ -480,6 +481,7 @@ export class FolioDetalleComponent implements OnInit {
           //this.folioRelacionadoService.create().subscribe();
         } else {
           setTimeout(() => {
+            respuesta.body.poseeFolioReferencia = false;
             respuesta.body.folioReferencias = [];
             this.folioService.ListaFoliosDeFolios([]);
             this.folioService.update(respuesta.body).subscribe();
@@ -966,6 +968,7 @@ export class FolioDetalleComponent implements OnInit {
         previsualisar: true,
         lectura: false,
         listaUsuariosCambioAdmin: this.listaUsuariosCambioAdmin,
+        folioReferencias : this.folios
       },
     });
   }
