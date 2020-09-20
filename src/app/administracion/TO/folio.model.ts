@@ -46,7 +46,7 @@ export interface IFolio {
   existTableSearchFolio? : Boolean;
   receptor: string;
   existeFavorito? : Boolean;
-  poseeFolioReferencia?: boolean;
+  poseeFolioReferencia?: boolean 
   emisorMarcado?: string;
   tipoFolioMarcado?: string;
 }
@@ -100,5 +100,6 @@ export class Folio implements IFolio {
     this.entidadCreacion = this.entidadCreacion || false;
     this.emisor = this.emisor;
     this.color = color;
+    this.poseeFolioReferencia = false;
   }
 }

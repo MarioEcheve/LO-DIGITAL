@@ -12,7 +12,7 @@
                   (click)="volverListaFolios()">
                     <i class="material-icons">keyboard_arrow_left</i>
                 </button>
-                <div *ngIf="Folio.requiereRespuesta === true">
+                <div *ngIf="Folio.requiereRespuesta === true && respuestaFolioShow === true">
                   <button mat-raised-button 
                     type="button" 
                     class="btn btn-primary btn-sm mr-1"
@@ -48,9 +48,7 @@
                 <button
                   mat-raised-button
                   class="btn btn-primary btn-sm mr-1"
-                  [disabled]="Folio.idUsuarioLectura !== null  || usuario?.adminActivo === false"
                   (click)="previsualizar()"
-                   *ngxPermissionsOnly="['administrador']"
                 >
                   <i class="material-icons">insert_drive_file</i>
                   Visualizar PDF
@@ -203,14 +201,11 @@
                 </tr>
                 <tr>
                   <td>Respuesta de:</td>
-                  <td *ngIf="Folio.idlibroRelacionado !== null">&nbsp; {{folioRelacionado.libro?.nombre}} 
-                            | Folio : {{folioRelacionado.numeroFolio }} 
-                      <button mat-raised-button 
-                        type="button" 
-                        (click)="previsualizarFolioRespuestaFolioRelacionados(folioRelacionado.id)"
-                        class="btn btn-primary btn-fab btn-sm mr-1">
-                          <i class="material-icons">mail</i>                    
-                      </button>
+                  <td *ngIf="Folio.idlibroRelacionado !== null">&nbsp; 
+                    <li class="list-inline-item " >
+                      <a (click)="previsualizarFolioRespuestaFolioRelacionados(folioRelacionado.id)">  {{folioRelacionado.libro?.nombre}} 
+                        | Folio : {{folioRelacionado.numeroFolio }}  </a>
+                    </li>
                   </td>
                   <td *ngIf="Folio.idlibroRelacionado === null">&nbsp;n/a</td>
                 </tr>

@@ -42,7 +42,7 @@ export class FolioFirmadoComponent implements OnInit {
   folioReferencias : Folio[] = [];
   emisor;
   receptor;
-  usuario;
+  usuario :  UsuarioDependencia;
   cities = [
     { value: "paris-0", viewValue: "Paris" },
     { value: "miami-1", viewValue: "Miami" },
@@ -72,6 +72,7 @@ export class FolioFirmadoComponent implements OnInit {
     let idFolio = this.route.snapshot.paramMap.get("id");
     this.obtenerFolio(idFolio);
     this.getArchivosFolio(idFolio);
+    this.getMisLibros();
     this.tableData1 = {
       headerRow: ["#", "Name", "Job Position", "Since", "Salary", "Actions"],
       dataRows: [
@@ -87,7 +88,6 @@ export class FolioFirmadoComponent implements OnInit {
   obtenerFolio(idFolio) {
     this.folioService.find(idFolio).subscribe((respuesta) => {
       this.Folio = respuesta.body;
-      console.log(this.Folio);
       let usuarioActual =JSON.parse(localStorage.getItem("user"));
       this.obtenerPerfilLibroUsuario(this.Folio.libro.id, usuarioActual.id);
       this.idlibroRelacionado = respuesta.body.idFolioRespuesta;
@@ -121,13 +121,11 @@ export class FolioFirmadoComponent implements OnInit {
   }
   obtenerEmisorFolio(idEmisor) {
     this.usuarioLibroService.find(idEmisor).subscribe((respuesta) => {
-      console.log(respuesta.body);
       this.emisor = respuesta.body;
     });
   }
   obtenerReceptorFolio(idReceptor) {
     this.usuarioLibroService.find(idReceptor).subscribe((respuesta) => {
-      console.log(respuesta.body);
       this.receptor = respuesta.body;
     });
   }
@@ -144,18 +142,19 @@ export class FolioFirmadoComponent implements OnInit {
     this.UsuarioDependenciaService.findUserByUsuarioDependencia(usuario.id).subscribe(
       usuarioDependencia=>{
         perfilUsuario = usuarioDependencia.body[0];
-        if(perfilUsuario.nombre?.toLowerCase() === "administrador"){
+        console.log(perfilUsuario);
+        if(perfilUsuario.nombre.toLowerCase() === "super usuario"){
           this.libroService.getMisLibros(usuario.id).subscribe(
             respuesta => {
-              console.log(respuesta.body);
               this.libros = respuesta.body;
+              console.log(respuesta);
             }
           );
         }else{
           this.libroService.getMisLibrosContratoDetalle(usuario.id, this.contrato.id).subscribe(
             libros=>{
-              console.log(libros.body);
               this.libros = libros.body;
+              console.log(libros);
             }
           );
         }
@@ -163,17 +162,17 @@ export class FolioFirmadoComponent implements OnInit {
     );
     setTimeout(() => {
       const dialogRef = this.dialog.open(ModalCrearFolioComponent, {
-      
         width: "40%",
         height: "50%%",
         data: {
           libros: this.libros,
           libroSeleccionado: this.Folio.libro,
           habilitar : true,
-          folio : this.Folio
+          folio : this.Folio,
+          usuarioLibro : this.usuario
         },
       });
-    }, 500);
+    }, 700);
     
     /*
     let usuario = JSON.parse(localStorage.getItem("user"));
@@ -184,7 +183,6 @@ export class FolioFirmadoComponent implements OnInit {
   lecturaFolio(){
     this.folioService.find(this.Folio.id).subscribe(
       folioOrigen => {
-        console.log(folioOrigen);
         let pdf = folioOrigen.body.pdfFirmado;
         let contentType = folioOrigen.body.pdfFirmadoContentType;
         let url = "data:"+contentType+";base64,"+pdf;
@@ -194,12 +192,10 @@ export class FolioFirmadoComponent implements OnInit {
             return res.blob();
           })
           .then(blob => {
-            console.log(blob);
             resolve(URL.createObjectURL(blob));
           });
         });
         promise.then((resultado) => {
-          console.log(resultado);
           const dialogRef = this.dialog.open(VisorPdfComponent, {
             width: "100%",
             height: "90%",
@@ -209,7 +205,9 @@ export class FolioFirmadoComponent implements OnInit {
               usuario: this.usuario,
               pdfArchivoCompleto: null,
               previsualisar : true,
-              lectura : true
+              lectura : true,
+              listaUsuariosCambioAdmin : [],
+              folioReferencias : []
             },
           });
         });
@@ -221,14 +219,11 @@ export class FolioFirmadoComponent implements OnInit {
     this.usuarioLibroService
       .buscarlibroPorContrato(idLibro, idUsuario)
       .subscribe((respuesta) => {
-        console.log(respuesta.body);
         this.usuario = respuesta.body[0];
-        console.log(respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase());
         let permisos = [respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase()];
         this.permissionsService.loadPermissions(permisos);
         this.usuarioLibroService.find(this.Folio.idReceptor).subscribe(
             response=>{ 
-              console.log(response.body);
               if(respuesta.body[0].usuarioDependencia?.dependencia.id === response.body.usuarioDependencia?.dependencia.id){
                 this.respuestaFolioShow = true;
               }else{
@@ -238,11 +233,11 @@ export class FolioFirmadoComponent implements OnInit {
         );
       });
   }
+
   async getArchivosFolio(idFolio){
     let response = await this.archivoService.AchivosPorFolio(idFolio).subscribe(
       respuesta=>{
         this.listaArchivos = respuesta.body;
-        console.log(this.listaArchivos);
       }
     );
     return response;
@@ -263,7 +258,6 @@ export class FolioFirmadoComponent implements OnInit {
     );
     // Remove link from body
     document.body.removeChild(link);
-    console.log(blobUrl)
   }
   async navegateFolioRespuesta(folioRelacionado){
     let timerInterval
@@ -290,7 +284,6 @@ export class FolioFirmadoComponent implements OnInit {
     }).then((result) => {
       /* Read more about handling dismissals below */
       if (result.dismiss === Swal.DismissReason.timer) {
-        console.log('I was closed by the timer')
       }
       this.obtenerFolio(folioRelacionado.id);
       this.getArchivosFolio(folioRelacionado.id);
@@ -307,7 +300,7 @@ export class FolioFirmadoComponent implements OnInit {
     let archivo = new Archivo();
     archivo.archivoContentType = this.Folio.pdfFirmadoContentType;
     archivo.archivo = this.Folio.pdfFirmado;
-    this.openFile(archivo.archivoContentType , archivo.archivo , "archivo")
+    this.openFile(archivo.archivoContentType , archivo.archivo , `${this.Folio.libro.nombre}, Folio : ${this.Folio.numeroFolio} `)
   }
   print(){
     window.print();
@@ -315,7 +308,6 @@ export class FolioFirmadoComponent implements OnInit {
   previsualizar(){
     this.folioService.find(this.Folio.id).subscribe(
       folioOrigen => {
-        console.log(folioOrigen);
         let pdf = folioOrigen.body.pdfFirmado;
         let contentType = folioOrigen.body.pdfFirmadoContentType;
         let url = "data:"+contentType+";base64,"+pdf;
@@ -325,12 +317,10 @@ export class FolioFirmadoComponent implements OnInit {
             return res.blob();
           })
           .then(blob => {
-            console.log(blob);
             resolve(URL.createObjectURL(blob));
           });
         });
         promise.then((resultado) => {
-          console.log(resultado);
           const dialogRef = this.dialog.open(VisorPdfComponent, {
             width: "100%",
             height: "90%",
@@ -349,7 +339,6 @@ export class FolioFirmadoComponent implements OnInit {
   previsualizarFolioRespuestaFolioRelacionados(idFolio : number){
     this.folioService.find(idFolio).subscribe(
       folioOrigen => {
-        console.log(folioOrigen);
         let pdf = folioOrigen.body.pdfFirmado;
         let contentType = folioOrigen.body.pdfFirmadoContentType;
         let url = "data:"+contentType+";base64,"+pdf;
@@ -359,12 +348,10 @@ export class FolioFirmadoComponent implements OnInit {
             return res.blob();
           })
           .then(blob => {
-            console.log(blob);
             resolve(URL.createObjectURL(blob));
           });
         });
         promise.then((resultado) => {
-          console.log(resultado);
           const dialogRef = this.dialog.open(VisorPdfComponent, {
             width: "100%",
             height: "90%",
@@ -384,7 +371,6 @@ export class FolioFirmadoComponent implements OnInit {
       this.folioReferenciaService.query().subscribe(
         folios=>{
           let foliosFiltrados = folios.body.filter(folio=> folio.idFolioOrigen === this.Folio.id)
-          console.log(foliosFiltrados);
           foliosFiltrados.forEach(element=>{
             this.folioService.find(element.idFolioReferencia).subscribe(
               folio=>{
@@ -403,7 +389,19 @@ export class FolioFirmadoComponent implements OnInit {
         );
        });*/
   }
-
+  getMisLibros(){
+    this.folioService.navBarChange(2);
+    let usuario = JSON.parse(localStorage.getItem("user"));
+    this.libroService.getMisLibros(usuario.id).subscribe(
+      respuesta => {
+        respuesta.body.forEach(element => {
+           this.obtenerPerfilLibroUsuario(element.id,usuario.id);
+        });
+          this.libros = respuesta.body;
+      }
+    );
+  }
+  
 }
 const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
   const byteCharacters = atob(b64Data);

@@ -5,6 +5,6 @@
 
 export const environment = {
   production: false,
-  //apiUrl: 'https://libro-obra-digital.nn.r.appspot.com/',
-  apiUrl : 'http://localhost:8080/'
+  apiUrl: 'https://libro-obra-digital.nn.r.appspot.com/',
+  //apiUrl : 'http://localhost:8080/'
 };

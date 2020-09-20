@@ -47,10 +47,9 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    //console.log(this.data.lectura);
+    console.log(this.data);
     //this.mostrar = t
     let usuarioActual = JSON.parse(localStorage.getItem("user"));
-    console.log(this.data.folioReferencias);
     setTimeout(() => {
       let idLibro =  this.data.folio.libro.id;
       this.getPermisos(idLibro, usuarioActual.id);
@@ -118,6 +117,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
             if(this.data.lectura === true){
               this.folio.idUsuarioLectura = this.usuario.id;
               this.folio.estadoLectura = true;
+              this.folio.poseeFolioReferencia = this.data.folio.poseeFolioReferencia;
             }else{
               this.folio.idUsuarioFirma = this.usuario.id;
               this.folio.numeroFolio = respuesta.body[0].numero_folio;
@@ -142,11 +142,10 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                   });
               }
             }else{
-              this.folio.poseeFolioReferencia = false;
               this.folio.asunto = this.data.folio.asunto;
+              this.folio.poseeFolioReferencia = this.data.folio.poseeFolioReferencia;
               this.folioService.update(this.folio).subscribe();
             }
-
             this.folio.libro.fechaCreacion = moment(
               this.folio.libro.fechaCreacion
             );
@@ -163,7 +162,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               }
             );
             if(this.folio.requiereRespuesta === true){
-              this.folio.estadoRespuesta = {id: 1903, nombre: "Pendiente", folios: null}
+              this.folio.estadoRespuesta = {id: 1952, nombre: "Pendiente", folios: null}
             }else{
               this.folio.estadoRespuesta =null;
             }
@@ -172,7 +171,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               if(this.folio.idFolioRelacionado!==null){
                 this.folioService.find(this.folio.idFolioRelacionado).subscribe(
                   respuesta=>{
-                    respuesta.body.estadoRespuesta = {id: 1904, nombre: "Respondido", folios: null};
+                    respuesta.body.estadoRespuesta = {id: 1951, nombre: "Respondido", folios: null};
                     this.folioService.update(respuesta.body).subscribe();
                   }
                 );
@@ -181,7 +180,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               this.folioService.update(this.folio).subscribe((respuesta) => {
                 if(this.folio.tipoFolio.nombre.toLowerCase() === "apertura libro") {
                     this.folio.libro.estadoLibro = {
-                    id:  3051,
+                    id:  2201,
                     nombre: "Abierto",
                     libros: null,
                   };
@@ -190,7 +189,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                 }
                 if(this.folio.tipoFolio.nombre.toLowerCase() === "cierre libro") {
                     this.folio.libro.estadoLibro = {
-                      id:  3052,
+                      id:  2202,
                       nombre: "Cerrado",
                       libros: null,
                     };
@@ -200,31 +199,15 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
                 }
                 this.muestraAcciones = 2;
                 this.mostrarAlertaLoaderFirmasFolio();
-                /*
-                this.dialogRef.close();
-                this.dialogRef.beforeClosed().subscribe((respuesta) => {
-                  if(this.data.lectura === true){
-                    this.showNotificationSuccessLectura("top", "right");
-                  }else{
-                    this.router.navigate([
-                      "/folio/folio/",
-                      this.folio.libro.contrato.id,
-                      this.folio.libro.id,
-                    ]);
-                   
-                    this.router.navigate([
-                      "/folio/folio/",
-                      this.folio.libro.contrato.id,
-                      this.folio.libro.id,
-                    ]);
-                  }
-                });*/
-                
               });
             }else{
               this.dialogRef.close();
               this.dialogRef.beforeClosed().subscribe((respuesta) => {
+                console.log(this.folio);
+                this.folio.poseeFolioReferencia = this.data.folio.poseeFolioReferencia;
+                
                 this.folioService.update(this.folio).subscribe();
+                
                 this.showNotificationSuccessLectura("top", "right");
               });
             }
@@ -315,9 +298,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
     this.usuarioLibroService
       .buscarlibroPorContrato(idLibro, idUsuario)
       .subscribe((respuesta) => {
-        console.log(respuesta.body);
         this.usuario = respuesta.body[0];
-        console.log(respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase());
         let permisos = [respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase()];
         this.permissionsService.loadPermissions(permisos);
       });
@@ -366,7 +347,6 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
     }).then((result) => {
       /* Read more about handling dismissals below */
       if (result.dismiss === Swal.DismissReason.timer) {
-        console.log('I was closed by the timer')
       }
   })
   }

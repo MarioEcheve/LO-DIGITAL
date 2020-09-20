@@ -176,7 +176,7 @@ export class FolioDetalleComponent implements OnInit {
       usuarioPerfilLibro: [],
       usuarioNombre: [],
       perfilUsuario: [],
-      respuestaFolio: ["respuesta de "],
+      respuestaFolio: [""],
       fechaRequeridaDatepicker: ["", this.fechaRequeridaValidators],
       folioReferencia: [],
       receptor: [null, Validators.required],
@@ -236,7 +236,6 @@ export class FolioDetalleComponent implements OnInit {
           //this.receptor = respuesta.body;
           let administradores = respuesta.body.filter(usuarios=> usuarios.perfilUsuarioLibro.nombre.toLowerCase() === "administrador")
           this.receptor = administradores;
-          console.log(respuesta.body);
         });
       this.folioService
         .foliosReferencias(respuesta.body.id)
@@ -285,7 +284,7 @@ export class FolioDetalleComponent implements OnInit {
             .find(respuesta.body.idFolioRelacionado)
             .subscribe((folioRelacionado) => {
               this.folioForm.controls["respuestaFolio"].setValue(
-                "Respuesta de : " +
+                "" +
                   folioRelacionado.body.libro.nombre +
                   " | " +
                   "Folio : " +
@@ -439,7 +438,6 @@ export class FolioDetalleComponent implements OnInit {
                 (respuesta) => {
                   let index = this.archivosFolio.indexOf(element);
                   this.archivosFolio[index].id = respuesta.body.id;
-                  console.log(respuesta.body);
                 },
                 (existe) => {}
               );
@@ -662,7 +660,6 @@ export class FolioDetalleComponent implements OnInit {
   }
   onUploadInit(event, archivos?: any) {
     if (!archivos) {
-      console.log(event);
     }
   }
 
@@ -807,22 +804,24 @@ export class FolioDetalleComponent implements OnInit {
     let imagen2 = document.getElementById('imagenLogo2');
     let imagenBase64 = getBase64Image(imagen);
     let imagenBase642 = getBase64Image(imagen2);    
-    this.Folio.idReceptor = this.folioForm.controls["receptor"].value;
-    let numeroFolio = "";
-    if(this.correlativoPdf >= 9){
-      numeroFolio = `Folio #${this.correlativoPdf}                ${moment(this.Folio.fechaFirma).format('DD-MM-YYYY hh:mm')}`
-    }else{
-      numeroFolio = `Folio #${this.correlativoPdf}                   ${moment(this.Folio.fechaFirma).format('DD-MM-YYYY hh:mm')}`
+    let respuestaFolio = "N/A";
+    let fechaRequerida =  this.folioForm.controls["fechaRequeridaDatepicker"].value;
+    let usuarioLibroActual = this.usuario.usuarioDependencia.usuario.firstName + ' ' +  this.usuario.usuarioDependencia.usuario.lastName;
+
+    if(this.folioForm.controls["respuestaFolio"].value !== ""){
+      respuestaFolio = this.folioForm.controls["respuestaFolio"].value;
     }
-    this.Folio.fechaRequerida = moment(
-      this.folioForm.controls["fechaRequeridaDatepicker"].value
-    );
+    this.Folio.idReceptor = this.folioForm.controls["receptor"].value;
+
+    if(fechaRequerida === "" || fechaRequerida === null){
+      fechaRequerida = "No"
+    }else{
+      fechaRequerida =this.datePipe.transform(fechaRequerida, 'dd-MM-yyyy hh:mm');
+    }
+
     this.usuarioLibroService
       .find(this.Folio.idReceptor)
       .subscribe((respuesta) => {
-        let valorRecepor =
-          respuesta.body.usuarioDependencia.usuario.firstName +
-          respuesta.body.usuarioDependencia.usuario.lastName;
         this.receptorPdf = respuesta.body;
       });
     var docDefinition = {
@@ -833,18 +832,15 @@ export class FolioDetalleComponent implements OnInit {
         },
         {
           table: {
-            // headers are automatically repeated if the table spans over multiple pages
-            // you can declare how many rows should be treated as headers
             headerRows: 0,
             widths: [ 50, 260, 70, '*' ],
             body: [
-              [ { text: 'Contrato :', bold: true , fontSize: 9, }, { text: `${this.Folio.libro.contrato.nombre}`, bold: true ,fontSize: 9,}, { text: 'Libro :', bold: true , fontSize: 9, }, { text: `${this.Folio.libro.nombre}`, bold: true ,fontSize: 9,} ],
-              [ { text: 'Codigo :', fontSize: 9, }, { text: `${this.Folio.libro.contrato.codigo}` ,fontSize: 9,}, { text: 'Codigo :' , fontSize: 9, }, { text: `${this.Folio.libro.codigo}` ,fontSize: 9,} ],
-              [ { text: 'Mandante :' , fontSize: 9, }, { text: `${this.Folio.libro.contrato.dependenciaMandante.entidad.nombre} | Rut: 18.011.897-7` ,fontSize: 9,}, { text: 'Clase Libro :' , fontSize: 9, }, { text: `${this.Folio.libro.tipoLibro.descripcion}`,fontSize: 9,} ],
-              [ { text: '', fontSize: 9, }, { text: `${this.Folio.libro.contrato.dependenciaMandante.nombre}` ,fontSize: 9,}, { text: 'Tipo Firma :' , fontSize: 9, }, { text: `${this.Folio.libro.tipoFirma.nombre}` ,fontSize: 9,} ],
-              [ { text: 'Contratista : ', fontSize: 9, }, { text: `${this.dependenciaContratista.entidad.nombre} | Rut: 18.011.897-7` ,fontSize: 9,}, { text: 'Fecha Apertura :' , fontSize: 9, }, { text: `${moment(this.Folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}` ,fontSize: 9,} ],
-              [ { text: '', fontSize: 9, }, { text: `${this.dependenciaContratista.nombre}` ,fontSize: 9,}, { text: '' , fontSize: 9, }, { text: `` ,fontSize: 9,} ],
-
+              [ { text: 'Contrato :', bold: true , fontSize: 8, }, { text: `${this.Folio.libro.contrato.nombre}`, bold: true ,fontSize: 8,}, { text: 'Libro :', bold: true , fontSize: 8, }, { text: `${this.Folio.libro.nombre}`, bold: true ,fontSize: 8,} ],
+              [ { text: 'Codigo :', fontSize: 8, }, { text: `${this.Folio.libro.contrato.codigo}` ,fontSize: 8,}, { text: 'Codigo :' , fontSize: 8, }, { text: `${this.Folio.libro.codigo}` ,fontSize: 8,} ],
+              [ { text: 'Mandante :' , fontSize: 8, }, { text: `${this.Folio.libro.contrato.dependenciaMandante.entidad.nombre} | Rut: 18.011.897-7` ,fontSize: 8,}, { text: 'Clase Libro :' , fontSize: 8, }, { text: `${this.Folio.libro.tipoLibro.descripcion}`,fontSize: 8,} ],
+              [ { text: '', fontSize: 8, }, { text: `${this.Folio.libro.contrato.dependenciaMandante.nombre}` ,fontSize: 8,}, { text: 'Tipo Firma :' , fontSize: 8, }, { text: `${this.Folio.libro.tipoFirma.nombre}` ,fontSize: 8,} ],
+              [ { text: 'Contratista : ', fontSize: 8, }, { text: `${this.dependenciaContratista.entidad.nombre} | Rut: 18.011.897-7` ,fontSize: 8,}, { text: 'Fecha Apertura :' , fontSize: 8, }, { text: `${moment(this.Folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}` ,fontSize: 8,} ],
+              [ { text: '', fontSize: 8, }, { text: `${this.dependenciaContratista.nombre}` ,fontSize: 8,}, { text: '' , fontSize: 8, }, { text: `` ,fontSize: 8,} ],
             ],
           },
           layout: {
@@ -863,44 +859,53 @@ export class FolioDetalleComponent implements OnInit {
           },
           
         },
-        {  
-          columns: [  
-            
-              [ 
-                {  
-                  text: numeroFolio ,  
-                  bold: true,
-                  fontSize: 9,  
-                  margin: [0, 20, 0, 0]
-                 },  
-                { text: `Emisor :                   ${this.emisorPdf.usuarioDependencia.usuario.firstName}  ${this.emisorPdf.usuarioDependencia.usuario.lastName}| Rut: 18.011.897-7`,fontSize: 9 ,margin: [0, 5, 0, 0]}, 
-                { text: `Administrador Mandante`,fontSize: 9,alignment: 'left', margin: [74, 5, 0, 0]  }, 
-                { text: `Receptor:                ${this.receptorPdf.usuarioDependencia.usuario.firstName} ${this.receptorPdf.usuarioDependencia.usuario.lastName}| Rut: 18.011.897-7`,fontSize: 9, margin: [0, 5, 0, 0]}, 
-                { text: `Administrador Contratista`,fontSize: 9,alignment: 'left', margin: [74, 5, 0, 0]  }, 
-                { text: `Tipo de Folio :        ${this.Folio.tipoFolio.nombre}`, fontSize: 9,  margin: [0, 5, 0, 0]},  
-                { text: `Respuesta de :       N/A`, fontSize: 9,  margin: [0, 5, 0, 0]}, 
-                { text: `Fecha Requerida : No`, fontSize: 9,  margin: [0, 5, 0, 0]},  
-                { text: `Asunto :                   ${this.Folio.asunto}`, fontSize: 9,  margin: [0, 5, 0, 0]},   
-              ],
-              
-          ]
+        {
+          table: {
+            headerRows: 0,
+            widths: [ 60, 300 ],
+            body: [
+              [ { text: `Folio #${this.correlativoPdf}`, bold: true , fontSize: 8, margin: [0, 20, 0, 0]}, { text: `${moment(this.Folio.fechaFirma).format('DD-MM-YYYY hh:mm')}`,bold: true , fontSize: 8,margin: [0, 20, 0, 0]}],
+              [ { text: `Emisor :`, bold: false , fontSize: 8, }, { text: ` ${this.emisorPdf.usuarioDependencia.usuario.firstName}  ${this.emisorPdf.usuarioDependencia.usuario.lastName} | Rut: ${this.emisorPdf.usuarioDependencia.rut}`,bold: false , fontSize: 8}],
+              [ { text: ``, bold: true , fontSize: 8, }, { text: `${this.emisorPdf.cargoFuncion}`,bold: false , fontSize: 8}],
+              [ { text: `Receptor :`, bold: false , fontSize: 8, }, { text: ` ${this.receptorPdf.usuarioDependencia.usuario.firstName} ${this.receptorPdf.usuarioDependencia.usuario.lastName} | Rut: ${this.receptorPdf.usuarioDependencia.rut}`,bold: false , fontSize: 8}],
+              [ { text: ``, bold: true , fontSize: 8, }, { text: `${this.receptorPdf.cargoFuncion}`,bold: false , fontSize: 8}],
+              [ { text: `Tipo de Folio :`, bold: false , fontSize: 8, }, { text: `${this.Folio.tipoFolio.nombre}`,bold: false , fontSize: 8}],
+              [ { text: `Respuesta de :`, bold: false , fontSize: 8, }, { text: `${respuestaFolio}`,bold: false , fontSize: 8}],
+              [ { text: `Fecha Requerida :`, bold: false , fontSize: 8, }, { text: `${fechaRequerida}`,bold: false , fontSize: 8}],
+              [ { text: `Asunto :`, bold: false , fontSize: 8, }, { text: `${this.Folio.asunto}`,bold: false , fontSize: 8}],
+            ]
+          },
+          layout: {
+            hLineWidth: function (i, node) {
+              return i === 0 || i === node.table.body.length ? 0 : 0;
+            },
+            vLineWidth: function (i, node) {
+              return 0;
+            },
+            hLineColor: function (i, node) {
+              return i === 0 || i === node.table.body.length ? "red" : "grey";
+            },
+            vLineColor: function (i, node) {
+              return i === 0 || i === node.table.widths.length ? "red" : "grey";
+            },
+          },
         },
         {  
           text: `Anotacion :` ,  
           bold: true,
-          fontSize: 9, 
+          fontSize: 8, 
           margin: [0, 20, 0, 0]  
         },  
         {  
           text: `${anotacion}` ,  
           bold: true,
-          fontSize: 9, 
+          fontSize: 8, 
           margin: [0, 5, 0, 0]  
         },  
         {  
           text: `1 Archivos Adjuntos :` ,  
           bold: true,
-          fontSize: 9, 
+          fontSize: 8, 
           margin: [0, 20, 0, 0]  
         },  
         {  
@@ -910,27 +915,33 @@ export class FolioDetalleComponent implements OnInit {
           margin: [0, 5, 0, 0]  
         },  
         {  
-          text: `Mario Andres Echeverria Lopez` ,  
+          text: `${usuarioLibroActual}` ,  
           bold: true,
-          fontSize: 9, 
+          fontSize: 8, 
           margin: [0, 20, 0, 0]  
+        },  
+        {  
+          text: `${this.usuario.cargoFuncion}` ,  
+          bold: false,
+          fontSize: 8, 
+          margin: [0, 5, 0, 0]  
         },  
         {  
           text: `Fecha Firma : ${moment(this.Folio.fechaFirma).format('DD-MM-YYYY hh:mm')}` ,  
           bold: false,
-          fontSize: 9, 
+          fontSize: 8, 
           margin: [0, 5, 0, 0]  
         },  
         {  
           text: `Firma Digital Avanzada` ,  
           bold: false,
-          fontSize: 9, 
+          fontSize: 8, 
           margin: [0, 5, 0, 0]  
         },  
         {  
           text: `Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745` ,  
           bold: false,
-          fontSize: 9, 
+          fontSize: 8, 
           margin: [0, 5, 0, 0]  
         }, 
       ],
@@ -1159,11 +1170,9 @@ export class FolioDetalleComponent implements OnInit {
     const mappedFiles = filePaths.map((base64File) => ({
       selectedFile: base64File,
     }));
-    console.log(mappedFiles);
     return mappedFiles;
   }
   eliminarArchivo(file) {
-    console.log(file);
     if (file.id === undefined) {
       let index = this.archivosFolio.indexOf(file);
       this.archivosFolio.splice(index, 1);
