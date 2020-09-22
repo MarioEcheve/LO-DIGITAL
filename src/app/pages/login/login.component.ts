@@ -80,6 +80,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   login() {
+    this.router.navigate(["dashboard"]);
+    
     this.loginService
       .login({
         username: this.loginForm.get("username")!.value,
@@ -109,6 +111,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         () => (this.authenticationError = true)
       );
     //console.log(this.loginForm.value);
+    
   }
   showNotificationSuccess(from: any, align: any, res: any) {
     const type = [
