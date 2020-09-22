@@ -96,7 +96,7 @@ export class FolioDetalleComponent implements OnInit {
     translate: "no",
     defaultParagraphSeparator: "p",
     defaultFontName: "Arial",
-    toolbarHiddenButtons: [["bold"]],
+    //toolbarHiddenButtons: [["bold"]],
     customClasses: [
       {
         name: "quote",

@@ -1,3 +1,7 @@
+:host /deep/ angular-editor#anotacion .angular-editor-button[title="Insert Image"]{
+    display: none
+    
+}
 .respuestaFolio{
     width: 80%;
 }
@@ -10,4 +14,7 @@
 }
 .cardPdf {
     border: none;
+}
+#anotacion {
+    font-weight: 500;
 }
