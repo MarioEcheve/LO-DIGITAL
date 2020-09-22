@@ -96,6 +96,7 @@ export class FolioDetalleComponent implements OnInit {
     translate: "no",
     defaultParagraphSeparator: "p",
     defaultFontName: "Arial",
+    sanitize: false,
     //toolbarHiddenButtons: [["bold"]],
     customClasses: [
       {

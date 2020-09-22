@@ -13,7 +13,12 @@
           </div>
           <div class="col-1">
             <div class="d-flex justify-content-center">Estado</div>
-            <div class="d-flex justify-content-center"><span class="badge badge-success">{{ entidades.estado }}</span></div>
+            <div *ngIf="entidades.estado === true" class="d-flex justify-content-center">
+              <span class="badge badge-success">Activo</span>
+            </div>
+            <div *ngIf="entidades.estado === false" class="d-flex justify-content-center">
+              <span class="badge badge-success">Inactivo</span>
+            </div>
           </div>
           <div class="col-2">
             <div class="d-flex justify-content-center">Activación</div>

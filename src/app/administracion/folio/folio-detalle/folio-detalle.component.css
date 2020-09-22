@@ -2,6 +2,37 @@
     display: none
     
 }
+:host /deep/ angular-editor#anotacion .angular-editor-button[title="Insert Video"]{
+    display: none
+    
+}
+:host /deep/ angular-editor#anotacion .angular-editor-button[title="Subscript"]{
+    display: none 
+}
+:host /deep/ angular-editor#anotacion .angular-editor-button[title="Superscript"]{
+    display: none
+    
+}
+/*
+:host /deep/ angular-editor#anotacion .angular-editor-button[title="Strikethrough"]{
+    display: none
+}*/
+:host /deep/ angular-editor#anotacion .angular-editor-button[title="HTML Code"]{
+    display: none
+    
+}
+:host /deep/ angular-editor#anotacion .angular-editor-button[title="Clear Class "]{
+    display: none
+    
+}
+:host /deep/ angular-editor#anotacion .angular-editor-button[title="Insert Link"]{
+    display: none
+    
+}
+:host /deep/ angular-editor#anotacion .angular-editor-button[title="Unlink"]{
+    display: none
+    
+}
 .respuestaFolio{
     width: 80%;
 }
