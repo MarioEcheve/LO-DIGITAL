@@ -22,15 +22,20 @@
           </div>
           <div class="col-2">
             <div class="d-flex justify-content-center">Activación</div>
-            <div class="d-flex justify-content-center">{{ entidades.fechaCreacion | date: "dd-MM-yyyy HH:mm" }}</div>
+            <div class="d-flex justify-content-center" style="font-size: 11px;">{{ entidades.fechaCreacion | date: "dd-MM-yyyy HH:mm" }}</div>
           </div>
           <div class="col-2">
             <div class="d-flex justify-content-center">Desactivación</div>
-            <div class="d-flex justify-content-center">...</div>
+            <div class="d-flex justify-content-center" style="font-size: 11px;">...</div>
           </div>
-          <div class="col-2">
-            <i (click)="routerEntidad(entidades)" class="d-flex justify-content-center material-icons text-info">settings</i>
+          <div class="col-1">
+            <i class="d-flex justify-content-center material-icons text-info">settings</i>
             <div class="d-flex justify-content-center">{{ entidades.perfilUsuarioDependencia.nombre }}</div>           
+          </div>
+          <div class="col-1">
+            <button mat-raised-button type="button" class="btn btn-default btn-sm btn-fab" (click)="routerEntidad(entidades)" style="float: right;">
+              <i class="material-icons">keyboard_arrow_right</i>
+            </button>          
           </div>         
         </div>
       </div>

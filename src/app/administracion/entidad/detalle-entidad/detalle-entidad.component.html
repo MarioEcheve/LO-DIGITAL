@@ -1,20 +1,20 @@
 <div class="main-content">
     <div class="container-fluid">
-      <div class="ml-3 mt-2">
-        <button mat-raised-button type="button" class="btn btn-primary btn-sm" (click)="routeMisEntidades()">
+      <div class="mt-2">
+        <button mat-raised-button type="button" class="btn btn-default btn-sm" (click)="routeMisEntidades()">
           <i class="material-icons">keyboard_arrow_left</i>
           Mis Entidades
         </button>
       </div>
       <!-- Inicio card de Creación Contrato -->
-      <div class="card">
+      <div class="card mt-2">
         <div class="card-body">
             <mat-tab-group>
                 <mat-tab label="Datos Entidad">
                   <form [formGroup]="formEntidad">
                     <div class="container-fluid mt-3">
                       <h5 style="color: #252525;"><strong>Razón Social</strong></h5>
-                      <div class="row">
+                      <div class="row mt-2">
                         <mat-form-field class="example-full-width col-md-3">
                           <input
                             matInput
@@ -26,14 +26,14 @@
                         <mat-form-field class="example-full-width col-md-9">
                           <input
                             matInput
-                            placeholder="Nombre Entidad"
+                            placeholder="Nombre Razón Social"
                             type="text"
                             formControlName="nombreEmpresa"
                           />
                         </mat-form-field>
                       </div>
                       <div class="row">
-                        <mat-form-field class="example-full-width col-md-4">
+                        <mat-form-field class="example-full-width col-md-6">
                           <input
                             matInput
                             placeholder="Tipo Empresa"
@@ -41,7 +41,7 @@
                             formControlName="tipoEmpresa"
                           />
                         </mat-form-field>
-                        <mat-form-field class="example-full-width col-md-4">
+                        <mat-form-field class="example-full-width col-md-6">
                           <input
                             matInput
                             placeholder="Rubro / Actividad"
@@ -49,7 +49,7 @@
                             formControlName="rubroActividad"
                           />
                         </mat-form-field>
-                        <mat-form-field class="example-full-width col-md-4">
+                        <!-- <mat-form-field class="example-full-width col-md-4">
                           <input
                             matInput
                             placeholder="Cod. Contrato"
@@ -57,11 +57,11 @@
                             value="Constructora Ecomac Ltda."
                             disabled
                           />
-                        </mat-form-field>
+                        </mat-form-field> -->
                       </div>
                       <hr />
                       <h5 style="color: #252525;"><strong>Dependencia</strong></h5>
-                      <div class="row">
+                      <div class="row mt-2">
                         <mat-form-field class="example-full-width col-md-6">
                           <input
                             matInput
@@ -98,13 +98,32 @@
                         />
                       </mat-form-field>
                       <div class="row">
-                        
+                        <mat-form-field class="example-full-width col-md-6">
+                          <input
+                            matInput
+                            placeholder="Región"
+                            type="text"
+                            value="Constructora Ecomac Ltda."
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width col-md-6">
+                          <input
+                            matInput
+                            placeholder="Comuna"
+                            type="text"
+                            value="Constructora Ecomac Ltda."
+                            disabled
+                          />
+                        </mat-form-field>   
+                      </div>
+                      <div class="row">                        
                       </div>
                       <hr />
                       <h5 style="color: #252525;">
                         <strong>Contacto Comercial</strong>
                       </h5>
-                      <div class="row">
+                      <div class="row mt-2">
                         <mat-form-field class="example-full-width col-md-6">
                           <input
                             matInput
@@ -155,7 +174,7 @@
                       </div>
                       <hr />
                       <h5 style="color: #252525;"><strong>Contacto Técnico</strong></h5>
-                      <div class="row">
+                      <div class="row mt-2">
                         <mat-form-field class="example-full-width col-md-6">
                           <input
                             matInput
@@ -216,10 +235,7 @@
                           </span>
                           Cancelar
                         </button>
-                        <button mat-raised-button type="submit" class="btn btn-primary">
-                          <span class="btn-label">
-                            <i class="material-icons">check</i>
-                          </span>
+                        <button mat-raised-button type="submit" class="btn btn-primary">                         
                           Editar Datos
                         </button>
                       </div>
@@ -233,9 +249,6 @@
                         type=""
                         class="btn btn-primary pull-right"
                       >
-                        <span class="btn-label">
-                          <i class="material-icons">person_add</i>
-                        </span>
                         Nuevo Usuario
                       </button>
                       <div class="table-responsive">
@@ -277,7 +290,7 @@
                                   <button
                                     mat-raised-button
                                     type="button"
-                                    class="btn btn-default {{ row[6] }}"
+                                    class="btn btn-default mr-1 {{ row[6] }}"
                                   >
                                     <i class="material-icons">edit</i>
                                   </button>
@@ -305,9 +318,6 @@
                         class="btn btn-primary pull-right"
                         (click)="nuevoContrato()"
                       >
-                        <span class="btn-label">
-                          <i class="material-icons">add</i>
-                        </span>
                         Nuevo Contrato
                       </button>
                       <div class="table-responsive">

@@ -308,7 +308,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
                   element.color = "#4EA21A";
                 }else{
                   if(resultado[0] <= 1){
-                    element.color = "#FFD000";
+                    element.color = "#FFAE00";
                   }
                   if(resultado[0] >= 2){
                     element.color = "#4285F4";
@@ -319,7 +319,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
                 }
               }else{
                 if(resultado[0] <= 1){
-                  element.color = "#FFD000";
+                  element.color = "#FFAE00";
                 }
                 if(resultado[0] >= 2){
                   element.color = "#4285F4";
@@ -389,7 +389,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
     
     const dialogRef = this.dialog.open(ModalCrearFolioComponent, {
       width: "500px",
-      height: "290px",
+      height: "310px",
       data: {
         libros: this.libros,
         libroSeleccionado: this.libroSeleccionado,
