@@ -1,0 +1,357 @@
+<div class="main-content">
+    <div class="container-fluid">
+      <!-- Inicio card de Creación Contrato -->
+      <div class="card">
+        <div class="card-body">
+            <mat-tab-group>
+                <mat-tab label="Datos Entidad">
+                  <form [formGroup]="formEntidad">
+                    <div class="container-fluid mt-3">
+                      <h5 style="color: #252525;"><strong>Razón Social</strong></h5>
+                      <div class="row">
+                        <mat-form-field class="example-full-width col-md-3">
+                          <input
+                            matInput
+                            placeholder="RUT"
+                            type="text"
+                            formControlName="rut"
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width col-md-9">
+                          <input
+                            matInput
+                            placeholder="Nombre Entidad"
+                            type="text"
+                            formControlName="nombreEmpresa"
+                          />
+                        </mat-form-field>
+                      </div>
+                      <div class="row">
+                        <mat-form-field class="example-full-width col-md-4">
+                          <input
+                            matInput
+                            placeholder="Tipo Empresa"
+                            type="text"
+                            formControlName="tipoEmpresa"
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width col-md-4">
+                          <input
+                            matInput
+                            placeholder="Rubro / Actividad"
+                            type="text"
+                            formControlName="rubroActividad"
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width col-md-4">
+                          <input
+                            matInput
+                            placeholder="Cod. Contrato"
+                            type="text"
+                            value="Constructora Ecomac Ltda."
+                            disabled
+                          />
+                        </mat-form-field>
+                      </div>
+                      <hr />
+                      <h5 style="color: #252525;"><strong>Dependencia</strong></h5>
+                      <div class="row">
+                        <mat-form-field class="example-full-width col-md-6">
+                          <input
+                            matInput
+                            placeholder="Dependencia"
+                            type="text"
+                            formControlName="dependenciaNombre"
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width col-md-6">
+                          <input
+                            matInput
+                            placeholder="Sub Dependencia"
+                            type="text"
+                            value="Unidad de Compras y Obras"
+                            disabled
+                          />
+                        </mat-form-field>
+                      </div>
+                      <mat-form-field class="example-full-width">
+                        <textarea
+                          matInput
+                          placeholder="Descripción"
+                          rows="2"
+                          formControlName="descripcionDependencia"
+                        ></textarea>
+                      </mat-form-field>
+                      <mat-form-field class="example-full-width">
+                        <input
+                          matInput
+                          placeholder="Dirección"
+                          type="text"
+                          value="Avenida Balmaceda 4536, Edificio x, 4º Piso, Oficina Nº405"
+                          disabled
+                        />
+                      </mat-form-field>
+                      <div class="row">
+                        
+                      </div>
+                      <hr />
+                      <h5 style="color: #252525;">
+                        <strong>Contacto Comercial</strong>
+                      </h5>
+                      <div class="row">
+                        <mat-form-field class="example-full-width col-md-6">
+                          <input
+                            matInput
+                            placeholder="Nombre"
+                            type="text"
+                            value="Fernando Vilches Soleman"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width col-md-6">
+                          <input
+                            matInput
+                            placeholder="Cargo"
+                            type="text"
+                            value="Jefe de Operaciones"
+                            disabled
+                          />
+                        </mat-form-field>
+                      </div>
+                      <div class="row">
+                        <mat-form-field class="example-full-width col-md-3">
+                          <input
+                            matInput
+                            placeholder="Teféfono Principal"
+                            type="text"
+                            value="966453188"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width col-md-3">
+                          <input
+                            matInput
+                            placeholder="Teféfono Secundario"
+                            type="text"
+                            value="98425422"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width col-md-6">
+                          <input
+                            matInput
+                            placeholder="Email"
+                            type="text"
+                            value="fvilchessoleman@gmail.com"
+                            disabled
+                          />
+                        </mat-form-field>
+                      </div>
+                      <hr />
+                      <h5 style="color: #252525;"><strong>Contacto Técnico</strong></h5>
+                      <div class="row">
+                        <mat-form-field class="example-full-width col-md-6">
+                          <input
+                            matInput
+                            placeholder="Nombre"
+                            type="text"
+                            value="Fernando Vilches Soleman"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width col-md-6">
+                          <input
+                            matInput
+                            placeholder="Cargo"
+                            type="text"
+                            value="Jefe de Operaciones"
+                            disabled
+                          />
+                        </mat-form-field>
+                      </div>
+                      <div class="row">
+                        <mat-form-field class="example-full-width col-md-3">
+                          <input
+                            matInput
+                            placeholder="Teféfono Principal"
+                            type="text"
+                            value="966453188"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width col-md-3">
+                          <input
+                            matInput
+                            placeholder="Teféfono Secundario"
+                            type="text"
+                            value="98425422"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width col-md-6">
+                          <input
+                            matInput
+                            placeholder="Email"
+                            type="text"
+                            value="fvilchessoleman@gmail.com"
+                            disabled
+                          />
+                        </mat-form-field>
+                      </div>
+                      <hr />
+                      <div class="pull-right">
+                        <button
+                          mat-raised-button
+                          type="submit"
+                          class="btn btn-default mr-1"
+                        >
+                          <span class="btn-label">
+                            <i class="material-icons"></i>
+                          </span>
+                          Cancelar
+                        </button>
+                        <button mat-raised-button type="submit" class="btn btn-primary">
+                          <span class="btn-label">
+                            <i class="material-icons">check</i>
+                          </span>
+                          Editar Datos
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </mat-tab>
+                <mat-tab label="Usuarios">
+                    <div class="container-fluid mt-3">
+                      <button
+                        mat-raised-button
+                        type=""
+                        class="btn btn-primary pull-right"
+                      >
+                        <span class="btn-label">
+                          <i class="material-icons">person_add</i>
+                        </span>
+                        Nuevo Usuario
+                      </button>
+                      <div class="table-responsive">
+                        <div>
+                          <table class="table table-striped mt-2">
+                            <thead class="text-muted">
+                              <tr>
+                                <th>{{ tableData1.headerRow[0] }}</th>
+                                <th>{{ tableData1.headerRow[1] }}</th>
+                                <th>{{ tableData1.headerRow[2] }}</th>
+                                <th>{{ tableData1.headerRow[3] }}</th>
+                                <th>{{ tableData1.headerRow[4] }}</th>
+                                <th>{{ tableData1.headerRow[5] }}</th>
+                                <th class="text-right">
+                                  {{ tableData1.headerRow[6] }}
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let row of tableData1.dataRows">
+                                <td>
+                                  <i
+                                    style="font-size: 16px;"
+                                    class="material-icons align-middle text-info mr-1"
+                                    >person</i
+                                  >{{ row[0] }}
+                                </td>
+                                <td>{{ row[1] }}</td>
+                                <td>{{ row[2] }}</td>
+                                <td>{{ row[3] }}</td>
+                                <td>{{ row[4] }}</td>
+                                <td>
+                                  <span class="badge badge-success">{{ row[5] }}</span>
+                                </td>
+                                <td class="td-actions text-right">
+                                  <button
+                                    mat-raised-button
+                                    type="button"
+                                    class="btn btn-default {{ row[6] }}"
+                                  >
+                                    <i class="material-icons">edit</i>
+                                  </button>
+                                  <button
+                                    mat-raised-button
+                                    type="button"
+                                    class="btn btn-default {{ row[6] }}"
+                                  >
+                                    <i class="material-icons">keyboard_arrow_right</i>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  
+                </mat-tab>
+                <mat-tab label="Contratos Asociados">
+                    <div class="container-fluid mt-3">
+                      <button
+                        mat-raised-button
+                        type=""
+                        class="btn btn-primary pull-right"
+                        (click)="nuevoContrato()"
+                      >
+                        <span class="btn-label">
+                          <i class="material-icons">add</i>
+                        </span>
+                        Nuevo Contrato
+                      </button>
+                      <div class="table-responsive">
+                        <div>
+                          <table class="table table-striped mt-2">
+                            <thead class="text-muted">
+                              <tr>
+                                <th>{{ tableData2.headerRow[0] }}</th>
+                                <th>{{ tableData2.headerRow[1] }}</th>
+                                <th>{{ tableData2.headerRow[2] }}</th>
+                                <th>{{ tableData2.headerRow[3] }}</th>
+                                <th>{{ tableData2.headerRow[4] }}</th>
+                                <th>{{ tableData2.headerRow[5] }}</th>
+                                <th class="text-right">
+                                  {{ tableData1.headerRow[6] }}
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let row of tableData2.dataRows">
+                                <td>{{ row[0] }}</td>
+                                <td>{{ row[1] }}</td>
+                                <td>{{ row[2] }}</td>
+                                <td>{{ row[3] }}</td>
+                                <td>{{ row[4] }}</td>
+                                <td>
+                                  <span class="badge badge-success">{{ row[5] }}</span>
+                                </td>
+                                <td class="td-actions text-right">
+                                  <button
+                                    mat-raised-button
+                                    type="button"
+                                    class="btn btn-default {{ row[6] }}"
+                                  >
+                                    <i class="material-icons">edit</i>
+                                  </button>
+                                  <button
+                                    mat-raised-button
+                                    type="button"
+                                    class="btn btn-default {{ row[6] }}"
+                                  >
+                                    <i class="material-icons">keyboard_arrow_right</i>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+      </div>
+    </div>
+</div>

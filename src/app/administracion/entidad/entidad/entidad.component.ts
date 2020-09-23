@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UsuarioDependenciaService } from '../../services/usuario-dependencia.service';
+import { Dependencia } from '../../TO/dependencia.model';
 import { Entidad } from '../../TO/entidad.model';
 
 @Component({
@@ -9,7 +11,7 @@ import { Entidad } from '../../TO/entidad.model';
 })
 export class EntidadComponent implements OnInit {
   listaEntidades : Entidad[] = [];
-  constructor( private usuarioDependenciaService : UsuarioDependenciaService) { }
+  constructor( private usuarioDependenciaService : UsuarioDependenciaService , private router : Router) { }
 
   ngOnInit(): void {
     this.listaEntidadesUsuario();
@@ -22,5 +24,9 @@ export class EntidadComponent implements OnInit {
         console.log(this.listaEntidades);
       }
     );
+  }
+  routerEntidad(entidad : any){
+
+    this.router.navigate(['/entidad/detalle-entidad', entidad.dependencia.entidad.id ]);
   }
 }

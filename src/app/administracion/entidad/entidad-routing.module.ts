@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
+import { DetalleEntidadComponent } from "./detalle-entidad/detalle-entidad.component";
 import { EntidadComponent } from "./entidad/entidad.component";
 import { NuevaEntidadComponent } from "./nueva-entidad/nueva-entidad.component";
 import { UsuarioEntidadComponent } from "./usuario-entidad/usuario-entidad.component";
@@ -19,6 +20,10 @@ const routes: Routes = [
       {
         path: "nueva-entidad",
         component: NuevaEntidadComponent,
+      },
+      {
+        path: "detalle-entidad/:id",
+        component: DetalleEntidadComponent,
       },
     ],
   },
