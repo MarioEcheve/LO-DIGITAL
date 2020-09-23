@@ -159,7 +159,7 @@
                         [value]="recep.id"
                         (click)="cambiaReceptor(recep)"
                       >
-                      {{ recep?.usuarioDependencia?.rut }} | {{ recep?.usuarioDependencia?.usuario?.firstName }} {{ recep?.usuarioDependencia?.usuario?.lastName }}   |  Cargo : {{ recep?.cargoFuncion }}
+                      {{ recep?.usuarioDependencia?.usuario?.firstName }} {{ recep?.usuarioDependencia?.usuario?.lastName }}  | Rut : {{ recep?.usuarioDependencia?.rut }}   |  Perfil : {{ recep?.perfilUsuarioLibro.nombre }} |  Cargo : {{ recep?.cargoFuncion }}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
