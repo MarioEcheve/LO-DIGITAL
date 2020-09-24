@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxPermissionsService } from 'ngx-permissions';
 import { TableData } from 'src/app/md/md-table/md-table.component';
 import { ContratoService } from '../../services/contrato.service';
 import { DependenciaService } from '../../services/dependencia.service';
@@ -26,12 +27,14 @@ export class DetalleEntidadComponent implements OnInit {
   listaContratosEntidad : Contrato[] = [];
   editarDatosEntidad = false;
   dependenciaActual : Dependencia;
+  usuarioDependenciaActual : UsuarioDependencia;
   constructor(  private router : Router , private fb : FormBuilder , 
                 private entidadService : EntidadService,
                 private route: ActivatedRoute,
                 private dependenciaService : DependenciaService,
                 private usuarioDependenciaService : UsuarioDependenciaService,
-                private contratoService : ContratoService ) { }
+                private contratoService : ContratoService,
+                private permissionsService: NgxPermissionsService, ) { }
 
   ngOnInit(): void {
     this.inicializarFormEntidad();
@@ -41,9 +44,10 @@ export class DetalleEntidadComponent implements OnInit {
       this.filtraDependenciaPorEntidad(res);
       this.buscaUsuarioDependenciaPorEntidad(this.entidad.id);
       this.buscaContratosPorEntidad(this.entidad.id);
+      this.perfilUsuarioDependencia();
       
     });
-    
+    this.perfilUsuarioDependencia();
     this.tableData1 = {
       headerRow: ["RUT", "Nombre", "Perfil", "Activación", "Desactivación", "Estado", "Acción"],
       dataRows: [],
@@ -188,7 +192,6 @@ export class DetalleEntidadComponent implements OnInit {
                     contrato.nombre =  element2.nombre;
                     contrato.codigo = element2.codigo;
                     contrato.descripcion = element2.descripcion;
-                    console.log(element2);
                     contrato.estadoServicio = { id : element2.id_estado_servicio , nombre : element2.estado_servicio };
                     listaContratos = [...listaContratos, contrato];
                   })
@@ -202,14 +205,12 @@ export class DetalleEntidadComponent implements OnInit {
         }
       );
     }).then((listaContratos : [])=>{
-      console.log(listaContratos);
       this.listaContratosEntidad = listaContratos;
     })
   }
   editarDatos(){
     this.editarDatosEntidad = true;
     this.setEnabledContactoEntidadFormValues();
-    console.log(this.dependenciaActual);
   
   }
   guardarDatosEntidad(){
@@ -346,6 +347,16 @@ export class DetalleEntidadComponent implements OnInit {
           "</div>" +
           '<a href="{3}" target="{4}" data-notify="url"></a>' +
           "</div>",
+      }
+    );
+  }
+  perfilUsuarioDependencia(){
+    let usuarioActual = JSON.parse(localStorage.getItem("user"));
+    this.usuarioDependenciaService.findUserByUsuarioDependencia(usuarioActual.id).subscribe(
+      usuarioDependencia => {
+        let permisos = [ usuarioDependencia.body[0].perfilUsuarioDependencia.nombre.toLowerCase() ];
+        console.log(permisos);
+        this.permissionsService.loadPermissions(permisos);
       }
     );
   }

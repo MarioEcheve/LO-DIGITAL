@@ -213,7 +213,7 @@
                         </mat-form-field>
                       </div>
                       <hr />
-                      <div class="pull-right">
+                      <div class="pull-right" *ngxPermissionsOnly="['super usuario']">
 
                         <button
                           *ngIf="editarDatosEntidad === true"
@@ -237,7 +237,7 @@
                     </div>
                   </form>
                 </mat-tab>
-                <mat-tab label="Usuarios">
+                <mat-tab label="Usuarios"  *ngxPermissionsOnly="['super usuario']">
                     <div class="container-fluid mt-3">
                       <button
                         mat-raised-button
@@ -307,7 +307,7 @@
                     </div>
                   
                 </mat-tab>
-                <mat-tab label="Contratos Asociados">
+                <mat-tab label="Contratos Asociados"  *ngxPermissionsOnly="['super usuario']">
                     <div class="container-fluid mt-3">
                       <button
                         mat-raised-button

@@ -10,6 +10,7 @@ import { TagInputModule } from "ngx-chips";
 import { NouisliderModule } from "ng2-nouislider";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { DetalleEntidadComponent } from './detalle-entidad/detalle-entidad.component';
+import { NgxPermissionsModule } from "ngx-permissions";
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { DetalleEntidadComponent } from './detalle-entidad/detalle-entidad.compo
     NouisliderModule,
     TagInputModule,
     MaterialModule,
+    NgxPermissionsModule.forRoot(),
   ],
 })
 export class EntidadModule {}
