@@ -129,7 +129,7 @@
                             matInput
                             placeholder="Nombre"
                             type="text"
-                            value="Fernando Vilches Soleman"
+                            formControlName="nombreContactoComercial"
                             disabled
                           />
                         </mat-form-field>
@@ -138,7 +138,7 @@
                             matInput
                             placeholder="Cargo"
                             type="text"
-                            value="Jefe de Operaciones"
+                            formControlName="cargoContactoComercial"
                             disabled
                           />
                         </mat-form-field>
@@ -149,7 +149,7 @@
                             matInput
                             placeholder="Teféfono Principal"
                             type="text"
-                            value="966453188"
+                            formControlName="telefonoPrincipalContactoComercial"
                             disabled
                           />
                         </mat-form-field>
@@ -158,7 +158,7 @@
                             matInput
                             placeholder="Teféfono Secundario"
                             type="text"
-                            value="98425422"
+                            formControlName="telefonoSecundarioContactoComercial"
                             disabled
                           />
                         </mat-form-field>
@@ -167,7 +167,7 @@
                             matInput
                             placeholder="Email"
                             type="text"
-                            value="fvilchessoleman@gmail.com"
+                            formControlName="emailContactoComercial"
                             disabled
                           />
                         </mat-form-field>
@@ -180,7 +180,7 @@
                             matInput
                             placeholder="Nombre"
                             type="text"
-                            value="Fernando Vilches Soleman"
+                            formControlName="nombreContactoTecnico"
                             disabled
                           />
                         </mat-form-field>
@@ -189,7 +189,7 @@
                             matInput
                             placeholder="Cargo"
                             type="text"
-                            value="Jefe de Operaciones"
+                            formControlName="cargoContactoTecnico"
                             disabled
                           />
                         </mat-form-field>
@@ -200,7 +200,7 @@
                             matInput
                             placeholder="Teféfono Principal"
                             type="text"
-                            value="966453188"
+                            formControlName="telefonoPrincipalContactoTecnico"
                             disabled
                           />
                         </mat-form-field>
@@ -209,7 +209,7 @@
                             matInput
                             placeholder="Teféfono Secundario"
                             type="text"
-                            value="98425422"
+                            formControlName="telefonoSecundarioContactoTecnico"
                             disabled
                           />
                         </mat-form-field>
@@ -218,7 +218,7 @@
                             matInput
                             placeholder="Email"
                             type="text"
-                            value="fvilchessoleman@gmail.com"
+                            formControlName="emailContactoTecnico"
                             disabled
                           />
                         </mat-form-field>
@@ -270,11 +270,13 @@
                             <tbody>
                               <tr *ngFor="let row of listaUsuariosDependenciaEntidad">
                                 <td>
-                                  <i
-                                    style="font-size: 16px;"
-                                    class="material-icons align-middle text-info mr-1"
-                                    >person</i
-                                  >{{ row.rut }}
+                                  <i *ngIf="row.perfilUsuarioDependencia.nombre === 'Super usuario'" style="font-size: 16px;" class="material-icons align-middle text-info mr-1">
+                                    settings
+                                  </i>
+                                  <i *ngIf="row.perfilUsuarioDependencia.nombre === 'usuario'" style="font-size: 16px;" class="material-icons align-middle text-info mr-1">
+                                    person
+                                  </i>
+                                  {{ row.rut }}
                                 </td>
                                 <td>{{ row.usuario.firstName }} {{ row.usuario.lastName }}</td>
                                 <td>{{ row.perfilUsuarioDependencia.nombre }}</td>

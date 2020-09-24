@@ -38,6 +38,7 @@ export class DetalleEntidadComponent implements OnInit {
       this.filtraDependenciaPorEntidad(res);
       this.buscaUsuarioDependenciaPorEntidad(this.entidad.id);
       this.buscaContratosPorEntidad(this.entidad.id);
+      
     });
     
     this.tableData1 = {
@@ -61,6 +62,16 @@ export class DetalleEntidadComponent implements OnInit {
       dependenciaNombre : [''],
       descripcionDependencia : [''],
       direccionDependencia : [''],
+      nombreContactoComercial : [''],
+      cargoContactoComercial : [''],
+      telefonoPrincipalContactoComercial : [''],
+      telefonoSecundarioContactoComercial : [''],
+      emailContactoComercial : [''],
+      nombreContactoTecnico : [''],
+      cargoContactoTecnico : [''],
+      telefonoPrincipalContactoTecnico : [''],
+      telefonoSecundarioContactoTecnico: [''],
+      emailContactoTecnico : [''],
     });
     this.formEntidad.controls['rut'].disable();
     this.formEntidad.controls['nombreEmpresa'].disable();
@@ -69,6 +80,17 @@ export class DetalleEntidadComponent implements OnInit {
     this.formEntidad.controls['dependenciaNombre'].disable();
     this.formEntidad.controls['descripcionDependencia'].disable();
     this.formEntidad.controls['direccionDependencia'].disable();
+    this.formEntidad.controls['nombreContactoComercial'].disable();
+    this.formEntidad.controls['cargoContactoComercial'].disable();
+    this.formEntidad.controls['telefonoPrincipalContactoComercial'].disable();
+    this.formEntidad.controls['telefonoSecundarioContactoComercial'].disable();
+    this.formEntidad.controls['emailContactoComercial'].disable();
+    this.formEntidad.controls['nombreContactoTecnico'].disable();
+    this.formEntidad.controls['cargoContactoTecnico'].disable();
+    this.formEntidad.controls['telefonoPrincipalContactoTecnico'].disable();
+    this.formEntidad.controls['telefonoSecundarioContactoTecnico'].disable();
+    this.formEntidad.controls['emailContactoTecnico'].disable();
+
   }
   setValueFormEntidad(entidad : Entidad){
     this.formEntidad.patchValue({
@@ -85,6 +107,25 @@ export class DetalleEntidadComponent implements OnInit {
       direccionDependencia : [dependencia.direccion],
     })
   }
+  setValueContactoComercial(dependencia : Dependencia){
+    this.formEntidad.patchValue({
+      nombreContactoComercial : [dependencia.nombreContactoComercial],
+      cargoContactoComercial : [dependencia.cargoContactoComercial],
+      telefonoPrincipalContactoComercial : [dependencia.telefonoPrincipalContactoComercial],
+      telefonoSecundarioContactoComercial : [dependencia.telefonoSecundarioContactoComercial],
+      emailContactoComercial : [dependencia.emailContactoComercial],
+    })
+  }
+  setValueContactoTecnico(dependencia : Dependencia){
+    this.formEntidad.patchValue({
+      nombreContactoTecnico : [dependencia.nombreContactoTecnico],
+      cargoContactoTecnico : [dependencia.cargoContactoTecnico],
+      telefonoPrincipalContactoTecnico : [dependencia.telefonoPrincipalContactoTecnico],
+      telefonoSecundarioContactoTecnico : [dependencia.telefonoSecundarioContactoTecnico],
+      emailContactoTecnico : [dependencia.emailContactoTecnico],
+    })
+  }
+
   async buscaEntidad(idEntidad){
     let data = await new Promise((resolve)=>{
       this.entidadService.find(idEntidad).subscribe(
@@ -104,6 +145,8 @@ export class DetalleEntidadComponent implements OnInit {
             let listaDependencias ;
             listaDependencias = dependencia.body.filter(dependencia => dependencia.entidad.id === entidad.id);
             this.setValueFormDependencia(listaDependencias[0]);
+            this.setValueContactoComercial(listaDependencias[0]);
+            this.setValueContactoTecnico(listaDependencias[0]);
             resolve(listaDependencias);
           }
         );
@@ -141,6 +184,7 @@ export class DetalleEntidadComponent implements OnInit {
                     contrato.nombre =  element2.nombre;
                     contrato.codigo = element2.codigo;
                     contrato.descripcion = element2.descripcion;
+                    console.log(element2);
                     contrato.estadoServicio = { id : element2.id_estado_servicio , nombre : element2.estado_servicio };
                     listaContratos = [...listaContratos, contrato];
                   })
