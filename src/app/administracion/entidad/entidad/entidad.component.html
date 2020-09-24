@@ -1,76 +1,48 @@
 <div class="main-content">
-  <div class="container-fluid">
-       
+  <div class="container-fluid">       
     <div class="card mt-5" *ngFor="let entidades of listaEntidades">
       <div class="card-header card-header-info card-header-tabs">                
         <h6 class="card-title">{{ entidades.dependencia.entidad.nombre }}</h6>                        
       </div>
-      <div class="card-body">
-        <div class="row" >          
-          <div class="col-5">                                   
-            <a>RUT: {{ entidades.dependencia.entidad.rut }}</a>
-            <br><a>Dependencia: {{ entidades.dependencia.nombre }}</a>
-          </div>
-          <div class="col-1">
-            <div class="d-flex justify-content-center">Estado</div>
-            <div *ngIf="entidades.estado === true" class="d-flex justify-content-center">
-              <span class="badge badge-success">Activo</span>
-            </div>
-            <div *ngIf="entidades.estado === false" class="d-flex justify-content-center">
-              <span class="badge badge-success">Inactivo</span>
-            </div>
-          </div>
-          <div class="col-2">
-            <div class="d-flex justify-content-center">Activación</div>
-            <div class="d-flex justify-content-center" style="font-size: 11px;">{{ entidades.fechaCreacion | date: "dd-MM-yyyy HH:mm" }}</div>
-          </div>
-          <div class="col-2">
-            <div class="d-flex justify-content-center">Desactivación</div>
-            <div class="d-flex justify-content-center" style="font-size: 11px;">...</div>
-          </div>
-          <div class="col-1">
-            <i class="d-flex justify-content-center material-icons text-info">settings</i>
-            <div class="d-flex justify-content-center">{{ entidades.perfilUsuarioDependencia.nombre }}</div>           
-          </div>
-          <div class="col-1">
-            <button mat-raised-button type="button" class="btn btn-default btn-sm btn-fab" (click)="routerEntidad(entidades)" style="float: right;">
-              <i class="material-icons">keyboard_arrow_right</i>
-            </button>          
-          </div>         
-        </div>
+      <div class="card-body; table-responsive" style="padding-top: 2px; padding-bottom: 0px; padding-left: 8px; padding-right: 8px;">
+        <table class="table">
+          <tbody>
+            <tr>
+              <td class="ellipsis">
+                <a>RUT: {{ entidades.dependencia.entidad.rut }}</a>
+                <br><a>Dependencia: {{ entidades.dependencia.nombre }}</a>
+              </td>
+              <td>
+                <div class="d-flex justify-content-center">Estado</div>
+                  <div *ngIf="entidades.estado === true" class="d-flex justify-content-center">
+                    <span class="badge badge-success">Activo</span>
+                  </div>
+                  <div *ngIf="entidades.estado === false" class="d-flex justify-content-center">
+                    <span class="badge badge-success">Inactivo</span>
+                  </div>
+              </td>
+              <td>
+                <div class="d-flex justify-content-center">Activación</div>
+                <div class="d-flex justify-content-center" style="font-size: 11px;">{{ entidades.fechaCreacion | date: "dd-MM-yyyy HH:mm" }}</div>
+              </td>
+              <td>
+                <div class="d-flex justify-content-center">Desactivación</div>
+                <div class="d-flex justify-content-center" style="font-size: 11px;">...</div>
+              </td>
+              <td>
+                <i class="d-flex justify-content-center material-icons" style="color: darkorange;">settings</i>
+                <!-- <i class="d-flex justify-content-center material-icons" style="color:cornflowerblue;">person</i> -->
+                <div class="d-flex justify-content-center">{{ entidades.perfilUsuarioDependencia.nombre }}</div>
+              </td>
+              <td style="width: 50px;">
+                <button mat-raised-button type="button" class="btn btn-default btn-sm btn-fab" (click)="routerEntidad(entidades)" style="float: right;">
+                  <i class="material-icons">keyboard_arrow_right</i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
-    <!--
-      <div class="card mt-5">
-      <div class="card-header card-header-info card-header-tabs">                
-        <h6 class="card-title">Constructora Elqui Limitada</h6>                        
-      </div>
-      <div class="card-body">        
-        <div class="row">          
-          <div class="col-5">                                   
-            <a>RUT: 77.458.556-6</a>
-            <br><a>Dependencia: Oficina de Licitaciones y Obras</a>
-          </div>
-          <div class="col-1">
-            <div class="d-flex justify-content-center">Estado</div>
-            <div class="d-flex justify-content-center"><span class="badge badge-danger">Inactivo</span></div>
-          </div>
-          <div class="col-2">
-            <div class="d-flex justify-content-center">Activación</div>
-            <div class="d-flex justify-content-center">12/05/2020 12:30</div>
-          </div>
-          <div class="col-2">
-            <div class="d-flex justify-content-center">Desactivación</div>
-            <div class="d-flex justify-content-center">12/08/2020 11:12</div>
-          </div>
-          <div class="col-2">
-            <i class="d-flex justify-content-center material-icons text-info">person</i>
-            <div class="d-flex justify-content-center">Usuario</div>           
-          </div>         
-        </div>
-      </div>
-    </div>
-    -->
-    
   </div>
 </div>

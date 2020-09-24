@@ -388,8 +388,8 @@ export class FolioComponent implements OnInit, AfterViewInit {
   nuevoFolio() {
     
     const dialogRef = this.dialog.open(ModalCrearFolioComponent, {
-      width: "500px",
-      height: "310px",
+      width: "480px",
+      height: "290px",
       data: {
         libros: this.libros,
         libroSeleccionado: this.libroSeleccionado,
@@ -684,7 +684,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
    
     const dialogRef = this.dialog.open(FiltroFolioPersonalizadoComponent, {
       width: "650px",
-      height: "470px",
+      height: "490px",
       data: { libro : this.libroSeleccionado},
       backdropClass: 'cdk-overlay-transparent-backdrop',
     });

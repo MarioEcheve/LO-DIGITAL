@@ -1,6 +1,6 @@
 <div class="animate__animated animate__fadeIn">
-<mat-dialog-content>
-  <h5 style="font-weight: bold;">Nuevo Folio</h5>
+<mat-dialog-content style="line-height: 1px;">
+  <h5 style="font-weight: bold;" class="mb-2">Nuevo Folio</h5>
   <br />
   <form [formGroup]="crearFolioFormGroup">
     <div class="row" style="font-size: 13px">
@@ -10,7 +10,7 @@
             placeholder="Libro Seleccionado"
             name="city"
             [disabled]="data.habilitar === false"
-            formControlName="libro"
+            formControlName="libro"            
           >
             <mat-option
               *ngFor="let libro of libros"
@@ -52,7 +52,7 @@
     </div>    
   </form>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
+<mat-dialog-actions align="end" style="padding-top: 0px;">
   <button mat-button mat-dialog-close style="font-size: 12px;">Cancelar</button>
   <button mat-button cdkFocusInitial (click)="guardarFolio()" [disabled]="!crearFolioFormGroup.valid" class="btn btn-primary">
     Crear

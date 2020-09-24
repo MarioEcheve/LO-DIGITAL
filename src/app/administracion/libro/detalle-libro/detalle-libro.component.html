@@ -357,8 +357,8 @@
                 <table class="table table-striped mt-2">
                   <thead class="text-muted">
                     <tr>
+                      <th><i class=" material-icons" style="font-size: 16px;">settings</i></th>
                       <th scope="col">{{ tableData2.headerRow[0] }}</th>
-
                       <th>{{ tableData2.headerRow[1] }}</th>
                       <th>{{ tableData2.headerRow[2] }}</th>
                       <th>{{ tableData2.headerRow[3] }}</th>
@@ -368,8 +368,8 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let row of listaUsuarioMandante">
+                      <td scope="row" style="width: 15px;"><i *ngIf="row.adminActivo === true" class=" material-icons iconoAdminAcual" style="font-size: 16px; color: darkorange;">settings</i></td>
                       <td scope="row" style="width: auto;">{{ row.usuarioDependencia.rut }}</td>
-
                       <td>{{ row.usuarioDependencia.usuario?.firstName }} {{ row.usuarioDependencia.usuario.lastName }}</td>
                       <td>{{ row.cargoFuncion }}</td>
                       <td>{{ row.perfilUsuarioLibro.nombre }}</td>
@@ -385,8 +385,7 @@
                           class="badge badge-primary"
                           style="background-color: red  ;"
                           > {{ row.nombreEstado }}</span
-                        >
-                        <i *ngIf="row.adminActivo === true" class=" material-icons text-info iconoAdminAcual">settings</i>
+                        >                        
                       </td>
                       <td class="td-actions text-right">
                         <button
@@ -426,8 +425,8 @@
                 <table class="table table-striped mt-2">
                   <thead class="text-muted">
                     <tr>
+                      <th><i class=" material-icons" style="font-size: 16px;">settings</i></th>
                       <th scope="col">{{ tableData2.headerRow[0] }}</th>
-
                       <th>{{ tableData2.headerRow[1] }}</th>
                       <th>{{ tableData2.headerRow[2] }}</th>
                       <th>{{ tableData2.headerRow[3] }}</th>
@@ -437,8 +436,8 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let row of listaUsuarioContratistaAgregados">
+                      <td scope="row" style="width: 15px;"><i *ngIf="row.adminActivo === true" class=" material-icons iconoAdminAcual" style="font-size: 16px; color: darkorange;">settings</i></td>
                       <td scope="row" style="width: auto;">{{ row.usuarioDependencia.rut }}</td>
-
                       <td>{{ row.usuarioDependencia.usuario.firstName }} {{ row.usuarioDependencia.usuario.lastName }}</td>
                       <td>{{ row.cargoFuncion }}</td>
                       <td>{{ row.perfilUsuarioLibro.nombre }}</td>
@@ -454,8 +453,7 @@
                           class="badge badge-primary"
                           style="background-color: red  ;"
                           > {{ row.nombreEstado }}</span
-                        >
-                        <i *ngIf="row.adminActivo === true" class=" material-icons text-info iconoAdminAcual">settings</i>
+                        >                        
                       </td>
                       <td class="td-actions text-right">
                         <button
