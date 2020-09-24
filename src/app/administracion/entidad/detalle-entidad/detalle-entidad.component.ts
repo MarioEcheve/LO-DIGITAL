@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { TableData } from 'src/app/md/md-table/md-table.component';
@@ -11,6 +12,7 @@ import { Contrato } from '../../TO/contrato.model';
 import { Dependencia } from '../../TO/dependencia.model';
 import { Entidad } from '../../TO/entidad.model';
 import { UsuarioDependencia } from '../../TO/usuario-dependencia.model';
+import { ModalUsuarioComponent } from '../modal-usuario/modal-usuario.component'
 declare const $: any;
 
 @Component({
@@ -34,7 +36,8 @@ export class DetalleEntidadComponent implements OnInit {
                 private dependenciaService : DependenciaService,
                 private usuarioDependenciaService : UsuarioDependenciaService,
                 private contratoService : ContratoService,
-                private permissionsService: NgxPermissionsService, ) { }
+                private permissionsService: NgxPermissionsService,
+                private dialog: MatDialog, ) { }
 
   ngOnInit(): void {
     this.inicializarFormEntidad();
@@ -359,5 +362,11 @@ export class DetalleEntidadComponent implements OnInit {
         this.permissionsService.loadPermissions(permisos);
       }
     );
+  }
+  modalUsuario(){
+    const dialogRef = this.dialog.open(ModalUsuarioComponent, {
+      width: "40%",
+      data: { libro: {} },
+    });
   }
 }
