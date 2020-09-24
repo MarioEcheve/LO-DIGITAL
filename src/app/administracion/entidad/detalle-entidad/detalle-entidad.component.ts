@@ -233,6 +233,8 @@ export class DetalleEntidadComponent implements OnInit {
   cancelarDatos(){
     this.editarDatosEntidad = false;
     this.setDisabledContactoEntidadFormValues();
+    this.setValueContactoComercial(this.dependenciaActual);
+    this.setValueContactoTecnico(this.dependenciaActual);
   }
   setEnabledContactoEntidadFormValues(){
     this.formEntidad.controls['nombreContactoComercial'].enable();
