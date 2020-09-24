@@ -10,6 +10,7 @@ import { Contrato } from '../../TO/contrato.model';
 import { Dependencia } from '../../TO/dependencia.model';
 import { Entidad } from '../../TO/entidad.model';
 import { UsuarioDependencia } from '../../TO/usuario-dependencia.model';
+declare const $: any;
 
 @Component({
   selector: 'app-detalle-entidad',
@@ -24,6 +25,7 @@ export class DetalleEntidadComponent implements OnInit {
   listaUsuariosDependenciaEntidad : UsuarioDependencia;
   listaContratosEntidad : Contrato[] = [];
   editarDatosEntidad = false;
+  dependenciaActual : Dependencia;
   constructor(  private router : Router , private fb : FormBuilder , 
                 private entidadService : EntidadService,
                 private route: ActivatedRoute,
@@ -110,20 +112,20 @@ export class DetalleEntidadComponent implements OnInit {
   }
   setValueContactoComercial(dependencia : Dependencia){
     this.formEntidad.patchValue({
-      nombreContactoComercial : [dependencia.nombreContactoComercial],
-      cargoContactoComercial : [dependencia.cargoContactoComercial],
-      telefonoPrincipalContactoComercial : [dependencia.telefonoPrincipalContactoComercial],
-      telefonoSecundarioContactoComercial : [dependencia.telefonoSecundarioContactoComercial],
-      emailContactoComercial : [dependencia.emailContactoComercial],
+      nombreContactoComercial : dependencia.nombreContactoComercial,
+      cargoContactoComercial : dependencia.cargoContactoComercial,
+      telefonoPrincipalContactoComercial : dependencia.telefonoPrincipalContactoComercial,
+      telefonoSecundarioContactoComercial : dependencia.telefonoSecundarioContactoComercial,
+      emailContactoComercial : dependencia.emailContactoComercial
     })
   }
   setValueContactoTecnico(dependencia : Dependencia){
     this.formEntidad.patchValue({
-      nombreContactoTecnico : [dependencia.nombreContactoTecnico],
-      cargoContactoTecnico : [dependencia.cargoContactoTecnico],
-      telefonoPrincipalContactoTecnico : [dependencia.telefonoPrincipalContactoTecnico],
-      telefonoSecundarioContactoTecnico : [dependencia.telefonoSecundarioContactoTecnico],
-      emailContactoTecnico : [dependencia.emailContactoTecnico],
+      nombreContactoTecnico : dependencia.nombreContactoTecnico,
+      cargoContactoTecnico : dependencia.cargoContactoTecnico,
+      telefonoPrincipalContactoTecnico : dependencia.telefonoPrincipalContactoTecnico,
+      telefonoSecundarioContactoTecnico : dependencia.telefonoSecundarioContactoTecnico,
+      emailContactoTecnico : dependencia.emailContactoTecnico,
     })
   }
 
@@ -148,6 +150,7 @@ export class DetalleEntidadComponent implements OnInit {
             this.setValueFormDependencia(listaDependencias[0]);
             this.setValueContactoComercial(listaDependencias[0]);
             this.setValueContactoTecnico(listaDependencias[0]);
+            this.dependenciaActual = listaDependencias [0];
             resolve(listaDependencias);
           }
         );
@@ -206,10 +209,26 @@ export class DetalleEntidadComponent implements OnInit {
   editarDatos(){
     this.editarDatosEntidad = true;
     this.setEnabledContactoEntidadFormValues();
+    console.log(this.dependenciaActual);
+  
   }
   guardarDatosEntidad(){
     this.editarDatosEntidad = false;
     this.setDisabledContactoEntidadFormValues();
+    this.dependenciaActual.cargoContactoComercial = this.formEntidad.get('nombreContactoComercial').value;
+    this.dependenciaActual.emailContactoComercial = this.formEntidad.get('emailContactoComercial').value;
+    this.dependenciaActual.nombreContactoComercial = this.formEntidad.get('nombreContactoComercial').value;
+    this.dependenciaActual.telefonoPrincipalContactoComercial = this.formEntidad.get('telefonoPrincipalContactoComercial').value;
+    this.dependenciaActual.telefonoSecundarioContactoComercial = this.formEntidad.controls['telefonoSecundarioContactoComercial'].value;
+    
+    this.dependenciaActual.cargoContactoTecnico = this.formEntidad.get('cargoContactoTecnico').value;
+    this.dependenciaActual.emailContactoTecnico = this.formEntidad.get('emailContactoTecnico').value;
+    this.dependenciaActual.nombreContactoTecnico = this.formEntidad.get('nombreContactoTecnico').value;
+    this.dependenciaActual.telefonoPrincipalContactoTecnico = this.formEntidad.get('telefonoPrincipalContactoTecnico').value;
+    this.dependenciaActual.telefonoSecundarioContactoTecnico = this.formEntidad.get('telefonoSecundarioContactoTecnico').value;
+
+    this.editarDependencia(this.dependenciaActual);
+
   }
   cancelarDatos(){
     this.editarDatosEntidad = false;
@@ -238,5 +257,94 @@ export class DetalleEntidadComponent implements OnInit {
     this.formEntidad.controls['telefonoPrincipalContactoTecnico'].disable();
     this.formEntidad.controls['telefonoSecundarioContactoTecnico'].disable();
     this.formEntidad.controls['emailContactoTecnico'].disable();
+  }
+  async editarDependencia(dependencia : Dependencia){
+    await new Promise((resolve)=>{
+      this.dependenciaService.update(dependencia).subscribe(
+        dependencia => {
+          this.showNotificationSuccess("top", "right");
+        },error=> {
+          this.showNotificationDanger("top", "right");
+        }
+      );
+    });
+  }
+  showNotificationSuccess(from: any, align: any) {
+    const type = [
+      "",
+      "info",
+      "success",
+      "warning",
+      "danger",
+      "rose",
+      "primary",
+    ];
+
+    const color = 2;
+
+    $.notify(
+      {
+        icon: "notifications",
+        message: "Cambios guardados Correctamente ",
+      },
+      {
+        type: type[color],
+        timer: 3000,
+        placement: {
+          from: from,
+          align: align,
+        },
+        template:
+          '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0} alert-with-icon" role="alert">' +
+          '<button mat-raised-button type="button" aria-hidden="true" class="close" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
+          '<i class="material-icons" data-notify="icon">notifications</i> ' +
+          '<span data-notify="title">{1}</span> ' +
+          '<span data-notify="message">{2}</span>' +
+          '<div class="progress" data-notify="progressbar">' +
+          '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+          "</div>" +
+          '<a href="{3}" target="{4}" data-notify="url"></a>' +
+          "</div>",
+      }
+    );
+  }
+  showNotificationDanger(from: any, align: any) {
+    const type = [
+      "",
+      "info",
+      "success",
+      "warning",
+      "danger",
+      "rose",
+      "primary",
+    ];
+
+    const color = 4;
+
+    $.notify(
+      {
+        icon: "notifications",
+        message: "Error al Actualizar",
+      },
+      {
+        type: type[color],
+        timer: 3000,
+        placement: {
+          from: from,
+          align: align,
+        },
+        template:
+          '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0} alert-with-icon" role="alert">' +
+          '<button mat-raised-button type="button" aria-hidden="true" class="close" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
+          '<i class="material-icons" data-notify="icon">notifications</i> ' +
+          '<span data-notify="title">{1}</span> ' +
+          '<span data-notify="message">{2}</span>' +
+          '<div class="progress" data-notify="progressbar">' +
+          '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+          "</div>" +
+          '<a href="{3}" target="{4}" data-notify="url"></a>' +
+          "</div>",
+      }
+    );
   }
 }
