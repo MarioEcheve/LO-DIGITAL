@@ -205,8 +205,38 @@ export class DetalleEntidadComponent implements OnInit {
   }
   editarDatos(){
     this.editarDatosEntidad = true;
+    this.setEnabledContactoEntidadFormValues();
   }
   guardarDatosEntidad(){
     this.editarDatosEntidad = false;
+    this.setDisabledContactoEntidadFormValues();
+  }
+  cancelarDatos(){
+    this.editarDatosEntidad = false;
+    this.setDisabledContactoEntidadFormValues();
+  }
+  setEnabledContactoEntidadFormValues(){
+    this.formEntidad.controls['nombreContactoComercial'].enable();
+    this.formEntidad.controls['cargoContactoComercial'].enable();
+    this.formEntidad.controls['telefonoPrincipalContactoComercial'].enable();
+    this.formEntidad.controls['telefonoSecundarioContactoComercial'].enable();
+    this.formEntidad.controls['emailContactoComercial'].enable();
+    this.formEntidad.controls['nombreContactoTecnico'].enable();
+    this.formEntidad.controls['cargoContactoTecnico'].enable();
+    this.formEntidad.controls['telefonoPrincipalContactoTecnico'].enable();
+    this.formEntidad.controls['telefonoSecundarioContactoTecnico'].enable();
+    this.formEntidad.controls['emailContactoTecnico'].enable();
+  }
+  setDisabledContactoEntidadFormValues(){
+    this.formEntidad.controls['nombreContactoComercial'].disable();
+    this.formEntidad.controls['cargoContactoComercial'].disable();
+    this.formEntidad.controls['telefonoPrincipalContactoComercial'].disable();
+    this.formEntidad.controls['telefonoSecundarioContactoComercial'].disable();
+    this.formEntidad.controls['emailContactoComercial'].disable();
+    this.formEntidad.controls['nombreContactoTecnico'].disable();
+    this.formEntidad.controls['cargoContactoTecnico'].disable();
+    this.formEntidad.controls['telefonoPrincipalContactoTecnico'].disable();
+    this.formEntidad.controls['telefonoSecundarioContactoTecnico'].disable();
+    this.formEntidad.controls['emailContactoTecnico'].disable();
   }
 }
