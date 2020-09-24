@@ -1,1 +1,90 @@
-<p>modal-usuario works!</p>
+<mat-dialog-content>
+    <h5 style="font-weight: bold;" class="mb-2">Nuevo Usuario</h5>
+    <br />
+    <form>
+      <div class="row" style="font-size: 13px">
+        <div class="col-md-12">
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="RUT"
+                type="text"
+                value=""                
+              />
+            </mat-form-field>
+        </div>
+        <div class="col-md-12">
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Nombres"
+                type="text"
+                value=""                
+              />
+            </mat-form-field>
+        </div>
+        <div class="col-md-12">
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Apellido Paterno"
+                type="text"
+                value=""                
+              />
+            </mat-form-field>
+        </div>
+        <div class="col-md-12">
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Apellido Materno"
+                type="text"
+                value=""
+                formControlName="asunto"
+              />
+            </mat-form-field>
+        </div>
+        <div class="col-md-12">
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="E-mail"
+                type="text"
+                value=""
+                formControlName="asunto"
+              />
+            </mat-form-field>
+        </div>
+        <div class="col-md-12">
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Clave"
+                type="text"
+                value=""
+                formControlName="asunto"
+              />
+            </mat-form-field>
+        </div>             
+        <div class="col-md-12">
+          <mat-form-field>
+            <mat-select
+              placeholder="Peril"                            
+            >
+              <mat-option>
+                Super usuario
+                Usuario
+              </mat-option>              
+            </mat-select>
+          </mat-form-field>
+        </div>             
+      </div>    
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end" style="padding-top: 0px;">
+    <button mat-button mat-dialog-close style="font-size: 12px;">Cancelar</button>
+    <button mat-button class="btn btn-primary">
+      Crear
+    </button>
+  </mat-dialog-actions>
+
