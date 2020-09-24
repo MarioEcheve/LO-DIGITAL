@@ -11,6 +11,7 @@ import { NouisliderModule } from "ng2-nouislider";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { DetalleEntidadComponent } from './detalle-entidad/detalle-entidad.component';
 import { NgxPermissionsModule } from "ngx-permissions";
+import { ModalUsuarioComponent } from './modal-usuario/modal-usuario.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { NgxPermissionsModule } from "ngx-permissions";
     UsuarioEntidadComponent,
     NuevaEntidadComponent,
     DetalleEntidadComponent,
+    ModalUsuarioComponent
   ],
   imports: [
     CommonModule,
@@ -29,5 +31,6 @@ import { NgxPermissionsModule } from "ngx-permissions";
     MaterialModule,
     NgxPermissionsModule.forRoot(),
   ],
+  entryComponents : [ ModalUsuarioComponent ]
 })
 export class EntidadModule {}
