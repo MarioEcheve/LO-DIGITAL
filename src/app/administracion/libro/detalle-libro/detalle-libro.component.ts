@@ -633,7 +633,7 @@ export class DetalleLibroComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === undefined || result === false) {
+      if (result === undefined || result === false || result === "") {
       } else {
         //console.log(result);
         let existe = false;
@@ -723,7 +723,7 @@ export class DetalleLibroComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === undefined || result === false) {
+      if (result === undefined || result === false || result === "") {
       } else {
         //console.log(result);
         let existe = false;

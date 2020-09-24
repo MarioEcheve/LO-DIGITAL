@@ -225,7 +225,9 @@
                       </div>
                       <hr />
                       <div class="pull-right">
+
                         <button
+                          *ngIf="editarDatosEntidad === true"
                           mat-raised-button
                           type="submit"
                           class="btn btn-default mr-1"
@@ -235,7 +237,10 @@
                           </span>
                           Cancelar
                         </button>
-                        <button mat-raised-button type="submit" class="btn btn-primary">                         
+                        <button *ngIf="editarDatosEntidad === true" (click)="guardarDatosEntidad()" mat-raised-button type="submit" class="btn btn-primary">                         
+                          Guardar Datos
+                        </button>
+                        <button *ngIf="editarDatosEntidad === false" (click)="editarDatos()" mat-raised-button type="submit" class="btn btn-primary">                         
                           Editar Datos
                         </button>
                       </div>

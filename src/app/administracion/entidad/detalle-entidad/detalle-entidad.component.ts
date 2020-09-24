@@ -23,6 +23,7 @@ export class DetalleEntidadComponent implements OnInit {
   formEntidad : FormGroup;
   listaUsuariosDependenciaEntidad : UsuarioDependencia;
   listaContratosEntidad : Contrato[] = [];
+  editarDatosEntidad = false;
   constructor(  private router : Router , private fb : FormBuilder , 
                 private entidadService : EntidadService,
                 private route: ActivatedRoute,
@@ -201,5 +202,11 @@ export class DetalleEntidadComponent implements OnInit {
       console.log(listaContratos);
       this.listaContratosEntidad = listaContratos;
     })
+  }
+  editarDatos(){
+    this.editarDatosEntidad = true;
+  }
+  guardarDatosEntidad(){
+    this.editarDatosEntidad = false;
   }
 }
