@@ -210,8 +210,10 @@ export class LibroComponent implements OnInit {
   obtenerContrato() {
     this.contratoService.find(this.idContrato).subscribe((respuesta) => {
       this.contrato = respuesta.body;
+      this.muestraListaUsuarios = true;
       // obtener los usuarios para el mandante y el contratista
       // mandante
+      /*
       this.dependenciaService
         .buscaUsuariosDependencia(this.contrato.dependenciaMandante.id)
         .subscribe((respuesta) => {
@@ -224,6 +226,7 @@ export class LibroComponent implements OnInit {
           this.listaUsuariosContratista = respuesta.body;
           this.muestraListaUsuarios = true;
         });
+        */
     });
   }
   modalCrearUsuario() {
