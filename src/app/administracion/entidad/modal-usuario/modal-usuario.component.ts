@@ -6,7 +6,7 @@ import { PerfilUsuarioDependencia } from '../../TO/perfil-usuario-dependencia.mo
 import { RegisterService } from '../../services/register.service';
 import { UsuarioDependenciaService } from '../../services/usuario-dependencia.service';
 import { UsuarioDependencia } from '../../TO/usuario-dependencia.model';
-import { UserService } from '../../services/User.service';
+import { UserService } from '../../services/user.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from "moment";
 declare const $: any;
