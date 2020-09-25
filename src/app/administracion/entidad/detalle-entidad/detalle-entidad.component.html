@@ -276,8 +276,8 @@
                                 </td>
                                 <td>{{ row.usuario.firstName }} {{ row.usuario.lastName }}</td>
                                 <td>{{ row.perfilUsuarioDependencia.nombre }}</td>
-                                <td>{{ row[3] }}</td>
-                                <td>{{ row[4] }}</td>
+                                <td>{{ row.fechaActivacion | date: "dd-MM-yyyy HH:mm" }}</td>
+                                <td>{{ row.fechaDesactivacion | date: "dd-MM-yyyy HH:mm" }}</td>
                                 <td *ngIf="row.estado === true">
                                   <span class="badge badge-success">Activado</span>
                                 </td>
@@ -291,13 +291,6 @@
                                     class="btn btn-default mr-1 {{ row[6] }}"
                                   >
                                     <i class="material-icons">edit</i>
-                                  </button>
-                                  <button
-                                    mat-raised-button
-                                    type="button"
-                                    class="btn btn-default {{ row[6] }}"
-                                  >
-                                    <i class="material-icons">keyboard_arrow_right</i>
                                   </button>
                                 </td>
                               </tr>
