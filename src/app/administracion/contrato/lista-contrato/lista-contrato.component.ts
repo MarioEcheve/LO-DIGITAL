@@ -32,7 +32,7 @@ export class ListaContratoComponent implements OnInit {
     this.tableData1 = {
       headerRow: [
         "Codigo",
-        "Nombre Contrato",
+        "Contrato",
         "Direccion",
         "Tipo Contrato",
         "Modalidad",
