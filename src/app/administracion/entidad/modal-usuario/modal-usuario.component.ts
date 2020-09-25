@@ -92,6 +92,8 @@ export class ModalUsuarioComponent implements OnInit {
               usuarioDependencia.fechaCreacion =  moment(Date.now());
               usuarioDependencia.perfilUsuarioDependencia = this.perfilSeleccionado;
               usuarioDependencia.usuario = respuesta;
+              usuarioDependencia.estado = true;
+              usuarioDependencia.fechaActivacion =  moment(Date.now());
               usuarioDependencia.dependencia = this.data.dependenciaActual;
               this.usuarioDependenciaService
                 .create(usuarioDependencia)
