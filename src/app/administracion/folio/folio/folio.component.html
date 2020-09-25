@@ -1,6 +1,17 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="card">
+      <div class="card-header card-header-info card-header-tabs">
+        <h6 class="card-title">
+          Contrato:&nbsp;{{ contrato.nombre }}</h6>
+        <p class="card-category">
+          Código:&nbsp;{{ contrato.codigo }}
+        </p>
+      </div>
+
+
+
+
       <div class="card-body">
         <div>
           <form [formGroup]="folioFormGroup">

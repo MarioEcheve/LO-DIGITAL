@@ -95,13 +95,13 @@
     <li
       routerLinkActive="active"
       *ngFor="let menuitem of menuItems"
-      class="nav-item"
+      class="nav-item"           
     >
       <!--If is a single link-->
       <a
         [routerLink]="[menuitem.path]"
         *ngIf="menuitem.type === 'link'"
-        class="nav-link"
+        class="nav-link"         
       >
         <i class="material-icons">{{ menuitem.icontype }}</i>
         <p>{{ menuitem.title }}</p>
@@ -112,7 +112,7 @@
         href="#{{ menuitem.collapse }}"
         *ngIf="menuitem.type === 'sub'"
         (click)="updatePS()"
-        class="nav-link"
+        class="nav-link"               
       >
         <i class="material-icons">{{ menuitem.icontype }}</i>
         <p>{{ menuitem.title }}<b class="caret"></b></p>
@@ -122,13 +122,13 @@
       <div
         id="{{ menuitem.collapse }}"
         class="collapse"
-        *ngIf="menuitem.type === 'sub'"
+        *ngIf="menuitem.type === 'sub'"        
       >
         <ul class="nav">
           <li
             routerLinkActive="active"
             *ngFor="let childitem of menuitem.children"
-            class="nav-item"
+            class="nav-item"            
           >
             <a [routerLink]="[menuitem.path, childitem.path]" class="nav-link">
               <span class="sidebar-mini">{{ childitem.ab }}</span>
