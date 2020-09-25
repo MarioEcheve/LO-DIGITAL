@@ -365,10 +365,15 @@ export class DetalleEntidadComponent implements OnInit {
       }
     );
   }
-  modalUsuario(){
+  modalUsuario(usuarioDependencia? : UsuarioDependencia){
+    console.log(usuarioDependencia);
+    let editar = false;
+    if(usuarioDependencia !== undefined){
+      editar = true;
+    }
     const dialogRef = this.dialog.open(ModalUsuarioComponent, {
       width: "40%",
-      data: { dependenciaActual: this.dependenciaActual },
+      data: { dependenciaActual: this.dependenciaActual , editar : editar , usuarioDependencia : usuarioDependencia},
     });
     dialogRef.afterClosed().subscribe((result) => {
       this.buscaUsuarioDependenciaPorEntidad(this.entidad.id);

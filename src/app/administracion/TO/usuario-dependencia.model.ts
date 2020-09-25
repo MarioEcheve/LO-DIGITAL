@@ -10,6 +10,8 @@ export interface IUsuarioDependencia {
   rut? : string;
   fechaCreacion?: Moment;
   fechaModificacion?: Moment;
+  fechaActivacion?: Moment;
+  fechaDesactivacion?: Moment;
   estado?: boolean;
   usuarioLibros?: IUsuarioLibro[];
   usuario?: IUser;
@@ -25,6 +27,8 @@ export class UsuarioDependencia implements IUsuarioDependencia {
     public rut? : string,
     public fechaCreacion?: Moment,
     public fechaModificacion?: Moment,
+    public fechaActivacion?: Moment,
+    public fechaDesactivacion?: Moment,
     public estado?: boolean,
     public usuarioLibros?: IUsuarioLibro[],
     public usuario?: IUser,
