@@ -379,4 +379,7 @@ export class DetalleEntidadComponent implements OnInit {
       this.buscaUsuarioDependenciaPorEntidad(this.entidad.id);
     });
   }
+  routeDetalleContrato(row){
+    this.router.navigate(['/contrato/detalle-contrato', row.id]);
+  }
 }
