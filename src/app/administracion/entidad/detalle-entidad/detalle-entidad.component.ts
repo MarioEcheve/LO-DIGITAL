@@ -12,7 +12,9 @@ import { Contrato } from '../../TO/contrato.model';
 import { Dependencia } from '../../TO/dependencia.model';
 import { Entidad } from '../../TO/entidad.model';
 import { UsuarioDependencia } from '../../TO/usuario-dependencia.model';
-import { ModalUsuarioComponent } from '../modal-usuario/modal-usuario.component'
+import { ModalUsuarioComponent } from '../modal-usuario/modal-usuario.component';
+
+
 declare const $: any;
 
 @Component({
@@ -366,7 +368,10 @@ export class DetalleEntidadComponent implements OnInit {
   modalUsuario(){
     const dialogRef = this.dialog.open(ModalUsuarioComponent, {
       width: "40%",
-      data: { libro: {} },
+      data: { dependenciaActual: this.dependenciaActual },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      this.buscaUsuarioDependenciaPorEntidad(this.entidad.id);
     });
   }
 }

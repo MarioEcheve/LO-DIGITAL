@@ -1,7 +1,7 @@
 <mat-dialog-content>
     <h5 style="font-weight: bold;" class="mb-2">Nuevo Usuario</h5>
     <br />
-    <form>
+    <form [formGroup]="formUsuario"> 
       <div class="row" style="font-size: 13px">
         <div class="col-md-12">
             <mat-form-field>
@@ -9,7 +9,8 @@
                 matInput
                 placeholder="RUT"
                 type="text"
-                value=""                                            
+                formControlName="rut"  
+                         
               />
             </mat-form-field>
         </div>
@@ -19,7 +20,7 @@
                 matInput
                 placeholder="Nombres"
                 type="text"
-                value=""                
+                formControlName="nombres"                  
               />
             </mat-form-field>
         </div>
@@ -29,7 +30,7 @@
                 matInput
                 placeholder="Apellido Paterno"
                 type="text"
-                value=""                
+                formControlName="apellidoPaterno"                   
               />
             </mat-form-field>
         </div>
@@ -40,7 +41,7 @@
                 placeholder="Apellido Materno"
                 type="text"
                 value=""
-                formControlName="asunto"
+                formControlName="apellidoMaterno"
               />
             </mat-form-field>
         </div>
@@ -51,10 +52,21 @@
                 placeholder="E-mail"
                 type="text"
                 value=""
-                formControlName="asunto"
+                formControlName="email"
               />
             </mat-form-field>
         </div>
+        <div class="col-md-12">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="login"
+              type="text"
+              value=""
+              formControlName="userName"
+            />
+          </mat-form-field>
+        </div>             
         <div class="col-md-12">
             <mat-form-field>
               <input
@@ -62,18 +74,20 @@
                 placeholder="Clave"
                 type="text"
                 value=""
-                formControlName="asunto"
+                formControlName="clave"
               />
             </mat-form-field>
-        </div>             
+        </div>        
         <div class="col-md-12">
           <mat-form-field>
             <mat-select
-              placeholder="Peril"                            
+              placeholder="Peril" 
+              formControlName="perfil"                                  
             >
-              <mat-option>
-                Super usuario
-                Usuario
+              <mat-option *ngFor="let perfil of perfilUsuarioDependencia" 
+              [value]="perfil.nombre"
+              (click)="setPerfil(perfil)">
+               {{perfil.nombre}}
               </mat-option>              
             </mat-select>
           </mat-form-field>
@@ -83,7 +97,7 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end" style="padding-top: 0px;">
     <button mat-button mat-dialog-close style="font-size: 12px;">Cancelar</button>
-    <button mat-button class="btn btn-primary">
+    <button mat-button class="btn btn-primary" (click)="guardarUsuario()">
       Crear
     </button>
   </mat-dialog-actions>
