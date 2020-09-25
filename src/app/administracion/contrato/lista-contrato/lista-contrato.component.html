@@ -20,7 +20,7 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th class="text-center">{{ tableData1.headerRow[0] }}</th>
+                <!-- <th class="text-center">{{ tableData1.headerRow[0] }}</th> -->
                 <th>{{ tableData1.headerRow[1] }}</th>
                 <th>{{ tableData1.headerRow[2] }}</th>
                 <th>{{ tableData1.headerRow[3] }}</th>
@@ -32,8 +32,8 @@
             </thead>
             <tbody>
               <tr *ngFor="let row of listaDeContratos" class="animate__animated animate__fadeIn">
-                <td class="text-center">{{ row.codigo }}</td>
-                <td>{{ row.nombre }}</td>
+                <!-- <td class="text-center">{{ row.codigo }}</td> -->
+                <td>{{ row.nombre }} | Cod:{{ row.codigo }}</td>
                 <td>{{ row.direccion }}</td>
                 <td>{{ row.tipo_contrato }}</td>
                 <td class="text-right">{{ row.modalidad }}</td>
