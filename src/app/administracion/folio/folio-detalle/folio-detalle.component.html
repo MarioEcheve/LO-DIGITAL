@@ -209,8 +209,8 @@
                     <mat-form-field class="example-chip-list">
                       <mat-chip-list #chipList aria-label="Fruit selection">
                         <mat-chip  *ngFor="let folio of folios" [selectable]="selectable"
-                                 [removable]="removable" (removed)="remove(folio)">
-                          {{folio.libro.nombre}} | Folio nº:{{ folio.numeroFolio}}
+                                 [removable]="removable" (removed)="remove(folio)" style="font-size: 11px; padding-top: 0px; padding-bottom: 0px; margin: 2px;">
+                          {{folio.libro.nombre}} | Folio Nº{{ folio.numeroFolio}}
                           <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                         </mat-chip>
                         <input placeholder="Folios Referencia"
