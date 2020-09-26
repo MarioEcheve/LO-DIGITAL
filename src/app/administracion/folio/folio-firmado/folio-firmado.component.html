@@ -237,13 +237,14 @@
                 <div class="col-6" style="font-size: 15px; font-weight: bold;">
                   {{ listaArchivos.length}} Archivos Adjuntos:
                 </div>
-                <div class="col-6 text-right">
+                <!-- <div class="col-6 text-right">
                   <a href=""><i style="color: #000000;" class="material-icons mr-1">get_app</i></a>                  
-                </div>
+                </div> -->
               </div>
               <ul class="list-inline" >
                 <li *ngFor="let archivo of listaArchivos" (click)="openFile(archivo.archivoContentType, archivo.archivo , archivo.descripcion)"class="list-inline-item">
-                  <a >{{ archivo.descripcion}}</a>
+                  <!-- <a >{{ archivo.descripcion}}</a> -->
+                  <span class="badge badge-default" style="text-transform:none">{{ archivo.descripcion}}</span>
                 </li>
                 &nbsp;
               </ul>
