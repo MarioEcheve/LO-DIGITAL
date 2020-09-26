@@ -88,7 +88,9 @@ export class FolioFirmadoComponent implements OnInit {
   obtenerFolio(idFolio) {
     this.folioService.find(idFolio).subscribe((respuesta) => {
       this.Folio = respuesta.body;
-      this.setColorFechaRequerida(this.Folio);
+      if(this.Folio.requiereRespuesta === true){
+        this.setColorFechaRequerida(this.Folio);
+      }
       let usuarioActual =JSON.parse(localStorage.getItem("user"));
       this.obtenerPerfilLibroUsuario(this.Folio.libro.id, usuarioActual.id);
       this.idlibroRelacionado = respuesta.body.idFolioRespuesta;
