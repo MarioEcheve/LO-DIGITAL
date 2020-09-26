@@ -374,6 +374,7 @@ export class FolioFirmadoComponent implements OnInit {
       this.folioReferenciaService.query().subscribe(
         folios=>{
           let foliosFiltrados = folios.body.filter(folio=> folio.idFolioOrigen === this.Folio.id)
+          console.log(foliosFiltrados);
           foliosFiltrados.forEach(element=>{
             this.folioService.find(element.idFolioReferencia).subscribe(
               folio=>{

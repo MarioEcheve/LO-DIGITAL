@@ -123,7 +123,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               this.folio.numeroFolio = respuesta.body[0].numero_folio;
             }
 
-            if(this.data.folioReferencias.length > 0 ){
+            if(this.data.folioReferencias.length <= 0 ){
               this.folio.poseeFolioReferencia = true;
               for (let i = 0; i < this.data.folioReferencias.length; i++) {
                 let folioReferencia = new FolioReferencia();
