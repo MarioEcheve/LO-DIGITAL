@@ -5,15 +5,15 @@
         <mat-tab-group>
           <mat-tab label="Folio">
             <div class="container-fluid">
-              <div class="mt-2">
+              <div class="row mt-2">
                 <button mat-raised-button 
-                  type="button" 
+                  type="button"                  
                   class="btn btn-default btn-fab btn-sm mr-1" 
                   (click)="volverListaFolios()">
                     <i class="material-icons">keyboard_arrow_left</i>
                 </button>
                 <div *ngIf="Folio.requiereRespuesta === true && respuestaFolioShow === true">
-                  <button mat-raised-button 
+                  <button mat-raised-button                  
                     type="button" 
                     class="btn btn-primary btn-sm mr-1"
                     [disabled]="Folio.requiereRespuesta === false || idlibroRelacionado !== null || usuario?.adminActivo === false || respuestaFolioShow === false" 
@@ -220,7 +220,7 @@
                   <td>Fecha Requerida:</td>
                   <td>
                     &nbsp;<span *ngIf="Folio.fechaRequerida === undefined || Folio.fechaRequerida === null" class="badge badge-primary">No</span
-                    >&nbsp;&nbsp;{{ Folio.fechaRequerida | date: "dd-MM-yyyy HH:mm" }}
+                    >&nbsp;{{ Folio.fechaRequerida | date: "dd-MM-yyyy HH:mm" }}
                   </td>
                 </tr>
                 <tr>
@@ -238,16 +238,7 @@
                   {{ listaArchivos.length}} Archivos Adjuntos:
                 </div>
                 <div class="col-6 text-right">
-                  <a href=""
-                    ><i style="color: #000000;" class="material-icons mr-1"
-                      >get_app</i
-                    ></a
-                  >
-                  <a href=""
-                    ><i style="color: #000000;" class="material-icons"
-                      >cloud_download</i
-                    ></a
-                  >
+                  <a href=""><i style="color: #000000;" class="material-icons mr-1">get_app</i></a>                  
                 </div>
               </div>
               <ul class="list-inline" >
