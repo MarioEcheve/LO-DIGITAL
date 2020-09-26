@@ -24,6 +24,12 @@ export interface ChildrenItems {
 //Menu Items
 export const ROUTES: RouteInfo[] = [
   {
+    path: "/usuario/usuario",
+    title: "Mi perfil",
+    type: "link",
+    icontype: "account_box",
+  },
+  {
     path: "/dashboard",
     title: "Dashboard",
     type: "link",
@@ -36,16 +42,10 @@ export const ROUTES: RouteInfo[] = [
     icontype: "business",
   },
   {
-    path: "/contrato",
-    title: "Contrato",
-    type: "sub",
+    path: "/contrato/lista-contrato",
+    title: "Mis contratos",
+    type: "link",
     icontype: "engineering",
-    collapse: "contrato",
-    children: [
-      //{ path: "contrato", title: "Nuevo Contrato", ab: "B" },
-      { path: "lista-contrato", title: "Lista Contrato", ab: "B" },
-      //{ path: "detalle-contrato", title: "Detalle Contrato", ab: "B" },
-    ],
   },
   {
     path: "/libro/lista-libro",

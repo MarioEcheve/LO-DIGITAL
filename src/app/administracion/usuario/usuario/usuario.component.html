@@ -53,14 +53,15 @@
                                               mat-raised-button
                                               type="submit"
                                               class="btn btn-default mr-1" 
-                                              *ngIf="editarUsuario"                                     
+                                              *ngIf="editarUsuario"  
+                                              (click)="cancelarEditarUsuarioForm()"                                   
                                             >                                     
                                               Cancelar
                                             </button>
-                                            <button *ngIf="editarUsuario" mat-raised-button type="submit" class="btn btn-primary">                         
+                                            <button (click)="updateUsuario()" *ngIf="editarUsuario" mat-raised-button type="submit" class="btn btn-primary">                         
                                               Guardar Datos
                                             </button>
-                                            <button *ngIf="!editarUsuario" mat-raised-button type="submit" class="btn btn-primary">                         
+                                            <button (click)="editarUsuarioForm()" *ngIf="!editarUsuario" mat-raised-button type="submit" class="btn btn-primary">                         
                                               Editar Datos
                                             </button>
                                         </div>
