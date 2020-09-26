@@ -52,7 +52,8 @@
 @mixin set-background-color-button($color){
 
     li.active > a{
-        background-color: $color;
-        @include shadow-big-color($color);
+        // FVS background-color: $color;
+        background-color: #53535475;
+        // @include shadow-big-color($color);
     }
 }

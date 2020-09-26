@@ -1,46 +1,48 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="card">
+      <div class="card-header card-header-info card-header-tabs">
+        <div class="row" >
+          <div class="col-6 d-flex justify-content-start">
+            <table>
+              <tr>
+                <td>
+                  <h6 class="card-title">Contrato:&nbsp;{{ contrato.nombre }}</h6>
+                </td>                
+              </tr>
+              <tr>
+                <td>
+                  <p class="card-category">Código:&nbsp;{{ contrato.codigo }}</p>
+                </td>                
+              </tr>
+            </table>
+          </div>
+          <div class="col-6 d-flex justify-content-end">
+            <table>
+              <tr>
+                <td>
+                  <h6 class="card-title">Perfil:</h6>                  
+                </td>
+                <td *ngIf="usuarioLibro?.perfilUsuarioLibro">
+                  <h6 class="card-title">&nbsp;{{usuarioLibro?.perfilUsuarioLibro.nombre}}</h6>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a class="card-category">Cargo:</a>
+                </td>
+                <td>
+                  &nbsp;<a class="card-category">{{ usuarioLibro?.cargoFuncion }}</a>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>        
+      </div>
       <div class="card-body">
         <div>
-          <form [formGroup]="folioFormGroup">
-            <div class="row" >
-              <div class="col-6 d-flex justify-content-start">
-                <table class="mb-1">
-                  <tr>
-                    <td style="font-size: 15px; font-weight: bold;">
-                      Contrato:
-                    </td>
-                    <td style="font-size: 15px; font-weight: bold;">
-                      &nbsp;<strong>{{ contrato.nombre }}</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Código:</td>
-                    <td>&nbsp;{{ contrato.codigo }}</td>
-                  </tr>
-                </table>
-              </div>
-              <div class="col-6 d-flex justify-content-end">
-                <table class="mb-1">
-                  <tr>
-                    <td style="font-size: 15px; font-weight: bold;">
-                      Perfil Libro:
-                    </td>
-                    <td style="font-size: 15px; font-weight: bold;" *ngIf="usuarioLibro?.perfilUsuarioLibro">
-                      &nbsp;<strong>{{
-                        usuarioLibro?.perfilUsuarioLibro.nombre
-                      }}</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Cargo:</td>
-                    <td>&nbsp;{{ usuarioLibro?.cargoFuncion }}</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-            <div class="d-flex mt-1">
+          <form [formGroup]="folioFormGroup">            
+            <div class="d-flex">
               <div class="flex-grow-1">
                 <mat-form-field>
                   <mat-select
@@ -84,7 +86,7 @@
             <div *ngIf="muestraRedactarFolioAdminActivo">
               <button
                 mat-raised-button
-                class="btn btn-primary col-md-12 "                                                
+                class="btn btn-default col-md-12 "                                                
                 (click)="nuevoFolio()"
                 [disabled]="libroSeleccionado?.estadoLibro?.nombre === 'Cerrado'"
                 *ngxPermissionsOnly="['administrador','asistente', 'superior' , 'administrador/s']"
