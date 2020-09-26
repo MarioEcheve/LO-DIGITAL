@@ -220,7 +220,10 @@
                   <td>Fecha Requerida:</td>
                   <td>
                     &nbsp;<span *ngIf="Folio.fechaRequerida === undefined || Folio.fechaRequerida === null" class="badge badge-primary">No</span
-                    >&nbsp;{{ Folio.fechaRequerida | date: "dd-MM-yyyy HH:mm" }}
+                    >
+                    <span  [ngStyle]="{'background-color': Folio.color}" style="color: white;" class="badge badge-primary">
+                      {{ Folio.fechaRequerida | date: "dd-MM-yyyy HH:mm" }}
+                    </span>
                   </td>
                 </tr>
                 <tr>

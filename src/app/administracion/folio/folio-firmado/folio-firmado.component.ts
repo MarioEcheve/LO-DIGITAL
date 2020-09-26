@@ -88,6 +88,7 @@ export class FolioFirmadoComponent implements OnInit {
   obtenerFolio(idFolio) {
     this.folioService.find(idFolio).subscribe((respuesta) => {
       this.Folio = respuesta.body;
+      this.setColorFechaRequerida(this.Folio);
       let usuarioActual =JSON.parse(localStorage.getItem("user"));
       this.obtenerPerfilLibroUsuario(this.Folio.libro.id, usuarioActual.id);
       this.idlibroRelacionado = respuesta.body.idFolioRespuesta;
@@ -401,6 +402,36 @@ export class FolioFirmadoComponent implements OnInit {
       }
     );
   }
+  setColorFechaRequerida(folio){
+    let resultado = calcDate(folio.fechaRequerida.toDate(),new Date());
+      if(folio.estadoRespuesta !== null){
+        console.log("entra");
+        if(folio.estadoRespuesta.nombre.toLowerCase() === "respondido"){
+          folio.color = "#4EA21A";
+        }else{
+          if(resultado[0] <= 1){
+            folio.color = "#FFAE00";
+          }
+          if(resultado[0] >= 2){
+            folio.color = "#4285F4";
+          }
+          if(resultado[0] <= -1){
+            folio.color = "#FF3C33";
+          }
+        }
+      }else{
+        if(resultado[0] <= 1){
+          folio.color = "#FFAE00";
+        }
+        if(resultado[0] >= 2){
+          folio.color = "#4285F4";
+        }
+        if(resultado[0] <= -1){
+          folio.color = "#FF3C33";
+        }
+      }
+      this.Folio.color = folio.color;
+  }
   
 }
 const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
@@ -421,4 +452,19 @@ const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
 
   const blob = new Blob(byteArrays, {type: contentType});
   return blob;
+}
+function calcDate(date1,date2) {
+  var diff = Math.floor(date1.getTime() - date2.getTime());
+  var day = 1000 * 60 * 60 * 24;
+
+  var days = Math.floor(diff/day);
+  var months = Math.floor(days/31);
+  var years = Math.floor(months/12);
+
+  var message = date2.toDateString();
+  message += " was "
+  message += days + " dias " 
+  message += months + " meses "
+  message += years + " año \n"
+  return [days,months,years]
 }
