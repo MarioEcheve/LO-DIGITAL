@@ -1,5 +1,6 @@
 <mat-dialog-content>
-    <h5 style="font-weight: bold;" class="mb-2">Nuevo Usuario</h5>
+    <h5 *ngIf="data.editar === false " style="font-weight: bold;" class="mb-2">Nuevo Usuario</h5>
+    <h5 *ngIf="data.editar === true " style="font-weight: bold;" class="mb-2">Editar Usuario</h5>
     <br />
     <form [formGroup]="formUsuario"> 
       <div class="row" style="font-size: 13px">
@@ -49,7 +50,7 @@
           <mat-form-field>
             <input
               matInput
-              placeholder="Login provisoria"
+              placeholder="Nombre Usuario Provisorio"
               type="text"
               value=""
               formControlName="userName"
@@ -60,7 +61,7 @@
             <mat-form-field>
               <input
                 matInput
-                placeholder="Clave provisoria"
+                placeholder="Clave Provisoria"
                 type="text"
                 value=""
                 formControlName="clave"
