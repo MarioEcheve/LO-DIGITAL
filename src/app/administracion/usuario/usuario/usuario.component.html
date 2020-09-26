@@ -24,45 +24,43 @@
                                                 <input matInput placeholder="RUT" type="text"  formControlName="rut"/>
                                             </mat-form-field>
                                             <mat-form-field class="example-full-width col-md-9">
-                                                <input matInput placeholder="Nombres" type="text" value="Fernando Alejandro" disabled />
+                                                <input matInput placeholder="Nombres" type="text"  formControlName="nombres" disabled />
                                             </mat-form-field>
                                         </div>
                                         <div class="row">
                                             <mat-form-field class="example-full-width col-md-6">
-                                                <input matInput placeholder="Apellido Paterno" type="text" value="Vilches" disabled />
-                                            </mat-form-field>
-                                            <mat-form-field class="example-full-width col-md-6">
-                                                <input matInput placeholder="Apellido Materno" type="text" value="Soleman" disabled />
+                                                <input matInput placeholder="Apellidos" type="text" formControlName="apellidos" />
                                             </mat-form-field>
                                         </div> 
                                         <div class="row">
                                             <mat-form-field class="example-full-width col-md-6">
-                                                <input matInput placeholder="Email Principal" type="email" value="fvilchessoleman@gmail.com" disabled />
+                                                <input matInput placeholder="Email Principal" type="email"  formControlName="emailPrincipal" />
                                             </mat-form-field>
                                             <mat-form-field class="example-full-width col-md-6">
-                                                <input matInput placeholder="Email Secundario" type="email" value="fvilchessoleman2@gmail.com" disabled />
+                                                <input matInput placeholder="Email Secundario" type="email" formControlName="emailSecundario" />
                                             </mat-form-field>                        
                                         </div>
                                         <div class="row">                      
                                             <mat-form-field class="example-full-width col-md-6">
-                                                <input matInput placeholder="Teléfono Principal" type="text" value="966453188" disabled />
+                                                <input matInput placeholder="Teléfono Principal" type="text"  formControlName="telefonoPrincipal" />
                                             </mat-form-field>
                                             <mat-form-field class="example-full-width col-md-6">
-                                                <input matInput placeholder="Teléfono Secundario" type="text" value="582542555" disabled />
+                                                <input matInput placeholder="Teléfono Secundario" type="text"  formControlName="telefonoSecundario" />
                                             </mat-form-field>
                                         </div>                                                
                                         <div class="pull-right">
                                             <button
                                               mat-raised-button
                                               type="submit"
-                                              class="btn btn-default mr-1"                                      
+                                              class="btn btn-default mr-1" 
+                                              *ngIf="editarUsuario"                                     
                                             >                                     
                                               Cancelar
                                             </button>
-                                            <button mat-raised-button type="submit" class="btn btn-primary">                         
+                                            <button *ngIf="editarUsuario" mat-raised-button type="submit" class="btn btn-primary">                         
                                               Guardar Datos
                                             </button>
-                                            <button mat-raised-button type="submit" class="btn btn-primary">                         
+                                            <button *ngIf="!editarUsuario" mat-raised-button type="submit" class="btn btn-primary">                         
                                               Editar Datos
                                             </button>
                                         </div>

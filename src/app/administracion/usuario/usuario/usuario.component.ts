@@ -16,6 +16,7 @@ export class UsuarioComponent implements OnInit {
   formUsuario : FormGroup;
   formCambioClave : FormGroup;
   cambioClaveUsuario = false;
+  editarUsuario = false;
   constructor(  private usuarioDependenciaService : UsuarioDependenciaService, 
                 private fb : FormBuilder,
                 private passwordService: PasswordService,
@@ -25,6 +26,8 @@ export class UsuarioComponent implements OnInit {
     this.inicializarForm();
     this.inicializarFormCambioClave();
     this.cargaUsuarioDependenciaActual();
+    this.disabledFormCambioClave();
+    this.disabledFormUsuario();
     
   }
   async cargaUsuarioDependenciaActual(){
@@ -33,15 +36,22 @@ export class UsuarioComponent implements OnInit {
       this.usuarioDependenciaService.findUserByUsuarioDependencia(usuario.id).subscribe(
         usuarioDependencia=>{
           this.usuarioDependenciaActual = usuarioDependencia.body[0];
+          this.setValueFormUsuario(usuarioDependencia.body[0]);
           this.formCambioClave.controls['login'].setValue(this.usuarioDependenciaActual.usuario.login);
-          this.formCambioClave.controls['login'].disable();
+          this.formCambioClave.controls['login'].setValue(this.usuarioDependenciaActual.usuario.login);
         }
       )
     });
   }
   inicializarForm(){
     this.formUsuario = this.fb.group({
-      rut : ['hola'] 
+      rut : [''] ,
+      nombres : [''],
+      apellidos : [''],
+      emailPrincipal : [''],
+      emailSecundario : [''],
+      telefonoPrincipal : [''],
+      telefonoSecundario : [''],
     });
   }
   inicializarFormCambioClave(){
@@ -51,22 +61,53 @@ export class UsuarioComponent implements OnInit {
       claveNueva : ['',[Validators.required]] ,
       repitaClavenueva : ['',Validators.required] ,
     });
-    
   }
+  disabledFormUsuario(){
+    this.formUsuario.controls['rut'].disable();
+    this.formUsuario.controls['nombres'].disable();
+    this.formUsuario.controls['apellidos'].disable();
+    this.formUsuario.controls['emailPrincipal'].disable();
+    this.formUsuario.controls['emailSecundario'].disable();
+    this.formUsuario.controls['telefonoPrincipal'].disable();
+    this.formUsuario.controls['telefonoSecundario'].disable();
+  }
+  disabledFormCambioClave(){
+    this.formCambioClave.controls['login'].disable();
+    this.formCambioClave.controls['claveActual'].disable();
+    this.formCambioClave.controls['claveNueva'].disable();
+    this.formCambioClave.controls['repitaClavenueva'].disable();
+  }
+  enabledFormCambioClave(){
+    this.formCambioClave.controls['login'].enable();
+    this.formCambioClave.controls['claveActual'].enable();
+    this.formCambioClave.controls['claveNueva'].enable();
+    this.formCambioClave.controls['repitaClavenueva'].enable();
+  }
+  setValueFormUsuario(usuarioDependencia : UsuarioDependencia){
+    this.formUsuario.controls['rut'].setValue(usuarioDependencia.rut);
+    this.formUsuario.controls['nombres'].setValue(`${usuarioDependencia.usuario.firstName}`);
+    this.formUsuario.controls['apellidos'].setValue(`${usuarioDependencia.usuario.lastName}`);
+    this.formUsuario.controls['emailPrincipal'].setValue(usuarioDependencia.usuario.email);
+    //this.formUsuario.controls['emailSecundario'].setValue(usuarioDependencia.rut);
+    //this.formUsuario.controls['telefonoPrincipal'].setValue(usuarioDependencia.rut);
+    //this.formUsuario.controls['telefonoSecundario'].setValue(usuarioDependencia.rut);
+
+  }
+  
   cambioClave(){
     this.cambioClaveUsuario = true;
     console.log(this.usuarioDependenciaActual);
+    this.enabledFormCambioClave();
   }
   cancelar(){
     this.cambioClaveUsuario = false;
+    this.disabledFormCambioClave();
   }
   guardarCambioClave(){
-    this.cambioClaveUsuario = false;
     // primero va la clave nueva, luego la clave actual
     let claveNueva = this.formCambioClave.controls['claveNueva'].value;
     let claveActual = this.formCambioClave.controls['claveActual'].value;
     let repitaClavenueva = this.formCambioClave.controls['repitaClavenueva'].value;
-
     if(claveNueva === repitaClavenueva){
       console.log(claveActual);
       console.log(claveNueva);
@@ -75,6 +116,7 @@ export class UsuarioComponent implements OnInit {
           console.log(response);
           localStorage.setItem("user", "");
           this.router.navigate(['/']);
+          this.cambioClaveUsuario = false;
         },error=>{
           this.showNotificationDanger("top", "right");
         }
@@ -123,4 +165,5 @@ export class UsuarioComponent implements OnInit {
       }
     );
   }
+  
 }
