@@ -4,3 +4,10 @@
 .list-inline-item:hover{
     cursor: pointer;
 }
+:host /deep/ angular-editor#anotacion .ng-star-inserted{
+    display: none
+    
+}
+.angular-editor-toolbar-ng-star-inserted{
+    display: none
+}

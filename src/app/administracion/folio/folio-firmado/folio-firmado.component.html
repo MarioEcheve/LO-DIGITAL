@@ -233,7 +233,15 @@
               <hr />
               <div style="font-size: 15px; font-weight: bold;">Anotación:</div>
               <br />
-              <p [innerHtml]="Folio.anotacion"></p>
+              <angular-editor
+                id="anotacion"
+                [placeholder]=""
+                [config]="editorConfig"
+                 disabled
+                [formControl]="anotacion"
+              >
+                {{ Folio.anotacion}}
+              </angular-editor>
               <hr />
               <div class="row">
                 <div class="col-6" style="font-size: 15px; font-weight: bold;">

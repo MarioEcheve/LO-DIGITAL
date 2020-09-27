@@ -346,8 +346,11 @@
                   </div>
                 </div>
                 -->
-                <input type="file" (change)="onFileChange($event)" multiple  id="file">
+                <input  type="file" (change)="onFileChange($event)" multiple class="custom-file-input">
                 <br>
+                <!--
+                  
+                -->
                 <button type="button" class="btn btn-primary btn-sm mb-2" (click)="onFileChange($event)" multiple  id="file">
                   <i class="material-icons">attach_file</i>
                   Adjuntar Archivo

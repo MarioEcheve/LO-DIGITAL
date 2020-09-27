@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from "@angular/core";
+import { Component, OnInit, AfterViewInit, ViewEncapsulation } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FolioService } from "../../services/folio.service";
 import { Folio } from "../../TO/folio.model";
@@ -19,6 +19,8 @@ import { Archivo } from "../../TO/archivo.model";
 import { InformarPdfComponent } from '../../shared/informar-pdf/informar-pdf.component';
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import { FolioReferenciaService } from "../../services/folio-referencia.service";
+import { AngularEditorConfig } from "@kolkov/angular-editor";
+import { FormControl } from "@angular/forms";
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -43,6 +45,36 @@ export class FolioFirmadoComponent implements OnInit {
   emisor;
   receptor;
   usuario :  UsuarioDependencia;
+  // editor angular 
+  editorConfig: AngularEditorConfig = {
+    editable: false,
+    spellcheck: true,
+    height: "15rem",
+    minHeight: "5rem",
+    placeholder: "Enter text here...",
+    translate: "no",
+    defaultParagraphSeparator: "p",
+    defaultFontName: "Arial",
+    sanitize: false,
+    //toolbarHiddenButtons: [["bold"]],
+    customClasses: [
+      {
+        name: "quote",
+        class: "quote",
+      },
+      {
+        name: "redText",
+        class: "redText",
+      },
+      {
+        name: "titleText",
+        class: "titleText",
+        tag: "h1",
+      },
+    ],
+  };
+  anotacion = new FormControl();
+
   cities = [
     { value: "paris-0", viewValue: "Paris" },
     { value: "miami-1", viewValue: "Miami" },
@@ -70,6 +102,7 @@ export class FolioFirmadoComponent implements OnInit {
   ngOnInit() {
     this.folioService.navBarChange(2);
     let idFolio = this.route.snapshot.paramMap.get("id");
+    this.anotacion.disable();
     this.obtenerFolio(idFolio);
     this.getArchivosFolio(idFolio);
     this.getMisLibros();
@@ -88,6 +121,7 @@ export class FolioFirmadoComponent implements OnInit {
   obtenerFolio(idFolio) {
     this.folioService.find(idFolio).subscribe((respuesta) => {
       this.Folio = respuesta.body;
+      this.anotacion.setValue(this.Folio.anotacion);
       if(this.Folio.requiereRespuesta === true){
         this.setColorFechaRequerida(this.Folio);
       }

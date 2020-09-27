@@ -38,6 +38,7 @@ import { ArchivoService } from "../../services/archivo.service";
 import { Img } from "pdfmake-wrapper";
 import { async } from "@angular/core/testing";
 
+
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -799,7 +800,20 @@ export class FolioDetalleComponent implements OnInit {
     let respuestaFolio = "N/A";
     let fechaRequerida =  this.folioForm.controls["fechaRequeridaDatepicker"].value;
     let usuarioLibroActual = this.usuario.usuarioDependencia.usuario.firstName + ' ' +  this.usuario.usuarioDependencia.usuario.lastName;
-
+    let foliosReferenciaText=""; 
+    let archivosReferenciaText="";
+   
+    if(this.folios.length > 0 ){
+      for( var i = 0 ; i < this.folios.length ; i ++){
+        foliosReferenciaText = foliosReferenciaText + ' ' + this.folios[i].libro.nombre + ' '+' Folio: ' +  this.folios[i].numeroFolio;
+      }
+    }
+    if(this.archivosFolio.length > 0 ){
+      for( var i = 0 ; i < this.archivosFolio.length ; i ++){
+        archivosReferenciaText = archivosReferenciaText + '     ' + this.archivosFolio[i].descripcion;
+      }
+    }
+    console.log(foliosReferenciaText);
     if(this.folioForm.controls["respuestaFolio"].value !== ""){
       respuestaFolio = this.folioForm.controls["respuestaFolio"].value;
     }
@@ -863,6 +877,7 @@ export class FolioDetalleComponent implements OnInit {
               [ { text: ``, bold: true , fontSize: 8, }, { text: `${this.receptorPdf.cargoFuncion}`,bold: false , fontSize: 8}],
               [ { text: `Tipo de Folio :`, bold: false , fontSize: 8, }, { text: `${this.Folio.tipoFolio.nombre}`,bold: false , fontSize: 8}],
               [ { text: `Respuesta de :`, bold: false , fontSize: 8, }, { text: `${respuestaFolio}`,bold: false , fontSize: 8}],
+              [ { text: `Referencia de :`, bold: false , fontSize: 8, }, { text: `${foliosReferenciaText}`,bold: false , fontSize: 8}],
               [ { text: `Fecha Requerida :`, bold: false , fontSize: 8, }, { text: `${fechaRequerida}`,bold: false , fontSize: 8}],
               [ { text: `Asunto :`, bold: false , fontSize: 8, }, { text: `${this.Folio.asunto}`,bold: false , fontSize: 8}],
             ]
@@ -895,13 +910,13 @@ export class FolioDetalleComponent implements OnInit {
           margin: [0, 5, 0, 0]  
         },  
         {  
-          text: `1 Archivos Adjuntos :` ,  
+          text: `${this.archivosFolio.length} Archivos Adjuntos :` ,  
           bold: true,
           fontSize: 8, 
           margin: [0, 20, 0, 0]  
         },  
         {  
-          text: `foto.png` ,  
+          text: `${archivosReferenciaText}` ,  
           bold: true,
           fontSize: 9, 
           margin: [0, 5, 0, 0]  
@@ -1209,12 +1224,13 @@ function  getBase64Image (img ){
   return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
 function stripHtml(html) {
+  console.log(html);
   // Create a new div element
   var temporalDivElement = document.createElement("div");
   // Set the HTML content with the providen
   temporalDivElement.innerHTML = html;
-  // Retrieve the text property of the element (cross-browser support)
-  return temporalDivElement.textContent || temporalDivElement.innerText || "";
+  // Retrieve the text property of the element (cross-browser support)*/
+  return html || "";
 }
 const blobToBase64 = (blob) => {
   const reader = new FileReader();

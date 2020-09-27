@@ -128,6 +128,7 @@ export class MaterialModule {}
     MatDialogModule,
     FormsModule,
     ReactiveFormsModule,
+    
   ],
   declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent,FiltroFolioPersonalizadoComponent,VisorPdfComponent,CambioAdministradorComponent, InformarPdfComponent],
   providers: [
