@@ -62,7 +62,7 @@ export class CrearUsuarioComponent implements AfterViewInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.data.existe);
+    console.log(this.data);
     if(this.data.existe === true){
       this.existeAdminActivo = true;
       if(this.data.usuarioEditar.adminActivo === true){
@@ -71,8 +71,9 @@ export class CrearUsuarioComponent implements AfterViewInit {
     }
     this.data.usuariosDependenciaMandante.forEach(element => {
         let nombre = "";
-        nombre = element.nombre +' ' + element.apellidos;
-        element.nombre = element.nombre;
+        nombre = element.usuario.firstName +' ' + element.usuario.lastName;
+        element.usuario.firstName = element.usuario.firstName;
+        element.usuario.lastName = element.usuario.lastName;
     });
     this.options = this.data.usuariosDependenciaMandante;
     this.listaPerfilesLibro = this.data.usuarioLibroPerfil;
@@ -165,37 +166,29 @@ export class CrearUsuarioComponent implements AfterViewInit {
         nombre: this.myControl.value,
         perfilUsuarioLibro: this.perfilUsuario,
         usuarioDependencia: null,
+        
       };
       //console.log(json_usuario_dep);
   
       this.usuarioDependenciaService
         .find(json_usuario_dep.idUsuarioDependencia)
         .subscribe((respuesta) => {
-          /*
-          respuesta.body.nombreEstado = 'Activo';
-          if(respuesta.body.estado === true){
-            respuesta.body.nombreEstado = "Activo";
-          }else{
-            respuesta.body.nombreEstado = "Inactivo";
-          }*/
           json_usuario_dep.usuarioDependencia = respuesta.body;
           json_usuario_dep.estado = valorEstado;
           json_usuario_dep.nombreEstado = estadoUsuarioLibro;
         });
-  
-      //console.log(json_usuario_dep);
      setTimeout(() => {
       console.log(json_usuario_dep);
       this.dialogRef.close(json_usuario_dep);
-     },200);
+     },400);
     }
   }
 
   valorAutoComplete(option) {
     console.log(option);
-    this.idUsuarioDependenciaAutoComplete = option.id_usuario_dependencia;
+    this.idUsuarioDependenciaAutoComplete = option.id;
     console.log(option);
-      let nombreCompleto = option.nombre + ' '+  option.apellidos;
+      let nombreCompleto = option.usuario.firstName +' ' + option.usuario.lastName;
       this.myControl.setValue(nombreCompleto)
     
   }

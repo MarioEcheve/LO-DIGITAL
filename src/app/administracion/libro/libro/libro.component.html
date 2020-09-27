@@ -307,7 +307,7 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let row of usuariosAgregados">
-                      <td scope="row" style="width: auto;">{{ row.rut }}</td>
+                      <td scope="row" style="width: auto;">{{ row.usuarioDependencia.rut }}</td>
 
                       <td>{{ row.nombre }}</td>
                       <td>{{ row.cargoFuncion }}</td>
@@ -380,7 +380,7 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let row of usuariosAgregadosContratista">
-                      <td scope="row" style="width: auto;">{{ row.rut }}</td>
+                      <td scope="row" style="width: auto;">{{ row.usuarioDependencia.rut }}</td>
 
                       <td>{{ row.nombre }}</td>
                       <td>{{ row.cargoFuncion }}</td>

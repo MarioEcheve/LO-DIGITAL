@@ -413,7 +413,7 @@ export class DetalleLibroComponent implements OnInit {
     }
     let listaUsuariosFiltrados = this.listaUsuarios.filter((usuarios:any)=>{
     let res = this.listaUsuarioMandante.find((usuarioMandante)=>{
-       return usuarioMandante.usuarioDependencia.id == usuarios.id_usuario_dependencia;
+       return usuarioMandante.usuarioDependencia.id == usuarios.id;
        });
       return res == undefined;
     });
@@ -436,7 +436,7 @@ export class DetalleLibroComponent implements OnInit {
       if (result === undefined || result === false || result === "") {
       } else {
         let existe = false;
-        existe = this.listaUsuarioMandante.find(usuario => usuario.usuarioDependencia.id === result.usuarioDependencia?.id);
+        existe = this.listaUsuarioMandante.find(usuario => usuario.id === result.usuarioDependencia?.id);
         if(!existe){
           if(result.adminActivo === true){
               this.libroInfoGeneralFormGroup.controls["nombreAdminMandante"].setValue(result.usuarioDependencia.usuario.firstName + '' + result.usuarioDependencia.usuario.lastName);
@@ -470,7 +470,7 @@ export class DetalleLibroComponent implements OnInit {
     this.listaUsuariosContratista = this.listaUsuariosContratistaOrigen;
     let listaUsuariosFiltrados = this.listaUsuariosContratista.filter((usuarios:any)=>{
       let res = this.listaUsuarioContratistaAgregados.find((usuarioContratista)=>{
-       return usuarioContratista.usuarioDependencia.id == usuarios.id_usuario_dependencia;
+       return usuarioContratista.usuarioDependencia.id == usuarios.id;
        });
       return res == undefined;
     });
@@ -516,7 +516,7 @@ export class DetalleLibroComponent implements OnInit {
       // obtener los usuarios para el mandante y el contratista
       // mandante
       this.dependenciaService
-        .buscaUsuariosDependencia(this.contrato.dependenciaMandante.id)
+        .buscaUsuariosDependencia2(this.contrato.dependenciaMandante.id)
         .subscribe((respuesta) => {
           //console.log(respuesta);
           this.listaUsuarios = respuesta.body;
@@ -524,7 +524,7 @@ export class DetalleLibroComponent implements OnInit {
           this.muestraListaUsuarios = true;
         });
       this.dependenciaService
-        .buscaUsuariosDependencia(this.contrato.idDependenciaContratista)
+        .buscaUsuariosDependencia2(this.contrato.idDependenciaContratista)
         .subscribe((respuesta) => {
           //console.log(respuesta);
           this.listaUsuariosContratista = respuesta.body;

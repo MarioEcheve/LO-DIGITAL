@@ -369,7 +369,7 @@
                   <tbody>
                     <tr *ngFor="let row of listaUsuarioMandante">
                       <td scope="row" style="width: 15px;"><i *ngIf="row.adminActivo === true" class=" material-icons iconoAdminAcual" style="font-size: 16px; color: darkorange;">settings</i></td>
-                      <td scope="row" style="width: auto;">{{ row.usuarioDependencia.rut }}</td>
+                      <td scope="row" style="width: auto;">{{ row.usuarioDependencia?.rut }}</td>
                       <td>{{ row.usuarioDependencia.usuario?.firstName }} {{ row.usuarioDependencia.usuario.lastName }}</td>
                       <td>{{ row.cargoFuncion }}</td>
                       <td>{{ row.perfilUsuarioLibro.nombre }}</td>
@@ -437,7 +437,7 @@
                   <tbody>
                     <tr *ngFor="let row of listaUsuarioContratistaAgregados">
                       <td scope="row" style="width: 15px;"><i *ngIf="row.adminActivo === true" class=" material-icons iconoAdminAcual" style="font-size: 16px; color: darkorange;">settings</i></td>
-                      <td scope="row" style="width: auto;">{{ row.usuarioDependencia.rut }}</td>
+                      <td scope="row" style="width: auto;">{{ row.usuarioDependencia?.rut }}</td>
                       <td>{{ row.usuarioDependencia.usuario.firstName }} {{ row.usuarioDependencia.usuario.lastName }}</td>
                       <td>{{ row.cargoFuncion }}</td>
                       <td>{{ row.perfilUsuarioLibro.nombre }}</td>

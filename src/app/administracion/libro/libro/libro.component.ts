@@ -213,20 +213,18 @@ export class LibroComponent implements OnInit {
       this.muestraListaUsuarios = true;
       // obtener los usuarios para el mandante y el contratista
       // mandante
-      /*
       this.dependenciaService
-        .buscaUsuariosDependencia(this.contrato.dependenciaMandante.id)
+        .buscaUsuariosDependencia2(this.contrato.dependenciaMandante.id)
         .subscribe((respuesta) => {
           this.listaUsuarios = respuesta.body;
           this.muestraListaUsuarios = true;
         });
       this.dependenciaService
-        .buscaUsuariosDependencia(this.contrato.idDependenciaContratista)
+        .buscaUsuariosDependencia2(this.contrato.idDependenciaContratista)
         .subscribe((respuesta) => {
           this.listaUsuariosContratista = respuesta.body;
           this.muestraListaUsuarios = true;
         });
-        */
     });
   }
   modalCrearUsuario() {
@@ -244,7 +242,7 @@ export class LibroComponent implements OnInit {
     }
     let listaUsuariosFiltrados = this.listaUsuarios.filter((usuarios:any)=>{
       let res = this.usuariosAgregados.find((usuarioMandante)=>{
-         return usuarioMandante.usuarioDependencia.id == usuarios.id_usuario_dependencia;
+         return usuarioMandante.usuarioDependencia.id == usuarios.id;
          });
         return res == undefined;
       });
@@ -369,7 +367,7 @@ export class LibroComponent implements OnInit {
     }
     let listaUsuariosFiltrados = this.listaUsuariosContratista.filter((usuarios:any)=>{
       let res = this.usuariosAgregadosContratista.find((usuarioMandante)=>{
-         return usuarioMandante.usuarioDependencia.id == usuarios.id_usuario_dependencia;
+         return usuarioMandante.usuarioDependencia.id == usuarios.id;
          });
         return res == undefined;
       });

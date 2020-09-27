@@ -408,14 +408,6 @@ export class FolioDetalleComponent implements OnInit {
     this.Folio.idUsuarioCreador = this.usuario.id;
     this.Folio.idReceptor = this.folioForm.controls["receptor"].value;
     this.Folio.archivos = [];
-    /*
-    blobToBase64(blob).then((res: string) => {
-      var documento = res.split(",");
-      var aux = documento[0].split("data:");
-      var tipoDocumento = aux[1].split(";");
-      //this.folio.pdfFirmado = documento[1];
-      //this.folio.pdfFirmadoContentType = tipoDocumento[0];
-    });*/
     this.Folio.estadoFolio = false;
     if (this.folioForm.controls["fechaRequeridaDatepicker"].value !== "") {
       let fechaRequerida = moment(
@@ -472,7 +464,6 @@ export class FolioDetalleComponent implements OnInit {
                 this.folioService.update(respuesta.body).subscribe();
               });
           }
-
           setTimeout(() => {
             this.buscarFolio(respuesta.body.id);
             this.showNotificationSuccess("top", "right");
