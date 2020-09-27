@@ -1224,13 +1224,12 @@ function  getBase64Image (img ){
   return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
 function stripHtml(html) {
-  console.log(html);
   // Create a new div element
   var temporalDivElement = document.createElement("div");
   // Set the HTML content with the providen
   temporalDivElement.innerHTML = html;
   // Retrieve the text property of the element (cross-browser support)*/
-  return html || "";
+  return temporalDivElement.textContent || temporalDivElement.innerText || "";
 }
 const blobToBase64 = (blob) => {
   const reader = new FileReader();
