@@ -51,7 +51,7 @@ export class FolioFirmadoComponent implements OnInit {
     spellcheck: true,
     height: "15rem",
     minHeight: "5rem",
-    placeholder: "Enter text here...",
+    placeholder: "",
     translate: "no",
     defaultParagraphSeparator: "p",
     defaultFontName: "Arial",
@@ -330,7 +330,7 @@ export class FolioFirmadoComponent implements OnInit {
     this.dialog.open(InformarPdfComponent, {
       width: "500px",
       height: "310px",
-      
+      data : { folio : this.Folio}
     })
   }
   descargarPdf(){

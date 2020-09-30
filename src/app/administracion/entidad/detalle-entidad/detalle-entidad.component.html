@@ -334,9 +334,9 @@
                               <tr *ngFor="let row of listaContratosEntidad">
                                 <!-- <td>{{ row.codigo }}</td> -->
                                 <td>{{ row.nombre }} | Cod:{{ row.codigo }}</td>
-                                <td>{{ row.fechaInicio | date: "dd-MM-yyyy HH:mm" }}</td>
-                                <td>{{ row.tipoContrato.nombre }}</td>
-                                <td>{{ row.modalidad.nombre }}</td>
+                                <td>{{ row.direccion }}</td>
+                                 <td>{{ row.tipoContrato?.nombre }}</td>
+                                <td>{{ row.modalidad?.nombre }}</td>
                                 <td>
                                   <span *ngIf="row.estadoServicio.nombre === 'Pendiente'" class="badge badge-warning">{{ row.estadoServicio.nombre }}</span>
                                   <span *ngIf="row.estadoServicio.nombre !== 'Pendiente'" class="badge badge-success">{{ row.estadoServicio.nombre }}</span>

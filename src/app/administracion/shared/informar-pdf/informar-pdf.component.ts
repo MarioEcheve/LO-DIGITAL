@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FolioService } from '../../services/folio.service';
 import { Email } from '../../TO/email';
+import { Folio } from '../../TO/folio.model';
 declare var $: any;
 export class RegularExpressionConstant {
   static EMAIL: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -14,16 +15,18 @@ export class RegularExpressionConstant {
   styleUrls: ['./informar-pdf.component.css']
 })
 export class InformarPdfComponent implements OnInit {
-
+  archivoEmail: any = [];
   formInformar : FormGroup;
   constructor(
     public dialModalRef: MatDialogRef<InformarPdfComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public fb : FormBuilder,
     private folioService : FolioService
   ) { }
 
   ngOnInit(): void {
     this.inicializarForm();
+    this.obtenerArchivoEmail(this.data.folio);
   }
   cerrar(){
     this.dialModalRef.close();
@@ -42,6 +45,7 @@ export class InformarPdfComponent implements OnInit {
     email.content = this.formInformar.controls['mensaje'].value;
     email.isHtml = false;
     email.isMultipart = false;
+    email.attachments = this.archivoEmail;
     this.folioService.informarEmailFolioFirmado(email).subscribe(
       respuesta=>{
         console.log(respuesta.body);
@@ -89,4 +93,35 @@ export class InformarPdfComponent implements OnInit {
       }
     );
   }
+  obtenerArchivoEmail(folio : Folio){
+   
+    const blob = b64toBlob(folio.pdfFirmado, folio.pdfFirmadoContentType);
+    console.log(folio.pdfFirmadoContentType);
+    console.log(folio.pdfFirmado);
+    let path = {
+      path : `data:${folio.pdfFirmadoContentType};base64,${folio.pdfFirmado}`
+    }
+
+
+    this.archivoEmail = [...this.archivoEmail, path];
+  }
+}
+const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+  const byteCharacters = atob(b64Data);
+  const byteArrays = [];
+
+  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+    const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+
+  const blob = new Blob(byteArrays, {type: contentType});
+  return blob;
 }

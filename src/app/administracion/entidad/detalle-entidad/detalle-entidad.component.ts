@@ -197,7 +197,10 @@ export class DetalleEntidadComponent implements OnInit {
                     contrato.nombre =  element2.nombre;
                     contrato.codigo = element2.codigo;
                     contrato.descripcion = element2.descripcion;
+                    contrato.direccion = element2.direccion;
                     contrato.estadoServicio = { id : element2.id_estado_servicio , nombre : element2.estado_servicio };
+                    contrato.tipoContrato = {id : element2.id_tipo_contrato, nombre : element2.tipo_contrato}
+                    contrato.modalidad = {id : element2.id_modalidad, nombre : element2.modalidad}
                     listaContratos = [...listaContratos, contrato];
                   })
                 }
@@ -210,6 +213,7 @@ export class DetalleEntidadComponent implements OnInit {
         }
       );
     }).then((listaContratos : [])=>{
+      console.log(this.listaContratosEntidad);
       this.listaContratosEntidad = listaContratos;
     })
   }

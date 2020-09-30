@@ -4,4 +4,5 @@ export class Email {
     content?: string;
     isMultipart?: boolean;;
     isHtml?: boolean;
+    attachments: []
 }
