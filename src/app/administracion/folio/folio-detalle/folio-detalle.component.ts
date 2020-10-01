@@ -917,8 +917,8 @@ export class FolioDetalleComponent implements OnInit {
         },  
         {  
           text: `${archivosReferenciaText}` ,  
-          bold: true,
-          fontSize: 9, 
+          bold: false,
+          fontSize: 8, 
           margin: [0, 5, 0, 0]  
         },  
         {  
