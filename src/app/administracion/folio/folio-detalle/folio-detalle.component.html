@@ -357,7 +357,8 @@
                 </button> 
                 <br>
                 <div>
-                  <table class="table">
+                  <!--
+                                      <table class="table">
                     <thead>
                         <tr>
                             <th width="50%">Archivo</th>
@@ -375,6 +376,17 @@
                       </tr>
                     </tbody>
                   </table>
+                  -->
+                  <label for="singleFile">Upload file</label>
+                  <input id="singleFile" type="file" [fileUploadInputFor]= "fileUploadQueue"/>
+                  <br>
+                  
+                  <mat-file-upload-queue #fileUploadQueue
+                      [fileAlias]="'file'"
+                      [httpUrl]="'http://localhost:8180/jax-rs-jersey-application-sample'">
+                  
+                      <mat-file-upload [file]="file" [id]="i" *ngFor="let file of fileUploadQueue.files; let i = index"></mat-file-upload>
+                  </mat-file-upload-queue>
                   <hr>
                   <button mat-raised-button type="submit" class="btn btn-default" (click)="eliminarFolio()" *ngxPermissionsOnly="['administrador','asistente','superior', 'administrador/s']">
                     <!-- <i class="material-icons">delete</i> -->

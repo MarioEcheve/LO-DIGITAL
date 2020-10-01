@@ -349,7 +349,7 @@
           <mat-tab label="Usuarios Mandante">
             <div class="container-fluid mt-3">
               <div class="pull-right">
-                <button mat-raised-button type="submit" class="btn btn-primary" (click)="modalCrearUsuario()">                  
+                <button *ngIf="showNuevoUsuarioMandante" mat-raised-button type="submit" class="btn btn-primary" (click)="modalCrearUsuario()">                  
                   Nuevo Usuario
                 </button>
               </div>
@@ -417,7 +417,7 @@
           <mat-tab label="Usuarios Contratista">
             <div class="container-fluid mt-3">
               <div class="pull-right">
-                <button mat-raised-button type="submit" class="btn btn-primary " (click)="modalCrearUsuarioContratista()">
+                <button *ngIf="showNuevoUsuarioContratista" mat-raised-button type="submit" class="btn btn-primary " (click)="modalCrearUsuarioContratista()">
                   Nuevo Usuario
                 </button>
               </div>

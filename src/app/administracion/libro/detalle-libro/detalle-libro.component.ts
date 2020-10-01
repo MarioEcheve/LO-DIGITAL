@@ -20,6 +20,8 @@ import { User } from "src/app/core/user/user.model";
 import { UsuarioLibroPerfilService } from "../../services/usuario-libro-perfil.service";
 import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 import { UsuarioDependenciaService } from "../../services/usuario-dependencia.service";
+import { UsuarioDependencia } from "../../TO/usuario-dependencia.model";
+import { NgxPermissionsService } from "ngx-permissions";
 declare const $: any;
 declare interface TableData {
   headerRow: string[];
@@ -52,6 +54,9 @@ export class DetalleLibroComponent implements OnInit {
   usuarioEliminadosSersionMandante = [];
   usuarioEliminadosContratista = [];
   editar = false;
+  usuario :  UsuarioDependencia;
+  showNuevoUsuarioMandante = true ;
+  showNuevoUsuarioContratista = true ;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -67,7 +72,8 @@ export class DetalleLibroComponent implements OnInit {
     private dependenciaService : DependenciaService,
     private perfilUsuarioLibro : UsuarioLibroPerfilService,
     private usuarioDependenciaService: UsuarioDependenciaService,
-    private folioService : FolioService
+    private folioService : FolioService,
+    private permissionsService : NgxPermissionsService,
   ) {}
 
   ngOnInit(): void {
@@ -164,9 +170,15 @@ export class DetalleLibroComponent implements OnInit {
         });
       }
     );
+  
+    let usuarioActual = JSON.parse(localStorage.getItem("user"));
+
   }
   abrirLibro() {
     let usuarioActual = JSON.parse(localStorage.getItem("user"));
+
+    
+
     this.router.navigate([
       "/folio/folio-borrador/",
       this.libro.id,
@@ -176,7 +188,7 @@ export class DetalleLibroComponent implements OnInit {
   obtenerLibro(idLibro) {
     this.libroService.find(idLibro).subscribe((respuesta) => {
       this.libro = respuesta.body;
-
+      this.usuarioLogeadoLibro();
       this.obtenerContrato(this.libro.contrato.id);
 
       this.folio.buscarFolioPorLibro(this.libro.id).subscribe((respuesta) => {
@@ -759,5 +771,21 @@ export class DetalleLibroComponent implements OnInit {
   }
   routeResumenFolio(){
     this.router.navigate(['/folio/folio', this.libro.contrato.id,this.libro.id])
+  }
+  usuarioLogeadoLibro(){
+    let usuarioActual =JSON.parse(localStorage.getItem("user"));
+    this.usuarioLibroService.query().subscribe(
+      usuarios=>{
+        let usuariosLibros = usuarios.body.filter(usuario => usuario.libro.id === this.libro.id);
+        let usuariologeadoLibro = usuariosLibros.filter(usuarios=> usuarios.usuarioDependencia.usuario.id === usuarioActual.id)
+        if(usuariologeadoLibro[0].usuarioDependencia.dependencia.id === this.libro.contrato.dependenciaMandante.id){
+          this.showNuevoUsuarioMandante = true;
+          this.showNuevoUsuarioContratista = false;
+        }else{
+          this.showNuevoUsuarioMandante = false;
+          this.showNuevoUsuarioContratista = true;
+        }
+      }
+    );
   }
 }
