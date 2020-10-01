@@ -143,6 +143,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               }
             }else{
               this.folio.asunto = this.data.folio.asunto;
+              this.folio.poseeFolioReferencia = false;
               this.folio.poseeFolioReferencia = this.data.folio.poseeFolioReferencia;
               this.folioService.update(this.folio).subscribe();
             }

@@ -178,8 +178,8 @@
                   <ng-container matColumnDef="Acción">
                     <th mat-header-cell style="text-align: right;width: 90px;" *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let element"> 
-                      <i class="material-icons" style="font-size: 18px;color: rgb(228, 228, 228); margin-top: 10px;" *ngIf="element.poseeFolioReferencia === false">push_pin</i>
-                      <i class="material-icons" style="font-size: 18px;color: rgb(255, 174, 0); margin-top: 10px;" *ngIf="element.poseeFolioReferencia === true">push_pin</i>
+                      <i class="material-icons" style="font-size: 18px;color: rgb(228, 228, 228); margin-top: 10px;" *ngIf="element.poseeFolioReferencia === true">push_pin</i>
+                      <i class="material-icons" style="font-size: 18px;color: rgb(255, 174, 0); margin-top: 10px;" *ngIf="element.poseeFolioReferencia === false">push_pin</i>
                       <i class="material-icons mr-1" style="font-size: 18px;color: rgb(228, 228, 228); margin-top: 10px;">attach_file</i>
                       <button
                           mat-raised-button
@@ -215,8 +215,8 @@
                             <div class="example-element-weight"> {{element.fechaCreacion | date: "dd-MM-yyyy HH:mm" }} </div>
                           </div>
                           <div class="example-element-description">
-                            {{element.anotacion}}
-                            <span class="example-element-description-attribution"> -- Wikipedia </span>
+                           <!-- {{element.anotacion}} --> 
+                            <span class="example-element-description-attribution">  </span>
                           </div>
                         </div>
                       </td>

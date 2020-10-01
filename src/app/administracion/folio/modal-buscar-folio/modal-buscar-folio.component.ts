@@ -86,16 +86,6 @@ export class ModalBuscarFolioComponent implements OnInit,AfterViewInit {
       }else{
         valor2 = respuesta.body.filter( folio => folio.idUsuarioFirma !== null);
       }
-      
-      valor2.forEach(element=>{
-        this.usuarioLibroService
-        .find(element.idUsuarioFirma)
-        .subscribe((respuesta) => {
-          element.emisor = respuesta.body.usuarioDependencia.usuario.firstName +
-          " " + respuesta.body.usuarioDependencia.usuario.lastName;
-        });
-      });
-
       if(this.folios.length > 0){
         valor2.forEach(valor2=>{
           valor2.existTableSearchFolio = false;
