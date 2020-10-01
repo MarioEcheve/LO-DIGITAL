@@ -694,7 +694,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
     });
   }
   filtraFolios(){
-
+    this.folios = this.foliosOrigen;
     let valorBusqueda = this.formFiltrosGroup.controls['inputBusqueda'].value;
     let criterioBusqueda = this.formFiltrosGroup.controls['criterioBusqueda'].value;
     if(criterioBusqueda === 0){
@@ -779,8 +779,8 @@ export class FolioComponent implements OnInit, AfterViewInit {
     }
     if(criterioBusqueda === 4){
       this.formFiltrosGroup.controls['inputBusqueda'].setValue('');
+      this.formFiltrosGroup.clearValidators();
       this.formFiltrosGroup.controls['inputBusqueda'].setValidators([Validators.maxLength(40)]);
-      this.formFiltrosGroup.updateValueAndValidity();
       this.type="text";
     }
     console.log(this.formFiltrosGroup.get('inputBusqueda'));
