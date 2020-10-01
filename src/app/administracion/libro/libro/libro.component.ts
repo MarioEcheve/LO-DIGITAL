@@ -48,6 +48,8 @@ export class LibroComponent implements OnInit {
   editar = false;
   listaUsuarioMandante = [];
   listaUsuarioContratista = [];
+  muestraTabUsuarioMandante = false;
+  muestraTabUsuarioContratista = false;
   constructor(
     private fb: FormBuilder,
     private tipoLibroService: TipoLibroService,
@@ -63,7 +65,9 @@ export class LibroComponent implements OnInit {
     private usuarioLibroService: UsuarioLibroService,
     private router: Router,
     private estadoLibroService: EstadoLibroService
-  ) {}
+  ) {
+   
+  }
 
   ngOnInit(): void {
     this.tableData2 = {
@@ -121,6 +125,7 @@ export class LibroComponent implements OnInit {
     this.obtenerTipoLibros(this.idContrato);
     this.obtenerPerfilUsuariolibro();
     this.obtenerEstadoLibro();
+    this.usuarioDependenciaLogeado();
   }
   desabilitaElementosFormGroup() {
     this.libroInfoGeneralFormGroup.controls["fechaCreacion"].disable();
@@ -678,5 +683,21 @@ export class LibroComponent implements OnInit {
         existe : existe
       },
     });
+  }
+  usuarioDependenciaLogeado(){
+    let usuarioActual = JSON.parse(localStorage.getItem("user"));
+
+    this.usuarioDependenciaService.findUserByUsuarioDependencia(usuarioActual.id).subscribe(
+      response => {
+        console.log(response.body);
+        if(this.contrato.dependenciaMandante.id === response.body[0].dependencia.id){
+            this.muestraTabUsuarioMandante = true;
+            this.muestraTabUsuarioContratista = false;
+        }else{
+          this.muestraTabUsuarioMandante = false;
+          this.muestraTabUsuarioContratista = true;
+        }
+      } 
+    );
   }
 }
