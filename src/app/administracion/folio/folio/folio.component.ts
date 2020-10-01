@@ -242,19 +242,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
         });
        
       });
-    /*
-    this.tableData1 = {
-      headerRow: [
-        "# Folio",
-        "Emisor",
-        "Tipo Folio - Asunto",
-        "Solicita Respuesta",
-        "Fecha",
-        "Acción",
-      ],
-      dataRows: [],
-    };
-    */
   }
   async ngAfterViewInit(folios?:any){
     await new Promise((resolve,reject)=>{
@@ -601,7 +588,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
             }
             this.dataSource = new MatTableDataSource(this.folios);
             this.dataSource.paginator = this.paginator;
-          }, 600);
+          }, 100);
         }
       );
       this.typesOfActions[index].isClicked = true;
@@ -636,7 +623,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
         this.dataSource = new MatTableDataSource(this.folios);
         this.dataSource.paginator = this.paginator;
         this.marcaTipoFiltroSideBar === 7;
-      }, 300);
+      }, 100);
       
       break;
    }
