@@ -278,7 +278,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
           }
         );
         resolve(this.folios);
-      },1600);
+      },100);
     }).then((folios: any)=>{
       this.getContadorFolioSideBar();
       console.log(folios);
