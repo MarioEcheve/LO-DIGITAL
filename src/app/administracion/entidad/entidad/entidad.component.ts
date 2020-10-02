@@ -18,12 +18,20 @@ export class EntidadComponent implements OnInit {
   }
   listaEntidadesUsuario(){
     let usuario = JSON.parse(localStorage.getItem("user"));
+    this.usuarioDependenciaService.query().subscribe(
+      usuarioDependencia => {
+        let filtro = usuarioDependencia.body.filter(usuarioDependencia => usuarioDependencia.usuario.id === usuario.id);
+        this.listaEntidades =filtro
+        console.log(this.listaEntidades);
+      }
+    );
+    /*
     this.usuarioDependenciaService.findUserByUsuarioDependencia(usuario.id).subscribe(
       usuarioDependencia=>{
         this.listaEntidades = [...this.listaEntidades, usuarioDependencia.body[0]];
         console.log(this.listaEntidades);
       }
-    );
+    );*/
   }
   routerEntidad(entidad : any){
 
