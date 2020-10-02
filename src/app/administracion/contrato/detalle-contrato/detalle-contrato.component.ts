@@ -240,6 +240,10 @@ export class DetalleContratoComponent
     this.infoGeneralForm.controls["direccionDependenciaContratista"].disable();
     this.infoGeneralForm.controls["comunaContratista"].disable();
     this.infoGeneralForm.controls["regionContratista"].disable();
+    this.infoGeneralForm.controls["region"].disable();
+    this.infoGeneralForm.controls["tipoContrato"].disable();
+    this.infoGeneralForm.controls["comuna"].disable();
+    this.infoGeneralForm.controls["modalidad"].disable();
 
     this.permisosForm = this.formBuilder.group({
       creaLibroAdminMan: [false],
@@ -487,8 +491,6 @@ export class DetalleContratoComponent
             this.libroService.getMisLibrosContratoDetalle(usuario.id, this.contrato.id).subscribe(
               libros=>{
                 this.libros = libros.body;
-                console.log(this.libros);
-                /*
                 this.libros.forEach(element=>{
                   this.usuarioLibroService
                   .buscarlibroPorContrato(element.id, usuario.id).subscribe(
@@ -512,7 +514,6 @@ export class DetalleContratoComponent
                     }
                   );
                 });
-                */
               }
             );
           }else{

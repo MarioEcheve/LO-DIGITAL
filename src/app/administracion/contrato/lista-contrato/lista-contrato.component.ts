@@ -56,8 +56,21 @@ export class ListaContratoComponent implements OnInit {
     let usuarioDependen;
     this.usuarioDependenciaService.findUserByUsuarioDependencia(usuario.id).subscribe(
       usuarioDependencia=>{
-        console.log(usuarioDependencia.body);
         usuarioDependen = usuarioDependencia.body;
+        usuarioDependen.forEach(element => {
+          this.contratoService.buscaContratoPorDependencia(element.dependencia.id).subscribe(
+            respuesta=>{
+              console.log(respuesta.body);
+              this.listaDeContratos =  respuesta.body;
+            }
+          );
+        }); 
+        /*
+        this.contratoService.buscaContratoPorDependencia(usuarioDependen.body[0].dependencia.id).subscribe(
+          respuesta=>{
+            console.log(respuesta.body);
+          }
+        );
         /*
         if(usuarioDependencia.body[0]?.perfilUsuarioDependencia?.nombre.toLowerCase() === "super usuario"){
           administrador = true;
@@ -67,54 +80,7 @@ export class ListaContratoComponent implements OnInit {
           usuarioDependen = usuarioDependencia.body[0];
         }*/
       }
-    );
-    setTimeout(() => {
-      if(administrador === true){
-        let usuario = JSON.parse(localStorage.getItem("user"));
-        console.log(usuarioDependen.dependencia.id);
-        usuarioDependen.forEach(element => {
-          this.usuarioDependenciaService.findContratosByDependencia(element.usuarioDependencia.dependencia.id).subscribe(
-            usuarioDependencia=>{
-              console.log(usuarioDependencia.body);
-              //this.listaDeContratos = usuarioDependencia.body;
-            });
-        });
-        /*
-        this.usuarioDependenciaService.findContratosByDependencia(usuarioDependen.dependencia.id).subscribe(
-          usuarioDependencia=>{
-            console.log(usuarioDependencia.body);
-            this.listaDeContratos = usuarioDependencia.body;
-          });
-          */
-      }else{
-        console.log(usuarioDependen);
-        usuarioDependen.forEach(element => {
-          this.usuarioDependenciaService.findContratosByUsuarioNormal(element.usuario.id).subscribe((respuesta) => {
-            this.listaDeContratos = [...this.listaDeContratos,respuesta.body[0]];
-            console.log(this.listaDeContratos);
-          });
-        });
-        /*
-        this.usuarioDependenciaService.findContratosByDependencia().subscribe(
-          usuarioDependencia=>{
-            console.log(usuarioDependencia.body);
-            let filtro = usuarioDependencia.body;
-            filtro.forEach(element =>{
-              this.usuarioDependenciaService.findContratosByUsuarioNormal(element.usuario.id).subscribe((respuesta) => {
-                console.log(respuesta.body);
-                this.listaDeContratos = [...this.listaDeContratos,respuesta.body]
-              });
-            });
-          });
-        /*
-        this.usuarioDependenciaService.findContratosByUsuarioNormal(usuario.id).subscribe((respuesta) => {
-          console.log(respuesta.body);
-          this.listaDeContratos = respuesta.body;
-        });
-        */
-      }
-    }, 800);
-    
+    );    
   }
   editarContrato(idContrato) {
     this.router.navigate(["/contrato/detalle-contrato/", idContrato]);

@@ -16,6 +16,7 @@ type EntityArrayResponseType = HttpResponse<IContrato[]>;
 export class ContratoService {
   SERVER_API_URL = environment.apiUrl;
   public resourceUrl = this.SERVER_API_URL + "api/contratoes";
+  public resourceUrlBuscaContratoPorDependencia = this.SERVER_API_URL + "api/buscaContratoPorDependencia";
 
   constructor(protected http: HttpClient) {}
 
@@ -58,7 +59,17 @@ export class ContratoService {
       observe: "response",
     });
   }
-
+  buscaContratoPorDependencia(idDependencia: number): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<IContrato[]>(this.resourceUrlBuscaContratoPorDependencia + '/' + idDependencia, {
+        observe: "response",
+      })
+      .pipe(
+        map((res: EntityArrayResponseType) =>
+          this.convertDateArrayFromServer(res)
+        )
+      );
+  }
   protected convertDateFromClient(contrato: IContrato): IContrato {
     const copy: IContrato = Object.assign({}, contrato, {
       fechaInicioServicio:

@@ -184,10 +184,9 @@ export class LibroComponent implements OnInit {
       resultado = tipoLibro.body;
       this.libroService
         .buscarlibroPorContrato(idContrado)
-        .subscribe((contrato) => {
-          if (contrato.body.length <= 0) {
+        .subscribe((libro) => {
+          if (libro.body.length <= 0) {
              resultado = resultado.filter((tipo) => tipo.descripcion.toLowerCase() === "maestro");
-
           } else {
             resultado = resultado.filter((tipo) => tipo.descripcion.toLowerCase() === "auxiliar");
           }
@@ -219,13 +218,13 @@ export class LibroComponent implements OnInit {
       // obtener los usuarios para el mandante y el contratista
       // mandante
       this.dependenciaService
-        .buscaUsuariosDependencia2(this.contrato.dependenciaMandante.id)
+        .buscaUsuariosDependencia(this.contrato.dependenciaMandante.id)
         .subscribe((respuesta) => {
           this.listaUsuarios = respuesta.body;
           this.muestraListaUsuarios = true;
         });
       this.dependenciaService
-        .buscaUsuariosDependencia2(this.contrato.idDependenciaContratista)
+        .buscaUsuariosDependencia(this.contrato.idDependenciaContratista)
         .subscribe((respuesta) => {
           this.listaUsuariosContratista = respuesta.body;
           this.muestraListaUsuarios = true;

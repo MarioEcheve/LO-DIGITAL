@@ -37,17 +37,17 @@
                 <!-- <td class="text-center">{{ row.codigo }}</td> -->
                 <td>{{ row.nombre }} | Cod:{{ row.codigo }}</td>
                 <td>{{ row.direccion }}</td>
-                <td>{{ row.tipo_contrato }}</td>
-                <td class="text-right">{{ row.modalidad }}</td>
+                <td>{{ row.tipoContrato.nombre  }}</td>
+                <td class="text-right">{{ row.modalidad.nombre  }}</td>
                 <td class="text-right">
                     <span
-                    *ngIf="row.estado_servicio=== 'Pendiente'"
+                    *ngIf="row.estadoServicio.nombre=== 'Pendiente'"
                     class="badge badge-primary"
                     style="background-color: orange;"
-                    >{{ row.estado_servicio }}</span
+                    >{{ row.estadoServicio.nombre }}</span
                   >
                   </td>
-                <td class="text-right">{{ row.estado_servicio }}</td>
+                <td class="text-right">{{ row.estadoServicio.nombre }}</td>
                 <td class="td-actions text-right">
                   <!--
                     <button
