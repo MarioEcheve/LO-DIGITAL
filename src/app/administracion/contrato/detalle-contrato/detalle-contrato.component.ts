@@ -487,6 +487,8 @@ export class DetalleContratoComponent
             this.libroService.getMisLibrosContratoDetalle(usuario.id, this.contrato.id).subscribe(
               libros=>{
                 this.libros = libros.body;
+                console.log(this.libros);
+                /*
                 this.libros.forEach(element=>{
                   this.usuarioLibroService
                   .buscarlibroPorContrato(element.id, usuario.id).subscribe(
@@ -510,6 +512,7 @@ export class DetalleContratoComponent
                     }
                   );
                 });
+                */
               }
             );
           }else{
