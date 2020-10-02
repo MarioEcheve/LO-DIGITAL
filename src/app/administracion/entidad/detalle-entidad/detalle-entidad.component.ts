@@ -74,6 +74,8 @@ export class DetalleEntidadComponent implements OnInit {
       dependenciaNombre : [''],
       descripcionDependencia : [''],
       direccionDependencia : [''],
+      regionDependencia : [''],
+      comunaDependencia : [''],
       nombreContactoComercial : [''],
       cargoContactoComercial : [''],
       telefonoPrincipalContactoComercial : [''],
@@ -102,6 +104,8 @@ export class DetalleEntidadComponent implements OnInit {
     this.formEntidad.controls['telefonoPrincipalContactoTecnico'].disable();
     this.formEntidad.controls['telefonoSecundarioContactoTecnico'].disable();
     this.formEntidad.controls['emailContactoTecnico'].disable();
+    this.formEntidad.controls['regionDependencia'].disable();
+    this.formEntidad.controls['comunaDependencia'].disable();
 
   }
   setValueFormEntidad(entidad : Entidad){
@@ -114,9 +118,13 @@ export class DetalleEntidadComponent implements OnInit {
   }
   setValueFormDependencia(dependencia : Dependencia){
     this.formEntidad.patchValue({
-      dependenciaNombre : [dependencia.nombre],
-      descripcionDependencia : [dependencia.descripcion],
-      direccionDependencia : [dependencia.direccion],
+      dependenciaNombre : dependencia.nombre,
+      descripcionDependencia : dependencia.descripcion,
+      direccionDependencia : dependencia.direccion,
+      regionDependencia :  dependencia.region.nombre,
+      comunaDependencia :  dependencia.comuna.nombre
+
+
     })
   }
   setValueContactoComercial(dependencia : Dependencia){

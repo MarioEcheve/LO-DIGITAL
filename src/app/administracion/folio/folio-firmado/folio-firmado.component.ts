@@ -49,7 +49,7 @@ export class FolioFirmadoComponent implements OnInit {
   editorConfig: AngularEditorConfig = {
     editable: false,
     spellcheck: true,
-    height: "15rem",
+    height: "auto",
     minHeight: "5rem",
     placeholder: "",
     translate: "no",
