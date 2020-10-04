@@ -24,7 +24,7 @@ import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { FolioReferenciaService } from "../../services/folio-referencia.service";
 import { FolioReferencia } from "../../TO/folio-referencia.model";
-import { element } from "protractor";
+import { element, promise } from "protractor";
 import { NgxPermissionsService } from "ngx-permissions";
 import { CambioAdministradorComponent } from "../../shared/cambio-administrador/cambio-administrador.component";
 import htmlToPdfmake from "html-to-pdfmake";
@@ -138,7 +138,7 @@ export class FolioDetalleComponent implements OnInit {
   folioForm: FormGroup;
   // implementacion upload archivos 
   @ViewChild("fileUpload", {static: false}) fileUpload: ElementRef;files  = [];  
-
+  archivosFolioGCP = [];
   constructor(
     private route: ActivatedRoute,
     private libroService: LibroService,
@@ -1160,11 +1160,14 @@ export class FolioDetalleComponent implements OnInit {
       var documento = fileBase64.split(",");
       var aux = documento[0].split("data:");
       var tipoDocumento = aux[1].split(";");
-      archivo.archivo = documento[1];
-      archivo.archivoContentType = tipoDocumento[0];
+      archivo.nombre = event.target.files[i].name;
       archivo.descripcion = event.target.files[i].name;
       archivo.size = formatBytes(event.target.files[i].size);
-      this.archivosFolio= event.target.files;
+      archivo.archivoContentType  ="";
+      archivo.archivo ="";
+      this.archivosFolio=  [... this.archivosFolioGCP, archivo];
+      this.archivosFolioGCP = event.target.files;
+     
       console.log(event.target.files);
 
     }
@@ -1192,9 +1195,9 @@ export class FolioDetalleComponent implements OnInit {
   }
   eliminarArchivo(file) {
     console.log(file);
-    if (file.id !== undefined) {
-      //let index = this.archivosFolio.indexOf(file);
-      //this.archivosFolio.splice(index, 1);
+    if (file.id === undefined) {
+      let index = this.archivosFolio.indexOf(file);
+      this.archivosFolio.splice(index, 1);
     } else {
       Swal.fire({
         title: "Esta Seguro ?",
@@ -1205,9 +1208,8 @@ export class FolioDetalleComponent implements OnInit {
         cancelButtonText: "No, Mantener Archivo",
       }).then((result) => {
         if (result.value) {
-            //let index = this.archivosFolio.indexOf(file);
-            //this.archivosFolio.splice(index, 1);
-            /*
+            let index = this.archivosFolio.indexOf(file);
+            this.archivosFolio.splice(index, 1);
             this.archivoService.delete(file.id).subscribe(
             (response) => {
               Swal.fire(
@@ -1219,12 +1221,13 @@ export class FolioDetalleComponent implements OnInit {
             (error) => {
               Swal.fire("Error!", "El archivo no pudo ser borrado.", "warning");
             }
-          );*/
+          );
+            /*
             this.archivoService.deleteGCP('path  1 ').subscribe(
               archivo=>{
                 console.log(archivo);
               }
-            );
+            );*/
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           Swal.fire("Cancelado", "Cancelado", "error");
         }
@@ -1233,51 +1236,38 @@ export class FolioDetalleComponent implements OnInit {
   }
 
 
-  SubirArchivo(file){
-    let timerInterval
-    Swal.fire({
-      title: 'Subiendo Archivo',
-      html: 'Esto puede tardar unos segundos...',
-      timer: 8000,
-      timerProgressBar: true,
-      onBeforeOpen: () => {
-        Swal.showLoading();
-        if (this.archivosFolio.length > 0) {
-          let formData = new FormData();
-          for (var i = 0; i < this.archivosFolio.length; i++) {
-            formData.append("file", this.archivosFolio[i], this.archivosFolio[i].name);
-            this.archivoService.createGCP(formData).subscribe(
-              respuesta  => {
-                /*
-                let index = this.archivosFolio.indexOf(element);
-                this.archivosFolio[index].id = respuesta.body.id;
-                console.log(this.archivosFolio);
-                */
-              },
-              (existe) => {}
-            );
-          }
-        }
-        timerInterval = setInterval(() => {
-          const content = Swal.getContent()
-          if (content) {
-            const b = content.querySelector('b')
-            if (b) {
-              b.textContent = Swal.getTimerLeft()
-            }
-          }
-        }, 100)
-      },
-      onClose: () => {
-        clearInterval(timerInterval);
-        
-        Swal.fire("Creado!", "Folio Firmado Correctamente.", "success");
+  async SubirArchivo(file){
+    
+    if (this.archivosFolioGCP.length > 0) {
+      let formData = new FormData();
+      for (var i = 0; i < this.archivosFolioGCP.length; i++) {
+        formData.append("file", this.archivosFolioGCP[i], this.archivosFolioGCP[i].name);
+        await new Promise((resolve)=>{
+          this.archivoService.createGCP(formData).subscribe(
+            respuesta  => {
+              if(this.archivosFolio.length > 0){
+                this.archivosFolio.forEach(element => {
+                  element.folio = this.Folio;
+                  element.urlArchivo = respuesta.body;
+                  this.archivoService.create(element).subscribe(
+                    archivos=>{
+                      let index = this.archivosFolio.indexOf(element);
+                      this.archivosFolio[index].id = archivos.body.id;
+                    }
+                  );
+                });
+              }
+              /*
+              let index = this.archivosFolio.indexOf(element);
+              this.archivosFolio[index].id = respuesta.body.id;
+              console.log(this.archivosFolio);
+              */
+            },
+            (existe) => {}
+          );
+        });
       }
-    }).then((result) => {
-      /* Read more about handling dismissals below */
-      if (result.dismiss === Swal.DismissReason.timer) {
-      }
-  })
+    }
   }
 }
 

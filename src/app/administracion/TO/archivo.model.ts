@@ -6,6 +6,9 @@ export interface IArchivo {
   archivo?: any;
   descripcion?: string;
   size?: string;
+  nombre?: string;
+  urlArchivo?: string;
+  status?: boolean;
   folio?: IFolio;
 }
 
@@ -16,6 +19,11 @@ export class Archivo implements IArchivo {
     public archivo?: any,
     public descripcion?: string,
     public size?: string,
+    public nombre?: string,
+    public urlArchivo?: string,
+    public status?: boolean,
     public folio?: IFolio
-  ) {}
+  ) {
+    this.status = this.status || false;
+  }
 }

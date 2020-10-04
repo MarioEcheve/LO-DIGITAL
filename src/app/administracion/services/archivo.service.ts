@@ -19,7 +19,7 @@ export class ArchivoService {
   constructor(protected http: HttpClient) {}
 
   create(archivo: any): Observable<EntityResponseType> {
-    return this.http.post<any>(environment.apiUrl, archivo, { observe: 'response' });
+    return this.http.post<any>(this.resourceUrl, archivo, { observe: 'response' });
   }
   createGCP(archivo: any): Observable<any> {
     return this.http.post<any>('http://localhost:8001/save', archivo, { observe: 'response' });
