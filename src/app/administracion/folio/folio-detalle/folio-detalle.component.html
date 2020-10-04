@@ -362,15 +362,19 @@
                         <tr>
                             <th width="50%">Archivo</th>
                             <th ng-show="uploader.isHTML5">Tamaño</th>
+                            <th class="text-right"  width="30%"></th>
                             <th class="text-right">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let file of archivosFolio">
                         <td><strong>{{ file.descripcion }}</strong></td>
-                        <td><strong ng-show="uploader.isHTML5" nowrap>{{file.size}} </strong></td>                        
+                        <td><strong ng-show="uploader.isHTML5" nowrap>{{file.size}} </strong></td>                     
                         <td nowrap class="text-right">                          
                             <i type="button" class="material-icons text-gray" (click)="eliminarArchivo(file)">delete</i>                          
+                        </td>
+                        <td nowrap class="text-right">                          
+                            <i type="button" class="material-icons text-gray" (click)="SubirArchivo()">add</i>                          
                         </td>
                       </tr>
                     </tbody>

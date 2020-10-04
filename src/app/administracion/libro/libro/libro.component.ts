@@ -39,7 +39,7 @@ export class LibroComponent implements OnInit {
   idContrato: any;
   contrato: IContrato;
   muestraListaUsuarios = false;
-  listaUsuarios = [];
+  listaUsuarios :any = [];
   usuarioLibroPerfil: IUsuarioLibro[];
   usuariosAgregados: IUsuarioLibro[] = [];
   listaUsuariosContratista = [];
@@ -185,6 +185,7 @@ export class LibroComponent implements OnInit {
       this.libroService
         .buscarlibroPorContrato(idContrado)
         .subscribe((libro) => {
+          console.log(libro)
           if (libro.body.length <= 0) {
              resultado = resultado.filter((tipo) => tipo.descripcion.toLowerCase() === "maestro");
           } else {
@@ -217,18 +218,35 @@ export class LibroComponent implements OnInit {
       this.muestraListaUsuarios = true;
       // obtener los usuarios para el mandante y el contratista
       // mandante
-      this.dependenciaService
-        .buscaUsuariosDependencia(this.contrato.dependenciaMandante.id)
+
+      this.usuarioDependenciaService.query().subscribe(
+        response => {
+          let filtro1 = response.body.filter(usd => usd.dependencia.id === this.contrato.dependenciaMandante.id);
+          let filtro2 = response.body.filter(usd => usd.dependencia.id === this.contrato.idDependenciaContratista);
+          this.listaUsuarios =filtro1;
+          this.muestraListaUsuarios = true;
+
+          this.listaUsuariosContratista = filtro2;
+          this.muestraListaUsuarios = true;
+
+          console.log(filtro1);
+          console.log(filtro2);
+        }
+      );
+      /*
+      this.usuarioDependenciaService
+        .findUserByUsuarioDependencia2(this.contrato.dependenciaMandante.id)
         .subscribe((respuesta) => {
           this.listaUsuarios = respuesta.body;
           this.muestraListaUsuarios = true;
         });
-      this.dependenciaService
-        .buscaUsuariosDependencia(this.contrato.idDependenciaContratista)
+      this.usuarioDependenciaService
+        .findUserByUsuarioDependencia2(this.contrato.idDependenciaContratista)
         .subscribe((respuesta) => {
-          this.listaUsuariosContratista = respuesta.body;
+         // this.listaUsuariosContratista = respuesta.body;
           this.muestraListaUsuarios = true;
         });
+        */
     });
   }
   modalCrearUsuario() {

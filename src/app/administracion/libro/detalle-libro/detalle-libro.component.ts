@@ -449,6 +449,7 @@ export class DetalleLibroComponent implements OnInit {
       } else {
         let existe = false;
         existe = this.listaUsuarioMandante.find(usuario => usuario.id === result.usuarioDependencia?.id);
+        console.log(existe);
         if(!existe){
           if(result.adminActivo === true){
               this.libroInfoGeneralFormGroup.controls["nombreAdminMandante"].setValue(result.usuarioDependencia.usuario.firstName + '' + result.usuarioDependencia.usuario.lastName);
@@ -527,22 +528,23 @@ export class DetalleLibroComponent implements OnInit {
       this.contrato = respuesta.body;
       // obtener los usuarios para el mandante y el contratista
       // mandante
-      this.dependenciaService
-        .buscaUsuariosDependencia2(this.contrato.dependenciaMandante.id)
-        .subscribe((respuesta) => {
-          //console.log(respuesta);
-          this.listaUsuarios = respuesta.body;
-          this.listaUsuariosOrigen = respuesta.body;
+      this.usuarioDependenciaService.query().subscribe(
+        response => {
+          let filtro1 = response.body.filter(usd => usd.dependencia.id === this.contrato.dependenciaMandante.id);
+          let filtro2 = response.body.filter(usd => usd.dependencia.id === this.contrato.idDependenciaContratista);
+          
+          this.listaUsuarios =filtro1;
+          this.listaUsuariosOrigen = filtro1;
           this.muestraListaUsuarios = true;
-        });
-      this.dependenciaService
-        .buscaUsuariosDependencia2(this.contrato.idDependenciaContratista)
-        .subscribe((respuesta) => {
-          //console.log(respuesta);
-          this.listaUsuariosContratista = respuesta.body;
-          this.listaUsuariosContratistaOrigen = respuesta.body;
+
+          this.listaUsuariosContratista = filtro2;
+          this.listaUsuariosContratistaOrigen = filtro2;
           this.muestraListaUsuarios = true;
-        });
+
+          console.log(filtro1);
+          console.log(filtro2);
+        }
+      );
     });
   }
   obtenerPerfilUsuariolibro() {

@@ -226,7 +226,7 @@ export class FolioService {
   informarEmailFolioFirmado( data :any): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(data);
     return this.http
-      .post<any>(`http://localhost:8090/email`,data, {
+      .post<any>(`https://email-lo-digital.an.r.appspot.com/email`,data, {
         observe: "response",
       })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));

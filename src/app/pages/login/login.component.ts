@@ -80,8 +80,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   login() {
-    this.router.navigate(["dashboard"]);
-    
     this.loginService
       .login({
         username: this.loginForm.get("username")!.value,
@@ -90,11 +88,13 @@ export class LoginComponent implements OnInit, OnDestroy {
       })
       .subscribe(
         (res) => {
-          this.showNotificationSuccess("top", "right", res);
+
           let usuario = new User;
           usuario = res;
           this.usuarioDependenciaService.findUserByUsuarioDependencia(usuario.id).subscribe(
             usuarioDependencia=>{
+              this.showNotificationSuccess("top", "right", res);
+              console.log(usuarioDependencia.body);
               usuario.authorities = [...usuario.authorities, usuarioDependencia.body[0].perfilUsuarioDependencia.nombre.toUpperCase()]
               localStorage.setItem("user", JSON.stringify(usuario));
               this.router.navigate(["dashboard"]);

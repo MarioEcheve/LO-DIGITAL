@@ -17,6 +17,8 @@ export class UsuarioDependenciaService {
   SERVER_API_URL = environment.apiUrl;
   public resourceUrl = this.SERVER_API_URL + "api/usuario-dependencias";
   public resourceUrlFindUserByUsuarioDependencia = this.SERVER_API_URL + "api/findUserByUsuarioDependencia";
+  public resourceUrlFindUserByUsuarioDependencia2 = this.SERVER_API_URL + "api/findUserByUsuarioDependencia2";
+
   public resourceUrlFindUserByUsuarioDependenciaRolUser = this.SERVER_API_URL + "api/findUserByUsuarioDependenciaRolUser";
   public resourceUrlFindContratosByDependencia= this.SERVER_API_URL + "api/findContratosByDependencia";
   public resourceUrlFindContratosByUsuarioNormal= this.SERVER_API_URL + "api/findContratosByUsuarioNormal";
@@ -45,6 +47,13 @@ export class UsuarioDependenciaService {
   findUserByUsuarioDependencia(idUsuario: number): Observable<EntityResponseType> {
     return this.http
       .get<IUsuarioDependencia>(`${this.resourceUrlFindUserByUsuarioDependencia}/${idUsuario}`, {
+        observe: "response",
+      })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+  findUserByUsuarioDependencia2(idUsuario: number): Observable<EntityResponseType> {
+    return this.http
+      .get<IUsuarioDependencia>(`${this.resourceUrlFindUserByUsuarioDependencia2}/${idUsuario}`, {
         observe: "response",
       })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));

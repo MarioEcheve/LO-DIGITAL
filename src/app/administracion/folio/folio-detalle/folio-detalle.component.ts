@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, ViewChild, ElementRef } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { LibroService } from "../../services/libro.service";
 import { ILibro, Libro } from "../../TO/libro.model";
@@ -37,6 +37,7 @@ import { Archivo } from "../../TO/archivo.model";
 import { ArchivoService } from "../../services/archivo.service";
 import { Img } from "pdfmake-wrapper";
 import { async } from "@angular/core/testing";
+import { HttpEvent } from "@angular/common/http";
 
 
 declare var $: any;
@@ -135,6 +136,9 @@ export class FolioDetalleComponent implements OnInit {
   ];
   // forms
   folioForm: FormGroup;
+  // implementacion upload archivos 
+  @ViewChild("fileUpload", {static: false}) fileUpload: ElementRef;files  = [];  
+
   constructor(
     private route: ActivatedRoute,
     private libroService: LibroService,
@@ -172,7 +176,7 @@ export class FolioDetalleComponent implements OnInit {
       libro: [""],
       requiereRespuesta: [false],
       tipoFolio: ["", Validators.required],
-      anotacion: [],
+      anotacion: ["", Validators.required],
       numeroFolio: [],
       emisor: [],
       usuarioPerfilLibro: [],
@@ -425,6 +429,7 @@ export class FolioDetalleComponent implements OnInit {
       (respuesta) => {
         // guardar archivos
         if (this.editarArchivosFolios === false) {
+          /*
           if (this.archivosFolio.length > 0) {
             this.archivosFolio.forEach((element) => {
               element.folio = respuesta.body;
@@ -436,8 +441,9 @@ export class FolioDetalleComponent implements OnInit {
                 (existe) => {}
               );
             });
-          }
+          }*/
         } else {
+          /*
           this.archivosFolio.forEach((element) => {
             element.folio = respuesta.body;
             if (element.id !== undefined) {
@@ -448,7 +454,7 @@ export class FolioDetalleComponent implements OnInit {
                 this.archivosFolio[index].id = respuesta.body.id;
               });
             }
-          });
+          });*/
         }
         if (this.folios.length > 0) {
           for (let i = 0; i < this.folios.length; i++) {
@@ -1105,6 +1111,7 @@ export class FolioDetalleComponent implements OnInit {
   }
   onUploadError(event) {}
   onUploadSuccess(event) {
+   
     let file = new Archivo();
     let archivoEvent = event[1].files.file;
     var documento = archivoEvent.split(",");
@@ -1113,6 +1120,7 @@ export class FolioDetalleComponent implements OnInit {
     file.archivo = documento[1];
     file.archivoContentType = tipoDocumento[0];
     this.archivosFolio.push(file);
+    console.log(event);;
   }
   correlativoFolio(id: any) {
     this.folioService.correlativoFolio(id).subscribe((respuesta) => {
@@ -1156,10 +1164,13 @@ export class FolioDetalleComponent implements OnInit {
       archivo.archivoContentType = tipoDocumento[0];
       archivo.descripcion = event.target.files[i].name;
       archivo.size = formatBytes(event.target.files[i].size);
-      this.archivosFolio = [...this.archivosFolio, archivo];
-      console.log(archivo);
+      this.archivosFolio= event.target.files;
+      console.log(event.target.files);
+
     }
   }
+ 
+
   toBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -1180,9 +1191,10 @@ export class FolioDetalleComponent implements OnInit {
     return mappedFiles;
   }
   eliminarArchivo(file) {
-    if (file.id === undefined) {
-      let index = this.archivosFolio.indexOf(file);
-      this.archivosFolio.splice(index, 1);
+    console.log(file);
+    if (file.id !== undefined) {
+      //let index = this.archivosFolio.indexOf(file);
+      //this.archivosFolio.splice(index, 1);
     } else {
       Swal.fire({
         title: "Esta Seguro ?",
@@ -1193,9 +1205,10 @@ export class FolioDetalleComponent implements OnInit {
         cancelButtonText: "No, Mantener Archivo",
       }).then((result) => {
         if (result.value) {
-          let index = this.archivosFolio.indexOf(file);
-          this.archivosFolio.splice(index, 1);
-          this.archivoService.delete(file.id).subscribe(
+            //let index = this.archivosFolio.indexOf(file);
+            //this.archivosFolio.splice(index, 1);
+            /*
+            this.archivoService.delete(file.id).subscribe(
             (response) => {
               Swal.fire(
                 "Eliminado!",
@@ -1206,14 +1219,70 @@ export class FolioDetalleComponent implements OnInit {
             (error) => {
               Swal.fire("Error!", "El archivo no pudo ser borrado.", "warning");
             }
-          );
+          );*/
+            this.archivoService.deleteGCP('path  1 ').subscribe(
+              archivo=>{
+                console.log(archivo);
+              }
+            );
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           Swal.fire("Cancelado", "Cancelado", "error");
         }
       });
     }
   }
+
+
+  SubirArchivo(file){
+    let timerInterval
+    Swal.fire({
+      title: 'Subiendo Archivo',
+      html: 'Esto puede tardar unos segundos...',
+      timer: 8000,
+      timerProgressBar: true,
+      onBeforeOpen: () => {
+        Swal.showLoading();
+        if (this.archivosFolio.length > 0) {
+          let formData = new FormData();
+          for (var i = 0; i < this.archivosFolio.length; i++) {
+            formData.append("file", this.archivosFolio[i], this.archivosFolio[i].name);
+            this.archivoService.createGCP(formData).subscribe(
+              respuesta  => {
+                /*
+                let index = this.archivosFolio.indexOf(element);
+                this.archivosFolio[index].id = respuesta.body.id;
+                console.log(this.archivosFolio);
+                */
+              },
+              (existe) => {}
+            );
+          }
+        }
+        timerInterval = setInterval(() => {
+          const content = Swal.getContent()
+          if (content) {
+            const b = content.querySelector('b')
+            if (b) {
+              b.textContent = Swal.getTimerLeft()
+            }
+          }
+        }, 100)
+      },
+      onClose: () => {
+        clearInterval(timerInterval);
+        
+        Swal.fire("Creado!", "Folio Firmado Correctamente.", "success");
+      }
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+      }
+  })
+  }
 }
+
+
+
 function  getBase64Image (img ){
   var canvas = document.createElement("canvas");
   canvas.width = img.width;

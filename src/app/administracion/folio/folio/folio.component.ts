@@ -179,6 +179,9 @@ export class FolioComponent implements OnInit, AfterViewInit {
   ];
   // definicion del form de los filtros
   formFiltrosGroup : FormGroup;
+
+  // spinner para cargar data 
+  loading = true;
   constructor(
     private route: ActivatedRoute,
     private contratoService: ContratoService,
@@ -231,10 +234,13 @@ export class FolioComponent implements OnInit, AfterViewInit {
       libro: [],
     });
   
-    
+    console.log(this.route.snapshot.paramMap.get("idLibro"));
     this.libroService
       .find(parseInt(this.route.snapshot.paramMap.get("idLibro")))
-      .subscribe((respuesta) => {
+      .subscribe((respuesta : any) => {
+        console.log(respuesta.body);
+        this.libroSeleccionado = respuesta.body;
+        console.log(this.libroSeleccionado);
         this.buscaFolios(respuesta.body);
         this.obtenerPerfilLibroUsuario(respuesta.body.id, usuario.id);
         this.folioFormGroup.patchValue({
@@ -248,11 +254,10 @@ export class FolioComponent implements OnInit, AfterViewInit {
       setTimeout(() => {
         //this.foliosOrigen = this.folios;
         this.folios = this.folios.filter(folio=> 
-            folio.idUsuarioFirma !== null);
+        folio.idUsuarioFirma !== null);
         this.foliosSinBorradores = this.folios;
         this.folioServie.favoritosUsuarioLibro(this.usuarioLibro.id, this.libroSeleccionado.id).subscribe(
           favoritos=>{
-            console.log(favoritos.body);
             this.folios.forEach(element=>{
               let valor = null;
               valor = favoritos.body.find(favorito=> favorito.id === element.id);
@@ -265,19 +270,23 @@ export class FolioComponent implements OnInit, AfterViewInit {
           }
         );
         resolve(this.folios);
-      },100);
+       
+      },900);
     }).then((folios: any)=>{
       this.getContadorFolioSideBar();
-      console.log(folios);
       this.dataSource = new MatTableDataSource(folios);
       this.dataSource.paginator = this.paginator;
+      setTimeout(() => {
+        this.loading = false;
+      }, 1000);
+     
     })  
     
   }
   async buscaFolios(libro, filtra?: boolean) {
     this.folios = [];
     let folios=[];
-    this.libroSeleccionado = libro;
+    this.loading = true;
     let usuario = JSON.parse(localStorage.getItem("user"));
     this.idlibro = libro.id;
     let nombreReceptor = "";
@@ -291,6 +300,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
               element.fechaRequerida = element.fechaRequerida.local();
               let resultado = calcDate(element.fechaRequerida.toDate(),new Date());
               if(element.estadoRespuesta !== null){
+                console.log(element);
                 if(element.estadoRespuesta.nombre.toLowerCase() === "respondido"){
                   element.color = "#4EA21A";
                 }else{
@@ -361,6 +371,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
       this.ngAfterViewInit();
       this.foliosSinBorradores = this.folios;
       this.getContadorFolioSideBar();
+
       
     });
     
@@ -483,7 +494,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
             let folio = this.folios.find(folio => folio.id === element.id);
             let index = this.folios.indexOf(folio);
             this.folios[index].existeFavorito = true;
-            console.log(this.folios[index]);
           })
         }
         this.typesOfActions[index].isClicked = true;
@@ -500,7 +510,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
           let folio = this.folios.find(folio => folio.id === element.id);
           let index = this.folios.indexOf(folio);
           this.folios[index].existeFavorito = true;
-          console.log(this.folios[index]);
         })
       }
       this.typesOfActions[index].isClicked = true;
@@ -516,7 +525,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
           let folio = this.folios.find(folio => folio.id === element.id);
           let index = this.folios.indexOf(folio);
           this.folios[index].existeFavorito = true;
-          console.log(this.folios[index]);
         })
       }
       this.typesOfActions[index].isClicked = true;
@@ -532,7 +540,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
           let folio = this.folios.find(folio => folio.id === element.id);
           let index = this.folios.indexOf(folio);
           this.folios[index].existeFavorito = true;
-          console.log(this.folios[index]);
         })
       }
       this.typesOfActions[index].isClicked = true;
@@ -548,7 +555,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
           let folio = this.folios.find(folio => folio.id === element.id);
           let index = this.folios.indexOf(folio);
           this.folios[index].existeFavorito = true;
-          console.log(this.folios[index]);
         })
       }
       this.typesOfActions[index].isClicked = true;
@@ -583,7 +589,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
                 let folio = this.folios.find(folio => folio.id === element.id);
                 let index = this.folios.indexOf(folio);
                 this.folios[index].existeFavorito = true;
-                console.log(this.folios[index]);
               })
             }
             this.dataSource = new MatTableDataSource(this.folios);
@@ -595,7 +600,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
       this.marcaTipoFiltroSideBar = 6;
       break;
     case 7 :
-      console.log(this.usuarioLibro);
       this.folios = this.folios.filter(folio=>folio.idUsuarioFirma === null );
       this.typesOfActions[index].isClicked = true;
       if(this.usuarioLibro.perfilUsuarioLibro.nombre.toLowerCase() === "visita"){
@@ -615,7 +619,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
           let folio = this.folios.find(folio => folio.id === element.id);
           let index = this.folios.indexOf(folio);
           this.folios[index].existeFavorito = true;
-          console.log(this.folios[index]);
         })
       }
       setTimeout(() => {
@@ -735,7 +738,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
     valorBusqueda = valorBusqueda.toLowerCase();
     let foliosFiltrados = [];
     if(criterio === 1){
-      foliosFiltrados = this.foliosOrigen.filter(folio=> folio.emisor.toLowerCase().indexOf(valorBusqueda) > -1);
+      foliosFiltrados = this.foliosOrigen.filter(folio=> folio.emisorMarcado.toLowerCase().indexOf(valorBusqueda) > -1);
       this.folios = foliosFiltrados;
       this.dataSource = new MatTableDataSource(this.folios);
       this.dataSource.paginator = this.paginator;
@@ -783,7 +786,6 @@ export class FolioComponent implements OnInit, AfterViewInit {
       this.formFiltrosGroup.controls['inputBusqueda'].setValidators([Validators.maxLength(40)]);
       this.type="text";
     }
-    console.log(this.formFiltrosGroup.get('inputBusqueda'));
   }
   getPermisos(idLibro?:any,idUsuario?:any){
     let usuario = JSON.parse(localStorage.getItem("user"));
@@ -912,4 +914,11 @@ function calcDate(date1,date2) {
   return [days,months,years]
 }
 
+function hideloader() { 
+  
+  // Setting display of spinner 
+  // element to none 
+  document.getElementById('loading') 
+      .style.display = 'none'; 
+} 
   

@@ -69,12 +69,15 @@ export class CrearUsuarioComponent implements AfterViewInit {
         this.existeAdminActivo = false;
       }
     }
-    this.data.usuariosDependenciaMandante.forEach(element => {
+    if(this.data.usuariosDependenciaMandante.length > 0 ){
+      this.data.usuariosDependenciaMandante.forEach(element => {
         let nombre = "";
         nombre = element.usuario.firstName +' ' + element.usuario.lastName;
         element.usuario.firstName = element.usuario.firstName;
         element.usuario.lastName = element.usuario.lastName;
     });
+    }
+   
     this.options = this.data.usuariosDependenciaMandante;
     this.listaPerfilesLibro = this.data.usuarioLibroPerfil;
     this.filteredOptions = this.myControl.valueChanges.pipe(

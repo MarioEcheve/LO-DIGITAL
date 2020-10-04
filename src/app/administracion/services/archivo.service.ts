@@ -18,10 +18,12 @@ export class ArchivoService {
 
   constructor(protected http: HttpClient) {}
 
-  create(archivo: IArchivo): Observable<EntityResponseType> {
-    return this.http.post<IArchivo>(this.resourceUrl, archivo, { observe: 'response' });
+  create(archivo: any): Observable<EntityResponseType> {
+    return this.http.post<any>(environment.apiUrl, archivo, { observe: 'response' });
   }
-
+  createGCP(archivo: any): Observable<any> {
+    return this.http.post<any>('http://localhost:8001/save', archivo, { observe: 'response' });
+  }
   update(archivo: IArchivo): Observable<EntityResponseType> {
     return this.http.put<IArchivo>(this.resourceUrl, archivo, { observe: 'response' });
   }
@@ -37,6 +39,9 @@ export class ArchivoService {
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+  deleteGCP(path: any): Observable<any> {
+    return this.http.post<any>('http://localhost:8001/delete', path, { observe: 'response' });
   }
   AchivosPorFolio(idFolio?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption();
