@@ -13,183 +13,189 @@
                 <mat-tab label="Datos Entidad">
                   <form [formGroup]="formEntidad">
                     <div class="container-fluid mt-3">
-                      <h5 style="color: #252525;"><strong>Razón Social</strong></h5>
-                      <mat-form-field class="example-full-width mt-2">
-                        <input
-                          matInput
-                          placeholder="RUT"
-                          type="text"
-                          formControlName="rut"
-                        />
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width">
-                        <input
-                          matInput
-                          placeholder="Nombre Razón Social"
-                          type="text"
-                          formControlName="nombreEmpresa"
-                        />
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width">
-                        <input
-                          matInput
-                          placeholder="Tipo Empresa"
-                          type="text"
-                          formControlName="tipoEmpresa"
-                        />
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width">
-                        <input
-                          matInput
-                          placeholder="Rubro / Actividad"
-                          type="text"
-                          formControlName="rubroActividad"
-                        />
-                      </mat-form-field>
-                      <hr />
-                      <h5 style="color: #252525;"><strong>Dependencia</strong></h5>
-                      <mat-form-field class="example-full-width mt-2">
-                        <input
-                          matInput
-                          placeholder="Dependencia"
-                          type="text"
-                          formControlName="dependenciaNombre"
-                        />
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width">
-                        <textarea
-                          matInput
-                          placeholder="Descripción"
-                          rows="2"
-                          formControlName="descripcionDependencia"
-                        ></textarea>
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width">
-                        <input
-                          matInput
-                          placeholder="Dirección"
-                          type="text"
-                          value="Avenida Balmaceda 4536, Edificio x, 4º Piso, Oficina Nº405"
-                          disabled
-                        />
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width">
-                        <input
-                          matInput
-                          placeholder="Región"
-                          type="text"
-                          formControlName="regionDependencia"
-                          disabled
-                        />
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width">
-                        <input
-                          matInput
-                          placeholder="Comuna"
-                          type="text"
-                          formControlName="comunaDependencia"
-                          disabled
-                        />
-                      </mat-form-field>
-                      <hr />
-                      <h5 style="color: #252525;">
-                        <strong>Contacto Comercial</strong>
-                      </h5>
-                      <mat-form-field class="example-full-width mt-2">
-                        <input
-                          matInput
-                          placeholder="Nombre"
-                          type="text"
-                          formControlName="nombreContactoComercial"
-                          disabled
-                        />
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width">
-                        <input
-                          matInput
-                          placeholder="Cargo"
-                          type="text"
-                          formControlName="cargoContactoComercial"
-                          disabled
-                        />
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width">
-                        <input
-                          matInput
-                          placeholder="Teféfono Principal"
-                          type="text"
-                          formControlName="telefonoPrincipalContactoComercial"
-                          disabled
-                        />
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width">
-                        <input
-                          matInput
-                          placeholder="Teféfono Secundario"
-                          type="text"
-                          formControlName="telefonoSecundarioContactoComercial"
-                          disabled
-                        />
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width">
-                        <input
-                          matInput
-                          placeholder="Email"
-                          type="text"
-                          formControlName="emailContactoComercial"
-                          disabled
-                        />
-                      </mat-form-field>                      
-                      <hr />
-                      <h5 style="color: #252525;"><strong>Contacto Técnico</strong></h5>
-                      <mat-form-field class="example-full-width mt-2">
-                        <input
-                          matInput
-                          placeholder="Nombre"
-                          type="text"
-                          formControlName="nombreContactoTecnico"
-                          disabled
-                        />
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width">
-                        <input
-                          matInput
-                          placeholder="Cargo"
-                          type="text"
-                          formControlName="cargoContactoTecnico"
-                          disabled
-                        />
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width">
-                        <input
-                          matInput
-                          placeholder="Teféfono Principal"
-                          type="text"
-                          formControlName="telefonoPrincipalContactoTecnico"
-                          disabled
-                        />
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width">
-                        <input
-                          matInput
-                          placeholder="Teféfono Secundario"
-                          type="text"
-                          formControlName="telefonoSecundarioContactoTecnico"
-                          disabled
-                        />
-                      </mat-form-field>
-                      <mat-form-field class="example-full-width">
-                        <input
-                          matInput
-                          placeholder="Email"
-                          type="text"
-                          formControlName="emailContactoTecnico"
-                          disabled
-                        />
-                      </mat-form-field>                      
+                      <h5 style="font-weight: bold;" class="text-muted"><strong>Razón Social</strong></h5>
+                      <hr class="mt-2">
+                      <div class="ml-2">
+                        <mat-form-field class="example-full-width mt-2">
+                          <input
+                            matInput
+                            placeholder="RUT"
+                            type="text"
+                            formControlName="rut"
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Nombre Razón Social"
+                            type="text"
+                            formControlName="nombreEmpresa"
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Tipo Empresa"
+                            type="text"
+                            formControlName="tipoEmpresa"
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Rubro / Actividad"
+                            type="text"
+                            formControlName="rubroActividad"
+                          />
+                        </mat-form-field>
+                      </div>                                           
+                      <h5 style="font-weight: bold;" class="text-muted mt-2"><strong>Dependencia</strong></h5>
+                      <hr class="mt-2">
+                      <div class="ml-2">
+                        <mat-form-field class="example-full-width mt-2">
+                          <input
+                            matInput
+                            placeholder="Dependencia"
+                            type="text"
+                            formControlName="dependenciaNombre"
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <textarea
+                            matInput
+                            placeholder="Descripción"
+                            rows="2"
+                            formControlName="descripcionDependencia"
+                          ></textarea>
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Dirección"
+                            type="text"
+                            value="Avenida Balmaceda 4536, Edificio x, 4º Piso, Oficina Nº405"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Región"
+                            type="text"
+                            formControlName="regionDependencia"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Comuna"
+                            type="text"
+                            formControlName="comunaDependencia"
+                            disabled
+                          />
+                        </mat-form-field>
+                      </div>                    
+                      <h5 style="font-weight: bold;" class="text-muted mt-2"><strong>Contacto Comercial</strong></h5>
+                      <hr class="mt-2">
+                      <div class="ml-2">
+                        <mat-form-field class="example-full-width mt-2">
+                          <input
+                            matInput
+                            placeholder="Nombre"
+                            type="text"
+                            formControlName="nombreContactoComercial"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Cargo"
+                            type="text"
+                            formControlName="cargoContactoComercial"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Teféfono Principal"
+                            type="text"
+                            formControlName="telefonoPrincipalContactoComercial"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Teféfono Secundario"
+                            type="text"
+                            formControlName="telefonoSecundarioContactoComercial"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Email"
+                            type="text"
+                            formControlName="emailContactoComercial"
+                            disabled
+                          />
+                        </mat-form-field>
+                      </div>
+                      <h5 style="font-weight: bold;" class="text-muted mt-2"><strong>Contacto Técnico</strong></h5>
+                      <hr class="mt-2">
+                      <div class="ml-2">
+                        <mat-form-field class="example-full-width mt-2">
+                          <input
+                            matInput
+                            placeholder="Nombre"
+                            type="text"
+                            formControlName="nombreContactoTecnico"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Cargo"
+                            type="text"
+                            formControlName="cargoContactoTecnico"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Teféfono Principal"
+                            type="text"
+                            formControlName="telefonoPrincipalContactoTecnico"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Teféfono Secundario"
+                            type="text"
+                            formControlName="telefonoSecundarioContactoTecnico"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Email"
+                            type="text"
+                            formControlName="emailContactoTecnico"
+                            disabled
+                          />
+                        </mat-form-field>
+                      </div>             
                       <hr />
                       <div class="pull-right" *ngxPermissionsOnly="['super usuario']">
-
                         <button
                           *ngIf="editarDatosEntidad === true"
                           mat-raised-button

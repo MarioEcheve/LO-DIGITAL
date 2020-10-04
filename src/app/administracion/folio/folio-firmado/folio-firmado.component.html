@@ -23,7 +23,7 @@
                   Responder
                   </button>
                 </div>
-                <button mat-raised-button 
+                <!-- <button mat-raised-button 
                   type="button" 
                   class="btn btn-primary btn-sm mr-1">
                   <i class="material-icons">reply_all</i>
@@ -34,7 +34,7 @@
                   class="btn btn-primary btn-sm mr-1">
                   <i class="material-icons">push_pin</i>
                   Relacionar
-                </button>
+                </button> -->
                 <button
                   mat-raised-button
                   class="btn btn-primary btn-sm mr-1"
@@ -42,8 +42,8 @@
                   (click)="lecturaFolio()"
                    *ngxPermissionsOnly="['administrador']"
                 >
-                  <i class="material-icons">insert_drive_file</i>
-                  Lectura PDF
+                  <i class="material-icons">check</i>
+                  Confirmar Lectura
                 </button>
                 <button
                   mat-raised-button
@@ -51,7 +51,7 @@
                   (click)="previsualizar()"
                 >
                   <i class="material-icons">insert_drive_file</i>
-                  Visualizar PDF
+                  PDF
                 </button>
                 <button mat-raised-button 
                   type="button" 
@@ -59,12 +59,12 @@
                   class="btn btn-primary btn-fab btn-sm mr-1">
                     <i class="material-icons">save_alt</i>                    
                 </button>
-                <button mat-raised-button 
+                <!-- <button mat-raised-button 
                   type="button" 
                   (click)="print()"
                   class="btn btn-primary btn-fab btn-sm mr-1">
                     <i class="material-icons">print</i>                    
-                </button>
+                </button> -->
                 <button mat-raised-button 
                   type="button" 
                   (click)="informar()"
@@ -72,10 +72,10 @@
                     <i class="material-icons">mail</i>                    
                 </button>
               </div>
-              <hr />
+              <hr>
               <img class="mr-1" src="/assets/img/logo42_.png" />
               <img src="/assets/img/letra120x34_.png" />
-              <hr />
+              <hr>
               <div class="row">
                 <div class="col-6 d-flex justify-content-start">
                   <table>
@@ -174,7 +174,7 @@
                   <td>Emisor:</td>
                   <td *ngIf="emisor">
                     &nbsp;{{ emisor.usuarioDependencia.usuario.firstName }}
-                    {{ emisor.usuarioDependencia.usuario.lastName }}- RUT:{{
+                    {{ emisor.usuarioDependencia.usuario.lastName }} | RUT:{{
                       emisor.usuarioDependencia.rut
                     }}
                   </td>
@@ -187,7 +187,7 @@
                   <td>Receptor:</td>
                   <td  *ngIf="receptor">
                     &nbsp;{{ receptor.usuarioDependencia.usuario.firstName }}
-                    {{ receptor.usuarioDependencia.usuario.lastName }}- RUT:{{
+                    {{ receptor.usuarioDependencia.usuario.lastName }} | RUT:{{
                       receptor.usuarioDependencia.rut
                     }}</td>
                 </tr>
@@ -264,7 +264,7 @@
               <br/>{{emisor?.cargoFuncion}}
               <br/>Fecha Firma: {{ Folio.fechaFirma | date: "dd-MM-yyyy HH:mm" }} 
               <br/>Fimar Digital Avanzada
-              <br/>Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745
+              <!-- <br/>Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745 -->
               <mat-divider class="mt-2"></mat-divider>
               <p style="font-size: smaller;" class="text-right mt-1">
                 Creado mediante en plataforma <a href="">www.lodigital.cl</a>,
