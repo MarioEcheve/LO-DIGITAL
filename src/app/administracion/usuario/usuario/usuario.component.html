@@ -19,35 +19,27 @@
                             <div class="card-body">
                                 <form [formGroup]="formUsuario">
                                     <div class="container-fluid mt-3">
-                                        <div class="row">
-                                            <mat-form-field class="example-full-width col-md-3">
-                                                <input matInput placeholder="RUT" type="text"  formControlName="rut"/>
-                                            </mat-form-field>
-                                            <mat-form-field class="example-full-width col-md-9">
-                                                <input matInput placeholder="Nombres" type="text"  formControlName="nombres" disabled />
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="row">
-                                            <mat-form-field class="example-full-width col-md-6">
-                                                <input matInput placeholder="Apellidos" type="text" formControlName="apellidos" />
-                                            </mat-form-field>
-                                        </div> 
-                                        <div class="row">
-                                            <mat-form-field class="example-full-width col-md-6">
-                                                <input matInput placeholder="Email Principal" type="email"  formControlName="emailPrincipal" />
-                                            </mat-form-field>
-                                            <mat-form-field class="example-full-width col-md-6">
-                                                <input matInput placeholder="Email Secundario" type="email" formControlName="emailSecundario" />
-                                            </mat-form-field>                        
-                                        </div>
-                                        <div class="row">                      
-                                            <mat-form-field class="example-full-width col-md-6">
-                                                <input matInput placeholder="Teléfono Principal" type="text"  formControlName="telefonoPrincipal" />
-                                            </mat-form-field>
-                                            <mat-form-field class="example-full-width col-md-6">
-                                                <input matInput placeholder="Teléfono Secundario" type="text"  formControlName="telefonoSecundario" />
-                                            </mat-form-field>
-                                        </div>                                                
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="RUT" type="text"  formControlName="rut"/>
+                                        </mat-form-field>
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Nombres" type="text"  formControlName="nombres" disabled />
+                                        </mat-form-field>
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Apellidos" type="text" formControlName="apellidos" />
+                                        </mat-form-field>
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Email Principal" type="email"  formControlName="emailPrincipal" />
+                                        </mat-form-field>
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Email Secundario" type="email" formControlName="emailSecundario" />
+                                        </mat-form-field>
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Teléfono Principal" type="text"  formControlName="telefonoPrincipal" />
+                                        </mat-form-field>
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Teléfono Secundario" type="text"  formControlName="telefonoSecundario" />
+                                        </mat-form-field>                             
                                         <div class="pull-right">
                                             <button
                                               mat-raised-button
@@ -59,10 +51,10 @@
                                               Cancelar
                                             </button>
                                             <button (click)="updateUsuario()" *ngIf="editarUsuario" mat-raised-button type="submit" class="btn btn-primary">                         
-                                              Guardar Datos
+                                              Guardar
                                             </button>
                                             <button (click)="editarUsuarioForm()" *ngIf="!editarUsuario" mat-raised-button type="submit" class="btn btn-primary">                         
-                                              Editar Datos
+                                              Editar
                                             </button>
                                         </div>
                                     </div>
@@ -89,8 +81,6 @@
                         </div>
                     </div>
                     -->
-
-
                     <div class="card-collapse">
                         <form [formGroup]="formCambioClave">
                             <div class="card-header" role="tab" id="headingOne">
@@ -104,22 +94,18 @@
                             <div id="Tab3" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
                                 <div class="card-body">
                                     <div class="container-fluid mt-3">
-                                        <div class="row">
-                                            <mat-form-field class="example-full-width col-md-6">
-                                                <input matInput formControlName="login" placeholder="Nombre Usuario Actual" type="text"  />
-                                            </mat-form-field>                                        
-                                            <mat-form-field class="example-full-width col-md-6">
-                                                <input matInput formControlName="claveActual" placeholder="Ingrese clave actual" type="text" value="Fernando Alejandro" disabled />
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="row">                                        
-                                            <mat-form-field class="example-full-width col-md-6">
-                                                <input matInput formControlName="claveNueva" placeholder="Ingrese nueva clave" type="text" value="Fernando Alejandro" disabled />
-                                            </mat-form-field>
-                                            <mat-form-field class="example-full-width col-md-6">
-                                                <input matInput formControlName="repitaClavenueva" placeholder="Repita nueva clave" type="text" value="Fernando Alejandro" disabled />
-                                            </mat-form-field>
-                                        </div>
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput formControlName="login" placeholder="Nombre Usuario Actual" type="text"  />
+                                        </mat-form-field>                                        
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput formControlName="claveActual" placeholder="Ingrese clave actual" type="password" value="Fernando Alejandro" disabled />
+                                        </mat-form-field>
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput formControlName="claveNueva" placeholder="Ingrese nueva clave" type="password" value="Fernando Alejandro" disabled />
+                                        </mat-form-field>
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput formControlName="repitaClavenueva" placeholder="Repita nueva clave" type="password" value="Fernando Alejandro" disabled />
+                                        </mat-form-field>
                                         <div class="pull-right">
                                             <button
                                               mat-raised-button
