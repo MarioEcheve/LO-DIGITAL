@@ -36,26 +36,24 @@
                       data-parent="#accordion"                      
                     >
                       <div class="card-body">
-                        <div class="row">
-                          <mat-form-field class="example-full-width col-md-3">
-                            <input
-                              matInput
-                              placeholder="Cod. Contrato"
-                              type="text"
-                              formControlName="codigo"
-                              disabled
-                            />
-                          </mat-form-field>
-                          <mat-form-field class="example-full-width col-md-9">
-                            <input
-                              matInput
-                              placeholder="Nombre Contrato"
-                              type="text"
-                              formControlName="nombre"
-                              disabled
-                            />
-                          </mat-form-field>
-                        </div>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Cod. Contrato"
+                            type="text"
+                            formControlName="codigo"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Nombre Contrato"
+                            type="text"
+                            formControlName="nombre"
+                            disabled
+                          />
+                        </mat-form-field>                      
                         <mat-form-field class="example-full-width">
                           <textarea
                             matInput
@@ -74,84 +72,64 @@
                             disabled
                           />
                         </mat-form-field>
-                        <div class="row">
-                          <mat-form-field class="col-md-6">
-                            <mat-select
-                              placeholder="Región"
-                              name="city"
-                              formControlName="region"
+                        <mat-form-field>
+                          <mat-select
+                            placeholder="Región"
+                            name="city"
+                            formControlName="region"
+                          >
+                            <mat-option
+                              *ngFor="let region of listaRegiones"
+                              [value]="region.nombre"
+                              (click)="buscaComuna(region.id)"
+                              (selectionChange)="onChangeRegion()"
                             >
-                              <mat-option
-                                *ngFor="let region of listaRegiones"
-                                [value]="region.nombre"
-                                (click)="buscaComuna(region.id)"
-                                (selectionChange)="onChangeRegion()"
-                              >
-                                {{ region.nombre }}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                          <mat-form-field class="col-md-6">
-                            <mat-select
-                              placeholder="Comuna"
-                              name="city"
-                              formControlName="comuna"
+                              {{ region.nombre }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                          <mat-select
+                            placeholder="Comuna"
+                            name="city"
+                            formControlName="comuna"
+                          >
+                            <mat-option
+                              *ngFor="let comuna of listaComunas"
+                              [value]="comuna.nombre"
                             >
-                              <mat-option
-                                *ngFor="let comuna of listaComunas"
-                                [value]="comuna.nombre"
-                              >
-                                {{ comuna.nombre }}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
-                        <div class="row">
-                          <mat-form-field class="col-md-6">
-                            <mat-select
-                              placeholder="Tipo Contrato"
-                              name="city"
-                              formControlName="tipoContrato"
+                              {{ comuna.nombre }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                          <mat-select
+                            placeholder="Tipo Contrato"
+                            name="city"
+                            formControlName="tipoContrato"
+                          >
+                            <mat-option
+                              *ngFor="let tipo of tipoContrato"
+                              [value]="tipo.nombre"
                             >
-                              <mat-option
-                                *ngFor="let tipo of tipoContrato"
-                                [value]="tipo.nombre"
-                              >
-                                {{ tipo.nombre }}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                          <mat-form-field class="col-md-6">
-                            <mat-select
-                              placeholder="Modalidad Contrato"
-                              name="city"
-                              formControlName="modalidad"
+                              {{ tipo.nombre }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                          <mat-select
+                            placeholder="Modalidad Contrato"
+                            name="city"
+                            formControlName="modalidad"
+                          >
+                            <mat-option
+                              *ngFor="let modalidad of modalidadContrato"
+                              [value]="modalidad.nombre"
                             >
-                              <mat-option
-                                *ngFor="let modalidad of modalidadContrato"
-                                [value]="modalidad.nombre"
-                              >
-                                {{ modalidad.nombre }}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
-                        <div class="row" >
-                          <mat-form-field class="example-full-width col-md-6" *ngIf="muestraOtroTipoContrato">
-                            <input
-                              matInput
-                              placeholder="Otro tipo de Contrato"
-                              type="text"
-                            />
-                          </mat-form-field>
-                          <mat-form-field class="example-full-width col-md-6" *ngIf="muestraOtroTipoModalidad">
-                            <input
-                              matInput
-                              placeholder="Otra modalidad de Contrato"
-                              type="text"
-                            />
-                          </mat-form-field>
-                        </div>
+                              {{ modalidad.nombre }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
                       </div>
                     </div>
                   </div>
@@ -218,26 +196,24 @@
                       data-parent="#accordion"
                     >
                       <div class="card-body">
-                        <div class="row">
-                          <mat-form-field class="example-full-width col-md-2">
-                            <input
-                              matInput
-                              placeholder="RUT"
-                              type="text"
-                              formControlName="rutMandante"
-                              disabled
-                            />
-                          </mat-form-field>
-                          <mat-form-field class="example-full-width col-md-10">
-                            <input
-                              matInput
-                              placeholder="Razón Social"
-                              type="text"
-                              formControlName="razonSocialMandante"
-                              disabled
-                            />
-                          </mat-form-field>
-                        </div>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="RUT"
+                            type="text"
+                            formControlName="rutMandante"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Razón Social"
+                            type="text"
+                            formControlName="razonSocialMandante"
+                            disabled
+                          />
+                        </mat-form-field>
                         <mat-form-field class="example-full-width">
                           <input
                             matInput
@@ -256,26 +232,24 @@
                             disabled
                           />
                         </mat-form-field>
-                        <div class="row">
-                          <mat-form-field class="example-full-width col-md-6">
-                            <input
-                              matInput
-                              placeholder="Comuna"
-                              type="text"
-                              formControlName="comunaMandante"
-                              disabled
-                            />
-                          </mat-form-field>
-                          <mat-form-field class="example-full-width col-md-6">
-                            <input
-                              matInput
-                              placeholder="Región"
-                              type="text"
-                              formControlName="regionMandante"
-                              disabled
-                            />
-                          </mat-form-field>
-                        </div>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Comuna"
+                            type="text"
+                            formControlName="comunaMandante"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Región"
+                            type="text"
+                            formControlName="regionMandante"
+                            disabled
+                          />
+                        </mat-form-field>
                       </div>
                     </div>
                   </div>
@@ -302,26 +276,24 @@
                       data-parent="#accordion"
                     >
                       <div class="card-body">
-                        <div class="row">
-                          <mat-form-field class="example-full-width col-md-2">
-                            <input
-                              matInput
-                              placeholder="RUT"
-                              type="text"
-                              formControlName="rutContratista"
-                              disabled
-                            />
-                          </mat-form-field>
-                          <mat-form-field class="example-full-width col-md-10">
-                            <input
-                              matInput
-                              placeholder="Razón Social"
-                              type="text"
-                              formControlName="razonSocialContratista"
-                              disabled
-                            />
-                          </mat-form-field>
-                        </div>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="RUT"
+                            type="text"
+                            formControlName="rutContratista"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Razón Social"
+                            type="text"
+                            formControlName="razonSocialContratista"
+                            disabled
+                          />
+                        </mat-form-field>
                         <mat-form-field class="example-full-width">
                           <input
                             matInput
@@ -340,26 +312,24 @@
                             disabled
                           />
                         </mat-form-field>
-                        <div class="row">
-                          <mat-form-field class="example-full-width col-md-6">
-                            <input
-                              matInput
-                              placeholder="Comuna"
-                              type="text"
-                              formControlName="comunaContratista"
-                              disabled
-                            />
-                          </mat-form-field>
-                          <mat-form-field class="example-full-width col-md-6">
-                            <input
-                              matInput
-                              placeholder="Región"
-                              type="text"
-                              formControlName="regionContratista"
-                              disabled
-                            />
-                          </mat-form-field>
-                        </div>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Comuna"
+                            type="text"
+                            formControlName="comunaContratista"
+                            disabled
+                          />
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                          <input
+                            matInput
+                            placeholder="Región"
+                            type="text"
+                            formControlName="regionContratista"
+                            disabled
+                          />
+                        </mat-form-field>                       
                       </div>
                     </div>
                   </div>
