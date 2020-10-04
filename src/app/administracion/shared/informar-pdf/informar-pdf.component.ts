@@ -49,7 +49,7 @@ export class InformarPdfComponent implements OnInit {
     this.folioService.informarEmailFolioFirmado(email).subscribe(
       respuesta=>{
         console.log(respuesta.body);
-        this.dialModalRef.close(respuesta);
+        this.dialModalRef.close();
         this.showNotificationSuccess("top", "right");
       }
     );
