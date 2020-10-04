@@ -48,12 +48,12 @@
                   <mat-select
                     placeholder="Libro Seleccionado"
                     name="city"
-                    formControlName="libro"
+                    formControlName="libro"                    
                   >
                     <mat-option
                       *ngFor="let libro of libros"
                       [value]="libro.nombre"
-                      (click)="buscaFolios(libro, true)"
+                      (click)="buscaFolios(libro, true)"                      
                     >
                       {{ libro.nombre }} | Cod.: {{ libro.codigo }} | Clase
                       Libro: {{ libro.tipoLibro.descripcion }} | Tipo Firma:
