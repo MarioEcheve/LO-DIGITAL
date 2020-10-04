@@ -223,13 +223,12 @@ export class FolioService {
       })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
-  informarEmailFolioFirmado( data :any): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(data);
+  informarEmailFolioFirmado( data :any): Observable<any> {
     return this.http
       .post<any>(`https://email-lo-digital.an.r.appspot.com/email`,data, {
         observe: "response",
       })
-      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+      .pipe(map((res: any) => res));
   }
   foliosReferencias(id?: any): Observable<any> {
     const options = createRequestOption(id);
