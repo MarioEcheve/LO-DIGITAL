@@ -252,7 +252,7 @@
                 </div> -->
               </div>
               <ul class="list-inline" >
-                <li *ngFor="let archivo of listaArchivos" (click)="openFile(archivo.archivoContentType, archivo.archivo , archivo.descripcion)"class="list-inline-item">
+                <li *ngFor="let archivo of listaArchivos" (click)="downloadFileGCP(archivo)" class="list-inline-item">
                   <!-- <a >{{ archivo.descripcion}}</a> -->
                   <span class="badge badge-default" style="text-transform:none">{{ archivo.descripcion}}</span>
                 </li>

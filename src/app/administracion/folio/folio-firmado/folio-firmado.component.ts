@@ -296,6 +296,11 @@ export class FolioFirmadoComponent implements OnInit {
     // Remove link from body
     document.body.removeChild(link);
   }
+
+  downloadFileGCP(file){
+    location.href = file.urlArchivo;
+  }
+
   async navegateFolioRespuesta(folioRelacionado){
     let timerInterval
     Swal.fire({
