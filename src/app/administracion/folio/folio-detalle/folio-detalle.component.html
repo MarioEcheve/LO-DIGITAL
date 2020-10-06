@@ -369,12 +369,21 @@
                     <tbody>
                       <tr *ngFor="let file of archivosFolio">
                         <td><strong>{{ file.nombre }}</strong></td>
-                        <td><strong ng-show="uploader.isHTML5" nowrap>{{file.size}} </strong></td>                     
+                        <td><strong ng-show="uploader.isHTML5" nowrap>{{file.size}} </strong></td>
+                        <td *ngIf="file.status === false || file.status === undefined" >
+                          <mat-progress-bar mode="determinate" [value]="value"></mat-progress-bar>
+                        </td>
+                        <td *ngIf="file.status === true">
+
+                        </td>                  
                         <td nowrap class="text-right">                          
                             <i type="button" class="material-icons text-gray" (click)="eliminarArchivo(file)">delete</i>                          
                         </td>
-                        <td nowrap class="text-right">                          
+                        <td nowrap class="text-right" *ngIf="file.status === false || file.status === undefined">                          
                             <i type="button" class="material-icons text-gray" (click)="SubirArchivo()">add</i>                          
+                        </td>
+                        <td nowrap class="text-right" *ngIf="file.status === true">                          
+                          <i type="button" class="material-icons text-gray" (click)="dowloadGCP(file)">get_app</i>                          
                         </td>
                       </tr>
                     </tbody>

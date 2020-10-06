@@ -138,6 +138,8 @@ export class FolioDetalleComponent implements OnInit {
   folioForm: FormGroup;
   // implementacion upload archivos 
   @ViewChild("fileUpload", {static: false}) fileUpload: ElementRef;files  = [];  
+  value=0;
+
   archivosFolioGCP = [];
   constructor(
     private route: ActivatedRoute,
@@ -1160,16 +1162,14 @@ export class FolioDetalleComponent implements OnInit {
       var documento = fileBase64.split(",");
       var aux = documento[0].split("data:");
       var tipoDocumento = aux[1].split(";");
+
       archivo.nombre = event.target.files[i].name;
       archivo.descripcion = event.target.files[i].name;
       archivo.size = formatBytes(event.target.files[i].size);
       archivo.archivoContentType  ="";
       archivo.archivo ="";
-      this.archivosFolio=  [... this.archivosFolioGCP, archivo];
+      this.archivosFolio=  [... this.archivosFolio, archivo];
       this.archivosFolioGCP = event.target.files;
-     
-      console.log(event.target.files);
-
     }
   }
  
@@ -1243,18 +1243,32 @@ export class FolioDetalleComponent implements OnInit {
       for (var i = 0; i < this.archivosFolioGCP.length; i++) {
         formData.append("file", this.archivosFolioGCP[i], this.archivosFolioGCP[i].name);
         await new Promise((resolve)=>{
-          this.archivoService.createGCP(formData).subscribe(
-            respuesta  => {
+          this.archivoService.createGCP(formData).pipe().subscribe(
+            event  => {
+              if(event['loaded'] && event['total']){
+                this.value = Math.round(event['loaded'] / event['total'] * 100);
+              }
+              if(event['body']){
+                console.log(event['body']);
+                Swal.fire(
+                  "Subidos!",
+                  "Archivos Subidos Correctamente.",
+                  "success"
+                );
               if(this.archivosFolio.length > 0){
                 this.archivosFolio.forEach(element => {
                   element.folio = this.Folio;
-                  element.urlArchivo = respuesta.body;
-                  this.archivoService.create(element).subscribe(
-                    archivos=>{
-                      let index = this.archivosFolio.indexOf(element);
-                      this.archivosFolio[index].id = archivos.body.id;
-                    }
-                  );
+                  element.urlArchivo = event['body'];
+                  element.status = true;
+                  if(element.id !== undefined || element.id !== null){
+                    this.archivoService.create(element).subscribe(
+                      archivos=>{
+                        let index = this.archivosFolio.indexOf(element);
+                        this.archivosFolio[index].id = archivos.body.id;
+                        this.archivosFolio[index].status =true;
+                      }
+                    );
+                  }
                 });
               }
               /*
@@ -1262,12 +1276,18 @@ export class FolioDetalleComponent implements OnInit {
               this.archivosFolio[index].id = respuesta.body.id;
               console.log(this.archivosFolio);
               */
+              }
+            
             },
             (existe) => {}
           );
         });
       }
     }
+  }
+  dowloadGCP(file){
+    console.log(file);
+    location.href = file.urlArchivo;
   }
 }
 
