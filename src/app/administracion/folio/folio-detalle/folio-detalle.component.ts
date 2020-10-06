@@ -139,7 +139,7 @@ export class FolioDetalleComponent implements OnInit {
   // implementacion upload archivos 
   @ViewChild("fileUpload", {static: false}) fileUpload: ElementRef;files  = [];  
   value=0;
-
+  subirArchivosNuevos = false
   archivosFolioGCP = [];
   constructor(
     private route: ActivatedRoute,
@@ -1168,8 +1168,10 @@ export class FolioDetalleComponent implements OnInit {
       archivo.size = formatBytes(event.target.files[i].size);
       archivo.archivoContentType  ="";
       archivo.archivo ="";
+      archivo.value = 0;
       this.archivosFolio=  [... this.archivosFolio, archivo];
       this.archivosFolioGCP = event.target.files;
+      this.subirArchivosNuevos = true;
     }
   }
  
@@ -1198,6 +1200,13 @@ export class FolioDetalleComponent implements OnInit {
     if (file.id === undefined) {
       let index = this.archivosFolio.indexOf(file);
       this.archivosFolio.splice(index, 1);
+      this.archivosFolio.forEach(element=>{
+        if(element.status === false){
+          this.subirArchivosNuevos = true;
+        }else{
+          this.subirArchivosNuevos = false;
+        }
+      });
     } else {
       Swal.fire({
         title: "Esta Seguro ?",
@@ -1208,6 +1217,11 @@ export class FolioDetalleComponent implements OnInit {
         cancelButtonText: "No, Mantener Archivo",
       }).then((result) => {
         if (result.value) {
+            this.archivoService.deleteGCP({ name : file.nombre }).subscribe(
+              respuesta=>{
+              }
+            );
+            
             let index = this.archivosFolio.indexOf(file);
             this.archivosFolio.splice(index, 1);
             this.archivoService.delete(file.id).subscribe(
@@ -1217,10 +1231,18 @@ export class FolioDetalleComponent implements OnInit {
                 "Archivo Eliminado Correctamente.",
                 "success"
               );
+              this.archivosFolio.forEach(element=>{
+                if(element.status === false){
+                  this.subirArchivosNuevos = true;
+                }else{
+                  this.subirArchivosNuevos = false;
+                }
+              });
             },
             (error) => {
               Swal.fire("Error!", "El archivo no pudo ser borrado.", "warning");
             }
+            
           );
             /*
             this.archivoService.deleteGCP('path  1 ').subscribe(
@@ -1237,57 +1259,116 @@ export class FolioDetalleComponent implements OnInit {
 
 
   async SubirArchivo(file){
+    let formData = new FormData();
+    //let archivoGCP = this.archivosFolioGCP.filter(archivo => archivo.name === file.nombre);
+    console.log(file);
+    for (var i = 0; i < this.archivosFolioGCP.length; i++) {
+        if(this.archivosFolioGCP[i].name == file.nombre ){
+        console.log('ingresa');
+        formData.append("file", this.archivosFolioGCP[i], this.archivosFolioGCP[i].name);
+        this.archivoService.createGCP(formData).pipe().subscribe(
+          event  => {
+            if(event['loaded'] && event['total']){
+              file.value = Math.round(event['loaded'] / event['total'] * 100);
+            }
+            if(event['body']){
+              console.log(event['body']);
+              file.value = 0;
+              Swal.fire(
+                "Subidos!",
+                "Archivos Subidos Correctamente.",
+                "success"
+              );
+              file.folio = this.Folio;
+              file.urlArchivo = event['body'];
+              file.status = true;
+              this.subirArchivosNuevos = false;
+              if(file.id === undefined || file.id === null){
+                this.archivoService.create(file).subscribe(
+                  archivos=>{
+                    file.id = archivos.body.id;
+                    file.status =true;
+                    file.value =0;
+                  }
+                );
+              }
+            
+            /*
+            let index = this.archivosFolio.indexOf(element);
+            this.archivosFolio[index].id = respuesta.body.id;
+            console.log(this.archivosFolio);
+            */
+            
+            }
+          
+          },
+          (existe) => {}
+        );
+      }else{
+
+      }
+    }
+
     
+  }
+  dowloadGCP(file){
+    console.log(file);
+    this.archivoService.dowloadGCP({ name : file.nombre }).subscribe(
+      respuesta=>{
+        
+      }
+    );
+  }
+  async uploadAllFile(){
     if (this.archivosFolioGCP.length > 0) {
       let formData = new FormData();
       for (var i = 0; i < this.archivosFolioGCP.length; i++) {
         formData.append("file", this.archivosFolioGCP[i], this.archivosFolioGCP[i].name);
         await new Promise((resolve)=>{
-          this.archivoService.createGCP(formData).pipe().subscribe(
-            event  => {
-              if(event['loaded'] && event['total']){
-                this.value = Math.round(event['loaded'] / event['total'] * 100);
-              }
-              if(event['body']){
-                console.log(event['body']);
-                Swal.fire(
-                  "Subidos!",
-                  "Archivos Subidos Correctamente.",
-                  "success"
-                );
-              if(this.archivosFolio.length > 0){
-                this.archivosFolio.forEach(element => {
-                  element.folio = this.Folio;
-                  element.urlArchivo = event['body'];
-                  element.status = true;
-                  if(element.id === undefined || element.id === null){
-                    this.archivoService.create(element).subscribe(
-                      archivos=>{
-                        let index = this.archivosFolio.indexOf(element);
-                        this.archivosFolio[index].id = archivos.body.id;
-                        this.archivosFolio[index].status =true;
-                      }
-                    );
-                  }
-                });
-              }
-              /*
-              let index = this.archivosFolio.indexOf(element);
-              this.archivosFolio[index].id = respuesta.body.id;
-              console.log(this.archivosFolio);
-              */
-              }
-            
-            },
-            (existe) => {}
+          this.archivosFolio.forEach(element=>{
+            this.archivoService.createGCP(formData).pipe().subscribe(
+              event  => {
+                if(event['loaded'] && event['total']){
+                  element.value = Math.round(event['loaded'] / event['total'] * 100);
+                }
+                if(event['body']){
+                  console.log(event['body']);
+                    element.folio = this.Folio;
+                    element.urlArchivo = event['body'];
+                    element.status = true;
+                    element.value = 0;
+                    this.subirArchivosNuevos = false;
+                    resolve();
+                    if(element.id === undefined || element.id === null){
+                      this.archivoService.create(element).subscribe(
+                        archivos=>{
+                          let index = this.archivosFolio.indexOf(element);
+                          this.archivosFolio[index].id = archivos.body.id;
+                          this.archivosFolio[index].status =true;
+                        }
+                      );
+                    }
+                
+                /*
+                let index = this.archivosFolio.indexOf(element);
+                this.archivosFolio[index].id = respuesta.body.id;
+                console.log(this.archivosFolio);
+                */
+                }
+              
+              },
+              (existe) => {}
+            );
+          })
+        }).then(()=>{
+          Swal.fire(
+            "Subidos!",
+            "Archivos Subidos Correctamente.",
+            "success"
           );
-        });
+        })
       }
     }
-  }
-  dowloadGCP(file){
-    console.log(file);
-    location.href = file.urlArchivo;
   }
 }
 
