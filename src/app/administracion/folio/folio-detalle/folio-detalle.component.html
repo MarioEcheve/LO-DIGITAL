@@ -351,51 +351,36 @@
                 <!--
                   
                 -->
-                <button type="button" class="btn btn-primary btn-sm mb-2" (click)="hiddenfileinput.click()" multiple  id="file">
+                <button type="button" class="btn btn-primary btn-sm mb-2 mr-1" (click)="hiddenfileinput.click()" multiple  id="file">
                   <i class="material-icons">attach_file</i>
-                  Adjuntar Archivo
+                  Adjuntar
                 </button> 
                 <button [disabled]="!subirArchivosNuevos" type="button" class="btn btn-primary btn-sm mb-2" (click)="uploadAllFile()" multiple  id="file">
-                  <i class="material-icons">attach_file</i>
+                  <i class="material-icons">arrow_upward</i>
                   Subir Todos
                 </button> 
                 <br>
                 <div>
-                  <table class="table">
-                    <thead>
-                        <tr>
-                            <th width="50%">Archivo</th>
-                            <th ng-show="uploader.isHTML5">Tamaño</th>
-                            <th class="text-right"  width="30%"></th>
-                            <th class="text-right">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let file of archivosFolio">
-                        <td *ngIf="file.status === true "><strong><a style="color: blue; cursor: pointer;">{{ file.nombre }}</a></strong></td>
-                        <td *ngIf="file.status === false "><strong>{{ file.nombre }}</strong></td>
-                        <td><strong ng-show="uploader.isHTML5" nowrap>{{file.size}} </strong></td>
-                        <td *ngIf="file.status === false || file.status === undefined" >
-                          <mat-progress-bar mode="determinate" [value]="file.value"></mat-progress-bar>
-                        </td>
-                        <td *ngIf="file.status === true">
-
-                        </td>                  
-                        <td nowrap class="text-right">                          
-                            <i type="button" class="material-icons text-gray" (click)="eliminarArchivo(file)">delete</i>                          
-                        </td>
-                        <td nowrap class="text-right" *ngIf="file.status === false || file.status === undefined">                          
-                            <i type="button" class="material-icons text-gray" (click)="SubirArchivo(file)">add</i>                          
-                        </td>
-                        <!--
-                          <td nowrap class="text-right" *ngIf="file.status === true">                          
-                          <i type="button" class="material-icons text-gray" (click)="dowloadGCP(file)">get_app</i>                          
-                        </td>
-                        -->
-                        
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div class="d-flex mb-1" style="background-color:#f0f0f0; width: 470px; min-height: 25px; padding-left: 8px; padding-right: 3px; border-radius: 3px;" *ngFor="let file of archivosFolio">
+                    <div *ngIf="file.status === true " style="font-weight: bold;margin-top: 2px;" class="flex-grow-1 mr-1">
+                      <a style="color: #15c; cursor: pointer;">{{ file.nombre }}</a>
+                    </div>
+                    <div *ngIf="file.status === false " style="min-width: 210px;font-weight: bold;margin-top: 2px;" class="ellipsis">{{ file.nombre }}</div>
+                    <div class="ml-2 mr-2 flex-grow-1" *ngIf="file.status === false || file.status === undefined">
+                      <mat-progress-bar mode="determinate" [value]="file.value" style="margin-top: 10px;"></mat-progress-bar>
+                    </div>
+                    <div *ngIf="file.status === true">
+                    </div>                    
+                    <div style="min-width: 70px; font-weight: bold; color: #777;margin-top: 2px;">
+                      <strong ng-show="uploader.isHTML5" nowrap>{{file.size}}</strong>
+                    </div>                                      
+                    <div nowrap class="text-right" style="margin-top: 2px;">                          
+                      <i type="button" style="font-size: 18px;float: right;" class="material-icons text-gray" (click)="eliminarArchivo(file)">delete</i>                         
+                    </div>                    
+                    <div nowrap class="text-right" style="margin-top: 2px;" *ngIf="file.status === false || file.status === undefined">                          
+                      <i type="button" style="font-size: 18px;" class="material-icons text-gray" (click)="SubirArchivo(file)">arrow_upward</i>                          
+                    </div>
+                  </div>
                   <hr>
                   <button mat-raised-button type="submit" class="btn btn-default" (click)="eliminarFolio()" *ngxPermissionsOnly="['administrador','asistente','superior', 'administrador/s']">
                     <!-- <i class="material-icons">delete</i> -->
