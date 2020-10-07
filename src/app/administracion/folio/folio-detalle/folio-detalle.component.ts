@@ -1260,7 +1260,7 @@ export class FolioDetalleComponent implements OnInit {
                   element.folio = this.Folio;
                   element.urlArchivo = event['body'];
                   element.status = true;
-                  if(element.id !== undefined || element.id !== null){
+                  if(element.id === undefined || element.id === null){
                     this.archivoService.create(element).subscribe(
                       archivos=>{
                         let index = this.archivosFolio.indexOf(element);
