@@ -22,7 +22,7 @@ export class ArchivoService {
     return this.http.post<any>(this.resourceUrl, archivo, { observe: 'response' });
   }
   createGCP(archivo: any): Observable<any> {
-    return this.http.post<any>('http://localhost:8001/save', archivo, { observe: 'response' });
+    return this.http.post<any>(`https://email-lo-digital.an.r.appspot.com/save`, archivo, {reportProgress : true ,observe: 'events' });
   }
   update(archivo: IArchivo): Observable<EntityResponseType> {
     return this.http.put<IArchivo>(this.resourceUrl, archivo, { observe: 'response' });
