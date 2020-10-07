@@ -1208,6 +1208,11 @@ export class FolioDetalleComponent implements OnInit {
         cancelButtonText: "No, Mantener Archivo",
       }).then((result) => {
         if (result.value) {
+            this.archivoService.deleteGCP({ name : file.nombre }).subscribe(
+              respuesta=>{
+              }
+            );
+            
             let index = this.archivosFolio.indexOf(file);
             this.archivosFolio.splice(index, 1);
             this.archivoService.delete(file.id).subscribe(
@@ -1221,6 +1226,7 @@ export class FolioDetalleComponent implements OnInit {
             (error) => {
               Swal.fire("Error!", "El archivo no pudo ser borrado.", "warning");
             }
+            
           );
             /*
             this.archivoService.deleteGCP('path  1 ').subscribe(
@@ -1260,6 +1266,7 @@ export class FolioDetalleComponent implements OnInit {
                   element.folio = this.Folio;
                   element.urlArchivo = event['body'];
                   element.status = true;
+                  this.value = 0;
                   if(element.id === undefined || element.id === null){
                     this.archivoService.create(element).subscribe(
                       archivos=>{
