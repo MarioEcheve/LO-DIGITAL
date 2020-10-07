@@ -355,6 +355,10 @@
                   <i class="material-icons">attach_file</i>
                   Adjuntar Archivo
                 </button> 
+                <button [disabled]="!subirArchivosNuevos" type="button" class="btn btn-primary btn-sm mb-2" (click)="uploadAllFile()" multiple  id="file">
+                  <i class="material-icons">attach_file</i>
+                  Subir Todos
+                </button> 
                 <br>
                 <div>
                   <table class="table">
@@ -368,10 +372,11 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let file of archivosFolio">
-                        <td><strong>{{ file.nombre }}</strong></td>
+                        <td *ngIf="file.status === true "><strong><a style="color: blue; cursor: pointer;">{{ file.nombre }}</a></strong></td>
+                        <td *ngIf="file.status === false "><strong>{{ file.nombre }}</strong></td>
                         <td><strong ng-show="uploader.isHTML5" nowrap>{{file.size}} </strong></td>
                         <td *ngIf="file.status === false || file.status === undefined" >
-                          <mat-progress-bar mode="determinate" [value]="value"></mat-progress-bar>
+                          <mat-progress-bar mode="determinate" [value]="file.value"></mat-progress-bar>
                         </td>
                         <td *ngIf="file.status === true">
 
@@ -380,11 +385,14 @@
                             <i type="button" class="material-icons text-gray" (click)="eliminarArchivo(file)">delete</i>                          
                         </td>
                         <td nowrap class="text-right" *ngIf="file.status === false || file.status === undefined">                          
-                            <i type="button" class="material-icons text-gray" (click)="SubirArchivo()">add</i>                          
+                            <i type="button" class="material-icons text-gray" (click)="SubirArchivo(file)">add</i>                          
                         </td>
-                        <td nowrap class="text-right" *ngIf="file.status === true">                          
+                        <!--
+                          <td nowrap class="text-right" *ngIf="file.status === true">                          
                           <i type="button" class="material-icons text-gray" (click)="dowloadGCP(file)">get_app</i>                          
                         </td>
+                        -->
+                        
                       </tr>
                     </tbody>
                   </table>

@@ -43,6 +43,9 @@ export class ArchivoService {
   deleteGCP(path: any): Observable<any> {
     return this.http.post<any>('http://localhost:8001/delete', path, { observe: 'response' });
   }
+  dowloadGCP(path: any): Observable<any> {
+    return this.http.post<any>('http://localhost:8001/download', path, { observe: 'response' });
+  }
   AchivosPorFolio(idFolio?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption();
     return this.http.get<IArchivo[]>(`${this.resourceaAchivosPorFolio}/${idFolio}`, { params: options, observe: 'response' });

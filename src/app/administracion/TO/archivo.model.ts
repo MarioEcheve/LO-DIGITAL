@@ -10,6 +10,7 @@ export interface IArchivo {
   urlArchivo?: string;
   status?: boolean;
   folio?: IFolio;
+  value? : number;
 }
 
 export class Archivo implements IArchivo {
@@ -22,8 +23,10 @@ export class Archivo implements IArchivo {
     public nombre?: string,
     public urlArchivo?: string,
     public status?: boolean,
-    public folio?: IFolio
+    public folio?: IFolio,
+    public value?: number
   ) {
     this.status = this.status || false;
+    this.value = 0;
   }
 }
