@@ -115,12 +115,12 @@ export class UsuarioDependenciaService {
         )
       );
   }
-  validateClave(clave : String , idUsuario : number) : Observable<EntityResponseType> {
+  validateClave(clave : number , idUsuario : number) : Observable<any> {
     return this.http
       .get<any>(`${this.resourceUrlValidaClave}/${clave}/${idUsuario}`, {
         observe: "response",
       })
-      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+      .pipe(map((res) =>res));
   }
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, {

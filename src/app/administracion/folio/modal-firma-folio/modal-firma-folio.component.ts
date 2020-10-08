@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { TipoFirmaService } from "../../services/tipo-firma.service";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import { UsuarioDependenciaService } from "../../services/usuario-dependencia.service";
@@ -24,20 +24,22 @@ export class ModalFirmaFolioComponent implements OnInit {
 
   ngOnInit(): void {
     this.firmaFormGroup = this.fb.group({
-      tipoFirma: [],
+      tipoFirma: ['',[Validators.required]],
+      clave : ['' , [Validators.required]]
     });
     this.obtenerTipoFirma();
     this.obtenerUsuarioDependencia();
   }
   firmar() {
     let usuarioActual = JSON.parse(localStorage.getItem("user"));
-    this.UsuarioDependenciaService.validateClave('12345',usuarioActual.id).subscribe(
+    let clave = this.firmaFormGroup.controls['clave'].value;
+    this.UsuarioDependenciaService.validateClave(clave,usuarioActual.id).subscribe(
       respuesta => {
         console.log(respuesta.body);
-        if(!respuesta){
-
+        if(respuesta.body === "Error"){
+          Swal.fire("Error!", "Clave Incorrecta.", "warning");
         }else{
-            /*
+              
               let tipoFirma = this.firmaFormGroup.controls["tipoFirma"].value;
               if(this.data.lectura === true){
                 this.dialogRef.close(tipoFirma);
@@ -53,7 +55,6 @@ export class ModalFirmaFolioComponent implements OnInit {
                   this.dialogRef.close(tipoFirma);
                 }
               }
-            */
         }
       }
     );
