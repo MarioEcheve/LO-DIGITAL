@@ -22,6 +22,9 @@ export class UsuarioDependenciaService {
   public resourceUrlFindUserByUsuarioDependenciaRolUser = this.SERVER_API_URL + "api/findUserByUsuarioDependenciaRolUser";
   public resourceUrlFindContratosByDependencia= this.SERVER_API_URL + "api/findContratosByDependencia";
   public resourceUrlFindContratosByUsuarioNormal= this.SERVER_API_URL + "api/findContratosByUsuarioNormal";
+  public resourceUrlValidaClave= this.SERVER_API_URL + "api/validaClave";
+
+  
   constructor(protected http: HttpClient) {}
 
   create(
@@ -108,11 +111,17 @@ export class UsuarioDependenciaService {
       })
       .pipe(
         map((res: EntityArrayResponseType) =>
-          this.convertDateArrayFromServer(res)
+          this.convertDateArrayFromServer(res) 
         )
       );
   }
-  
+  validateClave(clave : String , idUsuario : number) : Observable<EntityResponseType> {
+    return this.http
+      .get<any>(`${this.resourceUrlValidaClave}/${clave}/${idUsuario}`, {
+        observe: "response",
+      })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, {
       observe: "response",

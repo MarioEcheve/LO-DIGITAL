@@ -5,6 +5,6 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://backend-dot-lo-digital.nn.r.appspot.com/',
-  //apiUrl : 'http://localhost:8080/'
+  //apiUrl: 'https://backend-dot-lo-digital.nn.r.appspot.com/',
+  apiUrl : 'http://localhost:8080/'
 };
