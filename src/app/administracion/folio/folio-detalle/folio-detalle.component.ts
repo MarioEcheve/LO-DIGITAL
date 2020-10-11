@@ -1313,11 +1313,14 @@ export class FolioDetalleComponent implements OnInit {
   }
   dowloadGCP(file){
     console.log(file);
-    this.archivoService.dowloadGCP({ name : file.nombre }).subscribe(
+    let path = 'https://www.googleapis.com/storage/v1/b/contenedor-archivos-clientes/o/' + file.nombre + '?alt=media'; 
+    location.href = path;
+    /*
+    this.archivoService.dowloadGCP({ name : file.urlArchivo }).subscribe(
       respuesta=>{
-        
+          console.log(respuesta.body);
       }
-    );
+    );*/
   }
   async uploadAllFile(){
     if (this.archivosFolioGCP.length > 0) {

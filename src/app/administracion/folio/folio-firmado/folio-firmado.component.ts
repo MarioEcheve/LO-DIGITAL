@@ -298,7 +298,9 @@ export class FolioFirmadoComponent implements OnInit {
   }
 
   downloadFileGCP(file){
-    location.href = file.urlArchivo;
+    console.log(file);
+    let path = 'https://www.googleapis.com/storage/v1/b/contenedor-archivos-clientes/o/' + file.nombre + '?alt=media'; 
+    location.href = path;
   }
 
   async navegateFolioRespuesta(folioRelacionado){

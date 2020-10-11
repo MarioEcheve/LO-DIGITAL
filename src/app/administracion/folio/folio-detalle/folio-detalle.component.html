@@ -363,7 +363,7 @@
                 <div>
                   <div class="d-flex mb-1" style="background-color:#f0f0f0; width: 470px; min-height: 25px; padding-left: 8px; padding-right: 3px; border-radius: 3px;" *ngFor="let file of archivosFolio">
                     <div *ngIf="file.status === true " style="font-weight: bold;margin-top: 2px;" class="flex-grow-1 mr-1">
-                      <a style="color: #15c; cursor: pointer;">{{ file.nombre }}</a>
+                      <a style="color: #15c; cursor: pointer;" (click)="dowloadGCP(file)">{{ file.nombre }}</a>
                     </div>
                     <div *ngIf="file.status === false " style="min-width: 210px;font-weight: bold;margin-top: 2px;" class="ellipsis">{{ file.nombre }}</div>
                     <div class="ml-2 mr-2 flex-grow-1" *ngIf="file.status === false || file.status === undefined">

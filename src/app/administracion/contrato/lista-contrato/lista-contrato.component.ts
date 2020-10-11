@@ -50,7 +50,7 @@ export class ListaContratoComponent implements OnInit {
     this.obtenerListaDeContratos();
     console.log(this.listaDeContratos);
   }
-  obtenerListaDeContratos() {
+   obtenerListaDeContratos() {
     let usuario = JSON.parse(localStorage.getItem("user"));
     let administrador = false;
     let usuarioDependen;
@@ -61,24 +61,16 @@ export class ListaContratoComponent implements OnInit {
           this.contratoService.buscaContratoPorDependencia(element.dependencia.id).subscribe(
             respuesta=>{
               console.log(respuesta.body);
-              this.listaDeContratos =  respuesta.body;
+              setTimeout(() => {
+               if(respuesta.body.length > 0){
+                respuesta.body.forEach(element=>{
+                  this.listaDeContratos = [...this.listaDeContratos , element];
+                })
+               }
+              }, 200);
             }
           );
         }); 
-        /*
-        this.contratoService.buscaContratoPorDependencia(usuarioDependen.body[0].dependencia.id).subscribe(
-          respuesta=>{
-            console.log(respuesta.body);
-          }
-        );
-        /*
-        if(usuarioDependencia.body[0]?.perfilUsuarioDependencia?.nombre.toLowerCase() === "super usuario"){
-          administrador = true;
-          usuarioDependen = usuarioDependencia.body[0];
-        }else{
-          administrador = false;
-          usuarioDependen = usuarioDependencia.body[0];
-        }*/
       }
     );    
   }

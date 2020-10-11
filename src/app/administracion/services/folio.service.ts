@@ -225,7 +225,7 @@ export class FolioService {
   }
   informarEmailFolioFirmado( data :any): Observable<any> {
     return this.http
-      .post<any>(`https://email-lo-digital.an.r.appspot.com/email`,data, {
+      .post<any>(`http://localhost:8001/email`,data, {
         observe: "response",
       })
       .pipe(map((res: any) => res));
