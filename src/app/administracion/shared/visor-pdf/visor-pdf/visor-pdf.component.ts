@@ -90,8 +90,8 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
   }
   modalFirmarFolio() {
     const dialogRef = this.dialog.open(ModalFirmaFolioComponent, {
-      width: "440px",
-      height: "200px",
+      width: "420px",
+      height: "240px",
       data: { folio : this.folio , lectura : this.data.lectura }
     });
     dialogRef.afterClosed().subscribe((result) => {
