@@ -1,4 +1,4 @@
-import { NgModule, LOCALE_ID } from "@angular/core";
+import { NgModule, LOCALE_ID, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule } from "@angular/router";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -64,7 +64,7 @@ import { FiltroFolioPersonalizadoComponent } from './administracion/shared/filtr
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CambioAdministradorComponent } from './administracion/shared/cambio-administrador/cambio-administrador.component';
 import { InformarPdfComponent } from './administracion/shared/informar-pdf/informar-pdf.component';
-
+import { NgxSpinnerModule } from "ngx-spinner";
 
 registerLocaleData(localePy, 'es');
 registerLocaleData(localePt, 'pt');
@@ -104,6 +104,8 @@ registerLocaleData(localeEsAr, 'es-Ar');
     MatTooltipModule,
     MatNativeDateModule,
     NgxExtendedPdfViewerModule,
+    NgxSpinnerModule
+    
   ],
   declarations: [],
 })
@@ -129,6 +131,8 @@ export class MaterialModule {}
     FormsModule,
     ReactiveFormsModule,
     
+
+    
   ],
   declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent,FiltroFolioPersonalizadoComponent,VisorPdfComponent,CambioAdministradorComponent, InformarPdfComponent],
   providers: [
@@ -146,5 +150,6 @@ export class MaterialModule {}
     },
   ],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}

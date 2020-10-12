@@ -6,6 +6,7 @@ import { AccountService } from "src/app/core/auth/account.service";
 import { UsuarioService } from "src/app/core/user/usuario.service";
 import { UsuarioDependenciaService } from '../../administracion/services/usuario-dependencia.service';
 import { User } from "src/app/core/user/user.model";
+import { NgxSpinnerService } from "ngx-spinner";
  declare var $: any;
 
 @Component({
@@ -32,7 +33,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private accountService: AccountService,
     private usuarioService: UsuarioService,
-    private usuarioDependenciaService : UsuarioDependenciaService
+    private usuarioDependenciaService : UsuarioDependenciaService,
+    private spinner: NgxSpinnerService
   ) {
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;
@@ -80,6 +82,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   login() {
+    this.spinner.show();
     this.loginService
       .login({
         username: this.loginForm.get("username")!.value,
@@ -88,23 +91,23 @@ export class LoginComponent implements OnInit, OnDestroy {
       })
       .subscribe(
         (res) => {
-
           let usuario = new User;
           usuario = res;
           this.usuarioDependenciaService.findUserByUsuarioDependencia(usuario.id).subscribe(
             usuarioDependencia=>{
+              this.spinner.hide();
               this.showNotificationSuccess("top", "right", res);
               console.log(usuarioDependencia.body);
               usuario.authorities = [...usuario.authorities, usuarioDependencia.body[0].perfilUsuarioDependencia.nombre.toUpperCase()]
               localStorage.setItem("user", JSON.stringify(usuario));
               this.router.navigate(["dashboard"]);
+              
             }
           );
-          
-          
           //console.log(JSON.parse(localStorage.getItem("user")));
         },
         (error) => {
+          this.spinner.hide();
           this.noValidos = true;
           this.showNotificationDanger("top", "right");
         },
