@@ -41,10 +41,10 @@ export class ArchivoService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
   deleteGCP(path: any): Observable<any> {
-    return this.http.post<any>('http://localhost:8001/delete', path, { observe: 'response' });
+    return this.http.post<any>('https://email-lo-digital.an.r.appspot.com/delete', path, { observe: 'response' });
   }
   dowloadGCP(path: any): Observable<any> {
-    return this.http.post<any>('http://localhost:8001/download', path, { observe: 'response' });
+    return this.http.post<any>('https://email-lo-digital.an.r.appspot.com/download', path, { observe: 'response' });
   }
   AchivosPorFolio(idFolio?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption();
