@@ -565,25 +565,19 @@ export class FolioComponent implements OnInit, AfterViewInit {
       break;
     case 6 :
       this.folios = [];
-      let nombreEmisor = "";
       let foliosGuardados= [];
       this.favoritoService.BuscarFavoritoByUsuario(this.usuarioLibro.id).subscribe(
         folioFavoritos =>{
           if(folioFavoritos.body.length > 0){
             folioFavoritos.body.forEach(
               element=>{
-                this.usuarioLibroService
-                .find(element.folio.idUsuarioCreador)
-                .subscribe((respuesta2) => {
-                  nombreEmisor = respuesta2.body.usuarioDependencia.usuario.firstName + " "+ respuesta2.body.usuarioDependencia.usuario.lastName;
-                  element.folio.emisor = nombreEmisor;
-                  foliosGuardados = [...foliosGuardados, element.folio];
-                });
+                foliosGuardados = [...foliosGuardados, element.folio];
               }
             );
           }
           setTimeout(() => {
             this.folios = foliosGuardados;
+            console.log(this.folios);
             if(this.indexEliminadoFavorito.length > 0 ){
               this.indexEliminadoFavorito.forEach(element=>{
                 let folio = this.folios.find(folio => folio.id === element.id);
@@ -593,7 +587,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
             }
             this.dataSource = new MatTableDataSource(this.folios);
             this.dataSource.paginator = this.paginator;
-          }, 100);
+          }, 400);
         }
       );
       this.typesOfActions[index].isClicked = true;
