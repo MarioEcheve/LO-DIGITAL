@@ -1,8 +1,8 @@
-<mat-dialog-content>
-  <h5 style="font-weight: bold;">Informar</h5>
+<mat-dialog-content style="line-height: 1px;">
+  <h5 style="font-weight: bold;">Enviar Folio</h5>
   <br/>
   <form [formGroup]="formInformar">
-    <div class="row">
+    <div class="row" style="font-size: 13px">
       <div class="col-md-12">
           <mat-form-field class="example-full-width">
               <input
@@ -35,6 +35,6 @@
 <mat-dialog-actions align="end">
   <button mat-button (click)="cerrar()">Cancelar</button>
   <button mat-button cdkFocusInitial (click)="sendEmail()" [disabled]="!formInformar.valid" class="btn btn-primary">
-    Informar
+    Enviar
   </button>  
 </mat-dialog-actions>

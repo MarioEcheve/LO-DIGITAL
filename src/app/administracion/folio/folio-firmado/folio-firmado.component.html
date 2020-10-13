@@ -245,20 +245,38 @@
               <hr />
               <div class="row">
                 <div class="col-6" style="font-size: 15px; font-weight: bold;">
-                  {{ listaArchivos.length}} Archivos Adjuntos:
-                </div>
+                  Archivos Adjuntos:
+                </div>              
                 <!-- <div class="col-6 text-right">
-                  <a href=""><i style="color: #000000;" class="material-icons mr-1">get_app</i></a>                  
+                  <a><i style="color: #15c;" class="material-icons mr-1">get_app</i></a>                  
                 </div> -->
               </div>
-              <ul class="list-inline" >
-                <li *ngFor="let archivo of listaArchivos" (click)="downloadFileGCP(archivo)" class="list-inline-item">
-                  <!-- <a >{{ archivo.descripcion}}</a> -->
-                  <span class="badge badge-default" style="text-transform:none">{{ archivo.descripcion}}</span>
-                </li>
-                &nbsp;
+              <p style="font-size: 11px;" class="mt-1">
+                Total de archivos: 
+                <a style="font-weight: bold;" class="muted">{{ listaArchivos.length}}</a>, 
+                Peso total:
+                <a style="font-weight: bold;">XXXXX MB</a>
+              </p>
+              <ul class="list-inline" style="padding-left: 12px;" >
+                <li *ngFor="let archivo of listaArchivos" style="padding-right: 27px;" class="list-inline-item">
+                  <div class="row" style="background-color:#f0f0f0; min-height: 25px;padding-left: 8px; padding-right: 2px; border-radius: 3px;">
+                    <div style="font-weight: bold;margin-top: 2px;" class="mr-2">
+                      <a style="color: #15c; cursor: pointer;" (click)="downloadFileGCP(archivo)">{{ archivo.descripcion}}</a>
+                    </div>         
+                    <div style="min-width: 70px; font-weight: bold; color: #777;margin-top: 2px;">
+                      <strong ng-show="uploader.isHTML5" nowrap>{{archivo.size}}</strong>
+                    </div>
+                  </div>
+                </li>                
               </ul>
-              <hr />
+
+
+         <!--      <div class="d-flex mt-1" *ngIf="muestraRespuestaReferenciaFechaRequerida">
+                <div class="flex-grow-1">
+             -->
+              
+
+              <hr>
               <a style="font-weight: bold;" *ngIf="emisor">
                 {{ emisor.usuarioDependencia.usuario.firstName }} {{ emisor.usuarioDependencia.usuario.lastName }}</a>
               <br/>{{emisor?.cargoFuncion}}
