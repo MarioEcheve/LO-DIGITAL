@@ -1314,6 +1314,50 @@ export class FolioDetalleComponent implements OnInit {
     }
 
     
+
+    
+  }
+
+  
+  async SubirArchivo2(file){
+    let formData = new FormData();
+    //let archivoGCP = this.archivosFolioGCP.filter(archivo => archivo.name === file.nombre);
+    console.log(file);
+    for (var i = 0; i < this.archivosFolioGCP.length; i++) {
+        if(this.archivosFolioGCP[i].name == file.nombre ){
+        formData.append("file", this.archivosFolioGCP[i], this.archivosFolioGCP[i].name);
+        this.archivoService.createGCP(formData).pipe().subscribe(
+          event  => {
+            if(event['loaded'] && event['total']){
+              file.value = Math.round(event['loaded'] / event['total'] * 100);
+            }
+            if(event['body']){
+              file.folio = this.Folio;
+              file.urlArchivo = event['body'];
+              file.status = true;
+              this.subirArchivosNuevos = false;
+              if(file.id === undefined || file.id === null){
+                this.archivoService.create(file).subscribe(
+                  archivos=>{
+                    file.id = archivos.body.id;
+                    file.status =true;
+                    file.value =0;
+                  }
+                );
+              }
+            }
+          
+          },
+          (existe) => {}
+        );
+      }else{
+
+      }
+    }
+
+    
+
+    
   }
   dowloadGCP(file){
     console.log(file);
@@ -1322,45 +1366,15 @@ export class FolioDetalleComponent implements OnInit {
   }
   async uploadAllFile(){
     if (this.archivosFolioGCP.length > 0) {
-      let formData = new FormData();
-      console.log(this.archivosFolioGCP.length);
-      console.log(this.archivosFolio.length);
       for (var i = 0; i < this.archivosFolioGCP.length; i++) {
+        let formData = new FormData();
         formData.append("file", this.archivosFolioGCP[i], this.archivosFolioGCP[i].name);
-
         for(var x = 0; x < this.archivosFolio.length; x++){
-          let response = await new Promise((resolve)=>{
-            this.archivoService.createGCP(formData).pipe().subscribe(
-              event  => {
-                if(event['loaded'] && event['total']){
-                  this.archivosFolio[x].value = Math.round(event['loaded'] / event['total'] * 100);
-                }
-                if(event['body']){
-                  this.archivosFolio[x].folio = this.Folio;
-                  this.archivosFolio[x].urlArchivo = event['body'];
-                  this.archivosFolio[x].status = true;
-                  this.archivosFolio[x].value = 0;
-                    this.subirArchivosNuevos = false;
-                    if(this.archivosFolio[x].id === undefined || this.archivosFolio[x].id === null){
-                      this.guardarGCPFile(this.archivosFolio[x]);
-                    }
-                    resolve("ok");
-                }
-              },
-              (existe) => {}
+             this.SubirArchivo2(this.archivosFolio[x]).then(
+              res=>{
+              }
             );
-          });
-          console.log(response);
         }
-        /*
-        this.archivosFolio.forEach(element=>{
-
-            //this.SubirArchivo(element);
-            this.GCPFilesSaves(formData,element).then((value)=>{
-              console.log(value);
-            })
-          });
-          */
       }
     }
   }
