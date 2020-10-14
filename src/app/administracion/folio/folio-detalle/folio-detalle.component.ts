@@ -1321,35 +1321,36 @@ export class FolioDetalleComponent implements OnInit {
   
   async SubirArchivo2(file){
     let formData = new FormData();
-    //let archivoGCP = this.archivosFolioGCP.filter(archivo => archivo.name === file.nombre);
-    console.log(file);
     for (var i = 0; i < this.archivosFolioGCP.length; i++) {
         if(this.archivosFolioGCP[i].name == file.nombre ){
         formData.append("file", this.archivosFolioGCP[i], this.archivosFolioGCP[i].name);
-        this.archivoService.createGCP(formData).pipe().subscribe(
-          event  => {
-            if(event['loaded'] && event['total']){
-              file.value = Math.round(event['loaded'] / event['total'] * 100);
-            }
-            if(event['body']){
-              file.folio = this.Folio;
-              file.urlArchivo = event['body'];
-              file.status = true;
-              this.subirArchivosNuevos = false;
-              if(file.id === undefined || file.id === null){
-                this.archivoService.create(file).subscribe(
-                  archivos=>{
-                    file.id = archivos.body.id;
-                    file.status =true;
-                    file.value =0;
-                  }
-                );
+        await new Promise((resolve)=>{
+          this.archivoService.createGCP(formData).pipe().subscribe(
+            event  => {
+              if(event['loaded'] && event['total']){
+                file.value = Math.round(event['loaded'] / event['total'] * 100);
               }
-            }
-          
-          },
-          (existe) => {}
-        );
+              if(event['body']){
+                file.folio = this.Folio;
+                file.urlArchivo = event['body'];
+                file.status = true;
+                this.subirArchivosNuevos = false;
+                if(file.id === undefined || file.id === null){
+                  this.archivoService.create(file).subscribe(
+                    archivos=>{
+                      file.id = archivos.body.id;
+                      file.status =true;
+                      file.value =0;
+                    }
+                  );
+                }
+                resolve('ok');
+              }
+            
+            },
+            (existe) => {}
+          );
+        })
       }else{
 
       }
@@ -1370,7 +1371,7 @@ export class FolioDetalleComponent implements OnInit {
         let formData = new FormData();
         formData.append("file", this.archivosFolioGCP[i], this.archivosFolioGCP[i].name);
         for(var x = 0; x < this.archivosFolio.length; x++){
-             this.SubirArchivo2(this.archivosFolio[x]).then(
+             await this.SubirArchivo2(this.archivosFolio[x]).then(
               res=>{
               }
             );
