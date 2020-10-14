@@ -1323,16 +1323,44 @@ export class FolioDetalleComponent implements OnInit {
   async uploadAllFile(){
     if (this.archivosFolioGCP.length > 0) {
       let formData = new FormData();
-      console.log(this.archivosFolioGCP);
+      console.log(this.archivosFolioGCP.length);
+      console.log(this.archivosFolio.length);
       for (var i = 0; i < this.archivosFolioGCP.length; i++) {
         formData.append("file", this.archivosFolioGCP[i], this.archivosFolioGCP[i].name);
-        console.log(formData.get("file"));
+
+        for(var x = 0; x < this.archivosFolio.length; x++){
+          let response = await new Promise((resolve)=>{
+            this.archivoService.createGCP(formData).pipe().subscribe(
+              event  => {
+                if(event['loaded'] && event['total']){
+                  this.archivosFolio[x].value = Math.round(event['loaded'] / event['total'] * 100);
+                }
+                if(event['body']){
+                  this.archivosFolio[x].folio = this.Folio;
+                  this.archivosFolio[x].urlArchivo = event['body'];
+                  this.archivosFolio[x].status = true;
+                  this.archivosFolio[x].value = 0;
+                    this.subirArchivosNuevos = false;
+                    if(this.archivosFolio[x].id === undefined || this.archivosFolio[x].id === null){
+                      this.guardarGCPFile(this.archivosFolio[x]);
+                    }
+                    resolve("ok");
+                }
+              },
+              (existe) => {}
+            );
+          });
+          console.log(response);
+        }
+        /*
         this.archivosFolio.forEach(element=>{
+
             //this.SubirArchivo(element);
             this.GCPFilesSaves(formData,element).then((value)=>{
               console.log(value);
             })
           });
+          */
       }
     }
   }
@@ -1353,18 +1381,18 @@ export class FolioDetalleComponent implements OnInit {
           if(event['loaded'] && event['total']){
             element.value = Math.round(event['loaded'] / event['total'] * 100);
           }
-            if(event['body']){
-              console.log(element.value);
-                element.folio = this.Folio;
-                element.urlArchivo = event['body'];
-                element.status = true;
-                element.value = 0;
-                this.subirArchivosNuevos = false;
-                if(element.id === undefined || element.id === null){
-                  this.guardarGCPFile(element);
-                  resolve("ok");
-                }
-            }
+          if(event['body']){
+            console.log(element.value);
+              element.folio = this.Folio;
+              element.urlArchivo = event['body'];
+              element.status = true;
+              element.value = 0;
+              this.subirArchivosNuevos = false;
+              if(element.id === undefined || element.id === null){
+                this.guardarGCPFile(element);
+                resolve("ok");
+              }
+          }
         },
         (existe) => {}
       );
