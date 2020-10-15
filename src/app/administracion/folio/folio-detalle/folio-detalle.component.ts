@@ -801,7 +801,8 @@ export class FolioDetalleComponent implements OnInit {
     }
   }
   async previsualizar() {
-    let anotacion = stripHtml(this.folioForm.controls["anotacion"].value);
+    let anotacion = this.folioForm.controls["anotacion"].value;
+    console.log(anotacion)
     let imagen = document.getElementById('imagenLogo1');
     let imagen2 = document.getElementById('imagenLogo2');
     let imagenBase64 = getBase64Image(imagen);
@@ -913,7 +914,10 @@ export class FolioDetalleComponent implements OnInit {
           margin: [0, 20, 0, 0]  
         },  
         {  
-          text: `${anotacion}` ,  
+          text:  htmlToPdfmake(anotacion, {
+            window: window,
+          }) ,  
+          style: "",
           bold: true,
           fontSize: 8, 
           margin: [0, 5, 0, 0]  
@@ -1429,10 +1433,12 @@ function  getBase64Image (img ){
   return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
 function stripHtml(html) {
+  console.log(html);
   // Create a new div element
   var temporalDivElement = document.createElement("div");
   // Set the HTML content with the providen
   temporalDivElement.innerHTML = html;
+  console.log(temporalDivElement.innerHTML)
   // Retrieve the text property of the element (cross-browser support)*/
   return temporalDivElement.textContent || temporalDivElement.innerText || "";
 }
