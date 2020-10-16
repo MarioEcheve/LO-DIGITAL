@@ -37,14 +37,14 @@ export class FolioFirmadoComponent implements OnInit {
   dependenciaMandante;
   contrato = new Contrato();
   libros: Libro[] = [];
-  idlibroRelacionado =null;;
-  folioRelacionado=  new Folio();
-  listaArchivos:Archivo[] = [];
+  idlibroRelacionado = null;;
+  folioRelacionado = new Folio();
+  listaArchivos: Archivo[] = [];
   respuestaFolioShow = false;
-  folioReferencias : Folio[] = [];
+  folioReferencias: Folio[] = [];
   emisor;
   receptor;
-  usuario :  UsuarioDependencia;
+  usuario: UsuarioDependencia;
   // editor angular 
   editorConfig: AngularEditorConfig = {
     editable: false,
@@ -91,14 +91,14 @@ export class FolioFirmadoComponent implements OnInit {
     private usuarioLibroService: UsuarioLibroService,
     private router: Router,
     private dialog: MatDialog,
-    private contratoService : ContratoService,
-    private libroService : LibroService,
-    private UsuarioDependenciaService : UsuarioDependenciaService,
-    private permissionsService : NgxPermissionsService,
-    private archivoService : ArchivoService,
-    private folioReferenciaService : FolioReferenciaService
-    
-  ) {}
+    private contratoService: ContratoService,
+    private libroService: LibroService,
+    private UsuarioDependenciaService: UsuarioDependenciaService,
+    private permissionsService: NgxPermissionsService,
+    private archivoService: ArchivoService,
+    private folioReferenciaService: FolioReferenciaService
+
+  ) { }
   ngOnInit() {
     this.folioService.navBarChange(2);
     let idFolio = this.route.snapshot.paramMap.get("id");
@@ -116,22 +116,22 @@ export class FolioFirmadoComponent implements OnInit {
         ["5", "Paul Dickens", "Communication", "2015", "69,201", ""],
       ],
     };
-   
+
   }
   obtenerFolio(idFolio) {
     this.folioService.find(idFolio).subscribe((respuesta) => {
       this.Folio = respuesta.body;
       this.anotacion.setValue(this.Folio.anotacion);
-      if(this.Folio.requiereRespuesta === true){
+      if (this.Folio.requiereRespuesta === true) {
         this.setColorFechaRequerida(this.Folio);
       }
-      let usuarioActual =JSON.parse(localStorage.getItem("user"));
+      let usuarioActual = JSON.parse(localStorage.getItem("user"));
       this.obtenerPerfilLibroUsuario(this.Folio.libro.id, usuarioActual.id);
       this.idlibroRelacionado = respuesta.body.idFolioRespuesta;
-      
-      if(respuesta.body.idFolioRelacionado !== null){
+
+      if (respuesta.body.idFolioRelacionado !== null) {
         this.folioService.find(respuesta.body.idFolioRelacionado).subscribe(
-          folioRelacionado=>{
+          folioRelacionado => {
             this.folioRelacionado = folioRelacionado.body;
           }
         );
@@ -144,15 +144,15 @@ export class FolioFirmadoComponent implements OnInit {
         .subscribe((respuesta) => {
           this.dependenciaMandante = respuesta.body;
         });
-        
-        this.contratoService.find(this.Folio.libro.contrato.id).subscribe((respuesta) => {
-          this.contrato = respuesta.body;
-          this.libroService
-            .buscarlibroPorContrato(respuesta.body.id)
-            .subscribe((respuesta) => {
-              this.libros = respuesta.body;
-            });
-        });
+
+      this.contratoService.find(this.Folio.libro.contrato.id).subscribe((respuesta) => {
+        this.contrato = respuesta.body;
+        this.libroService
+          .buscarlibroPorContrato(respuesta.body.id)
+          .subscribe((respuesta) => {
+            this.libros = respuesta.body;
+          });
+      });
     });
 
   }
@@ -173,23 +173,23 @@ export class FolioFirmadoComponent implements OnInit {
       this.Folio.libro.id,
     ]);
   }
-  responderFolio(){
+  responderFolio() {
     let usuario = JSON.parse(localStorage.getItem("user"));
     let perfilUsuario = new UsuarioDependencia();
     this.UsuarioDependenciaService.findUserByUsuarioDependencia(usuario.id).subscribe(
-      usuarioDependencia=>{
+      usuarioDependencia => {
         perfilUsuario = usuarioDependencia.body[0];
         console.log(perfilUsuario);
-        if(perfilUsuario.nombre.toLowerCase() === "super usuario"){
+        if (perfilUsuario.nombre.toLowerCase() === "super usuario") {
           this.libroService.getMisLibros(usuario.id).subscribe(
             respuesta => {
               this.libros = respuesta.body;
               console.log(respuesta);
             }
           );
-        }else{
+        } else {
           this.libroService.getMisLibrosContratoDetalle(usuario.id, this.contrato.id).subscribe(
-            libros=>{
+            libros => {
               this.libros = libros.body;
               console.log(libros);
             }
@@ -204,33 +204,33 @@ export class FolioFirmadoComponent implements OnInit {
         data: {
           libros: this.libros,
           libroSeleccionado: this.Folio.libro,
-          habilitar : true,
-          folio : this.Folio,
-          usuarioLibro : this.usuario
+          habilitar: true,
+          folio: this.Folio,
+          usuarioLibro: this.usuario
         },
       });
     }, 700);
-    
+
     /*
     let usuario = JSON.parse(localStorage.getItem("user"));
     this.obtenerPerfilLibroUsuario(this.idlibro, usuario.id);
     this.router.navigate(["/folio/folio-borrador/", this.idlibro, usuario.id]);
     */
   }
-  lecturaFolio(){
+  lecturaFolio() {
     this.folioService.find(this.Folio.id).subscribe(
       folioOrigen => {
         let pdf = folioOrigen.body.pdfFirmado;
         let contentType = folioOrigen.body.pdfFirmadoContentType;
-        let url = "data:"+contentType+";base64,"+pdf;
+        let url = "data:" + contentType + ";base64," + pdf;
         let promise = new Promise(function (resolve, reject) {
           fetch(url)
-          .then(res => {
-            return res.blob();
-          })
-          .then(blob => {
-            resolve(URL.createObjectURL(blob));
-          });
+            .then(res => {
+              return res.blob();
+            })
+            .then(blob => {
+              resolve(URL.createObjectURL(blob));
+            });
         });
         promise.then((resultado) => {
           const dialogRef = this.dialog.open(VisorPdfComponent, {
@@ -241,10 +241,10 @@ export class FolioFirmadoComponent implements OnInit {
               folio: this.Folio,
               usuario: this.usuario,
               pdfArchivoCompleto: null,
-              previsualisar : true,
-              lectura : true,
-              listaUsuariosCambioAdmin : [],
-              folioReferencias : []
+              previsualisar: true,
+              lectura: true,
+              listaUsuariosCambioAdmin: [],
+              folioReferencias: []
             },
           });
         });
@@ -260,26 +260,26 @@ export class FolioFirmadoComponent implements OnInit {
         let permisos = [respuesta.body[0].perfilUsuarioLibro.nombre.toLowerCase()];
         this.permissionsService.loadPermissions(permisos);
         this.usuarioLibroService.find(this.Folio.idReceptor).subscribe(
-            response=>{ 
-              if(respuesta.body[0].usuarioDependencia?.dependencia.id === response.body.usuarioDependencia?.dependencia.id){
-                this.respuestaFolioShow = true;
-              }else{
-                this.respuestaFolioShow = false;
-              }
+          response => {
+            if (respuesta.body[0].usuarioDependencia?.dependencia.id === response.body.usuarioDependencia?.dependencia.id) {
+              this.respuestaFolioShow = true;
+            } else {
+              this.respuestaFolioShow = false;
             }
+          }
         );
       });
   }
 
-  async getArchivosFolio(idFolio){
+  async getArchivosFolio(idFolio) {
     let response = await this.archivoService.AchivosPorFolio(idFolio).subscribe(
-      respuesta=>{
+      respuesta => {
         this.listaArchivos = respuesta.body;
       }
     );
     return response;
   }
-  openFile(contentType: string, base64String: string , nombreArchivo : any ): void {
+  openFile(contentType: string, base64String: string, nombreArchivo: any): void {
     const blob = b64toBlob(base64String, contentType);
     const blobUrl = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -287,23 +287,23 @@ export class FolioFirmadoComponent implements OnInit {
     link.download = nombreArchivo;
     document.body.appendChild(link);
     link.dispatchEvent(
-      new MouseEvent('click', { 
-        bubbles: true, 
-        cancelable: true, 
-        view: window 
+      new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+        view: window
       })
     );
     // Remove link from body
     document.body.removeChild(link);
   }
 
-  downloadFileGCP(file){
+  downloadFileGCP(file) {
     console.log(file);
-    let path = 'https://www.googleapis.com/storage/v1/b/contenedor-archivos-clientes/o/' + file.nombre + '?alt=media'; 
+    let path = 'https://www.googleapis.com/storage/v1/b/contenedor-archivos-clientes/o/' + file.nombre + '?alt=media';
     location.href = path;
   }
 
-  async navegateFolioRespuesta(folioRelacionado){
+  async navegateFolioRespuesta(folioRelacionado) {
     let timerInterval
     Swal.fire({
       title: 'Buscando folio respuesta',
@@ -331,38 +331,38 @@ export class FolioFirmadoComponent implements OnInit {
       }
       this.obtenerFolio(folioRelacionado.id);
       this.getArchivosFolio(folioRelacionado.id);
-  })  
+    })
   }
-  informar(){
+  informar() {
     this.dialog.open(InformarPdfComponent, {
       width: "500px",
       height: "310px",
-      data : { folio : this.Folio}
+      data: { folio: this.Folio }
     })
   }
-  descargarPdf(){
+  descargarPdf() {
     let archivo = new Archivo();
     archivo.archivoContentType = this.Folio.pdfFirmadoContentType;
     archivo.archivo = this.Folio.pdfFirmado;
-    this.openFile(archivo.archivoContentType , archivo.archivo , `${this.Folio.libro.nombre}, Folio : ${this.Folio.numeroFolio} `)
+    this.openFile(archivo.archivoContentType, archivo.archivo, `${this.Folio.libro.nombre}, Folio : ${this.Folio.numeroFolio} `)
   }
-  print(){
+  print() {
     window.print();
   }
-  previsualizar(){
+  previsualizar() {
     this.folioService.find(this.Folio.id).subscribe(
       folioOrigen => {
         let pdf = folioOrigen.body.pdfFirmado;
         let contentType = folioOrigen.body.pdfFirmadoContentType;
-        let url = "data:"+contentType+";base64,"+pdf;
+        let url = "data:" + contentType + ";base64," + pdf;
         let promise = new Promise(function (resolve, reject) {
           fetch(url)
-          .then(res => {
-            return res.blob();
-          })
-          .then(blob => {
-            resolve(URL.createObjectURL(blob));
-          });
+            .then(res => {
+              return res.blob();
+            })
+            .then(blob => {
+              resolve(URL.createObjectURL(blob));
+            });
         });
         promise.then((resultado) => {
           const dialogRef = this.dialog.open(VisorPdfComponent, {
@@ -373,27 +373,27 @@ export class FolioFirmadoComponent implements OnInit {
               folio: this.Folio,
               usuario: this.usuario,
               pdfArchivoCompleto: null,
-              previsualisar : false,
-              lectura : true
+              previsualisar: false,
+              lectura: true
             },
           });
         });
       });
   }
-  previsualizarFolioRespuestaFolioRelacionados(idFolio : number){
+  previsualizarFolioRespuestaFolioRelacionados(idFolio: number) {
     this.folioService.find(idFolio).subscribe(
       folioOrigen => {
         let pdf = folioOrigen.body.pdfFirmado;
         let contentType = folioOrigen.body.pdfFirmadoContentType;
-        let url = "data:"+contentType+";base64,"+pdf;
+        let url = "data:" + contentType + ";base64," + pdf;
         let promise = new Promise(function (resolve, reject) {
           fetch(url)
-          .then(res => {
-            return res.blob();
-          })
-          .then(blob => {
-            resolve(URL.createObjectURL(blob));
-          });
+            .then(res => {
+              return res.blob();
+            })
+            .then(blob => {
+              resolve(URL.createObjectURL(blob));
+            });
         });
         promise.then((resultado) => {
           const dialogRef = this.dialog.open(VisorPdfComponent, {
@@ -404,81 +404,81 @@ export class FolioFirmadoComponent implements OnInit {
               folio: this.Folio,
               usuario: this.usuario,
               pdfArchivoCompleto: null,
-              previsualisar : false,
-              lectura : true
+              previsualisar: false,
+              lectura: true
             },
           });
         });
       });
   }
-   foliosReferencias(){
-      this.folioReferenciaService.query().subscribe(
-        folios=>{
-          let foliosFiltrados = folios.body.filter(folio=> folio.idFolioOrigen === this.Folio.id)
-          console.log(foliosFiltrados);
-          foliosFiltrados.forEach(element=>{
-            this.folioService.find(element.idFolioReferencia).subscribe(
-              folio=>{
-                this.folioReferencias = [...this.folioReferencias, folio.body];
-              } 
-            );
-           });
-        }
+  foliosReferencias() {
+    this.folioReferenciaService.query().subscribe(
+      folios => {
+        let foliosFiltrados = folios.body.filter(folio => folio.idFolioOrigen === this.Folio.id)
+        console.log(foliosFiltrados);
+        foliosFiltrados.forEach(element => {
+          this.folioService.find(element.idFolioReferencia).subscribe(
+            folio => {
+              this.folioReferencias = [...this.folioReferencias, folio.body];
+            }
+          );
+        });
+      }
+    );
+    /*
+    foliosOrigen.folioReferencias.forEach(element=>{
+      this.folioService.find(element.idFolioOrigen).subscribe(
+        folio=>{
+          this.folioReferencias = [...this.folioReferencias, folio.body];
+        } 
       );
-      /*
-      foliosOrigen.folioReferencias.forEach(element=>{
-        this.folioService.find(element.idFolioOrigen).subscribe(
-          folio=>{
-            this.folioReferencias = [...this.folioReferencias, folio.body];
-          } 
-        );
-       });*/
+     });*/
   }
-  getMisLibros(){
+  getMisLibros() {
     this.folioService.navBarChange(2);
     let usuario = JSON.parse(localStorage.getItem("user"));
     this.libroService.getMisLibros(usuario.id).subscribe(
       respuesta => {
         respuesta.body.forEach(element => {
-           this.obtenerPerfilLibroUsuario(element.id,usuario.id);
+          this.obtenerPerfilLibroUsuario(element.id, usuario.id);
         });
-          this.libros = respuesta.body;
+        this.libros = respuesta.body;
       }
     );
   }
-  setColorFechaRequerida(folio){
-    let resultado = calcDate(folio.fechaRequerida.toDate(),new Date());
-      if(folio.estadoRespuesta !== null){
-        console.log("entra");
-        if(folio.estadoRespuesta.nombre.toLowerCase() === "respondido"){
-          folio.color = "#4EA21A";
-        }else{
-          if(resultado[0] <= 1){
-            folio.color = "#FFAE00";
-          }
-          if(resultado[0] >= 2){
-            folio.color = "#4285F4";
-          }
-          if(resultado[0] <= -1){
-            folio.color = "#FF3C33";
-          }
-        }
-      }else{
-        if(resultado[0] <= 1){
+  setColorFechaRequerida(folio) {
+    let resultado = calcDate(folio.fechaRequerida.toDate(), new Date());
+    if (folio.estadoRespuesta !== null) {
+      console.log("entra");
+      if (folio.estadoRespuesta.nombre.toLowerCase() === "respondido") {
+        folio.color = "#4EA21A";
+      } else {
+        if (resultado[0] <= 1) {
           folio.color = "#FFAE00";
         }
-        if(resultado[0] >= 2){
+        if (resultado[0] >= 2) {
           folio.color = "#4285F4";
         }
-        if(resultado[0] <= -1){
+        if (resultado[0] <= -1) {
           folio.color = "#FF3C33";
         }
       }
-      this.Folio.color = folio.color;
+    } else {
+      if (resultado[0] <= 1) {
+        folio.color = "#FFAE00";
+      }
+      if (resultado[0] >= 2) {
+        folio.color = "#4285F4";
+      }
+      if (resultado[0] <= -1) {
+        folio.color = "#FF3C33";
+      }
+    }
+    this.Folio.color = folio.color;
   }
-  
+
 }
-const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
   const byteCharacters = atob(b64Data);
   const byteArrays = [];
 
@@ -494,21 +494,21 @@ const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
     byteArrays.push(byteArray);
   }
 
-  const blob = new Blob(byteArrays, {type: contentType});
+  const blob = new Blob(byteArrays, { type: contentType });
   return blob;
 }
-function calcDate(date1,date2) {
+function calcDate(date1, date2) {
   var diff = Math.floor(date1.getTime() - date2.getTime());
   var day = 1000 * 60 * 60 * 24;
 
-  var days = Math.floor(diff/day);
-  var months = Math.floor(days/31);
-  var years = Math.floor(months/12);
+  var days = Math.floor(diff / day);
+  var months = Math.floor(days / 31);
+  var years = Math.floor(months / 12);
 
   var message = date2.toDateString();
   message += " was "
-  message += days + " dias " 
+  message += days + " dias "
   message += months + " meses "
   message += years + " año \n"
-  return [days,months,years]
+  return [days, months, years]
 }
