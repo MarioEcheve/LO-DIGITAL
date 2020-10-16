@@ -382,16 +382,19 @@
                     </div> -->
                   </div>
                   <hr>
-                  <button mat-raised-button type="submit" class="btn btn-default" (click)="eliminarFolio()" *ngxPermissionsOnly="['administrador','asistente','superior', 'administrador/s']">
+                  <div>
+                    
+                  </div>
+                  <button [disabled]="subiendoArchivos" mat-raised-button type="submit" class="btn btn-default" (click)="eliminarFolio()" *ngxPermissionsOnly="['administrador','asistente','superior', 'administrador/s']">
                     <!-- <i class="material-icons">delete</i> -->
                     Eliminar
                   </button>
-                  <div class="pull-right">
-                    <button mat-raised-button type="submit" class="btn btn-primary mr-1" [disabled]="!folioForm.valid" (click)="previsualizar()">                    
+                  <div class="pull-right" >
+                    <button [disabled]="subiendoArchivos" mat-raised-button type="submit" class="btn btn-primary mr-1" [disabled]="!folioForm.valid" (click)="previsualizar()">                    
                       <!-- <i class="material-icons">pageview</i>                     -->
                       Previsualizar
                     </button>
-                    <button mat-raised-button type="submit" class="btn btn-primary" (click)="guardarFolio()" [disabled]="!folioForm.valid" *ngxPermissionsOnly="['administrador','asistente','superior', 'administrador/s']">
+                    <button [disabled]="subiendoArchivos" mat-raised-button type="submit" class="btn btn-primary" (click)="guardarFolio()" [disabled]="!folioForm.valid" *ngxPermissionsOnly="['administrador','asistente','superior', 'administrador/s']">
                       <!-- <i class="material-icons">get_app</i>                     -->
                       Guardar
                     </button>                  
