@@ -2,18 +2,18 @@
   <div class="container-fluid">
     <div class="card">
       <div class="card-header card-header-info card-header-tabs">
-        <div class="row" >
+        <div class="row">
           <div class="col-6 d-flex justify-content-start">
             <table>
               <tr>
                 <td>
                   <h6 class="card-title">Contrato:&nbsp;{{ contrato.nombre }}</h6>
-                </td>                
+                </td>
               </tr>
               <tr>
                 <td>
                   <p class="card-category">Código:&nbsp;{{ contrato.codigo }}</p>
-                </td>                
+                </td>
               </tr>
             </table>
           </div>
@@ -21,7 +21,7 @@
             <table>
               <tr>
                 <td>
-                  <h6 class="card-title">Perfil:</h6>                  
+                  <h6 class="card-title">Perfil:</h6>
                 </td>
                 <td *ngIf="usuarioLibro?.perfilUsuarioLibro">
                   <h6 class="card-title">&nbsp;{{usuarioLibro?.perfilUsuarioLibro.nombre}}</h6>
@@ -37,24 +37,16 @@
               </tr>
             </table>
           </div>
-        </div>        
+        </div>
       </div>
       <div class="card-body">
         <div>
-          <form [formGroup]="folioFormGroup">            
+          <form [formGroup]="folioFormGroup">
             <div class="d-flex">
               <div class="flex-grow-1">
                 <mat-form-field>
-                  <mat-select
-                    placeholder="Libro Seleccionado"
-                    name="city"
-                    formControlName="libro"                    
-                  >
-                    <mat-option
-                      *ngFor="let libro of libros"
-                      [value]="libro.nombre"
-                      (click)="buscaFolios(libro, true)"                      
-                    >
+                  <mat-select placeholder="Libro Seleccionado" name="city" formControlName="libro">
+                    <mat-option *ngFor="let libro of libros" [value]="libro.nombre" (click)="buscaFolios(libro, true)">
                       {{ libro.nombre }} | Cod.: {{ libro.codigo }} | Clase
                       Libro: {{ libro.tipoLibro.descripcion }} | Tipo Firma:
                       {{ libro.tipoFirma.nombre }} | Estado :
@@ -64,14 +56,8 @@
                 </mat-form-field>
               </div>
               <div class="ml-2" *ngIf="muestraRedactarFolioAdminActivo">
-                <button
-                  mat-raised-button
-                  type="button"
-                  class="btn btn-default btn-sm btn-fab"
-                  (click)="volverContrato()"
-                  
-                  *ngxPermissionsOnly="['administrador','administrador/s']"
-                >
+                <button mat-raised-button type="button" class="btn btn-default btn-sm btn-fab"
+                  (click)="volverContrato()" *ngxPermissionsOnly="['administrador','administrador/s']">
                   <i class="material-icons">keyboard_arrow_right</i>
                 </button>
               </div>
@@ -79,18 +65,12 @@
           </form>
         </div>
         <div class="row">
-          <div
-            class="col-md-2"
-            style="margin-left: initial; margin-right: auto;padding: inherit; margin: auto; margin-top: initial;"
-          >
+          <div class="col-md-2"
+            style="margin-left: initial; margin-right: auto;padding: inherit; margin: auto; margin-top: initial;">
             <div *ngIf="muestraRedactarFolioAdminActivo">
-              <button
-                mat-raised-button
-                class="btn btn-default col-md-12 "                                                
-                (click)="nuevoFolio()"
+              <button mat-raised-button class="btn btn-default col-md-12 " (click)="nuevoFolio()"
                 [disabled]="libroSeleccionado?.estadoLibro?.nombre === 'Cerrado'"
-                *ngxPermissionsOnly="['administrador','asistente', 'superior' , 'administrador/s']"
-              >
+                *ngxPermissionsOnly="['administrador','asistente', 'superior' , 'administrador/s']">
                 <span class="btn-label">
                   <i class="material-icons">add</i>
                 </span>
@@ -99,22 +79,23 @@
             </div>
             <div>
               <mat-list role="list">
-                <mat-list-item  [ngClass]="{'active': accion.isClicked}"
-                class=" content-menu-list" style="height: auto; float: left; border-radius: 3px;" *ngFor="let accion of typesOfActions" 
-                (click)="filtrarFolios(accion)">
-                  <button                     
-                    style="font-size:12px; padding: initial;text-align: left; width: -webkit-fill-available;"   mat-button aria-label="Example icon button with a vertical three dot icon">
+                <mat-list-item [ngClass]="{'active': accion.isClicked}" class=" content-menu-list"
+                  style="height: auto; float: left; border-radius: 3px;" *ngFor="let accion of typesOfActions"
+                  (click)="filtrarFolios(accion)">
+                  <button style="font-size:12px; padding: initial;text-align: left; width: -webkit-fill-available;"
+                    mat-button aria-label="Example icon button with a vertical three dot icon">
                     <mat-icon style="color: gray; font-size: 20px;">{{accion.icon }}</mat-icon>
-                    {{accion.accion }}<span style="float:right; background-color: rgb(194, 194, 194)" class="badge badge-default mt-2">{{accion.contadorFolios}}</span>
-                  </button>                  
+                    {{accion.accion }}<span style="float:right; background-color: rgb(194, 194, 194)"
+                      class="badge badge-default mt-2">{{accion.contadorFolios}}</span>
+                  </button>
                 </mat-list-item>
-              </mat-list>          
+              </mat-list>
             </div>
           </div>
           <div class="row col-md-10">
             <div class="table-responsive" style="margin-right: 1.5%;">
               <form [formGroup]="formFiltrosGroup">
-                <div class="d-flex" >
+                <div class="d-flex">
                   <div class="flex-grow-1">
                     <mat-form-field class="example-full-width col-md-12">
                       <mat-label>Contenido Busqueda</mat-label>
@@ -123,17 +104,15 @@
                   </div>
                   <div class="flex-grow-1">
                     <mat-form-field class="col-md-12">
-                      <mat-select 
-                          
-                          placeholder="Campo Busqueda" 
-                          formControlName="criterioBusqueda" 
-                         >
-                        <mat-option  *ngFor="let filtros of filtroFolios"  [value]="filtros.id" (click)="setForm(filtros)">{{filtros.name}}</mat-option>
+                      <mat-select placeholder="Campo Busqueda" formControlName="criterioBusqueda">
+                        <mat-option *ngFor="let filtros of filtroFolios" [value]="filtros.id"
+                          (click)="setForm(filtros)">{{filtros.name}}</mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
                   <div class="ml-2">
-                    <button mat-raised-button class="btn btn-sm btn-just-icon btn-primary btn-fab btn-round" (click)="filtraFolios()" [disabled]="!formFiltrosGroup.valid">
+                    <button mat-raised-button class="btn btn-sm btn-just-icon btn-primary btn-fab btn-round"
+                      (click)="filtraFolios()" [disabled]="!formFiltrosGroup.valid">
                       <i class="material-icons">search</i>
                     </button>
                   </div>
@@ -144,75 +123,74 @@
                           Avanzada
                       </button>
                     -->
-                   
+
                   </div>
                 </div>
               </form>
               <div class="loading-overlay" *ngIf="loading">
                 <mat-progress-bar mode="indeterminate" value="40" color="primary">
                 </mat-progress-bar>
-              </div>        
+              </div>
               <div class="col-md-12 mat-elevation-z8 mb-3" *ngIf="!loading">
-                <table mat-table  class="tablaFolio"  [dataSource]="dataSource" multiTemplateDataRows>  
+                <table mat-table class="tablaFolio" [dataSource]="dataSource" multiTemplateDataRows>
                   <ng-container matColumnDef="Folio">
                     <th mat-header-cell *matHeaderCellDef style="width: 80px;padding-left: 8px;">Nº Folio</th>
-                    <td mat-cell *matCellDef="let element">                                       
-                      <i type="button" class="material-icons text-gray mr-1" *ngIf="element.existeFavorito" (click)="favorito(element)" style="font-size: 18px;">star_border</i>
-                      <i type="button" class="material-icons mr-1" *ngIf="!element.existeFavorito" (click)="eliminarFavorito(element)" style="font-size: 18px;color: rgb(255, 174, 0)">star</i>
+                    <td mat-cell *matCellDef="let element">
+                      <i type="button" class="material-icons text-gray mr-1" *ngIf="element.existeFavorito"
+                        (click)="favorito(element)" style="font-size: 18px;">star_border</i>
+                      <i type="button" class="material-icons mr-1" *ngIf="!element.existeFavorito"
+                        (click)="eliminarFavorito(element)" style="font-size: 18px;color: rgb(255, 174, 0)">star</i>
                       <a style="vertical-align: 4px; font-size: 12px">{{element.numeroFolio}}</a>
                     </td>
                   </ng-container>
                   <ng-container matColumnDef="Emisor">
                     <th mat-header-cell *matHeaderCellDef style="width: 170px; padding-left: 8px;">Emisor </th>
-                    <td class="ellipsis" mat-cell style="font-weight: bold; font-size: 12px" *matCellDef="let element"> {{element.emisorMarcado}} </td>
+                    <td class="ellipsis" mat-cell style="font-weight: bold; font-size: 12px" *matCellDef="let element">
+                      {{element.emisorMarcado}} </td>
                   </ng-container>
                   <ng-container matColumnDef="Tipo Folio - Asunto" class="text_align-left">
                     <th mat-header-cell *matHeaderCellDef style="padding-left: 8px;">Tipo Folio - Asunto </th>
-                    <td class="ellipsis" mat-cell *matCellDef="let element" style="font-size: 12px"><span style="font-weight: bold;">{{element.tipoFolio.nombre}}</span> - {{element.asunto}} </td>
+                    <td class="ellipsis" mat-cell *matCellDef="let element" style="font-size: 12px"><span
+                        style="font-weight: bold;">{{element.tipoFolio.nombre}}</span> - {{element.asunto}} </td>
                   </ng-container>
                   <ng-container matColumnDef="Fecha requerida">
-                    <th mat-header-cell *matHeaderCellDef style="text-align: left;width: 100px;padding-left: 8px;">Fecha requerida </th>
-                    <td mat-cell *matCellDef="let element" style="text-align: left;width: 100px;"> 
-                      <span  [ngStyle]="{'background-color': element.color}" style="color: white;" class="badge badge-primary">{{
+                    <th mat-header-cell *matHeaderCellDef style="text-align: left;width: 100px;padding-left: 8px;">Fecha
+                      requerida </th>
+                    <td mat-cell *matCellDef="let element" style="text-align: left;width: 100px;">
+                      <span [ngStyle]="{'background-color': element.color}" style="color: white;"
+                        class="badge badge-primary">{{
                         element.fechaRequerida  | date: "dd-MM-yyyy HH:mm"
                       }}</span>
                     </td>
                   </ng-container>
                   <ng-container matColumnDef="Fecha creacion">
-                    <th mat-header-cell *matHeaderCellDef style="text-align: left;width: 80px;padding-left: 8px;">Fecha Folio</th>
-                    <td mat-cell *matCellDef="let element" style="text-align: left;width: 80px; font-size: 12px"> {{element.fechaCreacion | date: "dd-MM-yyyy"  }} </td>
+                    <th mat-header-cell *matHeaderCellDef style="text-align: left;width: 80px;padding-left: 8px;">Fecha
+                      Folio</th>
+                    <td mat-cell *matCellDef="let element" style="text-align: left;width: 80px; font-size: 12px">
+                      {{element.fechaCreacion | date: "dd-MM-yyyy"  }} </td>
                   </ng-container>
                   <ng-container matColumnDef="Acción">
                     <th mat-header-cell style="text-align: right;width: 90px;" *matHeaderCellDef></th>
-                    <td mat-cell *matCellDef="let element"> 
-                      <i class="material-icons" style="font-size: 18px;color: rgb(228, 228, 228); margin-top: 10px;" *ngIf="element.poseeFolioReferencia === true">push_pin</i>
-                      <i class="material-icons" style="font-size: 18px;color: rgb(255, 174, 0); margin-top: 10px;" *ngIf="element.poseeFolioReferencia === false">push_pin</i>
-                      <i class="material-icons mr-1" style="font-size: 18px;color: rgb(228, 228, 228); margin-top: 10px;">attach_file</i>
-                      <button
-                          mat-raised-button
-                          type="button"
-                          class="btn btn-default btn-sm btn-fab"
-                          (click)="folioFirmado(element)"
-                          *ngIf="element.numeroFolio !== null"
-                          style="float: right;"
-                        >
-                          <i class="material-icons">keyboard_arrow_right</i>
-                        </button>
-                        <button
-                            mat-raised-button
-                            type="button"
-                            class="btn btn-default btn-sm btn-fab"
-                            (click)="detalleLibro(element)"
-                            *ngIf="element.numeroFolio === null"
-                            style="float: right;"
-                          >
+                    <td mat-cell *matCellDef="let element">
+                      <i class="material-icons" style="font-size: 18px;color: rgb(228, 228, 228); margin-top: 10px;"
+                        *ngIf="element.poseeFolioReferencia === true">push_pin</i>
+                      <i class="material-icons" style="font-size: 18px;color: rgb(255, 174, 0); margin-top: 10px;"
+                        *ngIf="element.poseeFolioReferencia === false">push_pin</i>
+                      <i class="material-icons mr-1"
+                        style="font-size: 18px;color: rgb(228, 228, 228); margin-top: 10px;">attach_file</i>
+                      <button mat-raised-button type="button" class="btn btn-default btn-sm btn-fab"
+                        (click)="folioFirmado(element)" *ngIf="element.numeroFolio !== null" style="float: right;">
                         <i class="material-icons">keyboard_arrow_right</i>
-                      </button>                                        
+                      </button>
+                      <button mat-raised-button type="button" class="btn btn-default btn-sm btn-fab"
+                        (click)="detalleLibro(element)" *ngIf="element.numeroFolio === null" style="float: right;">
+                        <i class="material-icons">keyboard_arrow_right</i>
+                      </button>
                     </td>
                   </ng-container>
-                      <ng-container matColumnDef="expandedDetail">
-                        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-                          <!--
+                  <ng-container matColumnDef="expandedDetail">
+                    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+                      <!--
                             <div class="example-element-detail"
                               [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
                             <div class="example-element-diagram">
@@ -227,19 +205,18 @@
                             </div>
                           </div>
                           -->
-                          
-                        </td>
-                      </ng-container>
-                    
-                    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-                    <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
-                        class="example-element-row"
-                        [class.example-expanded-row]="expandedElement === element"
-                        (click)="expandedElement = expandedElement === element ? null : element">
-                        >
-                    </tr>
-                    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>                    
-                </table>                
+
+                    </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                  <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
+                    [class.example-expanded-row]="expandedElement === element"
+                    (click)="expandedElement = expandedElement === element ? null : element">
+                    >
+                  </tr>
+                  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+                </table>
                 <mat-paginator [pageSizeOptions]="[20, 50, 100]"></mat-paginator>
                 <!--
                   <table class="table table-striped mt-2">
@@ -309,13 +286,13 @@
                 </table>    
                 
                 -->
-               
+
               </div>
               <div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>

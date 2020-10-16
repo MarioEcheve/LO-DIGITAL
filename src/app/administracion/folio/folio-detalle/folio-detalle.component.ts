@@ -138,8 +138,8 @@ export class FolioDetalleComponent implements OnInit {
   // forms
   folioForm: FormGroup;
   // implementacion upload archivos 
-  @ViewChild("fileUpload", {static: false}) fileUpload: ElementRef;files  = [];  
-  value=0;
+  @ViewChild("fileUpload", { static: false }) fileUpload: ElementRef; files = [];
+  value = 0;
   subirArchivosNuevos = false
   archivosFolioGCP = [];
   constructor(
@@ -243,7 +243,7 @@ export class FolioDetalleComponent implements OnInit {
         .ListaUsuariosLibros(respuesta.body.libro.id, usuarioActual.id)
         .subscribe((respuesta) => {
           //this.receptor = respuesta.body;
-          let administradores = respuesta.body.filter(usuarios=> usuarios.perfilUsuarioLibro.nombre.toLowerCase() === "administrador")
+          let administradores = respuesta.body.filter(usuarios => usuarios.perfilUsuarioLibro.nombre.toLowerCase() === "administrador")
           this.receptor = administradores;
         });
       this.folioService
@@ -294,10 +294,10 @@ export class FolioDetalleComponent implements OnInit {
             .subscribe((folioRelacionado) => {
               this.folioForm.controls["respuestaFolio"].setValue(
                 "" +
-                  folioRelacionado.body.libro.nombre +
-                  " | " +
-                  "Folio : " +
-                  folioRelacionado.body.numeroFolio
+                folioRelacionado.body.libro.nombre +
+                " | " +
+                "Folio : " +
+                folioRelacionado.body.numeroFolio
               );
               this.respuestaPdf = this.folioForm.controls[
                 "respuestaFolio"
@@ -344,13 +344,13 @@ export class FolioDetalleComponent implements OnInit {
         });
         this.tipoFolio = tipo;
       }
-      if(respuesta.body.libro.tipoLibro.descripcion.toLowerCase() === "maestro"){
+      if (respuesta.body.libro.tipoLibro.descripcion.toLowerCase() === "maestro") {
         this.tipoFolio = this.tipoFolio.filter(folio => folio.visibleMaestro === true);
       }
-      if(respuesta.body.libro.tipoLibro.descripcion.toLowerCase() === "auxiliar"){
+      if (respuesta.body.libro.tipoLibro.descripcion.toLowerCase() === "auxiliar") {
         this.tipoFolio = this.tipoFolio.filter(folio => folio.visibleAuxliar === true);
       }
-      
+
       this.folioForm.controls["fechaCreacion"].setValue(
         this.datePipe.transform(
           respuesta.body.fechaCreacion,
@@ -379,8 +379,8 @@ export class FolioDetalleComponent implements OnInit {
           this.emisorPdf = respuesta.body;
           this.folioForm.controls["emisor"].setValue(
             respuesta.body.usuarioDependencia.usuario.firstName +
-              " " +
-              respuesta.body.usuarioDependencia.usuario.lastName
+            " " +
+            respuesta.body.usuarioDependencia.usuario.lastName
           );
           this.folioForm.controls["usuarioPerfilLibro"].setValue(
             respuesta.body.perfilUsuarioLibro.nombre
@@ -684,15 +684,15 @@ export class FolioDetalleComponent implements OnInit {
             (tipo) => tipo.nombre.toLowerCase() !== "cambio administrador"
           );
         }
-        if(respuesta.body[0].usuarioDependencia.dependencia.id === this.Folio.libro.contrato.dependenciaMandante.id){
+        if (respuesta.body[0].usuarioDependencia.dependencia.id === this.Folio.libro.contrato.dependenciaMandante.id) {
           this.tipoFolio = this.tipoFolio.filter(folio => folio.visibleMandante === true);
-        }else{
+        } else {
           this.tipoFolio = this.tipoFolio.filter(folio => folio.visibleContratista === true);
         }
         this.folioForm.controls["usuarioNombre"].setValue(
           respuesta.body[0].usuarioDependencia.usuario.firstName +
-            " " +
-            respuesta.body[0].usuarioDependencia.usuario.lastName
+          " " +
+          respuesta.body[0].usuarioDependencia.usuario.lastName
         );
         this.folioForm.controls["perfilUsuario"].setValue(
           respuesta.body[0].perfilUsuarioLibro.nombre
@@ -806,33 +806,33 @@ export class FolioDetalleComponent implements OnInit {
     let imagen = document.getElementById('imagenLogo1');
     let imagen2 = document.getElementById('imagenLogo2');
     let imagenBase64 = getBase64Image(imagen);
-    let imagenBase642 = getBase64Image(imagen2);    
+    let imagenBase642 = getBase64Image(imagen2);
     let respuestaFolio = "N/A";
-    let fechaRequerida =  this.folioForm.controls["fechaRequeridaDatepicker"].value;
-    let usuarioLibroActual = this.usuario.usuarioDependencia.usuario.firstName + ' ' +  this.usuario.usuarioDependencia.usuario.lastName;
-    let foliosReferenciaText=""; 
-    let archivosReferenciaText="";
-   
-    if(this.folios.length > 0 ){
-      for( var i = 0 ; i < this.folios.length ; i ++){
-        foliosReferenciaText = foliosReferenciaText + ' ' + this.folios[i].libro.nombre + ' '+' Folio: ' +  this.folios[i].numeroFolio;
+    let fechaRequerida = this.folioForm.controls["fechaRequeridaDatepicker"].value;
+    let usuarioLibroActual = this.usuario.usuarioDependencia.usuario.firstName + ' ' + this.usuario.usuarioDependencia.usuario.lastName;
+    let foliosReferenciaText = "";
+    let archivosReferenciaText = "";
+
+    if (this.folios.length > 0) {
+      for (var i = 0; i < this.folios.length; i++) {
+        foliosReferenciaText = foliosReferenciaText + ' ' + this.folios[i].libro.nombre + ' ' + ' Folio: ' + this.folios[i].numeroFolio;
       }
     }
-    if(this.archivosFolio.length > 0 ){
-      for( var i = 0 ; i < this.archivosFolio.length ; i ++){
+    if (this.archivosFolio.length > 0) {
+      for (var i = 0; i < this.archivosFolio.length; i++) {
         archivosReferenciaText = archivosReferenciaText + '     ' + this.archivosFolio[i].descripcion;
       }
     }
     console.log(foliosReferenciaText);
-    if(this.folioForm.controls["respuestaFolio"].value !== ""){
+    if (this.folioForm.controls["respuestaFolio"].value !== "") {
       respuestaFolio = this.folioForm.controls["respuestaFolio"].value;
     }
     this.Folio.idReceptor = this.folioForm.controls["receptor"].value;
 
-    if(fechaRequerida === "" || fechaRequerida === null){
+    if (fechaRequerida === "" || fechaRequerida === null) {
       fechaRequerida = "No"
-    }else{
-      fechaRequerida =this.datePipe.transform(fechaRequerida, 'dd-MM-yyyy hh:mm');
+    } else {
+      fechaRequerida = this.datePipe.transform(fechaRequerida, 'dd-MM-yyyy hh:mm');
     }
 
     this.usuarioLibroService
@@ -843,20 +843,20 @@ export class FolioDetalleComponent implements OnInit {
     var docDefinition = {
       content: [
         {
-          image: 'data:image/png;base64,'+ imagenBase642,
+          image: 'data:image/png;base64,' + imagenBase642,
           style: 'sectionHeader'
         },
         {
           table: {
             headerRows: 0,
-            widths: [ 50, 260, 70, '*' ],
+            widths: [50, 260, 70, '*'],
             body: [
-              [ { text: 'Contrato :', bold: true , fontSize: 8, }, { text: `${this.Folio.libro.contrato.nombre}`, bold: true ,fontSize: 8,}, { text: 'Libro :', bold: true , fontSize: 8, }, { text: `${this.Folio.libro.nombre}`, bold: true ,fontSize: 8,} ],
-              [ { text: 'Codigo :', fontSize: 8, }, { text: `${this.Folio.libro.contrato.codigo}` ,fontSize: 8,}, { text: 'Codigo :' , fontSize: 8, }, { text: `${this.Folio.libro.codigo}` ,fontSize: 8,} ],
-              [ { text: 'Mandante :' , fontSize: 8, }, { text: `${this.Folio.libro.contrato.dependenciaMandante.entidad.nombre} | Rut: 18.011.897-7` ,fontSize: 8,}, { text: 'Clase Libro :' , fontSize: 8, }, { text: `${this.Folio.libro.tipoLibro.descripcion}`,fontSize: 8,} ],
-              [ { text: '', fontSize: 8, }, { text: `${this.Folio.libro.contrato.dependenciaMandante.nombre}` ,fontSize: 8,}, { text: 'Tipo Firma :' , fontSize: 8, }, { text: `${this.Folio.libro.tipoFirma.nombre}` ,fontSize: 8,} ],
-              [ { text: 'Contratista : ', fontSize: 8, }, { text: `${this.dependenciaContratista.entidad.nombre} | Rut: 18.011.897-7` ,fontSize: 8,}, { text: 'Fecha Apertura :' , fontSize: 8, }, { text: `${moment(this.Folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}` ,fontSize: 8,} ],
-              [ { text: '', fontSize: 8, }, { text: `${this.dependenciaContratista.nombre}` ,fontSize: 8,}, { text: '' , fontSize: 8, }, { text: `` ,fontSize: 8,} ],
+              [{ text: 'Contrato :', bold: true, fontSize: 8, }, { text: `${this.Folio.libro.contrato.nombre}`, bold: true, fontSize: 8, }, { text: 'Libro :', bold: true, fontSize: 8, }, { text: `${this.Folio.libro.nombre}`, bold: true, fontSize: 8, }],
+              [{ text: 'Codigo :', fontSize: 8, }, { text: `${this.Folio.libro.contrato.codigo}`, fontSize: 8, }, { text: 'Codigo :', fontSize: 8, }, { text: `${this.Folio.libro.codigo}`, fontSize: 8, }],
+              [{ text: 'Mandante :', fontSize: 8, }, { text: `${this.Folio.libro.contrato.dependenciaMandante.entidad.nombre} | Rut: 18.011.897-7`, fontSize: 8, }, { text: 'Clase Libro :', fontSize: 8, }, { text: `${this.Folio.libro.tipoLibro.descripcion}`, fontSize: 8, }],
+              [{ text: '', fontSize: 8, }, { text: `${this.Folio.libro.contrato.dependenciaMandante.nombre}`, fontSize: 8, }, { text: 'Tipo Firma :', fontSize: 8, }, { text: `${this.Folio.libro.tipoFirma.nombre}`, fontSize: 8, }],
+              [{ text: 'Contratista : ', fontSize: 8, }, { text: `${this.dependenciaContratista.entidad.nombre} | Rut: 18.011.897-7`, fontSize: 8, }, { text: 'Fecha Apertura :', fontSize: 8, }, { text: `${moment(this.Folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}`, fontSize: 8, }],
+              [{ text: '', fontSize: 8, }, { text: `${this.dependenciaContratista.nombre}`, fontSize: 8, }, { text: '', fontSize: 8, }, { text: ``, fontSize: 8, }],
             ],
           },
           layout: {
@@ -873,23 +873,23 @@ export class FolioDetalleComponent implements OnInit {
               return i === 0 || i === node.table.widths.length ? "red" : "grey";
             },
           },
-          
+
         },
         {
           table: {
             headerRows: 0,
-            widths: [ 60, 300 ],
+            widths: [60, 300],
             body: [
-              [ { text: `Folio #${this.correlativoPdf}`, bold: true , fontSize: 8, margin: [0, 20, 0, 0]}, { text: `${moment(this.Folio.fechaFirma).format('DD-MM-YYYY hh:mm')}`,bold: true , fontSize: 8,margin: [0, 20, 0, 0]}],
-              [ { text: `Emisor :`, bold: false , fontSize: 8, }, { text: ` ${this.emisorPdf.usuarioDependencia.usuario.firstName}  ${this.emisorPdf.usuarioDependencia.usuario.lastName} | Rut: ${this.emisorPdf.usuarioDependencia.rut}`,bold: false , fontSize: 8}],
-              [ { text: ``, bold: true , fontSize: 8, }, { text: `${this.emisorPdf.cargoFuncion}`,bold: false , fontSize: 8}],
-              [ { text: `Receptor :`, bold: false , fontSize: 8, }, { text: ` ${this.receptorPdf.usuarioDependencia.usuario.firstName} ${this.receptorPdf.usuarioDependencia.usuario.lastName} | Rut: ${this.receptorPdf.usuarioDependencia.rut}`,bold: false , fontSize: 8}],
-              [ { text: ``, bold: true , fontSize: 8, }, { text: `${this.receptorPdf.cargoFuncion}`,bold: false , fontSize: 8}],
-              [ { text: `Tipo de Folio :`, bold: false , fontSize: 8, }, { text: `${this.Folio.tipoFolio.nombre}`,bold: false , fontSize: 8}],
-              [ { text: `Respuesta de :`, bold: false , fontSize: 8, }, { text: `${respuestaFolio}`,bold: false , fontSize: 8}],
-              [ { text: `Referencia de :`, bold: false , fontSize: 8, }, { text: `${foliosReferenciaText}`,bold: false , fontSize: 8}],
-              [ { text: `Fecha Requerida :`, bold: false , fontSize: 8, }, { text: `${fechaRequerida}`,bold: false , fontSize: 8}],
-              [ { text: `Asunto :`, bold: false , fontSize: 8, }, { text: `${this.Folio.asunto}`,bold: false , fontSize: 8}],
+              [{ text: `Folio #${this.correlativoPdf}`, bold: true, fontSize: 8, margin: [0, 20, 0, 0] }, { text: `${moment(this.Folio.fechaFirma).format('DD-MM-YYYY hh:mm')}`, bold: true, fontSize: 8, margin: [0, 20, 0, 0] }],
+              [{ text: `Emisor :`, bold: false, fontSize: 8, }, { text: ` ${this.emisorPdf.usuarioDependencia.usuario.firstName}  ${this.emisorPdf.usuarioDependencia.usuario.lastName} | Rut: ${this.emisorPdf.usuarioDependencia.rut}`, bold: false, fontSize: 8 }],
+              [{ text: ``, bold: true, fontSize: 8, }, { text: `${this.emisorPdf.cargoFuncion}`, bold: false, fontSize: 8 }],
+              [{ text: `Receptor :`, bold: false, fontSize: 8, }, { text: ` ${this.receptorPdf.usuarioDependencia.usuario.firstName} ${this.receptorPdf.usuarioDependencia.usuario.lastName} | Rut: ${this.receptorPdf.usuarioDependencia.rut}`, bold: false, fontSize: 8 }],
+              [{ text: ``, bold: true, fontSize: 8, }, { text: `${this.receptorPdf.cargoFuncion}`, bold: false, fontSize: 8 }],
+              [{ text: `Tipo de Folio :`, bold: false, fontSize: 8, }, { text: `${this.Folio.tipoFolio.nombre}`, bold: false, fontSize: 8 }],
+              [{ text: `Respuesta de :`, bold: false, fontSize: 8, }, { text: `${respuestaFolio}`, bold: false, fontSize: 8 }],
+              [{ text: `Referencia de :`, bold: false, fontSize: 8, }, { text: `${foliosReferenciaText}`, bold: false, fontSize: 8 }],
+              [{ text: `Fecha Requerida :`, bold: false, fontSize: 8, }, { text: `${fechaRequerida}`, bold: false, fontSize: 8 }],
+              [{ text: `Asunto :`, bold: false, fontSize: 8, }, { text: `${this.Folio.asunto}`, bold: false, fontSize: 8 }],
             ]
           },
           layout: {
@@ -907,78 +907,78 @@ export class FolioDetalleComponent implements OnInit {
             },
           },
         },
-        {  
-          text: `Anotacion :` ,  
+        {
+          text: `Anotacion :`,
           bold: true,
-          fontSize: 8, 
-          margin: [0, 20, 0, 0]  
-        },  
-        {  
-          text:  htmlToPdfmake(anotacion, {
+          fontSize: 8,
+          margin: [0, 20, 0, 0]
+        },
+        {
+          text: htmlToPdfmake(anotacion, {
             window: window,
-          }) ,  
+          }),
           style: "",
           bold: true,
-          fontSize: 8, 
-          margin: [0, 5, 0, 0]  
-        },  
-        {  
-          text: `${this.archivosFolio.length} Archivos Adjuntos :` ,  
-          bold: true,
-          fontSize: 8, 
-          margin: [0, 20, 0, 0]  
-        },  
-        {  
-          text: `${archivosReferenciaText}` ,  
-          bold: false,
-          fontSize: 8, 
-          margin: [0, 5, 0, 0]  
-        },  
-        {  
-          text: `${usuarioLibroActual}` ,  
-          bold: true,
-          fontSize: 8, 
-          margin: [0, 20, 0, 0]  
-        },  
-        {  
-          text: `${this.usuario.cargoFuncion}` ,  
-          bold: false,
-          fontSize: 8, 
-          margin: [0, 5, 0, 0]  
-        },  
-        {  
-          text: `Fecha Firma : ${moment(this.Folio.fechaFirma).format('DD-MM-YYYY hh:mm')}` ,  
-          bold: false,
-          fontSize: 8, 
-          margin: [0, 5, 0, 0]  
-        },  
-        {  
-          text: `Firma Digital Avanzada` ,  
-          bold: false,
-          fontSize: 8, 
-          margin: [0, 5, 0, 0]  
-        },  
-        {  
-          text: `Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745` ,  
-          bold: false,
-          fontSize: 8, 
-          margin: [0, 5, 0, 0]  
-        }, 
-      ],
-      styles: {  
-        sectionHeader: {  
-            bold: true,  
-            decoration: 'underline',  
-            fontSize: 14,  
-            margin: [0, 15, 0, 15]  
+          fontSize: 8,
+          margin: [0, 5, 0, 0]
         },
-        exampleLayout : {
-          
-        }  
-      } ,
+        {
+          text: `${this.archivosFolio.length} Archivos Adjuntos :`,
+          bold: true,
+          fontSize: 8,
+          margin: [0, 20, 0, 0]
+        },
+        {
+          text: `${archivosReferenciaText}`,
+          bold: false,
+          fontSize: 8,
+          margin: [0, 5, 0, 0]
+        },
+        {
+          text: `${usuarioLibroActual}`,
+          bold: true,
+          fontSize: 8,
+          margin: [0, 20, 0, 0]
+        },
+        {
+          text: `${this.usuario.cargoFuncion}`,
+          bold: false,
+          fontSize: 8,
+          margin: [0, 5, 0, 0]
+        },
+        {
+          text: `Fecha Firma : ${moment(this.Folio.fechaFirma).format('DD-MM-YYYY hh:mm')}`,
+          bold: false,
+          fontSize: 8,
+          margin: [0, 5, 0, 0]
+        },
+        {
+          text: `Firma Digital Avanzada`,
+          bold: false,
+          fontSize: 8,
+          margin: [0, 5, 0, 0]
+        },
+        {
+          text: `Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745`,
+          bold: false,
+          fontSize: 8,
+          margin: [0, 5, 0, 0]
+        },
+      ],
+      styles: {
+        sectionHeader: {
+          bold: true,
+          decoration: 'underline',
+          fontSize: 14,
+          margin: [0, 15, 0, 15]
+        },
+        exampleLayout: {
+
+        }
+      },
       images: {
 
-      } 
+      }
     };
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     let url;
@@ -999,7 +999,7 @@ export class FolioDetalleComponent implements OnInit {
         previsualisar: true,
         lectura: false,
         listaUsuariosCambioAdmin: this.listaUsuariosCambioAdmin,
-        folioReferencias : this.folios
+        folioReferencias: this.folios
       },
     });
   }
@@ -1116,9 +1116,9 @@ export class FolioDetalleComponent implements OnInit {
         this.folioSiguiente = respuesta.body[0].numero_folio;
       });
   }
-  onUploadError(event) {}
+  onUploadError(event) { }
   onUploadSuccess(event) {
-   
+
     let file = new Archivo();
     let archivoEvent = event[1].files.file;
     var documento = archivoEvent.split(",");
@@ -1160,30 +1160,24 @@ export class FolioDetalleComponent implements OnInit {
     this.archivosFolio = results;
   }
   async onFileChange(event) {
-    for (var i = 0; i < event.target.files.length; i++) {
+    let files = [];
+    files = event.target.files;
+    for (var i = 0; i < files.length; i++) {
       let archivo = new Archivo();
-      const base64 = await this.toBase64Handler(event.target.files[i]);
-      let fileBase64 = base64[0].selectedFile;
-      var documento = fileBase64.split(",");
-      var aux = documento[0].split("data:");
-      var tipoDocumento = aux[1].split(";");
-
-      archivo.nombre = event.target.files[i].name;
-      archivo.descripcion = event.target.files[i].name;
-      archivo.size = formatBytes(event.target.files[i].size);
-      archivo.archivoContentType  ="";
-      archivo.archivo ="";
+      archivo.nombre = files[i].name;
+      archivo.descripcion = files[i].name;
+      archivo.size = formatBytes(files[i].size);
+      archivo.archivoContentType = "";
+      archivo.archivo = "";
       archivo.value = 0;
-      this.archivosFolio=  [... this.archivosFolio, archivo];
-      for(var i = 0 ; i < event.target.files.length ; i ++){
-        console.log(event.target.files[i]);
-        this.archivosFolioGCP = [...this.archivosFolioGCP, event.target.files[i]];
+      this.archivosFolio = [... this.archivosFolio, archivo];
+      for (var x = 0; x < event.target.files.length; x++) {
+        this.archivosFolioGCP = [...this.archivosFolioGCP, event.target.files[x]];
       }
       this.subirArchivosNuevos = true;
+      await this.SubirArchivo2(archivo);
     }
   }
- 
-
   toBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -1208,10 +1202,10 @@ export class FolioDetalleComponent implements OnInit {
     if (file.id === undefined) {
       let index = this.archivosFolio.indexOf(file);
       this.archivosFolio.splice(index, 1);
-      this.archivosFolio.forEach(element=>{
-        if(element.status === false){
+      this.archivosFolio.forEach(element => {
+        if (element.status === false) {
           this.subirArchivosNuevos = true;
-        }else{
+        } else {
           this.subirArchivosNuevos = false;
         }
       });
@@ -1225,24 +1219,24 @@ export class FolioDetalleComponent implements OnInit {
         cancelButtonText: "No, Mantener Archivo",
       }).then((result) => {
         if (result.value) {
-            this.archivoService.deleteGCP({ name : file.nombre }).subscribe(
-              respuesta=>{
-              }
-            );
-            
-            let index = this.archivosFolio.indexOf(file);
-            this.archivosFolio.splice(index, 1);
-            this.archivoService.delete(file.id).subscribe(
+          this.archivoService.deleteGCP({ name: file.nombre }).subscribe(
+            respuesta => {
+            }
+          );
+
+          let index = this.archivosFolio.indexOf(file);
+          this.archivosFolio.splice(index, 1);
+          this.archivoService.delete(file.id).subscribe(
             (response) => {
               Swal.fire(
                 "Eliminado!",
                 "Archivo Eliminado Correctamente.",
                 "success"
               );
-              this.archivosFolio.forEach(element=>{
-                if(element.status === false){
+              this.archivosFolio.forEach(element => {
+                if (element.status === false) {
                   this.subirArchivosNuevos = true;
-                }else{
+                } else {
                   this.subirArchivosNuevos = false;
                 }
               });
@@ -1250,14 +1244,14 @@ export class FolioDetalleComponent implements OnInit {
             (error) => {
               Swal.fire("Error!", "El archivo no pudo ser borrado.", "warning");
             }
-            
+
           );
-            /*
-            this.archivoService.deleteGCP('path  1 ').subscribe(
-              archivo=>{
-                console.log(archivo);
-              }
-            );*/
+          /*
+          this.archivoService.deleteGCP('path  1 ').subscribe(
+            archivo=>{
+              console.log(archivo);
+            }
+          );*/
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           Swal.fire("Cancelado", "Cancelado", "error");
         }
@@ -1266,20 +1260,20 @@ export class FolioDetalleComponent implements OnInit {
   }
 
 
-  async SubirArchivo(file){
+  async SubirArchivo(file) {
     let formData = new FormData();
     //let archivoGCP = this.archivosFolioGCP.filter(archivo => archivo.name === file.nombre);
     console.log(file);
     for (var i = 0; i < this.archivosFolioGCP.length; i++) {
-        if(this.archivosFolioGCP[i].name == file.nombre ){
+      if (this.archivosFolioGCP[i].name == file.nombre) {
         console.log('ingresa');
         formData.append("file", this.archivosFolioGCP[i], this.archivosFolioGCP[i].name);
         this.archivoService.createGCP(formData).pipe().subscribe(
-          event  => {
-            if(event['loaded'] && event['total']){
+          event => {
+            if (event['loaded'] && event['total']) {
               file.value = Math.round(event['loaded'] / event['total'] * 100);
             }
-            if(event['body']){
+            if (event['body']) {
               console.log(event['body']);
               file.value = 0;
               Swal.fire(
@@ -1291,131 +1285,131 @@ export class FolioDetalleComponent implements OnInit {
               file.urlArchivo = event['body'];
               file.status = true;
               this.subirArchivosNuevos = false;
-              if(file.id === undefined || file.id === null){
+              if (file.id === undefined || file.id === null) {
                 this.archivoService.create(file).subscribe(
-                  archivos=>{
+                  archivos => {
                     file.id = archivos.body.id;
-                    file.status =true;
-                    file.value =0;
+                    file.status = true;
+                    file.value = 0;
                   }
                 );
               }
-            
-            /*
-            let index = this.archivosFolio.indexOf(element);
-            this.archivosFolio[index].id = respuesta.body.id;
-            console.log(this.archivosFolio);
-            */
-            
+
+              /*
+              let index = this.archivosFolio.indexOf(element);
+              this.archivosFolio[index].id = respuesta.body.id;
+              console.log(this.archivosFolio);
+              */
+
             }
-          
+
           },
-          (existe) => {}
+          (existe) => { }
         );
-      }else{
+      } else {
 
       }
     }
 
-    
 
-    
+
+
   }
 
-  
-  async SubirArchivo2(file){
-    let formData = new FormData();
+
+  async SubirArchivo2(file) {
     for (var i = 0; i < this.archivosFolioGCP.length; i++) {
-        if(this.archivosFolioGCP[i].name == file.nombre ){
+      let formData = new FormData();
+      if (this.archivosFolioGCP[i].name == file.nombre) {
         formData.append("file", this.archivosFolioGCP[i], this.archivosFolioGCP[i].name);
-        await new Promise((resolve)=>{
+        await new Promise((resolve) => {
           this.archivoService.createGCP(formData).pipe().subscribe(
-            event  => {
-              if(event['loaded'] && event['total']){
+            event => {
+              if (event['loaded'] && event['total']) {
                 file.value = Math.round(event['loaded'] / event['total'] * 100);
               }
-              if(event['body']){
+              if (event['body']) {
                 file.folio = this.Folio;
                 file.urlArchivo = event['body'];
                 file.status = true;
                 this.subirArchivosNuevos = false;
-                if(file.id === undefined || file.id === null){
+                if (file.id === undefined || file.id === null) {
                   this.archivoService.create(file).subscribe(
-                    archivos=>{
+                    archivos => {
                       file.id = archivos.body.id;
-                      file.status =true;
-                      file.value =0;
+                      file.status = true;
+                      file.value = 0;
                     }
                   );
                 }
                 resolve('ok');
               }
-            
+
             },
-            (existe) => {}
+            (existe) => { }
           );
         })
-      }else{
+      } else {
 
       }
     }
 
-    
 
-    
+
+
   }
-  dowloadGCP(file){
+  dowloadGCP(file) {
     console.log(file);
-    let path = 'https://www.googleapis.com/storage/v1/b/contenedor-archivos-clientes/o/' + file.nombre + '?alt=media'; 
+    let path = 'https://www.googleapis.com/storage/v1/b/contenedor-archivos-clientes/o/' + file.nombre + '?alt=media';
     location.href = path;
   }
-  async uploadAllFile(){
+  async uploadAllFile() {
     if (this.archivosFolioGCP.length > 0) {
       for (var i = 0; i < this.archivosFolioGCP.length; i++) {
         let formData = new FormData();
         formData.append("file", this.archivosFolioGCP[i], this.archivosFolioGCP[i].name);
-        for(var x = 0; x < this.archivosFolio.length; x++){
-             await this.SubirArchivo2(this.archivosFolio[x]).then(
-              res=>{
-              }
-            );
+        for (var x = 0; x < this.archivosFolio.length; x++) {
+          await this.SubirArchivo2(this.archivosFolio[x]).then(
+            res => {
+            }
+          );
         }
       }
     }
   }
-  guardarGCPFile(element){
+  guardarGCPFile(element) {
     this.archivoService.create(element).subscribe(
-      archivos=>{
+      archivos => {
         let index = this.archivosFolio.indexOf(element);
         this.archivosFolio[index].id = archivos.body.id;
-        this.archivosFolio[index].status =true;
+        this.archivosFolio[index].status = true;
       }
     );
   }
 
-  async GCPFilesSaves(formData, element){
-    await new Promise((resolve)=>{
+  async GCPFilesSaves(formData, element) {
+    await new Promise((resolve) => {
       this.archivoService.createGCP(formData).pipe().subscribe(
-        event  => {
-          if(event['loaded'] && event['total']){
+        event => {
+          if (event['loaded'] && event['total']) {
             element.value = Math.round(event['loaded'] / event['total'] * 100);
           }
-          if(event['body']){
+          if (event['body']) {
             console.log(element.value);
-              element.folio = this.Folio;
-              element.urlArchivo = event['body'];
-              element.status = true;
-              element.value = 0;
-              this.subirArchivosNuevos = false;
-              if(element.id === undefined || element.id === null){
-                this.guardarGCPFile(element);
-                resolve("ok");
-              }
+            element.folio = this.Folio;
+            element.urlArchivo = event['body'];
+            element.status = true;
+            element.value = 0;
+            this.subirArchivosNuevos = false;
+            if (element.id === undefined || element.id === null) {
+              this.guardarGCPFile(element);
+              resolve("ok");
+            }
           }
         },
-        (existe) => {}
+        (existe) => { }
       );
-    }).then((value)=>{
+    }).then((value) => {
       return value;
     })
   }
@@ -1423,7 +1417,7 @@ export class FolioDetalleComponent implements OnInit {
 
 
 
-function  getBase64Image (img ){
+function getBase64Image(img) {
   var canvas = document.createElement("canvas");
   canvas.width = img.width;
   canvas.height = img.height;
@@ -1452,8 +1446,8 @@ const blobToBase64 = (blob) => {
   });
 };
 function formatBytes(bytes) {
-  if(bytes < 1024) return bytes + " Bytes";
-  else if(bytes < 1048576) return(bytes / 1024).toFixed(3) + " KB";
-  else if(bytes < 1073741824) return(bytes / 1048576).toFixed(3) + " MB";
-  else return(bytes / 1073741824).toFixed(3) + " GB";
+  if (bytes < 1024) return bytes + " Bytes";
+  else if (bytes < 1048576) return (bytes / 1024).toFixed(3) + " KB";
+  else if (bytes < 1073741824) return (bytes / 1048576).toFixed(3) + " MB";
+  else return (bytes / 1073741824).toFixed(3) + " GB";
 };
