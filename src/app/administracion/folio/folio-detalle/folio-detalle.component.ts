@@ -142,6 +142,7 @@ export class FolioDetalleComponent implements OnInit {
   value = 0;
   subirArchivosNuevos = false
   archivosFolioGCP = [];
+  subiendoArchivos = false;
   constructor(
     private route: ActivatedRoute,
     private libroService: LibroService,
@@ -1160,6 +1161,7 @@ export class FolioDetalleComponent implements OnInit {
     this.archivosFolio = results;
   }
   async onFileChange(event) {
+    this.subiendoArchivos = true ;
     let files = [];
     files = event.target.files;
     for (var i = 0; i < files.length; i++) {
@@ -1169,13 +1171,20 @@ export class FolioDetalleComponent implements OnInit {
       archivo.size = formatBytes(files[i].size);
       archivo.archivoContentType = "";
       archivo.archivo = "";
-      archivo.value = 0;
       this.archivosFolio = [... this.archivosFolio, archivo];
       for (var x = 0; x < event.target.files.length; x++) {
         this.archivosFolioGCP = [...this.archivosFolioGCP, event.target.files[x]];
+        
       }
       this.subirArchivosNuevos = true;
-      await this.SubirArchivo2(archivo);
+      await this.SubirArchivo2(archivo).then(()=>{
+        archivo.value = 0;
+        if(files.length === (i + 1)){
+          console.log('entro');
+          this.subiendoArchivos = false;
+        }
+      })
+     
     }
   }
   toBase64(file) {
@@ -1323,7 +1332,7 @@ export class FolioDetalleComponent implements OnInit {
       if (this.archivosFolioGCP[i].name == file.nombre) {
         formData.append("file", this.archivosFolioGCP[i], this.archivosFolioGCP[i].name);
         await new Promise((resolve) => {
-          this.archivoService.createGCP(formData).pipe().subscribe(
+          let subscripcion = this.archivoService.createGCP(formData).pipe().subscribe(
             event => {
               if (event['loaded'] && event['total']) {
                 file.value = Math.round(event['loaded'] / event['total'] * 100);
@@ -1338,25 +1347,17 @@ export class FolioDetalleComponent implements OnInit {
                     archivos => {
                       file.id = archivos.body.id;
                       file.status = true;
-                      file.value = 0;
+                      subscripcion.unsubscribe();
                     }
                   );
                 }
-                resolve('ok');
+                resolve(i);
               }
-
             },
-            (existe) => { }
           );
-        })
-      } else {
-
+        });
       }
     }
-
-
-
-
   }
   dowloadGCP(file) {
     console.log(file);
