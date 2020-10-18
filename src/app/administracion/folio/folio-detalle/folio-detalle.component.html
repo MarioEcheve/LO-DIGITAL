@@ -367,7 +367,7 @@
                     </div>
                     <div *ngIf="file.status === false " style="min-width: 210px;font-weight: bold;margin-top: 2px;" class="ellipsis">{{ file.nombre }}</div>
                     <div class="ml-2 mr-2 flex-grow-1" *ngIf="file.status === false || file.status === undefined">
-                      <mat-progress-bar mode="determinate" [value]="file.value" style="margin-top: 10px;"></mat-progress-bar>
+                      <mat-progress-bar mode="determinate" [value]="file.value" style="margin-top: 5px;" class="audio-progress-bar"></mat-progress-bar>
                     </div>
                     <div *ngIf="file.status === true">
                     </div>                    
