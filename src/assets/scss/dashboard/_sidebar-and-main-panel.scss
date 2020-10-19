@@ -11,7 +11,7 @@
     left: 0;
     z-index: 2;
     /* FVS (ancho del menu) width: 260px; */
-    width: 220px;
+    width: 205px;
     background: $white-color;
     @include shadow-big();
 
@@ -52,7 +52,7 @@
         height: calc(100vh - 75px);
         overflow: auto;
         /* FVS (regula el ancho del boton respecto al ancho del menu) width: 260px; */
-        width: 220px;
+        width: 205px;
         z-index: 4;
 
         padding-bottom: 30px;
@@ -567,7 +567,7 @@
 
         .sidebar:hover{
            /*  FVS modifica el ancho del menu en movimiento width: 260px;   */      
-            width: 220px;
+            width: 205px;
 
             .logo{
                 a.logo-normal{
@@ -578,7 +578,7 @@
 
             .sidebar-wrapper{
                 /* FVS Cambia el tamaño del sidebar en la amimaciòn width: 260px; */
-                width: 220px;
+                width: 205px;
 
                 > .nav li > a p,
                 > .nav [data-toggle="collapse"] ~ div > ul > li > a .sidebar-normal,

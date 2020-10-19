@@ -857,7 +857,7 @@ export class FolioDetalleComponent implements OnInit {
               [{ text: 'Mandante :', fontSize: 8, }, { text: `${this.Folio.libro.contrato.dependenciaMandante.entidad.nombre} | Rut: 18.011.897-7`, fontSize: 8, }, { text: 'Clase Libro :', fontSize: 8, }, { text: `${this.Folio.libro.tipoLibro.descripcion}`, fontSize: 8, }],
               [{ text: '', fontSize: 8, }, { text: `${this.Folio.libro.contrato.dependenciaMandante.nombre}`, fontSize: 8, }, { text: 'Tipo Firma :', fontSize: 8, }, { text: `${this.Folio.libro.tipoFirma.nombre}`, fontSize: 8, }],
               [{ text: 'Contratista : ', fontSize: 8, }, { text: `${this.dependenciaContratista.entidad.nombre} | Rut: 18.011.897-7`, fontSize: 8, }, { text: 'Fecha Apertura :', fontSize: 8, }, { text: `${moment(this.Folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}`, fontSize: 8, }],
-              [{ text: '', fontSize: 8, }, { text: `${this.dependenciaContratista.nombre}`, fontSize: 8, }, { text: '', fontSize: 8, }, { text: ``, fontSize: 8, }],
+              [{ text: '', fontSize: 8, }, { text: `${this.dependenciaContratista.nombre}`, fontSize: 8,}, { text: '', fontSize: 8, }, { text: ``, fontSize: 8, }],
             ],
           },
           layout: {

@@ -8,12 +8,12 @@
       background-position: top center;
     "
   >
-    <div class="container animate__animated animate__fadeInDown" >
+    <div class="container animate__animated animate__fadeInDown" style="max-width: 970px;">
       <div class="row">
-        <div class="col-lg-4 col-md-6 col-sm-6 ml-auto mr-auto">
+        <div class="col-lg-4 col-md-4 col-sm-4 ml-auto mr-auto">
           <form [formGroup]="loginForm">
             <div class="card card-login ">
-              <span class="mb-2 mt-5" style="text-align: center;">
+              <span class="mb-2 mt-4" style="text-align: center;">
                 <img src="/assets/img/accesologo.jpg" />
               </span>           
               <div class="ml-4 mr-4">                                         
@@ -37,14 +37,11 @@
                   Ingresar
                 </button>
               </div>
-              <div style="text-align: center;" class="mt-4 mb-3">
-                <span
-                  >Sistema desarrollado por
-                  <a href="https://www.linksystem.cl" target="_blank"
-                    ><strong>LinkSystem </strong></a
-                  >Spa.</span
-                >
-                <br /><small>Versión 2020</small>
+              <div style="text-align: center;" class="mt-3 mb-3">
+                <span style="font-size: 11px;">
+                  Sistema desarrollado por <a href="https://www.linksystem.cl" target="_blank"><strong>LinkSystem </strong></a>Spa.
+                </span>
+                <br><small>Versión 2020</small><br>
               </div>
             </div>
           </form>
@@ -67,5 +64,5 @@
   color="#fff"
   type="ball-scale-multiple"
 >
-  <p style="font-size: 20px; color: white">Cargando...</p>
+  <p style="font-size: 16px; color: white">Cargando...</p>
 </ngx-spinner>
