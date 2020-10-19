@@ -47,7 +47,7 @@
 .cardPdf {
     border: none;
 }
-#anotacion {
+.anotacion {
     font-weight: 500;
 }
 .custom-file-input {
@@ -92,3 +92,4 @@
     overflow: hidden;
     white-space: nowrap;
 }
+.note-editor .note-editable p { margin-bottom: 0 !important; }

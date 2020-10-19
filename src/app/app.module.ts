@@ -65,6 +65,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { CambioAdministradorComponent } from './administracion/shared/cambio-administrador/cambio-administrador.component';
 import { InformarPdfComponent } from './administracion/shared/informar-pdf/informar-pdf.component';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSummernoteModule } from 'ngx-summernote';
 
 registerLocaleData(localePy, 'es');
 registerLocaleData(localePt, 'pt');
@@ -104,7 +105,8 @@ registerLocaleData(localeEsAr, 'es-Ar');
     MatTooltipModule,
     MatNativeDateModule,
     NgxExtendedPdfViewerModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    NgxSummernoteModule
     
   ],
   declarations: [],

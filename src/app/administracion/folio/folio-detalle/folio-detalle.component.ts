@@ -40,7 +40,6 @@ import { async } from "@angular/core/testing";
 import { HttpEvent } from "@angular/common/http";
 import { resolve } from "path";
 
-
 declare var $: any;
 declare interface TableData {
   headerRow: string[];
@@ -97,7 +96,7 @@ export class FolioDetalleComponent implements OnInit {
     minHeight: "5rem",
     placeholder: "Enter text here...",
     translate: "no",
-    defaultParagraphSeparator: "p",
+    defaultParagraphSeparator: "br",
     defaultFontName: "Arial",
     sanitize: false,
     //toolbarHiddenButtons: [["bold"]],
@@ -117,7 +116,22 @@ export class FolioDetalleComponent implements OnInit {
       },
     ],
   };
-
+  //IMPLEMENTACION CONFIG SUMMER NOTE 
+  config = {
+    placeholder: '',
+    tabsize: 2,
+    height: '200px',
+    uploadImagePath: '/api/upload',
+    toolbar: [
+        ['misc', ['codeview', 'undo', 'redo']],
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+        ['fontsize', ['fontname', 'fontsize', 'color']],
+        ['para', ['style', 'ul', 'ol', 'paragraph', 'height']],
+        ['insert', ['table', 'picture', 'link', 'video', 'hr']]
+    ],
+    fontNames: ['Helvetica', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times']
+  }
   // implementacion de chips
   visible = true;
   selectable = true;
@@ -802,7 +816,8 @@ export class FolioDetalleComponent implements OnInit {
     }
   }
   async previsualizar() {
-    let anotacion = this.folioForm.controls["anotacion"].value;
+    const htmlToText = require('html-to-text');
+    let anotacion =  htmlToPdfmake(this.folioForm.controls["anotacion"].value);
     console.log(anotacion)
     let imagen = document.getElementById('imagenLogo1');
     let imagen2 = document.getElementById('imagenLogo2');
@@ -824,7 +839,6 @@ export class FolioDetalleComponent implements OnInit {
         archivosReferenciaText = archivosReferenciaText + '     ' + this.archivosFolio[i].descripcion;
       }
     }
-    console.log(foliosReferenciaText);
     if (this.folioForm.controls["respuestaFolio"].value !== "") {
       respuestaFolio = this.folioForm.controls["respuestaFolio"].value;
     }
@@ -915,9 +929,7 @@ export class FolioDetalleComponent implements OnInit {
           margin: [0, 20, 0, 0]
         },
         {
-          text: htmlToPdfmake(anotacion, {
-            window: window,
-          }),
+          text: anotacion ,
           style: "",
           bold: true,
           fontSize: 8,
