@@ -10,7 +10,7 @@
                   <button mat-raised-button class="btn btn-default btn-fab btn-sm mr-1" (click)="volverListaFolios()">
                     <i class="material-icons">keyboard_arrow_left</i>
                   </button>
-                  <button mat-raised-button type="button" class="btn btn-primary btn-fab btn-sm mr-1">
+                  <!-- <button mat-raised-button type="button" class="btn btn-primary btn-fab btn-sm mr-1">
                     <i class="material-icons">save_alt</i>                    
                   </button>
                   <button mat-raised-button type="button" class="btn btn-primary btn-fab btn-sm mr-1">
@@ -18,7 +18,7 @@
                   </button>
                   <button mat-raised-button type="button" class="btn btn-primary btn-fab btn-sm mr-1">
                     <i class="material-icons">mail</i>                    
-                  </button>                 
+                  </button> -->                 
                 </div>
                 <hr/>                
                   <img
@@ -28,7 +28,7 @@
                   />
                   <img id="imagenLogo2" src="/assets/img/letra120x34_.png" />                
                 <hr/>
-                <div class="row" id="formFolio">
+                <div class="row" id="formFolio" style="line-height: 15px;">
                   <div class="col-6 d-flex justify-content-start">
                     <table>
                       <tr>
@@ -164,7 +164,7 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <div   class="d-flex mt-1" *ngxPermissionsOnly="['administrador','superior']">
+                <div class="d-flex" *ngxPermissionsOnly="['administrador','superior']">
                   <div class="flex-grow-1" *ngIf="muestraCambioAdmin">
                     <mat-form-field  class="example-full-width">
                       <input
@@ -181,7 +181,7 @@
                     </button>
                   </div>
                 </div>
-                <div class="d-flex mt-1"  *ngIf="necesitaRespuesta">
+                <div class="d-flex"  *ngIf="necesitaRespuesta">
                   <div class="flex-grow-1" *ngIf="muestraRespuestaReferenciaFechaRequerida">
                     <mat-form-field  class="example-full-width">
                       <input
@@ -204,7 +204,7 @@
                     Folios de referencia: <tag-input [(ngModel)]='regularItems' theme='filled-theme'></tag-input>
                   </div> -->
 
-                <div class="d-flex mt-1" *ngIf="muestraRespuestaReferenciaFechaRequerida">
+                <div class="d-flex" *ngIf="muestraRespuestaReferenciaFechaRequerida">
                   <div class="flex-grow-1">
                     <mat-form-field class="example-chip-list">
                       <mat-chip-list #chipList aria-label="Fruit selection">
@@ -228,63 +228,40 @@
                       <i class="material-icons">search</i>
                     </button>
                   </div>
-                </div>
-                <div class="row">
-                  <mat-form-field class="col-md-7">
-                    <mat-select
-                      placeholder="Tipo Folio"
-                      name="city"
-                      formControlName="tipoFolio"
-                    >
-                      <mat-option
-                        *ngFor="let tipo of tipoFolio"
-                        [value]="tipo.nombre"
-                        (click)="valorTipoFolio(tipo)"
+                </div>                
+                <div class="d-flex">
+                  <div class="flex-grow-1 mr-3">
+                    <mat-form-field>
+                      <mat-select
+                        placeholder="Tipo Folio"
+                        name="city"
+                        formControlName="tipoFolio"
                       >
-                        {{ tipo.nombre }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <!-- <div class="col-md-1"></div> -->
-                  <div class="col-md-5">
-                    <div class="row" *ngIf="muestraRespuestaReferenciaFechaRequerida">
-                      <div class="togglebutton togglebutton-success col-md-6" style="margin-right: auto;">
-                        <label>
-                          <input
-                            type="checkbox"
-                            formControlName="requiereRespuesta"
-                            (click)="ocultaFechaRequerida()"
-                          />
-                          <span class="toggle"></span>
-                          Solicitar respuesta
-                        </label>
-                      </div>
-                      <!--
-                                            <mat-form-field
-                        class="col-5"
-                        *ngIf="muestraFechaRequerida"
-                        
-                      >
-                        <input
-                          matInput
-                          type="datetime-local"
-                          formControlName="fechaRequeridaDatepicker"
-                          [matDatepicker]="picker"
-                          placeholder="Fecha Requerida"
-                          (click)="picker.open()"
-                          
-                        />
-                        <mat-datepicker-toggle
-                          matSuffix
-                          [for]="picker"
-                        ></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                      </mat-form-field>   
-                      -->
-                      <mat-form-field   class="col-6" *ngIf="muestraFechaRequerida">
-                        <input formControlName="fechaRequeridaDatepicker" matInput type="datetime-local" placeholder="Fecha requerida">
-                      </mat-form-field>
-                    </div>
+                        <mat-option
+                          *ngFor="let tipo of tipoFolio"
+                          [value]="tipo.nombre"
+                          (click)="valorTipoFolio(tipo)"
+                        >
+                          {{ tipo.nombre }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field> 
+                  </div>
+                  <div class="togglebutton togglebutton-success" *ngIf="muestraRespuestaReferenciaFechaRequerida">
+                    <label class="mt-3">
+                      <input
+                        type="checkbox"
+                        formControlName="requiereRespuesta"
+                        (click)="ocultaFechaRequerida()"
+                      />
+                      <span class="toggle"></span>
+                      Solicitar respuesta
+                    </label>
+                  </div>
+                  <div class="ml-3">
+                    <mat-form-field *ngIf="muestraFechaRequerida">
+                      <input formControlName="fechaRequeridaDatepicker" matInput type="datetime-local" placeholder="Fecha requerida">
+                    </mat-form-field>
                   </div>
                 </div>
                 <mat-form-field class="example-full-width">
@@ -294,7 +271,7 @@
                     type="text"
                     value=""
                     formControlName="asunto"
-                    maxlength="130"
+                    maxlength="150"
                   />
                 </mat-form-field>
                 <!-- <div class="row mb-1">
@@ -367,7 +344,7 @@
                     </div>
                     <div *ngIf="file.status === false " style="min-width: 210px;font-weight: bold;margin-top: 2px;" class="ellipsis">{{ file.nombre }}</div>
                     <div class="ml-2 mr-2 flex-grow-1" *ngIf="file.status === false || file.status === undefined">
-                      <mat-progress-bar mode="determinate" [value]="file.value" style="margin-top: 10px;"></mat-progress-bar>
+                      <mat-progress-bar mode="determinate" [value]="file.value" style="margin-top: 6px;" class="audio-progress-bar"></mat-progress-bar>
                     </div>
                     <div *ngIf="file.status === true">
                     </div>                    

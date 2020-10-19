@@ -70,7 +70,7 @@ export class FolioComponent implements OnInit, AfterViewInit {
   filtroFolios = [
     {
       id: 0,
-      name: 'Numero Folio'
+      name: '# Folio'
     },
     {
       id: 1,

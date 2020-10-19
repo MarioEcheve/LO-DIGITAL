@@ -23,34 +23,33 @@
 <mat-dialog-content>
     <div class="row">
         <form [formGroup]="buscaFolioForm" class="col-md-12">          
-                <mat-form-field>
+                <!-- <mat-form-field>
                   <mat-label>Filtro de busqueda</mat-label>
                   <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" />
-                </mat-form-field>
+                </mat-form-field> -->
                 <table mat-table [dataSource]="dataSource" matSort class="table">
-                  <!-- ID Column -->
                   <ng-container matColumnDef="numeroFolio">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Numero Folio</th>
-                    <td mat-cell *matCellDef="let row">{{ row.numeroFolio }}</td>
+                    <th mat-header-cell *matHeaderCellDef style="width: 70px;padding-left: 1px;"># Folio</th>
+                    <td mat-cell *matCellDef="let row">
+                      <a style="vertical-align: 4px; font-size: 12px">{{ row.numeroFolio }}</a>
+                    </td>
                   </ng-container>
-
                   <ng-container matColumnDef="emisor">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Emisor</th>
-                    <td mat-cell *matCellDef="let row">{{ row.emisorMarcado }}</td>
+                    <th mat-header-cell *matHeaderCellDef style="width: 170px; padding-left: 8px;">Emisor</th>
+                    <td mat-cell *matCellDef="let row" style="font-weight: bold; font-size: 12px" class="ellipsis">{{ row.emisorMarcado }}</td>
                   </ng-container>
-
                   <ng-container matColumnDef="asunto">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Asunto</th>
-                    <td mat-cell *matCellDef="let row">{{ row.asunto }}</td>
+                    <th mat-header-cell *matHeaderCellDef style="padding-left: 8px;">Tipo Folio - Asunto</th>
+                    <td class="ellipsis" mat-cell *matCellDef="let row" style="font-size: 12px"><span
+                      style="font-weight: bold;">{{row.tipoFolio.nombre}}</span> - {{ row.asunto }}
+                    </td>
                   </ng-container>
-
                   <ng-container matColumnDef="fechaCreacion">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha creacion</th>
-                    <td mat-cell *matCellDef="let row">  {{ row.fechaCreacion | date: "dd-MM-yyyy HH:mm" }}</td>
+                    <th mat-header-cell *matHeaderCellDef style="text-align: left;width: 110px;padding-left: 8px;">Fecha Folio</th>
+                    <td mat-cell *matCellDef="let row" style="text-align: left;width: 110px; font-size: 12px">  {{ row.fechaCreacion | date: "dd-MM-yyyy HH:mm" }}</td>
                   </ng-container>
-
                   <ng-container matColumnDef="acciones">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Acciones</th>
+                    <th mat-header-cell *matHeaderCellDef style="text-align: right;width: 100px;">Acciones</th>
                     <td mat-cell *matCellDef="let row" class="td-actions text-right">
                       <button
                       mat-raised-button

@@ -137,7 +137,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           res.firstName +
           " " +
           res.lastName +
-          " a <b>Libro de Obra digital</b> ",
+          " a <b>LODigital</b> ",
       },
       {
         type: type[color],
