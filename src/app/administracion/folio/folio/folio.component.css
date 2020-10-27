@@ -83,6 +83,4 @@ tr.example-element-row:not(.example-expanded-row):active {
   background: rgb(226, 226, 226);    
 }
 
-::ng-deep .mat-standard-chip {
-  min-height: 22px;
-}
+
