@@ -815,10 +815,61 @@ export class FolioDetalleComponent implements OnInit {
       this.muestraCambioAdmin = false;
     }
   }
+  
   async previsualizar() {
-    const htmlToText = require('html-to-text');
-    let anotacion =  htmlToPdfmake(this.folioForm.controls["anotacion"].value);
-    console.log(anotacion)
+    let anotacion =  this.folioForm.controls["anotacion"].value;
+    let body = htmlToPdfBorrador(anotacion);
+    var docDefinition = {
+      content: []
+    }
+   
+
+    this.folioService.HtmlToPdf(body).subscribe(
+      (response : any)=>{
+        var url = "data:application/pdf;base64," + response;
+        fetch(url)
+        .then(res => res.blob())
+        .then((file)=>{
+          console.log(file)
+          let pdfUrl = URL.createObjectURL(file);
+          const dialogRef = this.dialog.open(VisorPdfComponent, {
+            width: "100%",
+            height: "95%",
+            data: {
+              pdf: pdfUrl,
+              folio: this.Folio,
+              usuario: this.usuario,
+              pdfArchivoCompleto: file,
+              previsualisar: true,
+              lectura: false,
+              listaUsuariosCambioAdmin: this.listaUsuariosCambioAdmin,
+              folioReferencias: this.folios
+            },
+          });
+          
+        });
+        
+        // link.download = 'file.pdf';
+        // link.dispatchEvent(new MouseEvent('click'));
+        /*
+        const dialogRef = this.dialog.open(VisorPdfComponent, {
+          width: "100%",
+          height: "95%",
+          data: {
+            pdf: response.file,
+            folio: this.Folio,
+            usuario: this.usuario,
+            pdfArchivoCompleto: null,
+            previsualisar: true,
+            lectura: false,
+            listaUsuariosCambioAdmin: this.listaUsuariosCambioAdmin,
+            folioReferencias: this.folios
+          },
+        });
+        */
+      }
+    );
+    /*  
     let imagen = document.getElementById('imagenLogo1');
     let imagen2 = document.getElementById('imagenLogo2');
     let imagenBase64 = getBase64Image(imagen);
@@ -871,7 +922,7 @@ export class FolioDetalleComponent implements OnInit {
               [{ text: 'Mandante :', fontSize: 8, }, { text: `${this.Folio.libro.contrato.dependenciaMandante.entidad.nombre} | Rut: 18.011.897-7`, fontSize: 8, }, { text: 'Clase Libro :', fontSize: 8, }, { text: `${this.Folio.libro.tipoLibro.descripcion}`, fontSize: 8, }],
               [{ text: '', fontSize: 8, }, { text: `${this.Folio.libro.contrato.dependenciaMandante.nombre}`, fontSize: 8, }, { text: 'Tipo Firma :', fontSize: 8, }, { text: `${this.Folio.libro.tipoFirma.nombre}`, fontSize: 8, }],
               [{ text: 'Contratista : ', fontSize: 8, }, { text: `${this.dependenciaContratista.entidad.nombre} | Rut: 18.011.897-7`, fontSize: 8, }, { text: 'Fecha Apertura :', fontSize: 8, }, { text: `${moment(this.Folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}`, fontSize: 8, }],
-              [{ text: '', fontSize: 8, }, { text: `${this.dependenciaContratista.nombre}`, fontSize: 8,}, { text: '', fontSize: 8, }, { text: ``, fontSize: 8, }],
+              [{ text: '', fontSize: 8, }, { text: `${this.dependenciaContratista.nombre}`, fontSize: 8, }, { text: '', fontSize: 8, }, { text: ``, fontSize: 8, }],
             ],
           },
           layout: {
@@ -1015,6 +1066,7 @@ export class FolioDetalleComponent implements OnInit {
         folioReferencias: this.folios
       },
     });
+    */
   }
   visualizarPdfOrigen() {
     this.folioService
@@ -1464,3 +1516,208 @@ function formatBytes(bytes) {
   else if (bytes < 1073741824) return (bytes / 1048576).toFixed(3) + " MB";
   else return (bytes / 1073741824).toFixed(3) + " GB";
 };
+
+function htmlToPdfBorrador(anotacion){
+  let logo1 = document.createElement("img");
+  logo1.src = "/assets/img/logo42_.png";
+  let logo2 = document.createElement("img");
+  logo2.src = "/assets/img/letra120x34_.png";
+  let img1 = document.createElement("img");
+  img1.src = "/assets/img/logo.jpg";
+  let html= `<!DOCTYPE html>
+  <html lang="es">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+          <title>Document</title>    
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+      </head>
+      <body>
+          <div class="ml-5 mr-5 mt-5">
+              <div class="row">
+                  <div class="col-6">
+                      <img src="${logo1.src}" />
+                      <img src="${logo2.src}" />
+                  </div>
+                  <div style="text-align: right;" class="col-6">
+                      <img style="max-height: 50px;" src="${img1.src}" />
+                  </div>            
+              </div>
+              <hr>
+              <div class="row" style="line-height: 14px; font-size: 13px; padding-left: 15px; padding-right: 15px;">
+                  <div class="flex-grow-1 justify-content-start">
+                      <table>
+                          <tr>
+                              <td style="width: 110px;">
+                                  <strong>Contrato:</strong>                        
+                              </td>
+                              <td>
+                                  &nbsp;<strong>Construcción Edificio Municipalidad de La Serena</strong>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>Código:</td>
+                              <td>&nbsp;CT001</td>
+                          </tr>
+                          <tr>
+                              <td>Mandante:</td>
+                              <td>
+                                  &nbsp;Ilustre Muncipalidad de La Serena | &nbsp;RUT: 78.254.365-6                         
+                              </td>
+                          </tr>
+                          <tr>
+                              <td></td>
+                              <td>
+                                  &nbsp;Dirección de Obras Municipales
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>Contratista:</td>
+                              <td>&nbsp;Constructora Ivesa Ltda. |  &nbsp;RUT: 76.564.698-9</td>
+                          </tr>
+                          <tr>
+                              <td></td>
+                              <td>
+                                  &nbsp;Oficina de Obras y Contratos
+                              </td>
+                          </tr>
+                      </table>
+                  </div>
+                  <div class="justify-content-end">
+                      <table>
+                          <tr>
+                              <td style="width: 110px;">
+                                  <strong>Libro:</strong>
+                              </td>
+                              <td>
+                                  &nbsp;<strong>Maestro</strong>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>Código:</td>
+                              <td>&nbsp;LO001</td>
+                          </tr>
+                          <tr>
+                              <td>Clase Libro:</td>
+                              <td>&nbsp;Maestro</td>
+                          </tr>
+                          <tr>
+                              <td>Tipo Firma:</td>
+                              <td>&nbsp;Digital Avanzada</td>
+                          </tr>
+                          <tr>
+                              <td>Fecha Apertura:</td>
+                              <td>
+                              &nbsp;12/04/2020 13:45</td>
+                          </tr>
+                          <tr>
+                              <td>Fecha Cierre:</td>
+                              <td>
+                                  &nbsp;25/06/2020 18:14
+                              </td>
+                          </tr>
+                      </table>
+                  </div>
+              </div>
+              <hr>
+              <div style="line-height: 15px; font-size: 14px;">
+                  <table>
+                      <tr>
+                          <td style="font-size: 16px; width: 110px;">
+                              <strong>Folio Nº1</strong>                
+                          </td>
+                          <td>
+                              &nbsp;12-04-2020 14:32:05
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>Emisor:</td>
+                          <td>
+                              &nbsp;Fernando Vilches Soleman | RUT: 13.224.233-K
+                          </td>
+                      </tr>
+                      <tr>
+                          <td></td>
+                          <td>&nbsp;Administrador de Contrato</td>
+                      </tr>
+                      <tr>
+                          <td>Receptor:</td>
+                          <td>
+                              &nbsp;Francisco Olivares Carmona | RUT: 17.546.324-6
+                          </td>
+                      </tr>
+                      <tr>
+                          <td></td>
+                          <td>&nbsp;Inspector Técnico de Obras</td>
+                      </tr>
+                      <tr>
+                          <td>Tipo de Folio:</td>
+                          <td>&nbsp;Consulta</td>
+                      </tr>
+                      <tr>
+                          <td>Respuesta de:</td>
+                          <td>&nbsp;Libro Maestro | Folio Nº23</td>
+                          <!-- <td>&nbsp;n/a</td> -->
+                      </tr>
+                      <tr>
+                      <td>Referencia de:</td>
+                      <td>                     
+                          <li class="list-inline-item ">
+                          <a>&nbsp;Libro Maestro  | Folio Nº22&nbsp;;</a>
+                          </li>                    
+                      </td>
+                      </tr>
+                      <tr>
+                      <td>Fecha Requerida:</td>
+                      <td>
+                          &nbsp;<span class="badge badge-primary">n/a</span>
+                          <span style="color: white;" class="badge badge-primary">
+                          25-12-2020 13:00
+                          </span>
+                      </td>
+                      </tr>
+                      <tr>
+                      <td>Asunto:</td>
+                      <td>&nbsp;Se ajunta RP Nº3 del mes de Septiembre de 2020, con antecedentes de respaldo</td>
+                      </tr>
+                  </table>
+              </div>        
+              <hr />
+              <div style="font-size: 14px; font-weight: bold;">Anotación:</div>
+              <div>
+                 ${anotacion}
+              </div>
+              <hr>
+              <div style="font-size: 14px;">
+                  <strong>Archivos Adjuntos:</strong>
+                  <ul style="line-height: 17px;">
+                      <li>Lorem ipsum.jpg | 3,56 MB</li>
+                      <li>Phasellus iaculis.doc | 12,598 MB</li>
+                      <li>Nulla volutpat.xls | 6,542 KB</li>
+                  </ul>
+              </div>
+              <hr>
+              <div class="row" style="padding-left: 15px;">
+                  <div>
+                      <img style="max-height: 90px;" src="img/logo.jpg" />
+                  </div>
+                  <div style="line-height: 15px; font-size: 13px;padding-left: 5px;">
+                      <strong>Fernando Vilches Soleman</strong>
+                      <br/>RUT: 13.224.233-K
+                      <br/>Administrador de Contrato
+                      <br/>Fecha Firma: 12/05/2020 12:45:03 
+                      <br/>Firma Digital Avanzada
+                      <br/>Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745
+                  </div>
+              </div>        
+              <hr class="mt-3"></hr>
+              <p style="font-size: 12px;" class="text-right">
+                  Para verificar la validez del folio dirigirse a <a href="">www.lodigital.cl</a>                
+              </p>
+          </div>
+          <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+      </body>
+  </html>`;
+  return html;
+}

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpResponse } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Observable, BehaviorSubject, EMPTY } from "rxjs";
 import { map } from "rxjs/operators";
 import * as moment from "moment";
@@ -237,8 +237,12 @@ export class FolioService {
   foliosReferenciasFirmado(id?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption();
     return this.http.get<any[]>(`${this.resourceUrlFolioReferencias}/${id}`, { params: options, observe: "response" })
-   
   }
+
+  HtmlToPdf(body:any):Observable<any>{
+    return this.http.post<any>('http://localhost:8001/htmlToPdf',{body});
+  }
+
   protected convertDateFromClient(folio: IFolio): IFolio {
     const copy: IFolio = Object.assign({}, folio, {
       fechaRequerida:
