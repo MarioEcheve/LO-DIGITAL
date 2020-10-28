@@ -818,12 +818,17 @@ export class FolioDetalleComponent implements OnInit {
   
   async previsualizar() {
     let anotacion =  this.folioForm.controls["anotacion"].value;
-    let body = htmlToPdfBorrador(anotacion);
-    var docDefinition = {
-      content: []
-    }
-   
-
+    let usuarioLibroActual = this.usuario.usuarioDependencia.usuario.firstName + ' ' + this.usuario.usuarioDependencia.usuario.lastName;
+    let object = {
+      folio : this.Folio,
+      mandante : '',
+      contratista : this.dependenciaContratista,
+      emisor : this.emisorPdf,
+      receptor : this.receptorPdf,
+      usuarioLibro : usuarioLibroActual,
+      cargoUsuarioLibro : this.usuario.cargoFuncion
+    };
+    let body = htmlToPdfBorrador(anotacion,object);
     this.folioService.HtmlToPdf(body).subscribe(
       (response : any)=>{
         var url = "data:application/pdf;base64," + response;
@@ -1517,13 +1522,14 @@ function formatBytes(bytes) {
   else return (bytes / 1073741824).toFixed(3) + " GB";
 };
 
-function htmlToPdfBorrador(anotacion){
+function htmlToPdfBorrador(anotacion,object){
   let logo1 = document.createElement("img");
   logo1.src = "/assets/img/logo42_.png";
   let logo2 = document.createElement("img");
   logo2.src = "/assets/img/letra120x34_.png";
   let img1 = document.createElement("img");
   img1.src = "/assets/img/logo.jpg";
+  
   let html= `<!DOCTYPE html>
   <html lang="es">
       <head>
@@ -1540,7 +1546,7 @@ function htmlToPdfBorrador(anotacion){
                       <img src="${logo2.src}" />
                   </div>
                   <div style="text-align: right;" class="col-6">
-                      <img style="max-height: 50px;" src="${img1.src}" />
+                      <img style="max-height: 50px;" src="${img1.src}" /> 
                   </div>            
               </div>
               <hr>
@@ -1552,37 +1558,38 @@ function htmlToPdfBorrador(anotacion){
                                   <strong>Contrato:</strong>                        
                               </td>
                               <td>
-                                  &nbsp;<strong>Construcción Edificio Municipalidad de La Serena</strong>
+                                  &nbsp;<strong>${object.folio.libro.contrato.nombre}</strong>
                               </td>
                           </tr>
                           <tr>
                               <td>Código:</td>
-                              <td>&nbsp;CT001</td>
+                              <td>&nbsp;${object.folio.libro.contrato.codigo}</td>
                           </tr>
                           <tr>
                               <td>Mandante:</td>
                               <td>
-                                  &nbsp;Ilustre Muncipalidad de La Serena | &nbsp;RUT: 78.254.365-6                         
+                                  &nbsp;${object.folio.libro.contrato.dependenciaMandante.entidad.nombre} | &nbsp;RUT: 19.011.897-7                         
                               </td>
                           </tr>
                           <tr>
                               <td></td>
                               <td>
-                                  &nbsp;Dirección de Obras Municipales
+                                  &nbsp;${object.folio.libro.contrato.dependenciaMandante.direccion}
                               </td>
                           </tr>
                           <tr>
                               <td>Contratista:</td>
-                              <td>&nbsp;Constructora Ivesa Ltda. |  &nbsp;RUT: 76.564.698-9</td>
+                              <td>&nbsp;${object.contratista.entidad.nombre} |  &nbsp;RUT: 76.564.698-9</td>
                           </tr>
                           <tr>
                               <td></td>
                               <td>
-                                  &nbsp;Oficina de Obras y Contratos
+                                  &nbsp;${object.contratista.nombre}
                               </td>
                           </tr>
                       </table>
                   </div>
+                  <hr>
                   <div class="justify-content-end">
                       <table>
                           <tr>
@@ -1590,30 +1597,30 @@ function htmlToPdfBorrador(anotacion){
                                   <strong>Libro:</strong>
                               </td>
                               <td>
-                                  &nbsp;<strong>Maestro</strong>
+                                  &nbsp;<strong>${object.folio.libro.nombre}</strong>
                               </td>
                           </tr>
                           <tr>
                               <td>Código:</td>
-                              <td>&nbsp;LO001</td>
+                              <td>&nbsp;${object.folio.libro.codigo}</td>
                           </tr>
                           <tr>
                               <td>Clase Libro:</td>
-                              <td>&nbsp;Maestro</td>
+                              <td>&nbsp;${object.folio.libro.tipoLibro.descripcion}</td>
                           </tr>
                           <tr>
                               <td>Tipo Firma:</td>
-                              <td>&nbsp;Digital Avanzada</td>
+                              <td>&nbsp;${object.folio.libro.tipoFirma.nombre}</td>
                           </tr>
                           <tr>
                               <td>Fecha Apertura:</td>
                               <td>
-                              &nbsp;12/04/2020 13:45</td>
+                              &nbsp;${moment(object.folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}</td>
                           </tr>
                           <tr>
                               <td>Fecha Cierre:</td>
                               <td>
-                                  &nbsp;25/06/2020 18:14
+                                  &nbsp;${object.folio.libro.fechaCierre}
                               </td>
                           </tr>
                       </table>
@@ -1622,63 +1629,68 @@ function htmlToPdfBorrador(anotacion){
               <hr>
               <div style="line-height: 15px; font-size: 14px;">
                   <table>
+                      <!--
                       <tr>
-                          <td style="font-size: 16px; width: 110px;">
-                              <strong>Folio Nº1</strong>                
-                          </td>
-                          <td>
-                              &nbsp;12-04-2020 14:32:05
-                          </td>
+                        <td style="font-size: 16px; width: 110px;">
+                            <strong>Folio Nº1</strong>                
+                        </td>
+                        <td>
+                            &nbsp;12-04-2020 14:32:05
+                        </td>
                       </tr>
+                      -->
                       <tr>
                           <td>Emisor:</td>
                           <td>
-                              &nbsp;Fernando Vilches Soleman | RUT: 13.224.233-K
+                              &nbsp;${object.emisor.usuarioDependencia.usuario.firstName}  ${object.emisor.usuarioDependencia.usuario.lastName} | Rut: ${object.emisor.usuarioDependencia.rut} 
                           </td>
                       </tr>
                       <tr>
                           <td></td>
-                          <td>&nbsp;Administrador de Contrato</td>
+                          <td>&nbsp;${object.emisor.cargoFuncion} </td>
                       </tr>
                       <tr>
                           <td>Receptor:</td>
                           <td>
-                              &nbsp;Francisco Olivares Carmona | RUT: 17.546.324-6
+                              &nbsp;${object.receptor.usuarioDependencia.usuario.firstName}  ${object.receptor.usuarioDependencia.usuario.lastName} | Rut: ${object.receptor.usuarioDependencia.rut}
                           </td>
                       </tr>
                       <tr>
                           <td></td>
-                          <td>&nbsp;Inspector Técnico de Obras</td>
+                          <td>&nbsp;${object.receptor.cargoFuncion}</td>
                       </tr>
                       <tr>
                           <td>Tipo de Folio:</td>
-                          <td>&nbsp;Consulta</td>
+                          <td>&nbsp;${object.folio.tipoFolio.nombre}</td>
                       </tr>
                       <tr>
                           <td>Respuesta de:</td>
-                          <td>&nbsp;Libro Maestro | Folio Nº23</td>
+                          <!-- <td>&nbsp;Libro Maestro | Folio Nº23</td> -->
                           <!-- <td>&nbsp;n/a</td> -->
                       </tr>
                       <tr>
                       <td>Referencia de:</td>
-                      <td>                     
-                          <li class="list-inline-item ">
-                          <a>&nbsp;Libro Maestro  | Folio Nº22&nbsp;;</a>
-                          </li>                    
+                      <td> 
+                          <!--                   
+                            <li class="list-inline-item ">
+                              <a>&nbsp;Libro Maestro  | Folio Nº22&nbsp;;</a>
+                            </li>        
+                          -->            
                       </td>
                       </tr>
                       <tr>
                       <td>Fecha Requerida:</td>
                       <td>
                           &nbsp;<span class="badge badge-primary">n/a</span>
-                          <span style="color: white;" class="badge badge-primary">
+                         <!-- <span style="color: white;" class="badge badge-primary">
                           25-12-2020 13:00
                           </span>
+                          -->
                       </td>
                       </tr>
                       <tr>
                       <td>Asunto:</td>
-                      <td>&nbsp;Se ajunta RP Nº3 del mes de Septiembre de 2020, con antecedentes de respaldo</td>
+                      <td>&nbsp;${object.folio.asunto}</td>
                       </tr>
                   </table>
               </div>        
@@ -1697,19 +1709,21 @@ function htmlToPdfBorrador(anotacion){
                   </ul>
               </div>
               <hr>
+              <!--
               <div class="row" style="padding-left: 15px;">
                   <div>
                       <img style="max-height: 90px;" src="img/logo.jpg" />
                   </div>
                   <div style="line-height: 15px; font-size: 13px;padding-left: 5px;">
-                      <strong>Fernando Vilches Soleman</strong>
+                      <strong>${object.usuarioLibro}</strong>
                       <br/>RUT: 13.224.233-K
-                      <br/>Administrador de Contrato
-                      <br/>Fecha Firma: 12/05/2020 12:45:03 
-                      <br/>Firma Digital Avanzada
+                      <br/>${object.cargoUsuarioLibro}
+                      <br/>Fecha Firma: ${moment(object.folio.fechaFirma).format('DD-MM-YYYY hh:mm')}
+                      <br/>${object.folio.libro.tipoFirma.nombre}
                       <br/>Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745
                   </div>
-              </div>        
+              </div>
+              -->    
               <hr class="mt-3"></hr>
               <p style="font-size: 12px;" class="text-right">
                   Para verificar la validez del folio dirigirse a <a href="">www.lodigital.cl</a>                
