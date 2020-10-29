@@ -240,7 +240,7 @@ export class FolioService {
   }
 
   HtmlToPdf(body:any):Observable<any>{
-    return this.http.post<any>('http://localhost:8001/htmlToPdf',{body});
+    return this.http.post<any>('https://email-lo-digital.an.r.appspot.com/htmlToPdf',{body});
   }
 
   protected convertDateFromClient(folio: IFolio): IFolio {
