@@ -68,7 +68,7 @@ export class ModalCrearFolioComponent implements OnInit {
   inicializarForm() {
     this.crearFolioFormGroup = this.fb.group({
       libro: [],
-      asunto: ["", Validators.required],
+      asunto: [" ", Validators.required],
       tipoFolio: [Validators.required],
     });
   }

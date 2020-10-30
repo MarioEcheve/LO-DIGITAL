@@ -474,6 +474,8 @@ export class FolioDetalleComponent implements OnInit {
             }
           });*/
         }
+        console.log('imprimiendo folio referencia');
+        console.log(this.folios);
         if (this.folios.length > 0) {
           for (let i = 0; i < this.folios.length; i++) {
             let folioReferencia = new FolioReferencia();
@@ -496,6 +498,7 @@ export class FolioDetalleComponent implements OnInit {
           //this.folioRelacionadoService.create().subscribe();
         } else {
           setTimeout(() => {
+            console.log('entra al else');
             respuesta.body.poseeFolioReferencia = false;
             respuesta.body.folioReferencias = [];
             this.folioService.ListaFoliosDeFolios([]);
