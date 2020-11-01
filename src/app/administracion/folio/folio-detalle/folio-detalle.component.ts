@@ -322,16 +322,11 @@ export class FolioDetalleComponent implements OnInit {
         }
       } else {
         if (respuesta.body.fechaRequerida !== undefined) {
-          this.folioForm
-            .get("fechaRequeridaDatepicker")
-            .setValidators([Validators.required]);
-          let fecha = this.Folio.fechaRequerida
-            .local()
-            .toISOString()
-            .split(":00.000Z");
+          
           this.folioForm.controls["fechaRequeridaDatepicker"].setValue(
-            fecha[0]
+            this.Folio.fechaRequerida.toDate()
           );
+         
         }
         this.muestraFechaRequerida = true;
       }
@@ -432,9 +427,10 @@ export class FolioDetalleComponent implements OnInit {
     this.Folio.idReceptor = this.folioForm.controls["receptor"].value;
     this.Folio.archivos = [];
     this.Folio.estadoFolio = false;
+    console.log(this.folioForm.controls["fechaRequeridaDatepicker"].value);
     if (this.folioForm.controls["fechaRequeridaDatepicker"].value !== "") {
       let fechaRequerida = moment(
-        this.folioForm.controls["fechaRequeridaDatepicker"].value + ":00Z"
+        this.folioForm.controls["fechaRequeridaDatepicker"].value
       );
       this.Folio.fechaRequerida = fechaRequerida;
     } else {
@@ -498,7 +494,7 @@ export class FolioDetalleComponent implements OnInit {
           //this.folioRelacionadoService.create().subscribe();
         } else {
           setTimeout(() => {
-            console.log('entra al else');
+            console.log('entra al');
             respuesta.body.poseeFolioReferencia = false;
             respuesta.body.folioReferencias = [];
             this.folioService.ListaFoliosDeFolios([]);
@@ -587,7 +583,9 @@ export class FolioDetalleComponent implements OnInit {
         if (res) {
           this.muestraFechaRequerida = true;
           this.Folio.requiereRespuesta = true;
-          this.folioForm.get("fechaRequeridaDatepicker").setValue(new Date());
+          let fechaRequerida = new Date();
+          fechaRequerida.setDate(fechaRequerida.getDate() + 2);
+          this.folioForm.get("fechaRequeridaDatepicker").setValue(fechaRequerida);
           this.folioForm
             .get("fechaRequeridaDatepicker")
             .setValidators([Validators.required]);

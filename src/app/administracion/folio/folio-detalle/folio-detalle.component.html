@@ -258,11 +258,18 @@
                       Solicitar respuesta
                     </label>
                   </div>
-                  <div class="ml-3">
+                 <!--  <div class="ml-3">
                     <mat-form-field *ngIf="muestraFechaRequerida">
                       <input formControlName="fechaRequeridaDatepicker" matInput type="datetime-local" placeholder="Fecha requerida">
                     </mat-form-field>
-                  </div>
+                  </div> -->
+                  <div class="col-md-4 mr-auto" *ngIf="muestraFechaRequerida">
+                    <mat-form-field >
+                      <input matInput [matDatepicker]="picker" placeholder="Choose a date" (click)="picker.open()" formControlName="fechaRequeridaDatepicker">
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
                 </div>
                 <mat-form-field class="example-full-width">
                   <input

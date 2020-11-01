@@ -35,16 +35,18 @@
                   <i class="material-icons">push_pin</i>
                   Relacionar
                 </button> -->
-                <button
+                <div *ngIf="respuestaFolioShow === false">
+                  <button
                   mat-raised-button
                   class="btn btn-primary btn-sm mr-1"
-                  [disabled]="Folio.idUsuarioLectura !== null  || usuario?.adminActivo === false || respuestaFolioShow === false"
                   (click)="lecturaFolio()"
                    *ngxPermissionsOnly="['administrador']"
                 >
                   <i class="material-icons">check</i>
                   Confirmar Lectura
                 </button>
+                </div>
+                
                 <button
                   mat-raised-button
                   class="btn btn-primary btn-sm mr-1"
@@ -281,7 +283,7 @@
                 <div style="line-height: 15px; padding-left: 5px;">
                   <a style="font-weight: bold;" *ngIf="emisor">
                     {{ emisor.usuarioDependencia.usuario.firstName }} {{ emisor.usuarioDependencia.usuario.lastName }}</a>
-                  <br/>RUT: {{emisor.usuarioDependencia.rut}}
+                  <br/>RUT: {{emisor?.usuarioDependencia.rut}}
                   <br/>Cargo: {{emisor?.cargoFuncion}}
                   <br/>Fecha Firma: {{ Folio.fechaFirma | date: "dd-MM-yyyy HH:mm:ss" }} 
                   <br/>Firma Digital
