@@ -23,6 +23,7 @@ import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 import { UsuarioLibro } from "../../TO/usuario-libro.model";
 import { UsuarioDependenciaService } from "../../services/usuario-dependencia.service";
 import { UsuarioDependencia } from "../../TO/usuario-dependencia.model";
+import { UsuarioLibroService } from "../../services/usuario-libro.service";
 
 @Component({
   selector: "app-crear-usuario",
@@ -58,7 +59,8 @@ export class CrearUsuarioComponent implements AfterViewInit {
     private fb: FormBuilder,
     private entidadService: EntidadService,
     private perfilUsuarioLibro: UsuarioLibroPerfilService,
-    private usuarioDependenciaService: UsuarioDependenciaService
+    private usuarioDependenciaService: UsuarioDependenciaService,
+    private usuarioLibroService : UsuarioLibroService
   ) {}
 
   ngOnInit() {
@@ -141,6 +143,13 @@ export class CrearUsuarioComponent implements AfterViewInit {
       usuarioLibro.estado = valorEstado;
       usuarioLibro.nombreEstado = estadoUsuarioLibro;
       usuarioLibro.adminActivo = this.usuarioFormGroup.controls['adminActivo'].value;
+
+      this.usuarioLibroService.update(usuarioLibro).subscribe(
+        usuario=>{
+          console.log('Usuario Actualizado')
+        }
+      );
+
       this.dialogRef.close(usuarioLibro);
 
     }else{
@@ -165,7 +174,7 @@ export class CrearUsuarioComponent implements AfterViewInit {
         gesNotas: undefined,
         id: undefined,
         idUsuarioDependencia: this.idUsuarioDependenciaAutoComplete,
-        libro: null,
+        libro: this.data.libro,
         nombre: this.myControl.value,
         perfilUsuarioLibro: this.perfilUsuario,
         usuarioDependencia: null,
@@ -182,8 +191,15 @@ export class CrearUsuarioComponent implements AfterViewInit {
         });
      setTimeout(() => {
       console.log(json_usuario_dep);
+
+      this.usuarioLibroService.create(json_usuario_dep).subscribe(
+        usuario=>{
+          console.log(usuario.body);
+        }
+      );
+
       this.dialogRef.close(json_usuario_dep);
-     },400);
+     },600);
     }
   }
 

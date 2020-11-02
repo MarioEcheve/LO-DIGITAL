@@ -539,9 +539,9 @@ export class LibroComponent implements OnInit {
       (respuesta) => {
         this.showNotificationSuccess("top", "right");
         // guarda usuarios mandante
-        this.guardaUsuariosMandante(respuesta.body);
+        //this.guardaUsuariosMandante(respuesta.body);
         // guarda usuarios contratista
-        this.guardaUsuariosContratista(respuesta.body);
+        //this.guardaUsuariosContratista(respuesta.body);
         this.router.navigate(["/contrato/detalle-contrato/", this.idContrato]);
       },
       (error) => {

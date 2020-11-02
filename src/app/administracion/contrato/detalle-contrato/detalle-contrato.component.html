@@ -406,16 +406,29 @@
                         >
                       </td>
                       <td class="td-actions text-right">
-                        <button
-                          mat-raised-button
-                          type="button"
-                          class="btn btn-default {{ row[5] }} mr-1"
-                          (click)="editarLibro(row)"
-                          *ngIf="row.adminLibroActivo === true"
-                        >
+                        <div *ngxPermissionsOnly="['super usuario']">
+                          <button
+                            mat-raised-button
+                            type="button"
+                            class="btn btn-default {{ row[5] }} mr-1"
+                            (click)="editarLibro(row)"
+                          >
                           <i class="material-icons">edit</i>
-                        </button>
-                        <button
+                          </button>
+                        </div>
+                        <div *ngxPermissionsOnly="['usuario']">
+                          <button
+                            mat-raised-button
+                            type="button"
+                            class="btn btn-default {{ row[5] }} mr-1"
+                            (click)="editarLibro(row)"
+                            *ngIf="row.adminLibroActivo === true"
+                          >
+                          <i class="material-icons">edit</i>
+                          </button>
+                        </div>
+                        <div>
+                          <button
                           mat-raised-button
                           type="button"
                           class="btn btn-default {{ row[5] }}"
@@ -423,6 +436,7 @@
                         >
                           <i class="material-icons">keyboard_arrow_right</i>
                         </button>
+                        </div>
                       </td>
                     </tr>
                   </tbody>

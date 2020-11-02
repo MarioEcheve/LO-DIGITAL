@@ -6,38 +6,62 @@
           <mat-tab label="Libro">
             <form [formGroup]="libroInfoGeneralFormGroup">
               <div class="container-fluid mt-3">
-                <h5 style="color: #252525;">
-                  <strong>Información General</strong>
-                </h5>
-                <div class="row">
-                  <mat-form-field class="example-full-width col-md-2">
-                    <input
-                      matInput
-                      placeholder="Cod. Libro"
-                      type="text"
-                      formControlName="codigo"
-                      disabled
-                    />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width col-md-7">
-                    <input
-                      matInput
-                      placeholder="Nombre Libro"
-                      type="text"
-                      formControlName="nombre"
-                      disabled
-                    />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width col-md-3">
-                    <input
-                      matInput
-                      placeholder="Estado"
-                      type="text"
-                      formControlName="estadoLibro"
-                      disabled
-                    />
-                  </mat-form-field>
-                </div>
+                <h5 style="font-weight: bold;" class="text-muted"><strong>Información General</strong></h5>                
+                <mat-form-field class="mt-3">
+                  <input
+                    matInput
+                    placeholder="Cod. Libro"
+                    type="text"
+                    formControlName="codigo"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="Nombre Libro"
+                    type="text"
+                    formControlName="nombre"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="Estado"
+                    type="text"
+                    formControlName="estadoLibro"
+                    disabled
+                  />
+                </mat-form-field>
+<!--                 <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="Fecha creación"
+                    type="text"
+                    formControlName="fechaCreacion"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field>
+                  <input
+                   formControlName="fechaApertura"
+                    matInput
+                    placeholder="Fecha apertura"
+                    type="text"
+                    disabled
+                  />
+                </mat-form-field>
+                <mat-form-field>
+                  <input
+                    formControlName="fechaCierre"
+                    matInput
+                    placeholder="Fecha cierre"
+                    type="text"
+                    value="sin información"
+                    disabled
+                  />
+                </mat-form-field>   -->             
                 <mat-form-field class="example-full-width">
                   <textarea
                     matInput
@@ -47,237 +71,165 @@
                     disabled
                   ></textarea>
                 </mat-form-field>
-                <div class="row">
-                  <mat-form-field class="col-md-6">
-                    <mat-select
-                      placeholder="Clase Libro"
-                      name="city"
-                      formControlName="tipoLibro"
+                <mat-form-field>
+                  <mat-select
+                    placeholder="Clase Libro"
+                    name="city"
+                    formControlName="tipoLibro"
+                  >
+                    <mat-option
+                      *ngFor="let tipo of tipoLibro"
+                      [value]="tipo"
                     >
-                      <mat-option *ngFor="let tipo of tipoLibro" [value]="tipo">
-                        {{ tipo.descripcion }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <mat-form-field class="col-md-6">
-                    <mat-select
-                      placeholder="Tipo Firma"
-                      name="city"
-                      formControlName="tipoFirma"
+                      {{ tipo.descripcion }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-select
+                    placeholder="Tipo Firma"
+                    name="city"
+                    formControlName="tipoFirma"
+                  >
+                    <mat-option
+                      *ngFor="let tipo of tipoFirma"
+                      [value]="tipo"
                     >
-                      <mat-option *ngFor="let tipo of tipoFirma" [value]="tipo">
-                        {{ tipo.nombre }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
+                      {{ tipo.nombre }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>                
                 <hr />
-                <!--
-                  <h5 style="color: #252525;">
-                  <strong>Administrador Mandante</strong>
-                </h5>
-                <div class="row">
-                  <mat-form-field class="example-full-width col-md-2">
-                    <input
-                      matInput
-                      placeholder="RUT"
-                      type="text"
-                      formControlName="rutAdminMandante"
-                      disabled
-                    />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width col-md-5">
-                    <input
-                      matInput
-                      placeholder="Nombre"
-                      type="text"
-                      formControlName="nombreAdminMandante"
-                      disabled
-                    />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width col-md-3">
-                    <input
-                      matInput
-                      placeholder="Perfil Usuario"
-                      type="text"
-                      formControlName="perfilUsuarioAdminMandante"
-                      disabled
-                    />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width col-md-2">
-                    <input
-                      matInput
-                      placeholder="Fecha Asignación"
-                      type="text"
-                      formControlName="fechaAsignacionAdminMandante"
-                      disabled
-                    />
-                  </mat-form-field>
-                </div>
-                <div class="row">
-                  <mat-form-field class="example-full-width col-md-5">
-                    <input
-                      matInput
-                      placeholder="Cargo/Función"
-                      type="text"
-                      formControlName="cargoAdminMandante"
-                      disabled
-                    />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width col-md-3">
-                    <input
-                      matInput
-                      placeholder="Teféfono"
-                      type="text"
-                      formControlName="telefonoAdminMandante"
-                      disabled
-                    />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width col-md-4">
-                    <input
-                      matInput
-                      placeholder="E-mail"
-                      type="text"
-                      formControlName="emailAdminMandante"
-                      disabled
-                    />
-                  </mat-form-field>
-                </div>
-                <div class="row">
-                  <mat-form-field class="example-full-width col-md-5">
-                    <input
-                      matInput
-                      placeholder="Entidad"
-                      type="text"
-                      formControlName="entidadAdminMandante"
-                      disabled
-                    />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width col-md-2">
-                    <input
-                      matInput
-                      placeholder="RUT"
-                      type="text"
-                      formControlName="rutEntidadAdminMandante"
-                      disabled
-                    />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width col-md-5">
-                    <input
-                      matInput
-                      placeholder="Dependencia"
-                      type="text"
-                      formControlName="dependenciaEntidadMandante"
-                      disabled
-                    />
-                  </mat-form-field>
-                </div>
-                <hr />
-                <h5 style="color: #252525;">
-                  <strong>Administrador Contratista</strong>
-                </h5>
-                <div class="row">
-                  <mat-form-field class="example-full-width col-md-2">
-                    <input
-                      matInput
-                      placeholder="RUT"
-                      type="text"
-                      formControlName="rutAdminContratista"
-                      disabled
-                    />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width col-md-5">
-                    <input
-                      matInput
-                      placeholder="Nombre"
-                      type="text"
-                      formControlName="nombreAdminContratista"
-                      disabled
-                    />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width col-md-3">
-                    <input
-                      matInput
-                      placeholder="Perfil Usuario"
-                      type="text"
-                      formControlName="perfilUsuarioAdminContratista"
-                      disabled
-                    />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width col-md-2">
-                    <input
-                      matInput
-                      placeholder="Fecha Asignación"
-                      type="text"
-                      formControlName="fechaAsignacionAdminContratista"
-                      disabled
-                    />
-                  </mat-form-field>
-                </div>
-                <div class="row">
-                  <mat-form-field class="example-full-width col-md-5">
-                    <input
-                      matInput
-                      placeholder="Cargo/Función"
-                      type="text"
-                      formControlName="cargoAdminContratista"
-                      disabled
-                    />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width col-md-3">
-                    <input
-                      matInput
-                      placeholder="Teféfono"
-                      type="text"
-                      formControlName="telefonoAdminContratista"
-                      disabled
-                    />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width col-md-4">
-                    <input
-                      matInput
-                      placeholder="E-mail"
-                      type="text"
-                      formControlName="emailAdminContratista"
-                      disabled
-                    />
-                  </mat-form-field>
-                </div>
-                <div class="row">
-                  <mat-form-field class="example-full-width col-md-5">
-                    <input
-                      matInput
-                      placeholder="Entidad"
-                      type="text"
-                      formControlName="entidadAdminContratista"
-                      disabled
-                    />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width col-md-2">
-                    <input
-                      matInput
-                      placeholder="RUT"
-                      type="text"
-                      formControlName="rutEntidadAdminContratista"
-                      disabled
-                    />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width col-md-5">
-                    <input
-                      matInput
-                      placeholder="Dependencia"
-                      type="text"
-                      formControlName="dependenciaEntidadContratista"
-                      disabled
-                    />
-                  </mat-form-field>
-                </div>
-                -->
-                
+                <h5 style="font-weight: bold;" class="text-muted"><strong>Configuración y Permisos</strong></h5>
+                <form [formGroup]="permisosFormGroup">
+                  
+
+
+
+
+
+
+                  <mat-divider class="mt-3"></mat-divider>
+                  <div class="row mt-2" style="line-height: 12px;">
+                    <div style="max-width: 200px; font-weight: bold;" class="col-md-3">
+                      Permisos creación de Folios:
+                    </div>
+                    <div class="togglebutton col-md-9">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked=""
+                          formControlName="aperturaMandante"
+                        />
+                        <span class="toggle"></span>
+                        Permitir al Administrador del Mandante crear y firmar folios
+                      </label><br>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked=""
+                          formControlName="aperturaContratista"
+                        />
+                        <span class="toggle"></span>
+                        Permitir al Administrador del Contratista crear y firmar folios
+                      </label>
+                    </div>
+                  </div>
+                  <mat-divider></mat-divider>
+                  <div class="row mt-2" style="line-height: 12px;">
+                    <div style="max-width: 200px; font-weight: bold;" class="col-md-3">
+                      Permisos apertura de Libros:
+                    </div>
+                    <div class="togglebutton col-md-9">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked=""
+                          formControlName="escrituraMandante"
+                        />
+                        <span class="toggle"></span>
+                        Permitir al Administrador del Mandante abrir el Libro
+                      </label><br>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked=""
+                          formControlName="escrituraContratista"
+                        />
+                        <span class="toggle"></span>
+                        Permitir al Administrador del Contratista abrir el Libro
+                      </label>
+                    </div>
+                  </div>
+                  <mat-divider></mat-divider>
+                  <div class="row mt-2" style="line-height: 12px;">
+                    <div style="max-width: 200px; font-weight: bold;" class="col-md-3">
+                      Permisos cierre de Libros:
+                    </div>
+                    <div class="togglebutton col-md-9">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked=""
+                          formControlName="cierreMandante"
+                        />
+                        <span class="toggle"></span>
+                        Permitir al Administrador del Mandante cerrar el Libro
+                      </label><br>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked=""
+                          formControlName="cierreContratista"
+                        />
+                        <span class="toggle"></span>
+                        Permitir al Administrador del Contratista cerrar el Libro
+                      </label>
+                    </div>                  
+                  </div>
+                  <mat-divider></mat-divider>
+                  <div class="row mt-2" style="line-height: 12px;">
+                    <div style="max-width: 200px; font-weight: bold;" class="col-md-3">
+                      Confirmación de Lectura:
+                    </div>
+                    <div class="togglebutton col-md-9">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked=""
+                          formControlName="lecturaMandante"
+                        />
+                        <span class="toggle"></span>
+                        Solicitar confirmación de lectura de Folios al Mandante
+                      </label><br>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked=""
+                          formControlName="lecturaContratista"
+                        />
+                        <span class="toggle"></span>
+                        Solicitar confirmación de lectura de Folios al Contratista
+                      </label>
+                    </div>                  
+                  </div>
+                  <hr>
+                </form>              
+                <div class="pull-right">                  
+                  <button mat-raised-button type="submit" class="btn btn-default mr-1">
+                    Cancelar
+                  </button>
+                  <button   (click)="guardaLibro()" mat-raised-button type="submit" class="btn btn-primary">
+                    Guardar
+                  </button>
+                  <!-- <button   mat-raised-button type="submit" class="btn btn-primary">
+                    Editar
+                  </button> -->
+                </div>                
               </div>
             </form>
           </mat-tab>
-          <mat-tab  label="Usuarios Mandante">
+         <!--  <mat-tab  label="Usuarios Mandante">
             <div class="container-fluid mt-3">
               <div class="pull-right">
                 <button
@@ -534,7 +486,7 @@
                 </button>
               </div>
             </div>
-          </mat-tab>
+          </mat-tab> -->
         </mat-tab-group>
       </div>
     </div>

@@ -483,14 +483,50 @@ export class DetalleContratoComponent
     this.UsuarioDependenciaService.findUserByUsuarioDependencia(usuario.id).subscribe(
       usuarioDependencia=>{
         perfilUsuario = usuarioDependencia.body[0].perfilUsuarioDependencia;
-        console.log(perfilUsuario);
           let permisos = [perfilUsuario.nombre.toLowerCase()]
           this.permissionsService.loadPermissions(permisos);
           
           if(perfilUsuario.nombre.toLowerCase() === "super usuario"){
-            this.libroService.getMisLibrosContratoDetalle(usuario.id, this.contrato.id).subscribe(
+
+            this.libroService.query().subscribe(
+              response=>{
+                console.log(response);
+                let librosFiltradosPorContrato = response.body.filter(libro => libro.contrato.id === this.contrato.id);
+                console.log(librosFiltradosPorContrato);
+                this.libros = librosFiltradosPorContrato;
+                this.libros.forEach(element=>{
+                  this.usuarioLibroService
+                  .buscarlibroPorContrato(element.id, usuario.id).subscribe(
+                    usuarioLibro=>{
+                      let usuarioLibroAdminActual = usuarioLibro.body[0];
+                      this.usuarioLibroService.query().subscribe(
+                        usuariosLibros=>{
+                          let valor = usuariosLibros.body.filter(usuarioLibro=> usuarioLibro.libro.id === element.id && usuarioLibro.adminActivo === true);
+                          valor.forEach(element2=>{
+                            if(element2.id === usuarioLibroAdminActual.id){
+                              console.log(element2);
+                              if(element2.adminActivo === true){
+                                element.adminLibroActivo = true;
+                              }else{
+                                element.adminLibroActivo = false;
+                              }
+                            }
+                          });
+                        }
+                      );
+                    }
+                  );
+                });
+
+              }
+            );
+
+
+
+           /*  this.libroService.getMisLibrosContratoDetalle(usuario.id, this.contrato.id).subscribe(
               libros=>{
                 this.libros = libros.body;
+                console.log(libros);
                 this.libros.forEach(element=>{
                   this.usuarioLibroService
                   .buscarlibroPorContrato(element.id, usuario.id).subscribe(
@@ -515,11 +551,10 @@ export class DetalleContratoComponent
                   );
                 });
               }
-            );
+            ); */
           }else{
             this.libroService.getMisLibrosContratoDetalle(usuario.id, this.contrato.id).subscribe(
               libros=>{
-                console.log(libros.body);
                 this.libros = libros.body;
                 this.libros.forEach(element=>{
                   this.usuarioLibroService

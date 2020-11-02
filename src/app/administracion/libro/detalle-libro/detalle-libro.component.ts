@@ -440,7 +440,8 @@ export class DetalleLibroComponent implements OnInit {
         usuariosDependenciaMandante: listaUsuariosFiltrados,
         editar : this.editar,
         usuarioEditar : usuarioEditar,
-        existe : existe
+        existe : existe,
+        libro : this.libro
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -461,6 +462,7 @@ export class DetalleLibroComponent implements OnInit {
               this.libroInfoGeneralFormGroup.controls["emailAdminMandante"].setValue(result.usuarioDependencia.usuario.email);
           }
           this.listaUsuarioMandante = [...this.listaUsuarioMandante, result];
+          this.showNotificationSuccessNuevoUsuario("top", "right");
         }
       }
     });
@@ -499,7 +501,8 @@ export class DetalleLibroComponent implements OnInit {
         usuariosDependenciaMandante: listaUsuariosFiltrados,
         editar : this.editar,
         usuarioEditar : usuarioEditar,
-        existe : existe
+        existe : existe,
+        libro : this.libro
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -519,6 +522,7 @@ export class DetalleLibroComponent implements OnInit {
             this.libroInfoGeneralFormGroup.controls["dependenciaEntidadContratista"].setValue(result.usuarioDependencia.dependencia.nombre);
           }
           this.listaUsuarioContratistaAgregados = [...this.listaUsuarioContratistaAgregados, result];
+          this.showNotificationSuccessNuevoUsuario("top", "right");
         }
       }
     });
@@ -569,6 +573,84 @@ export class DetalleLibroComponent implements OnInit {
       {
         icon: "notifications",
         message: "Cambios guardados Correctamente ",
+      },
+      {
+        type: type[color],
+        timer: 3000,
+        placement: {
+          from: from,
+          align: align,
+        },
+        template:
+          '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0} alert-with-icon" role="alert">' +
+          '<button mat-raised-button type="button" aria-hidden="true" class="close" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
+          '<i class="material-icons" data-notify="icon">notifications</i> ' +
+          '<span data-notify="title">{1}</span> ' +
+          '<span data-notify="message">{2}</span>' +
+          '<div class="progress" data-notify="progressbar">' +
+          '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+          "</div>" +
+          '<a href="{3}" target="{4}" data-notify="url"></a>' +
+          "</div>",
+      }
+    );
+  }
+  showNotificationSuccessNuevoUsuario(from: any, align: any) {
+    const type = [
+      "",
+      "info",
+      "success",
+      "warning",
+      "danger",
+      "rose",
+      "primary",
+    ];
+
+    const color = 2;
+
+    $.notify(
+      {
+        icon: "notifications",
+        message: "Usuario Creado Correctamente ",
+      },
+      {
+        type: type[color],
+        timer: 3000,
+        placement: {
+          from: from,
+          align: align,
+        },
+        template:
+          '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0} alert-with-icon" role="alert">' +
+          '<button mat-raised-button type="button" aria-hidden="true" class="close" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
+          '<i class="material-icons" data-notify="icon">notifications</i> ' +
+          '<span data-notify="title">{1}</span> ' +
+          '<span data-notify="message">{2}</span>' +
+          '<div class="progress" data-notify="progressbar">' +
+          '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+          "</div>" +
+          '<a href="{3}" target="{4}" data-notify="url"></a>' +
+          "</div>",
+      }
+    );
+  }
+  showNotificationSuccessEditarUsuario(from: any, align: any) {
+    const type = [
+      "",
+      "info",
+      "success",
+      "warning",
+      "danger",
+      "rose",
+      "primary",
+    ];
+
+    const color = 2;
+
+    $.notify(
+      {
+        icon: "notifications",
+        message: "Usuario Editado Correctamente ",
       },
       {
         type: type[color],
@@ -699,6 +781,7 @@ export class DetalleLibroComponent implements OnInit {
               this.libroInfoGeneralFormGroup.controls["emailAdminMandante"].setValue(result.usuarioDependencia.usuario.email);
           }
           //console.log(this.listaUsuarioMandante);
+          this.showNotificationSuccessEditarUsuario("top", "right");
         }
       }
     });
@@ -765,6 +848,7 @@ export class DetalleLibroComponent implements OnInit {
           }
           console.log(this.listaUsuarioContratista);
         }
+        this.showNotificationSuccessEditarUsuario("top", "right");
       }
     });
   }
