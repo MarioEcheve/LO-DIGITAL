@@ -27,7 +27,7 @@
                     src="/assets/img/logo42_.png"
                   />
                   <img id="imagenLogo2" src="/assets/img/letra120x34_.png" />                
-                <hr/>
+                <hr/>                
                 <div class="row" id="formFolio" style="line-height: 15px;">
                   <div class="col-6 d-flex justify-content-start">
                     <table>
@@ -301,7 +301,10 @@
                   <!--
                     
                   -->
-                   <div  style=" font-weight: 800;" formControlName="anotacion" [ngxSummernote]="config" ></div> 
+                  <div style=" font-weight: 500;">
+                    <div formControlName="anotacion" [ngxSummernote]="config" ></div>
+                  </div>
+                   
                  <!-- <angular-editor
                   id="anotacion"
                   [placeholder]="'Ingrese anotación...'"

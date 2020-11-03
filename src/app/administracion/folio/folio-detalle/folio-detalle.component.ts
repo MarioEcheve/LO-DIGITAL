@@ -123,12 +123,11 @@ export class FolioDetalleComponent implements OnInit {
     height: '200px',
     uploadImagePath: '/api/upload',
     toolbar: [
-        ['misc', ['codeview', 'undo', 'redo']],
-        ['style', ['bold', 'italic', 'underline', 'clear']],
-        ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+        ['misc', ['undo', 'redo']],        
+        ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
         ['fontsize', ['fontname', 'fontsize', 'color']],
-        ['para', ['style', 'ul', 'ol', 'paragraph', 'height']],
-        ['insert', ['table', 'picture', 'link', 'video', 'hr']]
+        ['para', ['ul', 'ol', 'paragraph', 'height']],
+        ['insert', ['table', 'picture', 'link', 'hr']]
     ],
     fontNames: ['Helvetica', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times']
   }
@@ -1536,231 +1535,243 @@ function htmlToPdfBorrador(anotacion,object){
   <!DOCTYPE html>
   <html lang="es">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Folio Borrador</title>
-        <style>
-            html {                              
-                -webkit-text-size-adjust: 100%;
-                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-                }            
-            body {
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; 
-                margin-top: 25px;
-                margin-bottom: 25px;
-                margin-left: 20px;
-                margin-right: 20px;
-                font-size: 10px;
-                font-weight: 400;
-                line-height: 10px;
-                color: #212529;
-                text-align: left;
-                background-color: #fff;
-                width: auto;
-            }
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>Folio Borrador</title>
+      <style>
+        html {                              
+          -webkit-text-size-adjust: 100%;
+          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }            
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; 
+          margin-top: 35px;
+          margin-bottom: 30px;
+          margin-left: 30px;
+          margin-right: 30px;
+          font-size: 10px;
+          font-weight: 400;
+          line-height: 10px;
+          color: #212529;
+          text-align: left;
+          background-color: #fff;
+          width: auto;
+        }
             
-            hr {
-            margin-top: 0.5rem;
-            margin-bottom: 0.5rem;
-            border: 0;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-            }
+        hr {
+          margin-top: 0.5rem;
+          margin-bottom: 0.5rem;
+          border: 0;
+          border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        hr.hr2 {
+          margin-top: 1px;
+          margin-bottom: 1px;
+          border: 0;
+          border-top: 3px solid rgba(0, 0, 0, 0.1);            
+        }
             
-            .badge {
-            display: inline-block;
-            padding: 0.25em 0.4em;
-            font-size: 75%;
-            font-weight: 700;
-            line-height: 1;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: baseline;
-            border-radius: 0.25rem;
-            background-color: #4285f4;
-            color: #ffffff;
-            }         
+        .badge {
+          display: inline-block;
+          padding: 0.25em 0.4em;
+          font-size: 75%;
+          font-weight: 700;
+          line-height: 1;
+          text-align: center;
+          white-space: nowrap;
+          vertical-align: baseline;
+          border-radius: 0.25rem;
+          background-color: #4285f4;
+          color: #ffffff;
+        }         
             
-        </style>
+      </style>
     </head>
     <body>
-        <div style="padding-bottom: 12px;">
-            <img src="${logo1.src}" />
-            <img src="${logo2.src}"/>
-            <img style="max-height: 50px;" align="right" src="${img1.src}" />
-        </div>        
-        <hr>
+      <div style="padding-bottom: 12px;">
         <table>
-            <tr>
-                <td style="min-width: 550px; padding-right: 10px;">
-                    <table>
-                        <tr>
-                            <td style="min-width: 80px;">
-                                <strong>Contrato:</strong>                        
-                            </td>
-                            <td>
-                                <strong>${object.folio.libro.contrato.nombre}</strong>
-                            </td>                
-                        </tr>
-                        <tr>
-                            <td>Código:</td>
-                            <td>${object.folio.libro.contrato.codigo}</td>               
-                        </tr>
-                        <tr>
-                            <td>Mandante:</td>
-                            <td>
-                              ${object.folio.libro.contrato.dependenciaMandante.entidad.nombre} | &nbsp;RUT: 78.254.365-6                         
-                            </td>                
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                              ${object.folio.libro.contrato.dependenciaMandante.direccion}
-                            </td>                
-                        </tr>
-                        <tr>
-                            <td>Contratista:</td>
-                            <td>
-                              ${object.contratista.entidad.nombre} |  &nbsp;RUT: 76.564.698-9
-                            </td>                
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                              ${object.contratista.nombre}
-                            </td>                
-                        </tr>
-                    </table>                    
-                </td>
-                <td style="width: 250px;">
-                    <table>
-                        <tr>
-                            <td style="width: 80px;">
-                                <strong>Libro:</strong>
-                            </td>
-                            <td>
-                                <strong>${object.folio.libro.nombre}</strong>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Código:</td>
-                            <td>${object.folio.libro.codigo}</td>
-                        </tr>
-                        <tr>
-                            <td>Clase Libro:</td>
-                            <td>${object.folio.libro.tipoLibro.descripcion}</td>
-                        </tr>
-                        <tr>
-                            <td>Tipo Firma:</td>
-                            <td>${object.folio.libro.tipoFirma.nombre}</td>
-                        </tr>
-                        <tr>
-                            <td>Fecha Apertura:</td>
-                            <td>${moment(object.folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}</td>
-                        </tr>
-                        <tr>
-                            <td>Fecha Cierre:</td>
-                            <td>${object.folio.libro.fechaCierre}</td>
-                        </tr>
-                    </table>
-                </td>                
-            </tr>
-        </table>
-        <hr>
-        <div>
+          <tr>
+            <td style="min-width: 600px; padding-right: 10px;font-size: 16;">
+              <img src="${logo1.src}" />
+              <img src="${logo2.src}"/>                        
+            </td>
+            <td style="min-width: 100px; padding-top: 10px;">
+              <div style="font-size: 18px;">
+                <strong style="color: dimgrey;">Folio Nº1000</strong>
+                <hr style="margin-top: 10px;margin-bottom: -3px;"></hr>
+              </div>                        
+              <div style="font-size: 10px;padding-top: 6px;color: dimgrey;">Fecha: 12/04/2020 13:45</div>                        
+            </td>                
+          </tr>
+        </table>            
+      </div>        
+      <hr class="hr2">        
+      <table>
+        <tr>
+          <td style="min-width: 530px; padding-right: 10px;">
             <table>
-                <tr>
-                    <td style="font-size: 15px; width: 80px;">
-                        <strong>Folio Nº1</strong>                
-                    </td>
-                    <td>
-                        12-04-2020 14:32:05
-                    </td>
-                </tr>
-                <tr>
-                    <td>Emisor:</td>
-                    <td>
-                      ${object.emisor.usuarioDependencia.usuario.firstName}  ${object.emisor.usuarioDependencia.usuario.lastName} | Rut: ${object.emisor.usuarioDependencia.rut}
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>${object.emisor.cargoFuncion}</td>
-                </tr>
-                <tr>
-                    <td>Receptor:</td>
-                    <td>
-                      ${object.receptor.usuarioDependencia.usuario.firstName}  ${object.receptor.usuarioDependencia.usuario.lastName} | Rut: ${object.receptor.usuarioDependencia.rut}
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>${object.receptor.cargoFuncion}</td>
-                </tr>
-                <tr>
-                    <td>Tipo de Folio:</td>
-                    <td>${object.folio.tipoFolio.nombre}</td>
-                </tr>
-                <tr>
-                    <td>Respuesta de:</td>
-                    <td>Libro Maestro | Folio Nº23</td>                
-                </tr>
-                <tr>
-                <td>Referencia de:</td>
-                <td>                     
-                    <li class="list-inline-item ">
-                    <a>Libro Maestro  | Folio Nº22&nbsp;;</a>
-                    </li>                    
+              <tr>
+                <td style="min-width: 80px;">
+                  <strong>Contrato:</strong>                        
                 </td>
-                </tr>
-                <tr>
-                <td>Fecha Requerida:</td>
                 <td>
-                    &nbsp;<span class="badge">n/a</span>
-                    <span style="color: white;" class="badge">
-                    25-12-2020 13:00
-                    </span>
-                </td>
-                </tr>
+                  <strong>${object.folio.libro.contrato.nombre}</strong>
+                </td>               
+              </tr>
+              <tr>
+                <td>Código:</td>
+                <td>${object.folio.libro.contrato.codigo}</td>               
+              </tr>
+              <tr>
+                <td>Mandante:</td>
+                <td>
+                  ${object.folio.libro.contrato.dependenciaMandante.entidad.nombre} | &nbsp;RUT: 78.254.365-6                         
+                </td>                
+              </tr>
                 <tr>
-                <td>Asunto:</td>
-                <td>${object.folio.asunto}</td>
-                </tr>
+                <td></td>
+                <td>
+                  ${object.folio.libro.contrato.dependenciaMandante.direccion}
+                </td>                
+              </tr>
+              <tr>
+                <td>Contratista:</td>
+                <td>
+                  ${object.contratista.entidad.nombre} |  &nbsp;RUT: 76.564.698-9
+                </td>                
+              </tr>
+              <tr>
+                <td></td>
+                <td>
+                  ${object.contratista.nombre}
+                </td>                
+              </tr>
+            </table>                    
+          </td>
+          <td style="width: 250px;">
+            <table>
+              <tr>
+                <td style="width: 80px;">
+                  <strong>Libro:</strong>
+                </td>
+                <td>
+                  <strong>${object.folio.libro.nombre}</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>Código:</td>
+                <td>${object.folio.libro.codigo}</td>
+              </tr>
+              <tr>
+                <td>Clase Libro:</td>
+                <td>${object.folio.libro.tipoLibro.descripcion}</td>
+              </tr>
+              <tr>
+                <td>Tipo Firma:</td>
+                <td>${object.folio.libro.tipoFirma.nombre}</td>
+              </tr>
+              <tr>
+                <td>Fecha Apertura:</td>
+                <td>${moment(object.folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}</td>
+              </tr>
+              <tr>
+                <td>Fecha Cierre:</td>
+                <td>${object.folio.libro.fechaCierre}</td>
+              </tr>
             </table>
-        </div>
-        <hr>
-        <div style="font-weight: bold;margin-bottom: 10px;">Anotación:</div>
-        <div style="line-height: 1.15;">
-          ${anotacion}
-        </div>
-        <hr>
-        <div>
-            <strong>Archivos Adjuntos:</strong>
-            <ul style="line-height: 17px;">
-                <li>Lorem ipsum.jpg | 3,56 MB</li>
-                <li>Phasellus iaculis.doc | 12,598 MB</li>
-                <li>Nulla volutpat.xls | 6,542 KB</li>
-            </ul>
-        </div>
-        <hr>
-        <table>
-            <tr>
-                <td>
-                    <img style="max-height: 90px;" src="${img1.src}" />
-                </td>
-                <td style="padding-left: 5px;">
-                    <strong>${object.usuarioLibro}</strong>
-                    <br/>RUT: 13.224.233-K
-                    <br/>${object.cargoUsuarioLibro}
-                    <br/>${moment(object.folio.fechaFirma).format('DD-MM-YYYY hh:mm')} 
-                    <br/>${object.folio.libro.tipoFirma.nombre}
-                    <br/>Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745
-                </td>
-            </tr>
-        </table>               
-        <hr class="mt-3"></hr>
-        <div style="text-align: end;font-size: 10px;">
-            Para verificar la validez del folio dirigirse a <a href="">www.lodigital.cl</a>
-        </div>
+          </td>                
+        </tr>
+      </table>
+      <hr>
+      <div>
+        <table>          
+          <tr>
+            <td style="width: 80px;">Emisor:</td>
+            <td>
+              ${object.emisor.usuarioDependencia.usuario.firstName}  ${object.emisor.usuarioDependencia.usuario.lastName} | Rut: ${object.emisor.usuarioDependencia.rut}
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>${object.emisor.cargoFuncion}</td>
+          </tr>
+          <tr>
+            <td>Receptor:</td>
+            <td>
+              ${object.receptor.usuarioDependencia.usuario.firstName}  ${object.receptor.usuarioDependencia.usuario.lastName} | Rut: ${object.receptor.usuarioDependencia.rut}
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>${object.receptor.cargoFuncion}</td>
+          </tr>
+          <tr>
+            <td>Tipo de Folio:</td>
+            <td>${object.folio.tipoFolio.nombre}</td>
+          </tr>
+          <tr>
+            <td>Respuesta de:</td>
+            <td>Libro Maestro | Folio Nº23</td>                
+          </tr>
+          <tr>
+            <td>Referencia de:</td>
+            <td>                     
+              <li class="list-inline-item ">
+              <a>Libro Maestro  | Folio Nº22&nbsp;;</a>
+              </li>                    
+            </td>
+          </tr>
+          <tr>
+            <td>Fecha Requerida:</td>
+            <td>
+              <span class="badge">n/a</span>
+              <span class="badge">
+                25-12-2020 13:00
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td>Asunto:</td>
+            <td>${object.folio.asunto}</td>
+          </tr>
+        </table>
+              
+      </div>
+      <hr>
+      <div style="font-weight: bold;margin-bottom: 10px;">Anotación:</div>
+      <div style="line-height: 1.15;">
+        ${anotacion}
+      </div>
+      <hr>
+      <div>
+        <strong>Archivos Adjuntos:</strong>
+        <ul style="line-height: 17px;">
+          <li>Lorem ipsum.jpg | 3,56 MB</li>
+          <li>Phasellus iaculis.doc | 12,598 MB</li>
+          <li>Nulla volutpat.xls | 6,542 KB</li>
+        </ul>
+      </div>
+      <hr>
+      <table>
+        <tr>
+          <td>
+            <img style="max-height: 75px;" src="${img1.src}" />
+          </td>
+          <td style="padding-left: 5px;">
+            <strong>${object.usuarioLibro}</strong>
+            <br/>RUT: 13.224.233-K
+            <br/>${object.cargoUsuarioLibro}
+            <br/>${moment(object.folio.fechaFirma).format('DD-MM-YYYY hh:mm')} 
+            <br/>${object.folio.libro.tipoFirma.nombre}
+            <br/>Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745
+          </td>
+        </tr>
+      </table>               
+      <hr class="mt-3"></hr>
+      <div style="text-align: end;font-size: 10px;">
+        Para verificar la validez del folio dirigirse a <a href="">www.lodigital.cl</a>
+      </div>
     </body>
   </html>
   `;

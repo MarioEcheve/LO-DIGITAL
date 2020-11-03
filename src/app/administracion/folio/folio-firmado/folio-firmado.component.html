@@ -75,13 +75,17 @@
                 </button>
               </div>
               <hr>
-              <div class="row">
-                <div class="col-6">
+              <div class="row d-flex" style="padding-right: 15px;">
+                <div class="flex-grow-1">
                   <img class="mr-1" src="/assets/img/logo42_.png" />
                   <img src="/assets/img/letra120x34_.png" />
                 </div>
-                <div class="col-6" style="text-align: right;">                  
-                  <img style="max-height: 50px;" src="/assets/img/logoj.jpg" />
+                <div>
+                  <div style="font-size: 18px;">
+                    <strong style="color: dimgrey;">Folio Nº{{ Folio.numeroFolio }}</strong>
+                    <mat-divider></mat-divider>
+                  </div>                       
+                  <div style="font-size: 12px;color: dimgrey;">{{ Folio.fechaFirma | date: "dd-MM-yyyy HH:mm:ss" }}</div>                  
                 </div>
               </div>
               <hr>
@@ -170,17 +174,9 @@
                 </div>
               </div>
               <hr />
-              <table style="line-height: 15px;">
+              <table style="line-height: 15px;">                
                 <tr>
-                  <td style="font-size: 16px; font-weight: bold;width: 100px;">
-                    Folio #{{ Folio.numeroFolio }}
-                  </td>
-                  <td>
-                    &nbsp;{{ Folio.fechaFirma | date: "dd-MM-yyyy HH:mm:ss" }}
-                  </td>
-                </tr>
-                <tr>
-                  <td>Emisor:</td>
+                  <td style="width: 100px;">Emisor:</td>
                   <td *ngIf="emisor">
                     &nbsp;{{ emisor.usuarioDependencia.usuario.firstName }}
                     {{ emisor.usuarioDependencia.usuario.lastName }} | RUT:{{
