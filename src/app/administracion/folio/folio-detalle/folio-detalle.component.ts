@@ -1530,209 +1530,239 @@ function htmlToPdfBorrador(anotacion,object){
   logo2.src = "/assets/img/letra120x34_.png";
   let img1 = document.createElement("img");
   img1.src = "/assets/img/logo.jpg";
+ 
   
-  let html= `<!DOCTYPE html>
+  let html= `
+  <!DOCTYPE html>
   <html lang="es">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-          <title>Document</title>    
-          <link rel="stylesheet" href=${"https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"} integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-      </head>
-      <body>
-          <div class="ml-5 mr-5 mt-5">
-              <div class="row">
-                  <div class="col-6">
-                      <img src="${logo1.src}" />
-                      <img src="${logo2.src}" />
-                  </div>
-                  <div style="text-align: right;" class="col-6">
-                      <img style="max-height: 50px;" src="${img1.src}" /> 
-                  </div>            
-              </div>
-              <hr>
-              <div class="row" style="line-height: 14px; font-size: 13px; padding-left: 15px; padding-right: 15px;">
-                  <div class="flex-grow-1 justify-content-start">
-                      <table>
-                          <tr>
-                              <td style="width: 110px;">
-                                  <strong>Contrato:</strong>                        
-                              </td>
-                              <td>
-                                  &nbsp;<strong>${object.folio.libro.contrato.nombre}</strong>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td>Código:</td>
-                              <td>&nbsp;${object.folio.libro.contrato.codigo}</td>
-                          </tr>
-                          <tr>
-                              <td>Mandante:</td>
-                              <td>
-                                  &nbsp;${object.folio.libro.contrato.dependenciaMandante.entidad.nombre} | &nbsp;RUT: 19.011.897-7                         
-                              </td>
-                          </tr>
-                          <tr>
-                              <td></td>
-                              <td>
-                                  &nbsp;${object.folio.libro.contrato.dependenciaMandante.direccion}
-                              </td>
-                          </tr>
-                          <tr>
-                              <td>Contratista:</td>
-                              <td>&nbsp;${object.contratista.entidad.nombre} |  &nbsp;RUT: 76.564.698-9</td>
-                          </tr>
-                          <tr>
-                              <td></td>
-                              <td>
-                                  &nbsp;${object.contratista.nombre}
-                              </td>
-                          </tr>
-                      </table>
-                  </div>
-                  <hr>
-                  <div class="justify-content-end">
-                      <table>
-                          <tr>
-                              <td style="width: 110px;">
-                                  <strong>Libro:</strong>
-                              </td>
-                              <td>
-                                  &nbsp;<strong>${object.folio.libro.nombre}</strong>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td>Código:</td>
-                              <td>&nbsp;${object.folio.libro.codigo}</td>
-                          </tr>
-                          <tr>
-                              <td>Clase Libro:</td>
-                              <td>&nbsp;${object.folio.libro.tipoLibro.descripcion}</td>
-                          </tr>
-                          <tr>
-                              <td>Tipo Firma:</td>
-                              <td>&nbsp;${object.folio.libro.tipoFirma.nombre}</td>
-                          </tr>
-                          <tr>
-                              <td>Fecha Apertura:</td>
-                              <td>
-                              &nbsp;${moment(object.folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}</td>
-                          </tr>
-                          <tr>
-                              <td>Fecha Cierre:</td>
-                              <td>
-                                  &nbsp;${object.folio.libro.fechaCierre}
-                              </td>
-                          </tr>
-                      </table>
-                  </div>
-              </div>
-              <hr>
-              <div style="line-height: 15px; font-size: 14px;">
-                  <table>
-                      <!--
-                      <tr>
-                        <td style="font-size: 16px; width: 110px;">
-                            <strong>Folio Nº1</strong>                
-                        </td>
-                        <td>
-                            &nbsp;12-04-2020 14:32:05
-                        </td>
-                      </tr>
-                      -->
-                      <tr>
-                          <td>Emisor:</td>
-                          <td>
-                              &nbsp;${object.emisor.usuarioDependencia.usuario.firstName}  ${object.emisor.usuarioDependencia.usuario.lastName} | Rut: ${object.emisor.usuarioDependencia.rut} 
-                          </td>
-                      </tr>
-                      <tr>
-                          <td></td>
-                          <td>&nbsp;${object.emisor.cargoFuncion} </td>
-                      </tr>
-                      <tr>
-                          <td>Receptor:</td>
-                          <td>
-                              &nbsp;${object.receptor.usuarioDependencia.usuario.firstName}  ${object.receptor.usuarioDependencia.usuario.lastName} | Rut: ${object.receptor.usuarioDependencia.rut}
-                          </td>
-                      </tr>
-                      <tr>
-                          <td></td>
-                          <td>&nbsp;${object.receptor.cargoFuncion}</td>
-                      </tr>
-                      <tr>
-                          <td>Tipo de Folio:</td>
-                          <td>&nbsp;${object.folio.tipoFolio.nombre}</td>
-                      </tr>
-                      <tr>
-                          <td>Respuesta de:</td>
-                          <!-- <td>&nbsp;Libro Maestro | Folio Nº23</td> -->
-                          <!-- <td>&nbsp;n/a</td> -->
-                      </tr>
-                      <tr>
-                      <td>Referencia de:</td>
-                      <td> 
-                          <!--                   
-                            <li class="list-inline-item ">
-                              <a>&nbsp;Libro Maestro  | Folio Nº22&nbsp;;</a>
-                            </li>        
-                          -->            
-                      </td>
-                      </tr>
-                      <tr>
-                      <td>Fecha Requerida:</td>
-                      <td>
-                          &nbsp;<span class="badge badge-primary">n/a</span>
-                         <!-- <span style="color: white;" class="badge badge-primary">
-                          25-12-2020 13:00
-                          </span>
-                          -->
-                      </td>
-                      </tr>
-                      <tr>
-                      <td>Asunto:</td>
-                      <td>&nbsp;${object.folio.asunto}</td>
-                      </tr>
-                  </table>
-              </div>        
-              <hr />
-              <div style="font-size: 14px; font-weight: bold;">Anotación:</div>
-              <div>
-                 ${anotacion}
-              </div>
-              <hr>
-              <div style="font-size: 14px;">
-                  <strong>Archivos Adjuntos:</strong>
-                  <ul style="line-height: 17px;">
-                      <li>Lorem ipsum.jpg | 3,56 MB</li>
-                      <li>Phasellus iaculis.doc | 12,598 MB</li>
-                      <li>Nulla volutpat.xls | 6,542 KB</li>
-                  </ul>
-              </div>
-              <hr>
-              <!--
-              <div class="row" style="padding-left: 15px;">
-                  <div>
-                      <img style="max-height: 90px;" src="img/logo.jpg" />
-                  </div>
-                  <div style="line-height: 15px; font-size: 13px;padding-left: 5px;">
-                      <strong>${object.usuarioLibro}</strong>
-                      <br/>RUT: 13.224.233-K
-                      <br/>${object.cargoUsuarioLibro}
-                      <br/>Fecha Firma: ${moment(object.folio.fechaFirma).format('DD-MM-YYYY hh:mm')}
-                      <br/>${object.folio.libro.tipoFirma.nombre}
-                      <br/>Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745
-                  </div>
-              </div>
-              -->    
-              <hr class="mt-3"></hr>
-              <p style="font-size: 12px;" class="text-right">
-                  Para verificar la validez del folio dirigirse a <a href="">www.lodigital.cl</a>                
-              </p>
-          </div>
-          <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-          <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-      </body>
-  </html>`;
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Folio Borrador</title>
+        <style>
+            html {                              
+                -webkit-text-size-adjust: 100%;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+                }            
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; 
+                margin-top: 25px;
+                margin-bottom: 25px;
+                margin-left: 20px;
+                margin-right: 20px;
+                font-size: 10px;
+                font-weight: 400;
+                line-height: 10px;
+                color: #212529;
+                text-align: left;
+                background-color: #fff;
+                width: auto;
+            }
+            
+            hr {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            border: 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            }
+            
+            .badge {
+            display: inline-block;
+            padding: 0.25em 0.4em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.25rem;
+            background-color: #4285f4;
+            color: #ffffff;
+            }         
+            
+        </style>
+    </head>
+    <body>
+        <div style="padding-bottom: 12px;">
+            <img src="${logo1.src}" />
+            <img src="${logo2.src}"/>
+            <img style="max-height: 50px;" align="right" src="${img1.src}" />
+        </div>        
+        <hr>
+        <table>
+            <tr>
+                <td style="min-width: 550px; padding-right: 10px;">
+                    <table>
+                        <tr>
+                            <td style="min-width: 80px;">
+                                <strong>Contrato:</strong>                        
+                            </td>
+                            <td>
+                                <strong>${object.folio.libro.contrato.nombre}</strong>
+                            </td>                
+                        </tr>
+                        <tr>
+                            <td>Código:</td>
+                            <td>${object.folio.libro.contrato.codigo}</td>               
+                        </tr>
+                        <tr>
+                            <td>Mandante:</td>
+                            <td>
+                              ${object.folio.libro.contrato.dependenciaMandante.entidad.nombre} | &nbsp;RUT: 78.254.365-6                         
+                            </td>                
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                              ${object.folio.libro.contrato.dependenciaMandante.direccion}
+                            </td>                
+                        </tr>
+                        <tr>
+                            <td>Contratista:</td>
+                            <td>
+                              ${object.contratista.entidad.nombre} |  &nbsp;RUT: 76.564.698-9
+                            </td>                
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                              ${object.contratista.nombre}
+                            </td>                
+                        </tr>
+                    </table>                    
+                </td>
+                <td style="width: 250px;">
+                    <table>
+                        <tr>
+                            <td style="width: 80px;">
+                                <strong>Libro:</strong>
+                            </td>
+                            <td>
+                                <strong>${object.folio.libro.nombre}</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Código:</td>
+                            <td>${object.folio.libro.codigo}</td>
+                        </tr>
+                        <tr>
+                            <td>Clase Libro:</td>
+                            <td>${object.folio.libro.tipoLibro.descripcion}</td>
+                        </tr>
+                        <tr>
+                            <td>Tipo Firma:</td>
+                            <td>${object.folio.libro.tipoFirma.nombre}</td>
+                        </tr>
+                        <tr>
+                            <td>Fecha Apertura:</td>
+                            <td>${moment(object.folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}</td>
+                        </tr>
+                        <tr>
+                            <td>Fecha Cierre:</td>
+                            <td>${object.folio.libro.fechaCierre}</td>
+                        </tr>
+                    </table>
+                </td>                
+            </tr>
+        </table>
+        <hr>
+        <div>
+            <table>
+                <tr>
+                    <td style="font-size: 15px; width: 80px;">
+                        <strong>Folio Nº1</strong>                
+                    </td>
+                    <td>
+                        12-04-2020 14:32:05
+                    </td>
+                </tr>
+                <tr>
+                    <td>Emisor:</td>
+                    <td>
+                      ${object.emisor.usuarioDependencia.usuario.firstName}  ${object.emisor.usuarioDependencia.usuario.lastName} | Rut: ${object.emisor.usuarioDependencia.rut}
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>${object.emisor.cargoFuncion}</td>
+                </tr>
+                <tr>
+                    <td>Receptor:</td>
+                    <td>
+                      ${object.receptor.usuarioDependencia.usuario.firstName}  ${object.receptor.usuarioDependencia.usuario.lastName} | Rut: ${object.receptor.usuarioDependencia.rut}
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>${object.receptor.cargoFuncion}</td>
+                </tr>
+                <tr>
+                    <td>Tipo de Folio:</td>
+                    <td>${object.folio.tipoFolio.nombre}</td>
+                </tr>
+                <tr>
+                    <td>Respuesta de:</td>
+                    <td>Libro Maestro | Folio Nº23</td>                
+                </tr>
+                <tr>
+                <td>Referencia de:</td>
+                <td>                     
+                    <li class="list-inline-item ">
+                    <a>Libro Maestro  | Folio Nº22&nbsp;;</a>
+                    </li>                    
+                </td>
+                </tr>
+                <tr>
+                <td>Fecha Requerida:</td>
+                <td>
+                    &nbsp;<span class="badge">n/a</span>
+                    <span style="color: white;" class="badge">
+                    25-12-2020 13:00
+                    </span>
+                </td>
+                </tr>
+                <tr>
+                <td>Asunto:</td>
+                <td>${object.folio.asunto}</td>
+                </tr>
+            </table>
+        </div>
+        <hr>
+        <div style="font-weight: bold;margin-bottom: 10px;">Anotación:</div>
+        <div style="line-height: 1.15;">
+          ${anotacion}
+        </div>
+        <hr>
+        <div>
+            <strong>Archivos Adjuntos:</strong>
+            <ul style="line-height: 17px;">
+                <li>Lorem ipsum.jpg | 3,56 MB</li>
+                <li>Phasellus iaculis.doc | 12,598 MB</li>
+                <li>Nulla volutpat.xls | 6,542 KB</li>
+            </ul>
+        </div>
+        <hr>
+        <table>
+            <tr>
+                <td>
+                    <img style="max-height: 90px;" src="${img1.src}" />
+                </td>
+                <td style="padding-left: 5px;">
+                    <strong>${object.usuarioLibro}</strong>
+                    <br/>RUT: 13.224.233-K
+                    <br/>${object.cargoUsuarioLibro}
+                    <br/>${moment(object.folio.fechaFirma).format('DD-MM-YYYY hh:mm')} 
+                    <br/>${object.folio.libro.tipoFirma.nombre}
+                    <br/>Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745
+                </td>
+            </tr>
+        </table>               
+        <hr class="mt-3"></hr>
+        <div style="text-align: end;font-size: 10px;">
+            Para verificar la validez del folio dirigirse a <a href="">www.lodigital.cl</a>
+        </div>
+    </body>
+  </html>
+  `;
   return html;
 }
