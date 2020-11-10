@@ -121,7 +121,7 @@ export class FolioDetalleComponent implements OnInit {
     placeholder: '',
     tabsize: 2,
     height: '200px',
-    uploadImagePath: '/api/upload',
+    //uploadImagePath: '/api/upload',
     toolbar: [
         ['misc', ['undo', 'redo']],        
         ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
@@ -1301,7 +1301,10 @@ export class FolioDetalleComponent implements OnInit {
             respuesta => {
             }
           );
-
+          if(this.archivosFolio.length === 1) {
+            this.Folio.poseeArchivos = false;
+            this.folioService.update(this.Folio).subscribe();
+          }
           let index = this.archivosFolio.indexOf(file);
           this.archivosFolio.splice(index, 1);
           this.archivoService.delete(file.id).subscribe(
@@ -1396,7 +1399,10 @@ export class FolioDetalleComponent implements OnInit {
 
 
   async SubirArchivo2(file) {
+    this.Folio.poseeArchivos = true;
+    this.folioService.update(this.Folio).subscribe();
     for (var i = 0; i < this.archivosFolioGCP.length; i++) {
+      
       let formData = new FormData();
       if (this.archivosFolioGCP[i].name == file.nombre) {
         formData.append("file", this.archivosFolioGCP[i], this.archivosFolioGCP[i].name);
@@ -1412,6 +1418,7 @@ export class FolioDetalleComponent implements OnInit {
                 file.status = true;
                 this.subirArchivosNuevos = false;
                 if (file.id === undefined || file.id === null) {
+                 
                   this.archivoService.create(file).subscribe(
                     archivos => {
                       file.id = archivos.body.id;
@@ -1453,6 +1460,8 @@ export class FolioDetalleComponent implements OnInit {
         let index = this.archivosFolio.indexOf(element);
         this.archivosFolio[index].id = archivos.body.id;
         this.archivosFolio[index].status = true;
+        this.Folio.poseeArchivos =true;
+        this.folioService.update(this.Folio).subscribe();
       }
     );
   }

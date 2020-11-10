@@ -49,6 +49,7 @@ export interface IFolio {
   poseeFolioReferencia?: boolean 
   emisorMarcado?: string;
   tipoFolioMarcado?: string;
+  poseeArchivos?: boolean;
 }
 
 export class Folio implements IFolio {
@@ -93,6 +94,7 @@ export class Folio implements IFolio {
     public poseeFolioReferencia?: boolean,
     public emisorMarcado?: string,
     public tipoFolioMarcado?: string,
+    public poseeArchivos?: boolean
   ) {
     this.requiereRespuesta = this.requiereRespuesta || false;
     this.estadoLectura = this.estadoLectura || false;
@@ -101,5 +103,6 @@ export class Folio implements IFolio {
     this.emisor = this.emisor;
     this.color = color;
     this.poseeFolioReferencia = false;
+    this.poseeArchivos = false;
   }
 }
