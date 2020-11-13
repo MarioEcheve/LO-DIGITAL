@@ -13,6 +13,7 @@ type EntityArrayResponseType = HttpResponse<IArchivo[]>;
 @Injectable({ providedIn: 'root' })
 export class ArchivoService {
   SERVER_API_URL = environment.apiUrl;
+  SERVER_API_URL_NODE = environment.apiUrlNode;
   public resourceUrl = this.SERVER_API_URL + 'api/archivos';
   public resourceaAchivosPorFolio = this.SERVER_API_URL + 'api/archivosPorFolio'
 
@@ -22,7 +23,7 @@ export class ArchivoService {
     return this.http.post<any>(this.resourceUrl, archivo, { observe: 'response' });
   }
   createGCP(archivo: any): Observable<any> {
-    return this.http.post<any>(`http://localhost:8001/save`, archivo, {reportProgress : true ,observe: 'events' });
+    return this.http.post<any>(`${this.SERVER_API_URL_NODE}save`, archivo, {reportProgress : true ,observe: 'events' });
   }
   update(archivo: IArchivo): Observable<EntityResponseType> {
     return this.http.put<IArchivo>(this.resourceUrl, archivo, { observe: 'response' });
@@ -41,10 +42,10 @@ export class ArchivoService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
   deleteGCP(path: any): Observable<any> {
-    return this.http.post<any>('https://email-lo-digital.an.r.appspot.com/delete', path, { observe: 'response' });
+    return this.http.post<any>(`${this.SERVER_API_URL_NODE}delete`, path, { observe: 'response' });
   }
   dowloadGCP(path: any): Observable<any> {
-    return this.http.post<any>('https://email-lo-digital.an.r.appspot.com/download', path, { observe: 'response' });
+    return this.http.post<any>(`${this.SERVER_API_URL_NODE}download`, path, { observe: 'response' });
   }
   AchivosPorFolio(idFolio?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption();

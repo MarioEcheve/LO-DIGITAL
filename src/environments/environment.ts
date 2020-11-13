@@ -6,5 +6,6 @@
 export const environment = {
   production: false,
   apiUrl: 'https://backend-dot-lo-digital-295201.uc.r.appspot.com/',
+  apiUrlNode: 'https://lo-digital-prod.herokuapp.com/',
   //apiUrl : 'http://localhost:8080/'
 };
