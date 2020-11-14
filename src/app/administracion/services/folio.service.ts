@@ -16,6 +16,7 @@ type EntityArrayResponseType = HttpResponse<IFolio[]>;
 @Injectable({ providedIn: "root" })
 export class FolioService {
   SERVER_API_URL = environment.apiUrl;
+  SERVER_API_URL_NODE = environment.apiUrlNode;
   public resourceUrl = this.SERVER_API_URL + "api/folios";
   public resourceUrlBuscarFolioPorLibro =
     this.SERVER_API_URL + "api/buscarFolioPorLibro";
@@ -225,7 +226,7 @@ export class FolioService {
   }
   informarEmailFolioFirmado( data :any): Observable<any> {
     return this.http
-      .post<any>(`https://email-lo-digital.an.r.appspot.com/email`,data, {
+      .post<any>(`${this.SERVER_API_URL_NODE}email`,data, {
         observe: "response",
       })
       .pipe(map((res: any) => res));
@@ -240,7 +241,7 @@ export class FolioService {
   }
 
   HtmlToPdf(body:any):Observable<any>{
-    return this.http.post<any>('http://localhost:8001/htmlToPdf',{body});
+    return this.http.post<any>(`${this.SERVER_API_URL_NODE}htmlToPdf`,{body});
   }
 
   protected convertDateFromClient(folio: IFolio): IFolio {
