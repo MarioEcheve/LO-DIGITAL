@@ -299,7 +299,7 @@ export class FolioFirmadoComponent implements OnInit {
 
   downloadFileGCP(file) {
     console.log(file);
-    let path = 'https://www.googleapis.com/storage/v1/b/contenedor-archivos-clientes/o/' + file.nombre + '?alt=media';
+    let path = 'https://www.googleapis.com/storage/v1/b/contenedor-archivos-clientes-lo-digital/o/' + file.nombre + '?alt=media';
     location.href = path;
   }
 
