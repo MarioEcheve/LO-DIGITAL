@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/core/user/user.model';
 import { PerfilUsuarioDependenciaService } from '../../services/perfil-usuario-dependencia.service';
 import { PerfilUsuarioDependencia } from '../../TO/perfil-usuario-dependencia.model';
@@ -9,6 +9,7 @@ import { UsuarioDependencia } from '../../TO/usuario-dependencia.model';
 import { UserService } from '../../services/user.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from "moment";
+import { RutValidator } from 'ng9-rut';
 declare const $: any;
 @Component({
   selector: 'app-modal-usuario',
@@ -37,6 +38,7 @@ export class ModalUsuarioComponent implements OnInit {
                private usuarioService : UserService,
                public dialogRef: MatDialogRef<PerfilUsuarioDependencia>,
                @Inject(MAT_DIALOG_DATA) public data: any,
+               private rutValidator: RutValidator
                ) { }
 
   ngOnInit(): void {
@@ -53,13 +55,13 @@ export class ModalUsuarioComponent implements OnInit {
   }
   inicializarFormUsuario(){
     this.formUsuario = this.fb.group({
-      rut : [''],
-      nombres : [''],
-      userName : [''],
-      apellidos : [''],
-      email : [''],
-      clave : [''],
-      perfil : [''],
+      rut : ['',[Validators.required, this.rutValidator, Validators.maxLength(9)]],
+      nombres : ['',[Validators.required]],
+      userName : ['',[Validators.required]],
+      apellidos : ['',[Validators.required]],
+      email : ['',[Validators.required]],
+      clave : ['',[Validators.required]],
+      perfil : ['',[Validators.required]],
       estadoUsuarioDependencia : ['']
     });
   }

@@ -11,7 +11,7 @@
                 placeholder="RUT"
                 type="text"
                 formControlName="rut"  
-                         
+                formatRut   
               />
             </mat-form-field>
         </div>
@@ -102,7 +102,7 @@
   </mat-dialog-content>
   <div align="end" style="padding-top: 0px;">
     <button mat-button  mat-dialog-close style="font-size: 12px;" class="mr-1">Cancelar</button>
-    <button *ngIf="data.editar === false " mat-button class="btn btn-primary" (click)="guardarUsuario()">
+    <button [disabled]="!formUsuario.valid" *ngIf="data.editar === false " mat-button class="btn btn-primary" (click)="guardarUsuario()">
       Crear
     </button>
     <button  (click)="actualizarUsuario()" *ngIf="data.editar === true " mat-button class="btn btn-primary">
