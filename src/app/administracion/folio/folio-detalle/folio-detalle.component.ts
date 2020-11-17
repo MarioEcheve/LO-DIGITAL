@@ -818,6 +818,7 @@ export class FolioDetalleComponent implements OnInit {
   
   async previsualizar() {
     let anotacion =  this.folioForm.controls["anotacion"].value;
+    console.log(this.Folio);
     let usuarioLibroActual = this.usuario.usuarioDependencia.usuario.firstName + ' ' + this.usuario.usuarioDependencia.usuario.lastName;
     let object = {
       folio : this.Folio,
@@ -829,6 +830,7 @@ export class FolioDetalleComponent implements OnInit {
       cargoUsuarioLibro : this.usuario.cargoFuncion
     };
     let body = htmlToPdfBorrador(anotacion,object);
+
     this.folioService.HtmlToPdf(body).subscribe(
       (response : any)=>{
         var url = "data:application/pdf;base64," + response;
