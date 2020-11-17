@@ -1558,9 +1558,9 @@ function htmlToPdfBorrador(anotacion,object){
           margin-bottom: 30px;
           margin-left: 30px;
           margin-right: 30px;
-          font-size: 10px;
+          font-size: 7px;
           font-weight: 400;
-          line-height: 10px;
+          line-height: 7px;
           color: #212529;
           text-align: left;
           background-color: #fff;
@@ -1578,7 +1578,7 @@ function htmlToPdfBorrador(anotacion,object){
           margin-top: 1px;
           margin-bottom: 1px;
           border: 0;
-          border-top: 3px solid rgba(0, 0, 0, 0.1);            
+          border-top: 1px solid rgba(0, 0, 0, 0.1);            
         }
             
         .badge {
@@ -1601,16 +1601,16 @@ function htmlToPdfBorrador(anotacion,object){
       <div style="padding-bottom: 12px;">
         <table>
           <tr>
-            <td style="min-width: 600px; padding-right: 10px;font-size: 16;">
+            <td style="min-width: 435px; padding-right: 10px;font-size: 16;">
               <img src="${logo1.src}" />
               <img src="${logo2.src}"/>                        
             </td>
             <td style="min-width: 100px; padding-top: 10px;">
-              <div style="font-size: 18px;">
+              <div style="font-size: 13px;">
                 <strong style="color: dimgrey;">Folio Nº1000</strong>
                 <hr style="margin-top: 10px;margin-bottom: -3px;"></hr>
               </div>                        
-              <div style="font-size: 10px;padding-top: 6px;color: dimgrey;">Fecha: 12/04/2020 13:45</div>                        
+              <div style="font-size: 7px;padding-top: 6px;color: dimgrey;">Fecha: 12/04/2020 13:45</div>                        
             </td>                
           </tr>
         </table>            
@@ -1618,10 +1618,10 @@ function htmlToPdfBorrador(anotacion,object){
       <hr class="hr2">        
       <table>
         <tr>
-          <td style="min-width: 530px; padding-right: 10px;">
+          <td style="min-width: 380px; padding-right: 10px;">
             <table>
               <tr>
-                <td style="min-width: 80px;">
+                <td style="min-width: 60px;">
                   <strong>Contrato:</strong>                        
                 </td>
                 <td>
@@ -1658,10 +1658,10 @@ function htmlToPdfBorrador(anotacion,object){
               </tr>
             </table>                    
           </td>
-          <td style="width: 250px;">
+          <td style="width: 280px;">
             <table>
               <tr>
-                <td style="width: 80px;">
+                <td style="width: 60px;">
                   <strong>Libro:</strong>
                 </td>
                 <td>
@@ -1696,7 +1696,7 @@ function htmlToPdfBorrador(anotacion,object){
       <div>
         <table>          
           <tr>
-            <td style="width: 80px;">Emisor:</td>
+            <td style="width: 63px;">Emisor:</td>
             <td>
               ${object.emisor.usuarioDependencia.usuario.firstName}  ${object.emisor.usuarioDependencia.usuario.lastName} | Rut: ${object.emisor.usuarioDependencia.rut}
             </td>
@@ -1755,7 +1755,7 @@ function htmlToPdfBorrador(anotacion,object){
       <hr>
       <div>
         <strong>Archivos Adjuntos:</strong>
-        <ul style="line-height: 17px;">
+        <ul style="line-height: 9px;">
           <li>Lorem ipsum.jpg | 3,56 MB</li>
           <li>Phasellus iaculis.doc | 12,598 MB</li>
           <li>Nulla volutpat.xls | 6,542 KB</li>
@@ -1767,7 +1767,7 @@ function htmlToPdfBorrador(anotacion,object){
           <td>
             <img style="max-height: 75px;" src="${img1.src}" />
           </td>
-          <td style="padding-left: 5px;">
+          <td style="padding-left: 5px;line-height: 9px;"">
             <strong>${object.usuarioLibro}</strong>
             <br/>RUT: 13.224.233-K
             <br/>${object.cargoUsuarioLibro}
@@ -1778,7 +1778,7 @@ function htmlToPdfBorrador(anotacion,object){
         </tr>
       </table>               
       <hr class="mt-3"></hr>
-      <div style="text-align: end;font-size: 10px;">
+      <div style="text-align: end;font-size: 7px;">
         Para verificar la validez del folio dirigirse a <a href="">www.lodigital.cl</a>
       </div>
     </body>
