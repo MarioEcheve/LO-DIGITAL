@@ -152,7 +152,6 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
             this.usuarioLibroService.query().subscribe(
               usuario => {
                 let usuariosMandante = usuario.body.filter(usuariosMandante => usuariosMandante.usuarioDependencia?.dependencia?.id === this.folio.libro.contrato.dependenciaMandante.id);
-                console.log(this.folio);
                 
                 usuariosMandante = usuariosMandante.filter(usuarioMandante => usuarioMandante.id === this.folio.idUsuarioFirma);
                 
@@ -207,7 +206,6 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
               } else {
                 this.dialogRef.close();
                 this.dialogRef.beforeClosed().subscribe((respuesta) => {
-                  console.log(this.folio);
                   this.folio.poseeFolioReferencia = this.data.folio.poseeFolioReferencia;
 
                   this.folioService.update(this.folio).subscribe();

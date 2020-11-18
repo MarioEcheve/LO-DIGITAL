@@ -39,6 +39,7 @@ import { Img } from "pdfmake-wrapper";
 import { async } from "@angular/core/testing";
 import { HttpEvent } from "@angular/common/http";
 import { resolve } from "path";
+import { UsuarioDependencia } from "../../TO/usuario-dependencia.model";
 
 declare var $: any;
 declare interface TableData {
@@ -818,8 +819,8 @@ export class FolioDetalleComponent implements OnInit {
   
   async previsualizar() {
     let anotacion =  this.folioForm.controls["anotacion"].value;
-    console.log(this.Folio);
     let usuarioLibroActual = this.usuario.usuarioDependencia.usuario.firstName + ' ' + this.usuario.usuarioDependencia.usuario.lastName;
+
     let object = {
       folio : this.Folio,
       mandante : '',
@@ -827,253 +828,60 @@ export class FolioDetalleComponent implements OnInit {
       emisor : this.emisorPdf,
       receptor : this.receptorPdf,
       usuarioLibro : usuarioLibroActual,
-      cargoUsuarioLibro : this.usuario.cargoFuncion
+      cargoUsuarioLibro : this.usuario.cargoFuncion,
+      rutUsuarioFirma : this.usuario.usuarioDependencia.rut,
+      datosContratista : new UsuarioDependencia(),
+      datosEmisor : new UsuarioDependencia()
     };
-    let body = htmlToPdfBorrador(anotacion,object);
 
-    this.folioService.HtmlToPdf(body).subscribe(
-      (response : any)=>{
-        var url = "data:application/pdf;base64," + response;
-        fetch(url)
-        .then(res => res.blob())
-        .then((file)=>{
-          console.log(file)
-          let pdfUrl = URL.createObjectURL(file);
-          const dialogRef = this.dialog.open(VisorPdfComponent, {
-            width: "100%",
-            height: "95%",
-            data: {
-              pdf: pdfUrl,
-              folio: this.Folio,
-              usuario: this.usuario,
-              pdfArchivoCompleto: file,
-              previsualisar: true,
-              lectura: false,
-              listaUsuariosCambioAdmin: this.listaUsuariosCambioAdmin,
-              folioReferencias: this.folios
-            },
-          });
-          
-        });
-        
-        // link.download = 'file.pdf';
-        // link.dispatchEvent(new MouseEvent('click'));
-        /*
-        const dialogRef = this.dialog.open(VisorPdfComponent, {
-          width: "100%",
-          height: "95%",
-          data: {
-            pdf: response.file,
-            folio: this.Folio,
-            usuario: this.usuario,
-            pdfArchivoCompleto: null,
-            previsualisar: true,
-            lectura: false,
-            listaUsuariosCambioAdmin: this.listaUsuariosCambioAdmin,
-            folioReferencias: this.folios
-          },
-        });
-        */
+    const suscriptionMandante = this.usuarioLibroService.find(this.Folio.idReceptor).subscribe(
+      respuesta=>{
+        object.datosEmisor = respuesta.body.usuarioDependencia;
+        suscriptionMandante.unsubscribe();
       }
     );
-    /*  
-    let imagen = document.getElementById('imagenLogo1');
-    let imagen2 = document.getElementById('imagenLogo2');
-    let imagenBase64 = getBase64Image(imagen);
-    let imagenBase642 = getBase64Image(imagen2);
-    let respuestaFolio = "N/A";
-    let fechaRequerida = this.folioForm.controls["fechaRequeridaDatepicker"].value;
-    let usuarioLibroActual = this.usuario.usuarioDependencia.usuario.firstName + ' ' + this.usuario.usuarioDependencia.usuario.lastName;
-    let foliosReferenciaText = "";
-    let archivosReferenciaText = "";
 
-    if (this.folios.length > 0) {
-      for (var i = 0; i < this.folios.length; i++) {
-        foliosReferenciaText = foliosReferenciaText + ' ' + this.folios[i].libro.nombre + ' ' + ' Folio: ' + this.folios[i].numeroFolio;
+    const suscriptionContratista = this.usuarioLibroService.find(this.Folio.idUsuarioCreador).subscribe(
+      respuesta=>{
+        object.contratista = respuesta.body.usuarioDependencia;
+        suscriptionContratista.unsubscribe();
       }
-    }
-    if (this.archivosFolio.length > 0) {
-      for (var i = 0; i < this.archivosFolio.length; i++) {
-        archivosReferenciaText = archivosReferenciaText + '     ' + this.archivosFolio[i].descripcion;
-      }
-    }
-    if (this.folioForm.controls["respuestaFolio"].value !== "") {
-      respuestaFolio = this.folioForm.controls["respuestaFolio"].value;
-    }
-    this.Folio.idReceptor = this.folioForm.controls["receptor"].value;
-
-    if (fechaRequerida === "" || fechaRequerida === null) {
-      fechaRequerida = "No"
-    } else {
-      fechaRequerida = this.datePipe.transform(fechaRequerida, 'dd-MM-yyyy hh:mm');
-    }
-
-    this.usuarioLibroService
-      .find(this.Folio.idReceptor)
-      .subscribe((respuesta) => {
-        this.receptorPdf = respuesta.body;
-      });
-    var docDefinition = {
-      content: [
-        {
-          image: 'data:image/png;base64,' + imagenBase642,
-          style: 'sectionHeader'
-        },
-        {
-          table: {
-            headerRows: 0,
-            widths: [50, 260, 70, '*'],
-            body: [
-              [{ text: 'Contrato :', bold: true, fontSize: 8, }, { text: `${this.Folio.libro.contrato.nombre}`, bold: true, fontSize: 8, }, { text: 'Libro :', bold: true, fontSize: 8, }, { text: `${this.Folio.libro.nombre}`, bold: true, fontSize: 8, }],
-              [{ text: 'Codigo :', fontSize: 8, }, { text: `${this.Folio.libro.contrato.codigo}`, fontSize: 8, }, { text: 'Codigo :', fontSize: 8, }, { text: `${this.Folio.libro.codigo}`, fontSize: 8, }],
-              [{ text: 'Mandante :', fontSize: 8, }, { text: `${this.Folio.libro.contrato.dependenciaMandante.entidad.nombre} | Rut: 18.011.897-7`, fontSize: 8, }, { text: 'Clase Libro :', fontSize: 8, }, { text: `${this.Folio.libro.tipoLibro.descripcion}`, fontSize: 8, }],
-              [{ text: '', fontSize: 8, }, { text: `${this.Folio.libro.contrato.dependenciaMandante.nombre}`, fontSize: 8, }, { text: 'Tipo Firma :', fontSize: 8, }, { text: `${this.Folio.libro.tipoFirma.nombre}`, fontSize: 8, }],
-              [{ text: 'Contratista : ', fontSize: 8, }, { text: `${this.dependenciaContratista.entidad.nombre} | Rut: 18.011.897-7`, fontSize: 8, }, { text: 'Fecha Apertura :', fontSize: 8, }, { text: `${moment(this.Folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}`, fontSize: 8, }],
-              [{ text: '', fontSize: 8, }, { text: `${this.dependenciaContratista.nombre}`, fontSize: 8, }, { text: '', fontSize: 8, }, { text: ``, fontSize: 8, }],
-            ],
-          },
-          layout: {
-            hLineWidth: function (i, node) {
-              return i === 0 || i === node.table.body.length ? 0 : 0;
-            },
-            vLineWidth: function (i, node) {
-              return 0;
-            },
-            hLineColor: function (i, node) {
-              return i === 0 || i === node.table.body.length ? "red" : "grey";
-            },
-            vLineColor: function (i, node) {
-              return i === 0 || i === node.table.widths.length ? "red" : "grey";
-            },
-          },
-
-        },
-        {
-          table: {
-            headerRows: 0,
-            widths: [60, 300],
-            body: [
-              [{ text: `Folio #${this.correlativoPdf}`, bold: true, fontSize: 8, margin: [0, 20, 0, 0] }, { text: `${moment(this.Folio.fechaFirma).format('DD-MM-YYYY hh:mm')}`, bold: true, fontSize: 8, margin: [0, 20, 0, 0] }],
-              [{ text: `Emisor :`, bold: false, fontSize: 8, }, { text: ` ${this.emisorPdf.usuarioDependencia.usuario.firstName}  ${this.emisorPdf.usuarioDependencia.usuario.lastName} | Rut: ${this.emisorPdf.usuarioDependencia.rut}`, bold: false, fontSize: 8 }],
-              [{ text: ``, bold: true, fontSize: 8, }, { text: `${this.emisorPdf.cargoFuncion}`, bold: false, fontSize: 8 }],
-              [{ text: `Receptor :`, bold: false, fontSize: 8, }, { text: ` ${this.receptorPdf.usuarioDependencia.usuario.firstName} ${this.receptorPdf.usuarioDependencia.usuario.lastName} | Rut: ${this.receptorPdf.usuarioDependencia.rut}`, bold: false, fontSize: 8 }],
-              [{ text: ``, bold: true, fontSize: 8, }, { text: `${this.receptorPdf.cargoFuncion}`, bold: false, fontSize: 8 }],
-              [{ text: `Tipo de Folio :`, bold: false, fontSize: 8, }, { text: `${this.Folio.tipoFolio.nombre}`, bold: false, fontSize: 8 }],
-              [{ text: `Respuesta de :`, bold: false, fontSize: 8, }, { text: `${respuestaFolio}`, bold: false, fontSize: 8 }],
-              [{ text: `Referencia de :`, bold: false, fontSize: 8, }, { text: `${foliosReferenciaText}`, bold: false, fontSize: 8 }],
-              [{ text: `Fecha Requerida :`, bold: false, fontSize: 8, }, { text: `${fechaRequerida}`, bold: false, fontSize: 8 }],
-              [{ text: `Asunto :`, bold: false, fontSize: 8, }, { text: `${this.Folio.asunto}`, bold: false, fontSize: 8 }],
-            ]
-          },
-          layout: {
-            hLineWidth: function (i, node) {
-              return i === 0 || i === node.table.body.length ? 0 : 0;
-            },
-            vLineWidth: function (i, node) {
-              return 0;
-            },
-            hLineColor: function (i, node) {
-              return i === 0 || i === node.table.body.length ? "red" : "grey";
-            },
-            vLineColor: function (i, node) {
-              return i === 0 || i === node.table.widths.length ? "red" : "grey";
-            },
-          },
-        },
-        {
-          text: `Anotacion :`,
-          bold: true,
-          fontSize: 8,
-          margin: [0, 20, 0, 0]
-        },
-        {
-          text: anotacion ,
-          style: "",
-          bold: true,
-          fontSize: 8,
-          margin: [0, 5, 0, 0]
-        },
-        {
-          text: `${this.archivosFolio.length} Archivos Adjuntos :`,
-          bold: true,
-          fontSize: 8,
-          margin: [0, 20, 0, 0]
-        },
-        {
-          text: `${archivosReferenciaText}`,
-          bold: false,
-          fontSize: 8,
-          margin: [0, 5, 0, 0]
-        },
-        {
-          text: `${usuarioLibroActual}`,
-          bold: true,
-          fontSize: 8,
-          margin: [0, 20, 0, 0]
-        },
-        {
-          text: `${this.usuario.cargoFuncion}`,
-          bold: false,
-          fontSize: 8,
-          margin: [0, 5, 0, 0]
-        },
-        {
-          text: `Fecha Firma : ${moment(this.Folio.fechaFirma).format('DD-MM-YYYY hh:mm')}`,
-          bold: false,
-          fontSize: 8,
-          margin: [0, 5, 0, 0]
-        },
-        {
-          text: `Firma Digital Avanzada`,
-          bold: false,
-          fontSize: 8,
-          margin: [0, 5, 0, 0]
-        },
-        {
-          text: `Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745`,
-          bold: false,
-          fontSize: 8,
-          margin: [0, 5, 0, 0]
-        },
-      ],
-      styles: {
-        sectionHeader: {
-          bold: true,
-          decoration: 'underline',
-          fontSize: 14,
-          margin: [0, 15, 0, 15]
-        },
-        exampleLayout: {
-
+    );
+    
+    setTimeout(() => {
+      let body = this.htmlToPdfBorrador(anotacion,object);
+      this.folioService.HtmlToPdf(body).subscribe(
+        (response : any)=>{
+          var url = "data:application/pdf;base64," + response;
+          fetch(url)
+          .then(res => res.blob())
+          .then((file)=>{
+            console.log(file)
+            let pdfUrl = URL.createObjectURL(file);
+            const dialogRef = this.dialog.open(VisorPdfComponent, {
+              width: "100%",
+              height: "95%",
+              data: {
+                pdf: pdfUrl,
+                folio: this.Folio,
+                usuario: this.usuario,
+                pdfArchivoCompleto: file,
+                previsualisar: true,
+                lectura: false,
+                listaUsuariosCambioAdmin: this.listaUsuariosCambioAdmin,
+                folioReferencias: this.folios
+              },
+            });
+            
+          });
         }
-      },
-      images: {
+      );
+  
+    }, 300);
+    
+    
 
-      }
-    };
-    const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-    let url;
-    let promise = await new Promise(function (resolve, reject) {
-      pdfDocGenerator.getBlob((blob) => {
-        url = URL.createObjectURL(blob);
-        resolve(url);
-      });
-    });
-    const dialogRef = this.dialog.open(VisorPdfComponent, {
-      width: "100%",
-      height: "95%",
-      data: {
-        pdf: url,
-        folio: this.Folio,
-        usuario: this.usuario,
-        pdfArchivoCompleto: pdfDocGenerator,
-        previsualisar: true,
-        lectura: false,
-        listaUsuariosCambioAdmin: this.listaUsuariosCambioAdmin,
-        folioReferencias: this.folios
-      },
-    });
-    */
+    
   }
   visualizarPdfOrigen() {
     this.folioService
@@ -1494,6 +1302,288 @@ export class FolioDetalleComponent implements OnInit {
       return value;
     })
   }
+
+  htmlToPdfBorrador(anotacion,object){
+    let logo1 = document.createElement("img");
+    logo1.src = "/assets/img/logo42_.png";
+    let logo2 = document.createElement("img");
+    logo2.src = "/assets/img/letra120x34_.png";
+    let img1 = document.createElement("img");
+    img1.src = "/assets/img/logo.jpg";
+    let foliosReferenciaText = "";
+    let respuestaFolio = "Sin respuesta";
+    let fechaRequerida = this.folioForm.controls["fechaRequeridaDatepicker"].value;
+    let archivosReferenciaText = "";
+    if (this.folios.length > 0) {
+      for (var i = 0; i < this.folios.length; i++) {
+        foliosReferenciaText = foliosReferenciaText + ' ' + this.folios[i].libro.nombre + ' ' + ' Folio: ' + this.folios[i].numeroFolio;
+      }
+    }
+
+    if(object.folio.libro.fechaCierre === null){
+      object.folio.libro.fechaCierre ="";
+    }
+
+    if (this.folioForm.controls["respuestaFolio"].value !== "") {
+      respuestaFolio = this.folioForm.controls["respuestaFolio"].value;
+    }
+    
+    if (fechaRequerida === "" || fechaRequerida === null) {
+      fechaRequerida = "n/a"
+    } else {
+      fechaRequerida = this.datePipe.transform(fechaRequerida, 'dd-MM-yyyy');
+    }
+   
+    if (this.archivosFolio.length > 0) {
+      let ulStart ='<ul style="line-height: 9px;">';
+      let ulEnd ='</ul>';
+      let data = [];
+        //archivosReferenciaText = archivosReferenciaText + '     ' + this.archivosFolio[i].descripcion + ' |' ;
+        for (i = 0; i < this.archivosFolio.length; i += 1){
+          data[i] = '<li>' + this.archivosFolio[i].descripcion + '</li>';
+        }
+        archivosReferenciaText = ulStart + data + ulEnd;
+    }
+
+    let html= `
+    <!DOCTYPE html>
+    <html lang="es">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Folio Borrador</title>
+        <style>
+          html {                              
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+          }            
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; 
+            margin-top: 35px;
+            margin-bottom: 30px;
+            margin-left: 30px;
+            margin-right: 30px;
+            font-size: 7px;
+            font-weight: 400;
+            line-height: 7px;
+            color: #212529;
+            text-align: left;
+            background-color: #fff;
+            width: auto;
+          }
+              
+          hr {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            border: 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+          }
+  
+          hr.hr2 {
+            margin-top: 1px;
+            margin-bottom: 1px;
+            border: 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);            
+          }
+              
+          .badge {
+            display: inline-block;
+            padding: 0.25em 0.4em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.25rem;
+            background-color: #4285f4;
+            color: #ffffff;
+          }         
+              
+        </style>
+      </head>
+      <body>
+        <div style="padding-bottom: 12px;">
+          <table>
+            <tr>
+              <td style="min-width: 435px; padding-right: 10px;font-size: 16;">
+                <img src="${logo1.src}" />
+                <img src="${logo2.src}"/>                        
+              </td>
+              <td style="min-width: 100px; padding-top: 10px;">
+                <div style="font-size: 13px;">
+                  <strong style="color: dimgrey;">Folio Nº1000</strong>
+                  <hr style="margin-top: 10px;margin-bottom: -3px;"></hr>
+                </div>                        
+                <div style="font-size: 7px;padding-top: 6px;color: dimgrey;">Fecha: 12/04/2020 13:45</div>                        
+              </td>                
+            </tr>
+          </table>            
+        </div>        
+        <hr class="hr2">        
+        <table>
+          <tr>
+            <td style="min-width: 380px; padding-right: 10px;">
+              <table>
+                <tr>
+                  <td style="min-width: 60px;">
+                    <strong>Contrato:</strong>                        
+                  </td>
+                  <td>
+                    <strong>${object.folio.libro.contrato.nombre}</strong>
+                  </td>               
+                </tr>
+                <tr>
+                  <td>Código:</td>
+                  <td>${object.folio.libro.contrato.codigo}</td>               
+                </tr>
+                <tr>
+                  <td>Mandante:</td>
+                  <td>
+                    ${object.folio.libro.contrato.dependenciaMandante.entidad.nombre} | &nbsp;RUT: ${object.datosEmisor.rut}                         
+                  </td>                
+                </tr>
+                  <tr>
+                  <td></td>
+                  <td>
+                    ${object.folio.libro.contrato.dependenciaMandante.direccion}
+                  </td>                
+                </tr>
+                <tr>
+                  <td>Contratista:</td>
+                  <td>
+                    ${object.contratista.entidad.nombre} |  &nbsp;RUT: ${object.datosContratista.rut}
+                  </td>                
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>
+                    ${object.contratista.nombre}
+                  </td>                
+                </tr>
+              </table>                    
+            </td>
+            <td style="width: 280px;">
+              <table>
+                <tr>
+                  <td style="width: 60px;">
+                    <strong>Libro:</strong>
+                  </td>
+                  <td>
+                    <strong>${object.folio.libro.nombre}</strong>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Código:</td>
+                  <td>${object.folio.libro.codigo}</td>
+                </tr>
+                <tr>
+                  <td>Clase Libro:</td>
+                  <td>${object.folio.libro.tipoLibro.descripcion}</td>
+                </tr>
+                <tr>
+                  <td>Tipo Firma:</td>
+                  <td>${object.folio.libro.tipoFirma.nombre}</td>
+                </tr>
+                <tr>
+                  <td>Fecha Apertura:</td>
+                  <td>${moment(object.folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}</td>
+                </tr>
+                <tr>
+                  <td>Fecha Cierre:</td>
+                  <td>${object.folio.libro.fechaCierre}</td>
+                </tr>
+              </table>
+            </td>                
+          </tr>
+        </table>
+        <hr>
+        <div>
+          <table>          
+            <tr>
+              <td style="width: 63px;">Emisor:</td>
+              <td>
+                ${object.emisor.usuarioDependencia.usuario.firstName}  ${object.emisor.usuarioDependencia.usuario.lastName} | Rut: ${object.emisor.usuarioDependencia.rut}
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>${object.emisor.cargoFuncion}</td>
+            </tr>
+            <tr>
+              <td>Receptor:</td>
+              <td>
+                ${object.receptor.usuarioDependencia.usuario.firstName}  ${object.receptor.usuarioDependencia.usuario.lastName} | Rut: ${object.receptor.usuarioDependencia.rut}
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>${object.receptor.cargoFuncion}</td>
+            </tr>
+            <tr>
+              <td>Tipo de Folio:</td>
+              <td>${object.folio.tipoFolio.nombre}</td>
+            </tr>
+            <tr>
+              <td>Respuesta de:</td>
+              <td>${respuestaFolio}</td>                
+            </tr>
+            <tr>
+              <td>Referencia de:</td>
+              <td>                     
+                <li class="list-inline-item ">
+                <a>${foliosReferenciaText}</a>
+                </li>                    
+              </td>
+            </tr>
+            <tr>
+              <td>Fecha Requerida:</td>
+              <td>
+                <span class="badge">${fechaRequerida}</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Asunto:</td>
+              <td>${object.folio.asunto}</td>
+            </tr>
+          </table>
+                
+        </div>
+        <hr>
+        <div style="font-weight: bold;margin-bottom: 10px;">Anotación:</div>
+        <div style="line-height: 1.15;">
+          ${anotacion}
+        </div>
+        <hr>
+        <div>
+          <strong>Archivos Adjuntos:</strong>
+            ${archivosReferenciaText}
+        </div>
+        <hr>
+        <table>
+          <tr>
+            <td>
+              <img style="max-height: 75px;" src="${img1.src}" />
+            </td>
+            <td style="padding-left: 5px;line-height: 9px;"">
+              <strong>${object.usuarioLibro}</strong>
+              <br/>RUT: ${object.rutUsuarioFirma}
+              <br/>${object.cargoUsuarioLibro}
+              <br/>${moment(object.folio.fechaFirma).format('DD-MM-YYYY hh:mm')} 
+              <br/>${object.folio.libro.tipoFirma.nombre}
+              <br/>Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745
+            </td>
+          </tr>
+        </table>               
+        <hr class="mt-3"></hr>
+        <div style="text-align: end;font-size: 7px;">
+          Para verificar la validez del folio dirigirse a <a href="">www.lodigital.cl</a>
+        </div>
+      </body>
+    </html>
+    `;
+    return html;
+  }
 }
 
 
@@ -1533,258 +1623,3 @@ function formatBytes(bytes) {
   else return (bytes / 1073741824).toFixed(3) + " GB";
 };
 
-function htmlToPdfBorrador(anotacion,object){
-  let logo1 = document.createElement("img");
-  logo1.src = "/assets/img/logo42_.png";
-  let logo2 = document.createElement("img");
-  logo2.src = "/assets/img/letra120x34_.png";
-  let img1 = document.createElement("img");
-  img1.src = "/assets/img/logo.jpg";
- 
-  
-  let html= `
-  <!DOCTYPE html>
-  <html lang="es">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>Folio Borrador</title>
-      <style>
-        html {                              
-          -webkit-text-size-adjust: 100%;
-          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-        }            
-        body {
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; 
-          margin-top: 35px;
-          margin-bottom: 30px;
-          margin-left: 30px;
-          margin-right: 30px;
-          font-size: 7px;
-          font-weight: 400;
-          line-height: 7px;
-          color: #212529;
-          text-align: left;
-          background-color: #fff;
-          width: auto;
-        }
-            
-        hr {
-          margin-top: 0.5rem;
-          margin-bottom: 0.5rem;
-          border: 0;
-          border-top: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        hr.hr2 {
-          margin-top: 1px;
-          margin-bottom: 1px;
-          border: 0;
-          border-top: 1px solid rgba(0, 0, 0, 0.1);            
-        }
-            
-        .badge {
-          display: inline-block;
-          padding: 0.25em 0.4em;
-          font-size: 75%;
-          font-weight: 700;
-          line-height: 1;
-          text-align: center;
-          white-space: nowrap;
-          vertical-align: baseline;
-          border-radius: 0.25rem;
-          background-color: #4285f4;
-          color: #ffffff;
-        }         
-            
-      </style>
-    </head>
-    <body>
-      <div style="padding-bottom: 12px;">
-        <table>
-          <tr>
-            <td style="min-width: 435px; padding-right: 10px;font-size: 16;">
-              <img src="${logo1.src}" />
-              <img src="${logo2.src}"/>                        
-            </td>
-            <td style="min-width: 100px; padding-top: 10px;">
-              <div style="font-size: 13px;">
-                <strong style="color: dimgrey;">Folio Nº1000</strong>
-                <hr style="margin-top: 10px;margin-bottom: -3px;"></hr>
-              </div>                        
-              <div style="font-size: 7px;padding-top: 6px;color: dimgrey;">Fecha: 12/04/2020 13:45</div>                        
-            </td>                
-          </tr>
-        </table>            
-      </div>        
-      <hr class="hr2">        
-      <table>
-        <tr>
-          <td style="min-width: 380px; padding-right: 10px;">
-            <table>
-              <tr>
-                <td style="min-width: 60px;">
-                  <strong>Contrato:</strong>                        
-                </td>
-                <td>
-                  <strong>${object.folio.libro.contrato.nombre}</strong>
-                </td>               
-              </tr>
-              <tr>
-                <td>Código:</td>
-                <td>${object.folio.libro.contrato.codigo}</td>               
-              </tr>
-              <tr>
-                <td>Mandante:</td>
-                <td>
-                  ${object.folio.libro.contrato.dependenciaMandante.entidad.nombre} | &nbsp;RUT: 78.254.365-6                         
-                </td>                
-              </tr>
-                <tr>
-                <td></td>
-                <td>
-                  ${object.folio.libro.contrato.dependenciaMandante.direccion}
-                </td>                
-              </tr>
-              <tr>
-                <td>Contratista:</td>
-                <td>
-                  ${object.contratista.entidad.nombre} |  &nbsp;RUT: 76.564.698-9
-                </td>                
-              </tr>
-              <tr>
-                <td></td>
-                <td>
-                  ${object.contratista.nombre}
-                </td>                
-              </tr>
-            </table>                    
-          </td>
-          <td style="width: 280px;">
-            <table>
-              <tr>
-                <td style="width: 60px;">
-                  <strong>Libro:</strong>
-                </td>
-                <td>
-                  <strong>${object.folio.libro.nombre}</strong>
-                </td>
-              </tr>
-              <tr>
-                <td>Código:</td>
-                <td>${object.folio.libro.codigo}</td>
-              </tr>
-              <tr>
-                <td>Clase Libro:</td>
-                <td>${object.folio.libro.tipoLibro.descripcion}</td>
-              </tr>
-              <tr>
-                <td>Tipo Firma:</td>
-                <td>${object.folio.libro.tipoFirma.nombre}</td>
-              </tr>
-              <tr>
-                <td>Fecha Apertura:</td>
-                <td>${moment(object.folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}</td>
-              </tr>
-              <tr>
-                <td>Fecha Cierre:</td>
-                <td>${object.folio.libro.fechaCierre}</td>
-              </tr>
-            </table>
-          </td>                
-        </tr>
-      </table>
-      <hr>
-      <div>
-        <table>          
-          <tr>
-            <td style="width: 63px;">Emisor:</td>
-            <td>
-              ${object.emisor.usuarioDependencia.usuario.firstName}  ${object.emisor.usuarioDependencia.usuario.lastName} | Rut: ${object.emisor.usuarioDependencia.rut}
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>${object.emisor.cargoFuncion}</td>
-          </tr>
-          <tr>
-            <td>Receptor:</td>
-            <td>
-              ${object.receptor.usuarioDependencia.usuario.firstName}  ${object.receptor.usuarioDependencia.usuario.lastName} | Rut: ${object.receptor.usuarioDependencia.rut}
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>${object.receptor.cargoFuncion}</td>
-          </tr>
-          <tr>
-            <td>Tipo de Folio:</td>
-            <td>${object.folio.tipoFolio.nombre}</td>
-          </tr>
-          <tr>
-            <td>Respuesta de:</td>
-            <td>Libro Maestro | Folio Nº23</td>                
-          </tr>
-          <tr>
-            <td>Referencia de:</td>
-            <td>                     
-              <li class="list-inline-item ">
-              <a>Libro Maestro  | Folio Nº22&nbsp;;</a>
-              </li>                    
-            </td>
-          </tr>
-          <tr>
-            <td>Fecha Requerida:</td>
-            <td>
-              <span class="badge">n/a</span>
-              <span class="badge">
-                25-12-2020 13:00
-              </span>
-            </td>
-          </tr>
-          <tr>
-            <td>Asunto:</td>
-            <td>${object.folio.asunto}</td>
-          </tr>
-        </table>
-              
-      </div>
-      <hr>
-      <div style="font-weight: bold;margin-bottom: 10px;">Anotación:</div>
-      <div style="line-height: 1.15;">
-        ${anotacion}
-      </div>
-      <hr>
-      <div>
-        <strong>Archivos Adjuntos:</strong>
-        <ul style="line-height: 9px;">
-          <li>Lorem ipsum.jpg | 3,56 MB</li>
-          <li>Phasellus iaculis.doc | 12,598 MB</li>
-          <li>Nulla volutpat.xls | 6,542 KB</li>
-        </ul>
-      </div>
-      <hr>
-      <table>
-        <tr>
-          <td>
-            <img style="max-height: 75px;" src="${img1.src}" />
-          </td>
-          <td style="padding-left: 5px;line-height: 9px;"">
-            <strong>${object.usuarioLibro}</strong>
-            <br/>RUT: 13.224.233-K
-            <br/>${object.cargoUsuarioLibro}
-            <br/>${moment(object.folio.fechaFirma).format('DD-MM-YYYY hh:mm')} 
-            <br/>${object.folio.libro.tipoFirma.nombre}
-            <br/>Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745
-          </td>
-        </tr>
-      </table>               
-      <hr class="mt-3"></hr>
-      <div style="text-align: end;font-size: 7px;">
-        Para verificar la validez del folio dirigirse a <a href="">www.lodigital.cl</a>
-      </div>
-    </body>
-  </html>
-  `;
-  return html;
-}
