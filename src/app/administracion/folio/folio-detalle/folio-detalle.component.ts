@@ -1342,7 +1342,11 @@ export class FolioDetalleComponent implements OnInit {
         for (i = 0; i < this.archivosFolio.length; i += 1){
           data[i] = '<li>' + this.archivosFolio[i].descripcion + '</li>';
         }
-        archivosReferenciaText = ulStart + data + ulEnd;
+        if(data !== []){
+          archivosReferenciaText = ulStart + data + ulEnd;
+        }else{
+          archivosReferenciaText = "";
+        }
     }
 
     let html= `
