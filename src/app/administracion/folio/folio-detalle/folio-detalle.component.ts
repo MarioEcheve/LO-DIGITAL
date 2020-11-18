@@ -1440,7 +1440,7 @@ export class FolioDetalleComponent implements OnInit {
                 <tr>
                   <td>Mandante:</td>
                   <td>
-                    ${object.folio.libro.contrato.dependenciaMandante.entidad.nombre} | &nbsp;RUT: ${object.datosEmisor.rut}                         
+                    ${object.folio.libro.contrato.dependenciaMandante.entidad?.nombre} | &nbsp;RUT: ${object.folio.libro.contrato.dependenciaMandante.entidad?.rut}                         
                   </td>                
                 </tr>
                   <tr>
@@ -1452,7 +1452,7 @@ export class FolioDetalleComponent implements OnInit {
                 <tr>
                   <td>Contratista:</td>
                   <td>
-                    ${object.contratista.entidad.nombre} |  &nbsp;RUT: ${object.datosContratista.rut}
+                    ${object.contratista.entidad.nombre} |  &nbsp;RUT: ${object.contratista.entidad.rut}
                   </td>                
                 </tr>
                 <tr>
