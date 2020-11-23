@@ -1348,7 +1348,7 @@ export class FolioDetalleComponent implements OnInit {
           archivosReferenciaText = "";
         }
     }
-
+    console.log(this.correlativoPdf);
     let html= `    
     <!DOCTYPE html>    
     <html lang="es">
@@ -1415,7 +1415,7 @@ export class FolioDetalleComponent implements OnInit {
               </td>
               <td style="min-width: 80px; padding-top: 10px;">
                 <div style="font-size: 10px;">
-                  <strong style="color: dimgrey;">Folio Nº1000</strong>                  
+                  <strong style="color: dimgrey;">Folio Nº:${this.correlativoPdf}</strong>                  
                 </div>                        
                 <div style="font-size: 7px;padding-top: 1px;color: dimgrey;">${moment(object.folio.fechaFirma).format('DD-MM-YYYY HH:mm:ss')}</div>                        
               </td>                
@@ -1425,7 +1425,7 @@ export class FolioDetalleComponent implements OnInit {
         <div id="pageHeader" style="padding-top: 15px;line-height: 9px;">
           <strong>Contrato: ${object.folio.libro.contrato.nombre} | Código:${object.folio.libro.contrato.codigo}</strong>
           <br>Libro: ${object.folio.libro.nombre} | Código: ${object.folio.libro.codigo}
-          <br>Folio N°:1000 | Fecha: ${moment(object.folio.fechaFirma).format('DD-MM-YYYY HH:mm:ss')}
+          <br>Folio N°:${this.correlativoPdf} | Fecha: ${moment(object.folio.fechaFirma).format('DD-MM-YYYY HH:mm:ss')}
           <hr>
         </div>
         <hr class="hr2">        
@@ -1454,13 +1454,13 @@ export class FolioDetalleComponent implements OnInit {
                   <tr>
                   <td></td>
                   <td>
-                    ${object.folio.libro.contrato.dependenciaMandante.direccion}
+                    ${object.folio.libro.contrato.dependenciaMandante.nombre}
                   </td>                
                 </tr>
                 <tr>
                   <td>Contratista:</td>
                   <td>
-                    ${object.contratista.entidad?.nombre} |  &nbsp;RUT: ${object.contratista.entidad.rut}
+                    ${object.contratista.entidad?.nombre} |  &nbsp;RUT: ${object.contratista.entidad?.rut}
                   </td>                
                 </tr>
                 <tr>
