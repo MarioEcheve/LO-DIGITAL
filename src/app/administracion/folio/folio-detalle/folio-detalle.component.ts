@@ -1303,7 +1303,7 @@ export class FolioDetalleComponent implements OnInit {
     })
   }
 
-  htmlToPdfBorrador(anotacion,object){
+  htmlToPdfBorrador(anotacion,object){    
     let logo1 = document.createElement("img");
     logo1.src = "/assets/img/logo42_.png";
     let logo2 = document.createElement("img");
@@ -1349,8 +1349,8 @@ export class FolioDetalleComponent implements OnInit {
         }
     }
 
-    let html= `
-    <!DOCTYPE html>
+    let html= `    
+    <!DOCTYPE html>    
     <html lang="es">
       <head>
         <meta charset="UTF-8">
@@ -1363,7 +1363,6 @@ export class FolioDetalleComponent implements OnInit {
           }            
           body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; 
-            margin-top: 35px;
             margin-bottom: 30px;
             margin-left: 30px;
             margin-right: 30px;
@@ -1392,7 +1391,7 @@ export class FolioDetalleComponent implements OnInit {
               
           .badge {
             display: inline-block;
-            padding: 0.25em 0.4em;
+            padding: 0.5em 0.5em;
             font-size: 75%;
             font-weight: 700;
             line-height: 1;
@@ -1407,23 +1406,28 @@ export class FolioDetalleComponent implements OnInit {
         </style>
       </head>
       <body>
-        <div style="padding-bottom: 12px;">
+        <div id="pageHeader-first" style="padding-top: 15px;">        
           <table>
             <tr>
-              <td style="min-width: 435px; padding-right: 10px;font-size: 16;">
+              <td style="min-width: 460px; padding-right: 10px;font-size: 16;">
                 <img src="${logo1.src}" />
                 <img src="${logo2.src}"/>                        
               </td>
-              <td style="min-width: 100px; padding-top: 10px;">
-                <div style="font-size: 13px;">
-                  <strong style="color: dimgrey;">Folio Nº1000</strong>
-                  <hr style="margin-top: 10px;margin-bottom: -3px;"></hr>
+              <td style="min-width: 80px; padding-top: 10px;">
+                <div style="font-size: 10px;">
+                  <strong style="color: dimgrey;">Folio Nº1000</strong>                  
                 </div>                        
-                <div style="font-size: 7px;padding-top: 6px;color: dimgrey;">Fecha: 12/04/2020 13:45</div>                        
+                <div style="font-size: 7px;padding-top: 1px;color: dimgrey;">${moment(object.folio.fechaFirma).format('DD-MM-YYYY HH:mm:ss')}</div>                        
               </td>                
             </tr>
           </table>            
-        </div>        
+        </div>
+        <div id="pageHeader" style="padding-top: 15px;line-height: 9px;">
+          <strong>Contrato: ${object.folio.libro.contrato.nombre} | Código:${object.folio.libro.contrato.codigo}</strong>
+          <br>Libro: ${object.folio.libro.nombre} | Código: ${object.folio.libro.codigo}
+          <br>Folio N°:1000 | Fecha: ${moment(object.folio.fechaFirma).format('DD-MM-YYYY HH:mm:ss')}
+          <hr>
+        </div>
         <hr class="hr2">        
         <table>
           <tr>
@@ -1491,7 +1495,7 @@ export class FolioDetalleComponent implements OnInit {
                 </tr>
                 <tr>
                   <td>Fecha Apertura:</td>
-                  <td>${moment(object.folio.libro.fechaApertura).format('DD-MM-YYYY hh:mm')}</td>
+                  <td>${moment(object.folio.libro.fechaApertura).format('DD-MM-YYYY HH:mm')}</td>
                 </tr>
                 <tr>
                   <td>Fecha Cierre:</td>
@@ -1572,17 +1576,20 @@ export class FolioDetalleComponent implements OnInit {
             <td style="padding-left: 5px;line-height: 9px;"">
               <strong>${object.usuarioLibro}</strong>
               <br/>RUT: ${object.rutUsuarioFirma}
-              <br/>${object.cargoUsuarioLibro}
-              <br/>${moment(object.folio.fechaFirma).format('DD-MM-YYYY hh:mm')} 
-              <br/>${object.folio.libro.tipoFirma.nombre}
-              <br/>Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745
+              <br/>Cargo:${object.cargoUsuarioLibro}
+              <br/>Fecha Firma:${moment(object.folio.fechaFirma).format('DD-MM-YYYY HH:mm:ss')} 
+              <br/>Tipo Firma:${object.folio.libro.tipoFirma.nombre}                         
             </td>
           </tr>
-        </table>               
-        <hr class="mt-3"></hr>
-        <div style="text-align: end;font-size: 7px;">
-          Para verificar la validez del folio dirigirse a <a href="">www.lodigital.cl</a>
-        </div>
+        </table>
+        <div id="pageFooter">
+          <hr>
+          <div style="font-size: 7px;color: #444;">
+            Código Verificación: QYUMJHGM
+            <br>Para verificar la validez del folio dirigirse a <a>www.lodigital.cl</a>
+            <br><span style="text-align: end;">Página: {{page}} de {{pages}}</span>
+          </div>          
+        </div>        
       </body>
     </html>
     `;

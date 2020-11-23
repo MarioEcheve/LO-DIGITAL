@@ -77,14 +77,14 @@
               <hr>
               <div class="row d-flex" style="padding-right: 15px;">
                 <div class="flex-grow-1">
-                  <img class="mr-1" src="/assets/img/logo42_.png" />
+                  <img class="mr-1" style="padding-left: 15px;" src="/assets/img/logo42_.png" />
                   <img src="/assets/img/letra120x34_.png" />
                 </div>
                 <div>
-                  <div style="font-size: 18px;">
-                    <strong style="color: dimgrey;">Folio Nº{{ Folio.numeroFolio }}</strong>
-                    <mat-divider></mat-divider>
-                  </div>                       
+                  <div style="font-size: 18px;color: dimgrey;font-weight: bold;">
+                    Folio Nº{{ Folio.numeroFolio }}                  
+                  </div>
+                  <mat-divider class="mb-1 mt-1"></mat-divider>                       
                   <div style="font-size: 12px;color: dimgrey;">{{ Folio.fechaFirma | date: "dd-MM-yyyy HH:mm:ss" }}</div>                  
                 </div>
               </div>
@@ -282,8 +282,8 @@
                   <br/>RUT: {{emisor?.usuarioDependencia.rut}}
                   <br/>Cargo: {{emisor?.cargoFuncion}}
                   <br/>Fecha Firma: {{ Folio.fechaFirma | date: "dd-MM-yyyy HH:mm:ss" }} 
-                  <br/>Firma Digital
-                  <br/>Cód. Verificación: d5sd4537dasd45675asd456ad-7856asd-745
+                  <br/>Tipo Firma:
+                  <br/>Código Verificación: QYUMJHGM
                 </div>
               </div>
               <mat-divider class="mt-3 mb-3"></mat-divider>

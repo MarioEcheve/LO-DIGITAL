@@ -150,14 +150,14 @@ export class FolioComponent implements OnInit, AfterViewInit {
     },
     {
       id: 4,
-      accion: 'Sin respuesta',
+      accion: 'Sin Respuesta',
       icon: 'unsubscribe',
       isClicked: false,
       contadorFolios: this.contadorFolios[0].sinRespuesta
     },
     {
       id: 5,
-      accion: 'Sin Leer',
+      accion: 'Sin Confirmar',
       icon: 'mark_email_unread',
       isClicked: false,
       contadorFolios: this.contadorFolios[0].sinLeer
@@ -386,8 +386,8 @@ export class FolioComponent implements OnInit, AfterViewInit {
   nuevoFolio() {
 
     const dialogRef = this.dialog.open(ModalCrearFolioComponent, {
-      width: "480px",
-      height: "290px",
+      width: "440px",
+      height: "240px",
       data: {
         libros: this.libros,
         libroSeleccionado: this.libroSeleccionado,

@@ -1,6 +1,6 @@
 <div class="animate__animated animate__fadeIn">
 <mat-dialog-content style="line-height: 1px;">
-  <h5 style="font-weight: bold;" class="mb-2">Nuevo Folio</h5>
+  <h5 style="font-weight: bold;" class="mb-3">Nuevo Folio</h5>
   <br />
   <form [formGroup]="crearFolioFormGroup">
     <div class="row" style="font-size: 13px">
@@ -17,10 +17,11 @@
               [value]="libro.nombre"
               (click)="buscaFolios(libro)"
             >
-              {{ libro.nombre }} | Cod.: {{ libro.codigo }} | Clase Libro:
+              <!-- {{ libro.nombre }} | Cod.: {{ libro.codigo }} | Clase Libro:
               {{ libro.tipoLibro.descripcion }} | Tipo Firma:
               {{ libro.tipoFirma.nombre }} | Estado :
-              {{ libro.estadoLibro.nombre }}
+              {{ libro.estadoLibro.nombre }} -->
+              {{ libro.nombre }} | Cod.: {{ libro.codigo }}
             </mat-option>
           </mat-select>
         </mat-form-field>
