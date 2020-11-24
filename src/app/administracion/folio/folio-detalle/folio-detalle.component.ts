@@ -127,8 +127,8 @@ export class FolioDetalleComponent implements OnInit {
         ['misc', ['undo', 'redo']],        
         ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
         ['fontsize', ['fontname', 'fontsize', 'color']],
-        ['para', ['ul', 'ol', 'paragraph', 'height']],
-        ['insert', ['table', 'picture', 'link', 'hr']]
+        ['para', ['ul', 'ol', 'paragraph']],
+        /* ['insert', ['table', 'picture', 'link', 'hr']] */
     ],
     fontNames: ['Helvetica', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times']
   }
@@ -1415,7 +1415,7 @@ export class FolioDetalleComponent implements OnInit {
               </td>
               <td style="min-width: 80px; padding-top: 10px;">
                 <div style="font-size: 10px;">
-                  <strong style="color: dimgrey;">Folio Nº:${this.correlativoPdf}</strong>                  
+                  <strong style="color: dimgrey;">Folio Nº: ${this.correlativoPdf}</strong>                  
                 </div>                        
                 <div style="font-size: 7px;padding-top: 1px;color: dimgrey;">${moment(object.folio.fechaFirma).format('DD-MM-YYYY HH:mm:ss')}</div>                        
               </td>                
@@ -1425,7 +1425,7 @@ export class FolioDetalleComponent implements OnInit {
         <div id="pageHeader" style="padding-top: 15px;line-height: 9px;">
           <strong>Contrato: ${object.folio.libro.contrato.nombre} | Código:${object.folio.libro.contrato.codigo}</strong>
           <br>Libro: ${object.folio.libro.nombre} | Código: ${object.folio.libro.codigo}
-          <br>Folio N°:${this.correlativoPdf} | Fecha: ${moment(object.folio.fechaFirma).format('DD-MM-YYYY HH:mm:ss')}
+          <br>Folio N°: ${this.correlativoPdf} | Fecha: ${moment(object.folio.fechaFirma).format('DD-MM-YYYY HH:mm:ss')}
           <hr>
         </div>
         <hr class="hr2">        
