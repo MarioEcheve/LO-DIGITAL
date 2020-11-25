@@ -860,7 +860,7 @@ export class FolioDetalleComponent implements OnInit {
             let pdfUrl = URL.createObjectURL(file);
             const dialogRef = this.dialog.open(VisorPdfComponent, {
               width: "800px",
-              height: "700px",
+              height: "650px",
               data: {
                 pdf: pdfUrl,
                 folio: this.Folio,
@@ -872,16 +872,10 @@ export class FolioDetalleComponent implements OnInit {
                 folioReferencias: this.folios
               },
             });
-            
           });
         }
       );
-  
     }, 300);
-    
-    
-
-    
   }
   visualizarPdfOrigen() {
     this.folioService
@@ -1422,7 +1416,7 @@ export class FolioDetalleComponent implements OnInit {
             </tr>
           </table>            
         </div>
-        <div  style="padding-top: 15px;line-height: 9px;">
+        <div id="pageHeader" style="padding-top: 15px;line-height: 9px;">
           <strong>Contrato: ${object.folio.libro.contrato.nombre} | Código:${object.folio.libro.contrato.codigo}</strong>
           <br>Libro: ${object.folio.libro.nombre} | Código: ${object.folio.libro.codigo}
           <br>Folio N°: ${this.correlativoPdf} | Fecha: ${moment(object.folio.fechaFirma).format('DD-MM-YYYY HH:mm:ss')}
