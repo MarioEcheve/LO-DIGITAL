@@ -47,7 +47,8 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data);
+    console.log(this.data.pdf);
+    document.querySelector("iframe").src = this.data.pdf;
     //this.mostrar = t
     let usuarioActual = JSON.parse(localStorage.getItem("user"));
     setTimeout(() => {

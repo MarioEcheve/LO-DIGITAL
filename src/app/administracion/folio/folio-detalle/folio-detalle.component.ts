@@ -1422,7 +1422,7 @@ export class FolioDetalleComponent implements OnInit {
             </tr>
           </table>            
         </div>
-        <div id="pageHeader" style="padding-top: 15px;line-height: 9px;">
+        <div  style="padding-top: 15px;line-height: 9px;">
           <strong>Contrato: ${object.folio.libro.contrato.nombre} | Código:${object.folio.libro.contrato.codigo}</strong>
           <br>Libro: ${object.folio.libro.nombre} | Código: ${object.folio.libro.codigo}
           <br>Folio N°: ${this.correlativoPdf} | Fecha: ${moment(object.folio.fechaFirma).format('DD-MM-YYYY HH:mm:ss')}

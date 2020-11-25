@@ -1,10 +1,17 @@
 <mat-dialog-content>
-  <ngx-extended-pdf-viewer
+<!--   <ngx-extended-pdf-viewer
     [src]="data.pdf"
     [textLayer]="true"
     useBrowserLocale="true"
     height="85vh"
-  ></ngx-extended-pdf-viewer>
+    [theme]="'light'"
+    [showBorders]="false"
+    [enablePrint]="true"
+  ></ngx-extended-pdf-viewer> -->
+ 
+  <body>   
+    <iframe type="application/pdf" src="data.pdfArchivoCompleto" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> 
+  </body>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close class="btn btn-default mr-1">Salir</button>

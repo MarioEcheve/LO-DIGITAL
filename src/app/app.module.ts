@@ -107,9 +107,7 @@ registerLocaleData(localeEsAr, 'es-Ar');
     NgxExtendedPdfViewerModule,
     NgxSpinnerModule,
     NgxSummernoteModule,
-    Ng9RutModule
-
-    
+    Ng9RutModule,
   ],
   declarations: [],
 })
