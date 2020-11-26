@@ -234,8 +234,8 @@ export class FolioFirmadoComponent implements OnInit {
         });
         promise.then((resultado) => {
           const dialogRef = this.dialog.open(VisorPdfComponent, {
-            width: "100%",
-            height: "90%",
+            width: "1100px",
+            height: "610px",
             data: {
               pdf: resultado,
               folio: this.Folio,
@@ -366,8 +366,8 @@ export class FolioFirmadoComponent implements OnInit {
         });
         promise.then((resultado) => {
           const dialogRef = this.dialog.open(VisorPdfComponent, {
-            width: "100%",
-            height: "90%",
+            width: "1100px",
+            height: "610px",
             data: {
               pdf: resultado,
               folio: this.Folio,

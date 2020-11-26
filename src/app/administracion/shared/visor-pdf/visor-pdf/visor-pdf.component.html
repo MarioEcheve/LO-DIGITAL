@@ -1,4 +1,60 @@
 <mat-dialog-content>
+  <h5 style="font-weight: bold; text-align: center;" class="text-muted mb-3" *ngIf="muestraAcciones === 1">Folio Borrador</h5>
+  <h5 style="font-weight: bold; text-align: center;" class="text-muted mb-3" *ngIf="muestraAcciones === 2">Folio Firmado</h5>
+  <h5 style="font-weight: bold; text-align: center;" class="text-muted mb-3" *ngIf="muestraAcciones === 3">Confirmación de Lectura</h5>
+  <h5 style="font-weight: bold; text-align: center;" class="text-muted mb-3" *ngIf="muestraAcciones === 4">Folio Firmado</h5>
+  <iframe type="application/pdf" src="data.pdfArchivoCompleto" width="100%" height="470" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen=""> </iframe>
+  <div class="row pull-right" style="padding-right: 12px;">
+    <button mat-button mat-dialog-close class="btn btn-default mr-1">Salir</button>
+    <div *ngxPermissionsOnly="['administrador','superior','administrador/s']">
+      <button
+        mat-button
+        class="btn btn-primary"
+        (click)="modalFirmarFolio()"
+        [disabled]="!data.previsualisar"
+        *ngIf="muestraAcciones === 1"        
+      >
+        Firmar
+      </button>
+    </div>
+    <div *ngxPermissionsOnly="['administrador','superior','administrador/s']">
+      <button
+        mat-button
+        class="btn btn-primary"
+        (click)="informar()"
+        [disabled]="!data.previsualisar"
+        *ngIf="muestraAcciones === 2 "        
+      >
+        Enviar Folio
+      </button>
+    </div>
+    <div *ngxPermissionsOnly="['administrador','superior','administrador/s']">
+        <button
+          mat-button
+          class="btn btn-primary"
+          (click)="modalFirmarFolio()"
+          [disabled]="!data.previsualisar"
+          *ngIf="muestraAcciones === 3 "          
+        >
+          Confirmar Lectura
+        </button>
+    </div>
+  </div>
+</mat-dialog-content>
+
+
+
+
+
+
+<!-- <mat-dialog-content>
+  <div class="modal-header">
+    <h5 style="font-weight: bold;text-align: center;" class="text-muted">Folio Borrador</h5>
+  </div> -->
+  
+
+  
+  
 <!--   <ngx-extended-pdf-viewer
     [src]="data.pdf"
     [textLayer]="true"
@@ -7,13 +63,13 @@
     [theme]="'light'"
     [showBorders]="false"
     [enablePrint]="true"
-  ></ngx-extended-pdf-viewer> -->
- 
-  <body>   
-    <iframe type="application/pdf" src="data.pdfArchivoCompleto" width="790" height="740" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> 
-  </body>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
+  ></ngx-extended-pdf-viewer> --> 
+  
+  <!-- <iframe type="application/pdf" src="data.pdfArchivoCompleto" width="100%" height="470" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+
+</mat-dialog-content> -->
+
+<!-- <mat-dialog-actions align="end" style="padding-bottom: 5px;">
   <button mat-button mat-dialog-close class="btn btn-default mr-1">Salir</button>
   <div *ngxPermissionsOnly="['administrador','superior','administrador/s']">
     <button
@@ -51,4 +107,5 @@
         Confirmar Lectura
       </button>
   </div>  
-</mat-dialog-actions>
+</mat-dialog-actions> -->
+

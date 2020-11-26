@@ -859,8 +859,8 @@ export class FolioDetalleComponent implements OnInit {
             console.log(file)
             let pdfUrl = URL.createObjectURL(file);
             const dialogRef = this.dialog.open(VisorPdfComponent, {
-              width: "800px",
-              height: "650px",
+              width: "1100px",
+              height: "610px",              
               data: {
                 pdf: pdfUrl,
                 folio: this.Folio,
@@ -895,8 +895,8 @@ export class FolioDetalleComponent implements OnInit {
         });
         promise.then((resultado) => {
           const dialogRef = this.dialog.open(VisorPdfComponent, {
-            width: "100%",
-            height: "90%",
+            width: "1100px",
+            height: "610px",
             data: {
               pdf: resultado,
               folio: this.Folio,
@@ -1360,9 +1360,9 @@ export class FolioDetalleComponent implements OnInit {
             margin-bottom: 30px;
             margin-left: 30px;
             margin-right: 30px;
-            font-size: 7px;
+            font-size: 8px;
             font-weight: 400;
-            line-height: 7px;
+            line-height: 8px;
             color: #212529;
             text-align: left;
             background-color: #fff;
@@ -1380,7 +1380,8 @@ export class FolioDetalleComponent implements OnInit {
             margin-top: 1px;
             margin-bottom: 1px;
             border: 0;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);            
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            color: ffffff;                        
           }
               
           .badge {
@@ -1403,15 +1404,15 @@ export class FolioDetalleComponent implements OnInit {
         <div id="pageHeader-first" style="padding-top: 15px;">        
           <table>
             <tr>
-              <td style="min-width: 460px; padding-right: 10px;font-size: 16;">
+              <td style="min-width: 440px; padding-right: 10px;">
                 <img src="${logo1.src}" />
                 <img src="${logo2.src}"/>                        
               </td>
-              <td style="min-width: 80px; padding-top: 10px;">
-                <div style="font-size: 10px;">
+              <td style="min-width: 100px; padding-top: 10px;">
+                <div style="font-size: 12px;">
                   <strong style="color: dimgrey;">Folio Nº: ${this.correlativoPdf}</strong>                  
                 </div>                        
-                <div style="font-size: 7px;padding-top: 1px;color: dimgrey;">${moment(object.folio.fechaFirma).format('DD-MM-YYYY HH:mm:ss')}</div>                        
+                <div style="font-size: 8px;padding-top: 1px;color: dimgrey;">${moment(object.folio.fechaFirma).format('DD-MM-YYYY HH:mm:ss')}</div>                        
               </td>                
             </tr>
           </table>            
@@ -1422,88 +1423,101 @@ export class FolioDetalleComponent implements OnInit {
           <br>Folio N°: ${this.correlativoPdf} | Fecha: ${moment(object.folio.fechaFirma).format('DD-MM-YYYY HH:mm:ss')}
           <hr>
         </div>
-        <hr class="hr2">        
+        <hr>
         <table>
           <tr>
-            <td style="min-width: 380px; padding-right: 10px;">
-              <table>
-                <tr>
-                  <td style="min-width: 60px;">
-                    <strong>Contrato:</strong>                        
-                  </td>
-                  <td>
-                    <strong>${object.folio.libro.contrato.nombre}</strong>
-                  </td>               
-                </tr>
-                <tr>
-                  <td>Código:</td>
-                  <td>${object.folio.libro.contrato.codigo}</td>               
-                </tr>
-                <tr>
-                  <td>Mandante:</td>
-                  <td>
-                    ${object.folio.libro.contrato.dependenciaMandante.entidad?.nombre} | &nbsp;RUT: ${object.folio.libro.contrato.dependenciaMandante.entidad?.rut}                         
-                  </td>                
-                </tr>
-                  <tr>
-                  <td></td>
-                  <td>
-                    ${object.folio.libro.contrato.dependenciaMandante.nombre}
-                  </td>                
-                </tr>
-                <tr>
-                  <td>Contratista:</td>
-                  <td>
-                    ${object.contratista.entidad?.nombre} |  &nbsp;RUT: ${object.contratista.entidad?.rut}
-                  </td>                
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>
-                    ${object.contratista.nombre}
-                  </td>                
-                </tr>
-              </table>                    
+            <td style="min-width: 70px;">
+              <strong>Contrato:</strong>                        
             </td>
-            <td style="width: 280px;">
-              <table>
-                <tr>
-                  <td style="width: 60px;">
-                    <strong>Libro:</strong>
-                  </td>
-                  <td>
-                    <strong>${object.folio.libro.nombre}</strong>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Código:</td>
-                  <td>${object.folio.libro.codigo}</td>
-                </tr>
-                <tr>
-                  <td>Clase Libro:</td>
-                  <td>${object.folio.libro.tipoLibro.descripcion}</td>
-                </tr>
-                <tr>
-                  <td>Tipo Firma:</td>
-                  <td>${object.folio.libro.tipoFirma.nombre}</td>
-                </tr>
-                <tr>
-                  <td>Fecha Apertura:</td>
-                  <td>${moment(object.folio.libro.fechaApertura).format('DD-MM-YYYY HH:mm')}</td>
-                </tr>
-                <tr>
-                  <td>Fecha Cierre:</td>
-                  <td>${object.folio.libro.fechaCierre}</td>
-                </tr>
-              </table>
-            </td>                
+            <td style="min-width: 320px;">
+              <strong>${object.folio.libro.contrato.nombre}</strong>
+            </td>
+            <td style="min-width: 70px;">
+              <strong>Código:</strong>                        
+            </td>
+            <td>
+              <strong>${object.folio.libro.contrato.codigo}</strong>
+            </td>
+          </tr>          
+          <tr>
+            <td style="min-width: 70px;">
+              Mandante:                        
+            </td>
+            <td>
+              ${object.folio.libro.contrato.dependenciaMandante.entidad?.nombre}
+            </td>
+            <td style="min-width: 70px;">
+              RUT:                        
+            </td>
+            <td>
+              ${object.folio.libro.contrato.dependenciaMandante.entidad?.rut}
+            </td>
+          </tr>
+          <tr>
+            <td style="min-width: 70px;">
+              Contratista:                        
+            </td>
+            <td>
+              ${object.contratista.entidad?.nombre}
+            </td>
+            <td style="min-width: 70px;">
+              RUT:                        
+            </td>
+            <td>
+              ${object.contratista.entidad?.rut}
+            </td>
+          </tr>
+        </table>
+        <hr>
+        <table>
+          <tr>
+            <td style="min-width: 70px;">
+              <strong>Libro:</strong>                        
+            </td>
+            <td style="min-width: 320px;">
+              <strong>${object.folio.libro.nombre}</strong>
+            </td>
+            <td style="min-width: 70px;">
+              <strong>Código:</strong>                        
+            </td>
+            <td>
+              <strong>${object.folio.libro.codigo}</strong>
+            </td>
+          </tr>
+          <tr>
+            <td style="min-width: 70px;">
+              Clase Libro:                        
+            </td>
+            <td style="min-width: 300px;">
+              ${object.folio.libro.tipoLibro.descripcion}
+            </td>
+            <td style="min-width: 70px;">
+              Fecha Apertura:                        
+            </td>
+            <td>
+              ${moment(object.folio.libro.fechaApertura).format('DD-MM-YYYY HH:mm')}</td>
+            </td>
+          </tr>
+          <tr>
+            <td style="min-width: 70px;">
+              Tipo Firma:                        
+            </td>
+            <td style="min-width: 300px;">
+              ${object.folio.libro.tipoFirma.nombre}
+            </td>
+            <td style="min-width: 70px;">
+              Fecha Cierre:                        
+            </td>
+            <td>
+              ${object.folio.libro.fechaCierre}
+            </td>
           </tr>
         </table>
         <hr>
         <div>
           <table>          
             <tr>
-              <td style="width: 63px;">Emisor:</td>
+              <td style="width: 70px;">Emisor:</td>
               <td>
                 ${object.emisor.usuarioDependencia.usuario.firstName}  ${object.emisor.usuarioDependencia.usuario.lastName} | Rut: ${object.emisor.usuarioDependencia.rut}
               </td>
@@ -1521,11 +1535,7 @@ export class FolioDetalleComponent implements OnInit {
             <tr>
               <td></td>
               <td>${object.receptor.cargoFuncion}</td>
-            </tr>
-            <tr>
-              <td>Tipo de Folio:</td>
-              <td>${object.folio.tipoFolio.nombre}</td>
-            </tr>
+            </tr>            
             <tr>
               <td>Respuesta de:</td>
               <td>${respuestaFolio}</td>                
@@ -1543,6 +1553,10 @@ export class FolioDetalleComponent implements OnInit {
               <td>
                 <span class="badge">${fechaRequerida}</span>
               </td>
+            </tr>
+            <tr>
+              <td>Tipo de Folio:</td>
+              <td>${object.folio.tipoFolio.nombre}</td>
             </tr>
             <tr>
               <td>Asunto:</td>
@@ -1567,7 +1581,7 @@ export class FolioDetalleComponent implements OnInit {
             <td>
               <img style="max-height: 75px;" src="${img1.src}" />
             </td>
-            <td style="padding-left: 5px;line-height: 9px;"">
+            <td style="padding-left: 5px;line-height: 10px;"">
               <strong>${object.usuarioLibro}</strong>
               <br/>RUT: ${object.rutUsuarioFirma}
               <br/>Cargo:${object.cargoUsuarioLibro}
@@ -1576,13 +1590,10 @@ export class FolioDetalleComponent implements OnInit {
             </td>
           </tr>
         </table>
-        <div id="pageFooter">
+        <div style="font-size: 8px;color: #444;" id="pageFooter">
           <hr>
-          <div style="font-size: 7px;color: #444;">
-            Código Verificación: QYUMJHGM
-            <br>Para verificar la validez del folio dirigirse a <a>www.lodigital.cl</a>
-            <br><span style="text-align: end;">Página: {{page}} de {{pages}}</span>
-          </div>          
+          Código Verificación: QYUMJHGM<span style="float: right;">Página: {{page}} de {{pages}}</span>          
+          <br>Para verificar la validez del folio dirigirse a <a>www.lodigital.cl</a>                             
         </div>        
       </body>
     </html>
