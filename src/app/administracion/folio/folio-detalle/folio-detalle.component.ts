@@ -1305,7 +1305,7 @@ export class FolioDetalleComponent implements OnInit {
     let img1 = document.createElement("img");
     img1.src = "/assets/img/logo.jpg";
     let foliosReferenciaText = "";
-    let respuestaFolio = "Sin respuesta";
+    let respuestaFolio = "No aplica";
     let fechaRequerida = this.folioForm.controls["fechaRequeridaDatepicker"].value;
     let archivosReferenciaText = "";
     if (this.folios.length > 0) {
@@ -1323,13 +1323,13 @@ export class FolioDetalleComponent implements OnInit {
     }
     
     if (fechaRequerida === "" || fechaRequerida === null) {
-      fechaRequerida = "n/a"
+      fechaRequerida = "No aplica"
     } else {
       fechaRequerida = this.datePipe.transform(fechaRequerida, 'dd-MM-yyyy');
     }
    
     if (this.archivosFolio.length > 0) {
-      let ulStart ='<ul style="line-height: 9px;">';
+      let ulStart ='<ul style="line-height: 5px;">';
       let ulEnd ='</ul>';
       let data = [];
         //archivosReferenciaText = archivosReferenciaText + '     ' + this.archivosFolio[i].descripcion + ' |' ;
@@ -1360,7 +1360,7 @@ export class FolioDetalleComponent implements OnInit {
             margin-bottom: 30px;
             margin-left: 30px;
             margin-right: 30px;
-            font-size: 8px;
+            font-size: 9px;
             font-weight: 400;
             line-height: 8px;
             color: #212529;
@@ -1382,22 +1382,7 @@ export class FolioDetalleComponent implements OnInit {
             border: 0;
             border-top: 1px solid rgba(0, 0, 0, 0.1);
             color: ffffff;                        
-          }
-              
-          .badge {
-            display: inline-block;
-            padding: 0.5em 0.5em;
-            font-size: 75%;
-            font-weight: 700;
-            line-height: 1;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: baseline;
-            border-radius: 0.25rem;
-            background-color: #4285f4;
-            color: #ffffff;
-          }         
-              
+          }             
         </style>
       </head>
       <body>
@@ -1410,9 +1395,9 @@ export class FolioDetalleComponent implements OnInit {
               </td>
               <td style="min-width: 100px; padding-top: 10px;">
                 <div style="font-size: 12px;">
-                  <strong style="color: dimgrey;">Folio Nº: ${this.correlativoPdf}</strong>                  
+                  <strong>Folio Nº: ${this.correlativoPdf}</strong>                  
                 </div>                        
-                <div style="font-size: 8px;padding-top: 1px;color: dimgrey;">${moment(object.folio.fechaFirma).format('DD-MM-YYYY HH:mm:ss')}</div>                        
+                <div style="font-size: 8px;padding-top: 1px;">${moment(object.folio.fechaFirma).format('DD-MM-YYYY HH:mm:ss')}</div>                        
               </td>                
             </tr>
           </table>            
@@ -1426,10 +1411,10 @@ export class FolioDetalleComponent implements OnInit {
         <hr>
         <table>
           <tr>
-            <td style="min-width: 70px;">
+            <td style="min-width: 78px;">
               <strong>Contrato:</strong>                        
             </td>
-            <td style="min-width: 320px;">
+            <td style="min-width: 300px;">
               <strong>${object.folio.libro.contrato.nombre}</strong>
             </td>
             <td style="min-width: 70px;">
@@ -1440,7 +1425,7 @@ export class FolioDetalleComponent implements OnInit {
             </td>
           </tr>          
           <tr>
-            <td style="min-width: 70px;">
+            <td>
               Mandante:                        
             </td>
             <td>
@@ -1454,7 +1439,7 @@ export class FolioDetalleComponent implements OnInit {
             </td>
           </tr>
           <tr>
-            <td style="min-width: 70px;">
+            <td>
               Contratista:                        
             </td>
             <td>
@@ -1471,10 +1456,10 @@ export class FolioDetalleComponent implements OnInit {
         <hr>
         <table>
           <tr>
-            <td style="min-width: 70px;">
+            <td style="min-width: 78px;">
               <strong>Libro:</strong>                        
             </td>
-            <td style="min-width: 320px;">
+            <td style="min-width: 300px;">
               <strong>${object.folio.libro.nombre}</strong>
             </td>
             <td style="min-width: 70px;">
@@ -1485,7 +1470,7 @@ export class FolioDetalleComponent implements OnInit {
             </td>
           </tr>
           <tr>
-            <td style="min-width: 70px;">
+            <td>
               Clase Libro:                        
             </td>
             <td style="min-width: 300px;">
@@ -1499,7 +1484,7 @@ export class FolioDetalleComponent implements OnInit {
             </td>
           </tr>
           <tr>
-            <td style="min-width: 70px;">
+            <td>
               Tipo Firma:                        
             </td>
             <td style="min-width: 300px;">
@@ -1517,7 +1502,7 @@ export class FolioDetalleComponent implements OnInit {
         <div>
           <table>          
             <tr>
-              <td style="width: 70px;">Emisor:</td>
+              <td style="width: 78px;">Emisor:</td>
               <td>
                 ${object.emisor.usuarioDependencia.usuario.firstName}  ${object.emisor.usuarioDependencia.usuario.lastName} | Rut: ${object.emisor.usuarioDependencia.rut}
               </td>
@@ -1551,7 +1536,7 @@ export class FolioDetalleComponent implements OnInit {
             <tr>
               <td>Fecha Requerida:</td>
               <td>
-                <span class="badge">${fechaRequerida}</span>
+                ${fechaRequerida}
               </td>
             </tr>
             <tr>
@@ -1562,8 +1547,7 @@ export class FolioDetalleComponent implements OnInit {
               <td>Asunto:</td>
               <td>${object.folio.asunto}</td>
             </tr>
-          </table>
-                
+          </table>                
         </div>
         <hr>
         <div style="font-weight: bold;margin-bottom: 10px;">Anotación:</div>
