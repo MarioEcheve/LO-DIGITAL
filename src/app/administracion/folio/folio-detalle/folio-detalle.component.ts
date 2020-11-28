@@ -860,7 +860,7 @@ export class FolioDetalleComponent implements OnInit {
             let pdfUrl = URL.createObjectURL(file);
             const dialogRef = this.dialog.open(VisorPdfComponent, {
               width: "1100px",
-              height: "610px",              
+              minHeight: "610px",              
               data: {
                 pdf: pdfUrl,
                 folio: this.Folio,
@@ -1415,7 +1415,7 @@ export class FolioDetalleComponent implements OnInit {
               <strong>Contrato:</strong>                        
             </td>
             <td style="min-width: 300px;">
-              <strong>${object.folio.libro.contrato.nombre}</strong>
+              <strong>${object.folio.libro.contrato.nombre} | Código:${object.folio.libro.contrato.codigo} </strong>
             </td>
             <td style="min-width: 70px;">
               <strong>Código:</strong>                        

@@ -97,37 +97,38 @@
                         Contrato:
                       </td>
                       <td style="font-size: 15px; font-weight: bold;"  *ngIf="Folio.libro">
-                        &nbsp;<strong>{{ Folio.libro.contrato.nombre }}</strong>
+                        <strong>{{ Folio.libro.contrato.nombre }}</strong>
                       </td>
                     </tr>
                     <tr>
                       <td>Código:</td>
-                      <td *ngIf="Folio.libro">&nbsp;{{ Folio.libro.contrato.codigo }}</td>
+                      <td *ngIf="Folio.libro">
+                        {{ Folio.libro.contrato.codigo }}
+                      </td>
                     </tr>
                     <tr>
                       <td>Mandante:</td>
                       <td *ngIf="Folio.libro">
-                        &nbsp;{{
-                          Folio.libro.contrato.dependenciaMandante.entidad.nombre}} | &nbsp;RUT:
-                          {{
-                            Folio.libro.contrato.dependenciaMandante.entidad.rut
-                          }}
+                        {{Folio.libro.contrato.dependenciaMandante.entidad.nombre}}
                       </td>
                     </tr>
                     <tr>
                       <td></td>
-                      <td *ngIf="Folio.libro">
-                        &nbsp;{{ Folio.libro.contrato.dependenciaMandante.nombre }}
+                      <td>
+                        RUT:&nbsp;{{Folio.libro.contrato.dependenciaMandante.entidad.rut}}
                       </td>
                     </tr>
                     <tr>
                       <td>Contratista:</td>
-                      <td  *ngIf="dependenciaMandante">&nbsp;{{ dependenciaMandante.entidad.nombre }} |  &nbsp;RUT: {{ dependenciaMandante.entidad.rut }}</td>
+                      <td  *ngIf="dependenciaMandante">
+                        {{ dependenciaMandante.entidad.nombre }}
+                      </td>
                     </tr>
                     <tr>
                       <td></td>
-                      <td *ngIf="dependenciaMandante">
-                        &nbsp;{{ dependenciaMandante.nombre }}
+                      <td>
+                        RUT:&nbsp;{{ dependenciaMandante.entidad.rut }}
+                        
                       </td>
                     </tr>
                   </table>
@@ -139,35 +140,31 @@
                         <strong>Libro:</strong>
                       </td>
                       <td *ngIf="Folio.libro" style="font-size: 15px; font-weight: bold;">
-                        &nbsp;<strong>{{ Folio.libro.nombre }}</strong>
+                        <strong>{{ Folio.libro.nombre }}</strong>
                       </td>
                     </tr>
                     <tr *ngIf="Folio.libro">
                       <td>Código:</td>
-                      <td>&nbsp;{{ Folio.libro.codigo }}</td>
+                      <td>{{ Folio.libro.codigo }}</td>
                     </tr>
                     <tr *ngIf="Folio.libro">
                       <td>Clase Libro:</td>
-                      <td>&nbsp;{{ Folio.libro.tipoLibro.descripcion }}</td>
+                      <td>{{ Folio.libro.tipoLibro.descripcion }}</td>
                     </tr>
                     <tr *ngIf="Folio.libro">
                       <td>Tipo Firma:</td>
-                      <td>&nbsp;{{ Folio.libro.tipoFirma.nombre }}</td>
+                      <td>{{ Folio.libro.tipoFirma.nombre }}</td>
                     </tr>
                     <tr *ngIf="Folio.libro">
                       <td>Fecha Apertura:</td>
                       <td>
-                        &nbsp;{{
-                          Folio.libro.fechaApertura | date: "dd-MM-yyyy HH:mm"
-                        }}
+                        {{Folio.libro.fechaApertura | date: "dd-MM-yyyy HH:mm"}}
                       </td>
                     </tr>
                     <tr *ngIf="Folio.libro">
                       <td>Fecha Cierre:</td>
                       <td>
-                        &nbsp;{{
-                          Folio.libro.fechaCierre | date: "dd-MM-yyyy HH:mm"
-                        }}
+                        {{Folio.libro.fechaCierre | date: "dd-MM-yyyy HH:mm"}}
                       </td>
                     </tr>
                   </table>
