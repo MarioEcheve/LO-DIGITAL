@@ -32,7 +32,7 @@
     "@angular/router": "9.0.1",
     "@kolkov/angular-editor": "^1.1.2",
     "@popperjs/core": "^2.4.1",
-    "ajv": "6.11.0",
+    "ajv": "6.12.3",
     "angular-calendar": "0.28.2",
     "animate.css": "^3.7.2",
     "arrive": "2.4.1",
